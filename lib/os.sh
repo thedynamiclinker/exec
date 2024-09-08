@@ -18,7 +18,7 @@ is_windows() {
 
 # which shell are we using?
 is_bash() {
-    if [[ -n $BASH_VERSION ]] && [[ $(basename "$0") =~ .*bash.* ]]; then
+    if [[ -n $BASH_VERSION ]] && [[ $(basename -- "$0") =~ .*bash.* ]]; then
         return 0
     else
         return 1
