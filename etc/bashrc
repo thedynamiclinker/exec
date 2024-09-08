@@ -1,0 +1,438 @@
+# LD's custom ~/.bashrc. Woot!
+
+export EXEC="${HOME}/exec"
+export PATH="${EXEC}/bin:${EXEC}/lib:${PATH}"
+
+source os.sh
+source log.sh
+source paths.sh
+
+if is_bash && is_linux; then
+    shopt -s globstar # allow ** to glob recursively
+    shopt -s extglob  # allows @(patterns), *(patterns), +(patterns), !(patterns)
+fi
+
+#############################
+### environment variables ###
+#############################
+
+# directories
+export DESKTOP="$HOME/Desktop"
+export BIN="$HOME/bin"
+export LIB="$HOME/lib"
+export ETC="$HOME/etc"
+export PKG="$HOME/pkg"
+
+# programs
+export VISUAL='vim'
+export EDITOR='vim'
+export GEDITOR='gedit'
+
+######################
+### the dirs array ###
+### ============== ###
+### cd to anywhere ###
+### from anywhere! ###
+######################
+
+# used by:
+# p: prints directories
+# o: opens directories
+# c: cd into directories
+
+source dirs.sh
+
+unset dirs
+declare -A dirs
+
+dirs+=(
+    [desktop]="${DESKTOP}"
+    [exec]="${EXEC}"
+    [bin]="${BIN}"
+    [lib]="${LIB}"
+    [etc]="${ETC}"
+    [pkg]="${PKG}"
+    [o]="${BIN}/o"
+)
+
+###########################
+### python environments ###
+###########################
+
+source python.sh
+
+# make a "physical environment"
+# venvs are for isolation,
+# not for humans
+penv main
+python_venv_prompt_off
+
+
+########################
+### get search paths ###
+########################
+
+paths=(
+    "${HOME}/bin"
+    "${HOME}/.local/bin"
+)
+
+python_paths=(
+    "${DESKTOP}"
+    "${EXEC}/lib/python"
+)
+
+ld_library_paths=(
+    # cuda library paths
+)
+
+###################
+### PS1 and PS2 ###
+###################
+
+source colors.sh
+
+is_bash && {
+
+    if [[ ${EUID} == 0 ]]; then
+        export PS1="${_red}\u${_gre}@${_blu}\h${_pur} \W ${_blu}\$${_end} "
+    else
+        export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
+    fi
+
+    export PS2="${_blu}>>${_end} "
+}
+
+###############
+### private ###
+###############
+
+# The $PRIVATE prefix contains things that are specific to
+# whichever laptop or server we happen to be on at the time,
+# a bit like the prefix '/usr/local' as opposed to '/usr'
+
+if [[ -d "${PRIVATE}" ]]; then
+
+    if [[ -d "${PRIVATE}/bin" ]]; then
+        add_to_path "${PRIVATE}/bin"
+    fi
+
+    if [[ -d "${PRIVATE}/lib/python" ]]; then
+        add_to_python_path "${PRIVATE}/lib/python"
+    fi
+
+    BASHRC_PRIVATE="${PRIVATE}/etc/bashrc"
+    if [[ -e "${BASHRC_PRIVATE}" ]]; then
+        source "${BASHRC_PRIVATE}"
+    fi
+
+fi
+
+########################
+### set search paths ###
+########################
+
+# PATH
+for d in ${paths[@]}; do
+    [[ -d "$d" ]] && add_to_path "$d"
+done
+
+# PYTHONPATH
+for d in ${python_paths[@]}; do
+    [[ -d "$d" ]] && add_to_python_path "$d"
+done
+
+# LD_LIBRARY_PATH
+for d in ${ld_library_paths[@]}; do
+    add_to_ld_library_path "$d"
+done
+
+unset d
+
+# this is necessary for tensorflow to not be retarded
+export PATH="$PATH"
+export PYTHONPATH="$PYTHONPATH"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+
+is_linux && {
+
+    # hidpi thing changed
+    export QT_SCALE_FACTOR=1
+
+    if which ibus &>/dev/null; then
+        export GTK_IM_MODULE=ibus
+        export XMODIFIERS=@im=ibus
+        export QT_IM_MODULE=ibus
+    fi
+
+    # wireless and ethernet devices
+    [[ -d /sys/class/net ]] && {
+        export WDEV="$(ls /sys/class/net/ | grep -m1 '^w')"
+        export EDEV="$(ls /sys/class/net/ | grep -m1 '^e')"
+    }
+
+    # terminal colors
+    [[ "$TERM" = "xterm" ]] && export TERM=xterm-256color
+    [[ "$TERM" = "linux" ]] && export DISPLAY=:0.0 # to fix ipython's crash on ttys
+
+    export XAUTHORITY="$HOME/.Xauthority"
+
+    # set the terminal's title bar
+    export PROMPT_COMMAND='echo -ne "\e]0;Your command is my wish: ${PWD##*/}\007"'
+
+    # GREP_COLORS
+    # the only one we changed is fn=35 (purple, non-bold) to fn=01;34 (blue, bold).
+    export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=01;34:ln=32:bn=32:se=36'
+
+    # determine SWAP partition
+    export SWAP="$(cat /proc/swaps | tail -n +2 | cut -f1 -d' ')"
+}
+
+############################################################
+### everything after this is only for interactive shells ###
+############################################################
+
+# if not interactive, gtfo
+if [[ $- != *i* ]] ; then
+    return
+fi
+
+# if we're starting-up in a directory with a really-long
+# pathname, then switch to a shorter prompt automatically
+source ps1.sh
+clip_prompt_if_its_super_long
+
+###############
+### ALIASES ###
+###############
+
+# hooks
+alias ls="ls -h --color=auto --group-directories-first"
+alias l="ls -1"
+alias ll="ls -al"
+alias l="ls -1"
+alias grep="grep -P --color=auto"
+alias ff="find . | grep"
+alias less="less -R"
+alias lsof='lsof +c 15'  # show as many characters of process name as we can
+alias diff='diff -u'
+
+# sudos
+alias reboot='sudo reboot'
+alias updatedb='sudo updatedb'
+alias tcpdump='sudo tcpdump'
+alias iftop='sudo iftop'
+alias iotop='sudo iotop'
+alias powertop='sudo powertop'
+alias insmod='sudo insmod'
+alias rmmod='sudo rmmod'
+alias modprobe='sudo modprobe'
+alias str='suspend-to-ram'
+
+# fundamentals
+alias v='vim -p'
+alias x='exit'
+alias d='sudo dmesg'
+alias dn='dirname'
+alias bn='basename'
+alias e0='echo $?'
+alias pn='ping -c 4 -i 0.2 google.com'
+alias sv="sudo vim"
+alias ta='tree -a'
+alias y='ytdl'
+alias yy='ytdl --extract-audio --audio-format=mp3 -o "%(title)s.%(ext)s"'
+alias mvv='mv -v'
+alias cpv='cp -v'
+alias rmv='rm -v'
+alias sm='synergy-share'
+alias ud='updatedb'
+alias rn='ranger'
+alias open="xdg-open"
+
+# python
+_IPYTHON_ARGS=(
+    --colors=Linux
+    --nosep
+    --TerminalInteractiveShell.prompts_class=IPython.terminal.prompts.ClassicPrompts
+    --TerminalInteractiveShell.highlight_matching_brackets=False
+    --TerminalInteractiveShell.autoformatter=None
+)
+alias py="ipython --no-banner ${_IPYTHON_ARGS[*]}"
+alias pip="python -m pip"
+alias pdb="python -m pdb"
+alias pip-dammit="pip install --no-deps --no-compile --no-build-isolation" # for airplanes
+alias piup="pip install --upgrade pip"
+
+# fundamentals: lower priority
+alias po='acpi'
+alias ds='date +%Y%m%d'
+alias dl='date +%Y%m%d-%H%M%S'
+alias dx="sudo dmesg -C"
+alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg && sudo grub-install --efi-directory=/boot/efi --bootloader-id="grub"'
+alias srm='srm -fllvz'
+
+# our commands
+alias fn='fixnames'
+alias fns='fixnames -s'
+alias fni='fixnames -i'
+alias pd='prefix-date -i'
+alias pds='prefix-date -i -s'
+alias ffc='ffmpeg-crop'
+alias cl='clean'
+alias ca='clean' # legacy alias, now that `clean` is the default
+alias caa='clean -a'
+
+# config files
+alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
+alias brcp="$EDITOR ${BASHRC_PRIVATE} && source ${BASHRC_PRIVATE}"
+alias vrc="$EDITOR ~/.vimrc"
+
+# general
+alias xa='xargs'
+alias xargsnewlines="xargs -d '\n'"
+alias upper='tr a-z A-Z'
+alias lower='tr A-Z a-z'
+alias feh="feh -. -B black"
+alias entropy='binwalk -EJ'
+alias H='heisig'
+alias P='pinyin'
+
+# tmux
+alias tm='tmux'
+alias tma='tmux attach'
+alias tmd='tmux detach'
+alias tmlk='tmux list-keys'
+
+# debian
+alias apt='sudo apt'
+alias saa='sudo apt autoremove'
+alias sau='sudo apt update && sudo apt upgrade'
+
+# arch
+alias pacman="sudo pacman --color auto"
+alias pacaur="pacaur --color auto"
+alias pacclean='pacman -Rs $(pacman -Qdtq)'
+
+# gentoo
+alias emerge='sudo emerge'
+alias epmc='sudo vim /etc/portage/make.conf'
+alias eppu='sudo vim /etc/portage/package.use'
+alias eppm='sudo vim /etc/portage/package.mask'
+alias eppum='sudo vim /etc/portage/package.unmask'
+alias eppl='sudo vim /etc/portage/package.license'
+alias eppak='sudo vim /etc/portage/package.accept_keywords'
+
+# nix
+alias nr='sudo nixos-rebuild switch'
+alias ns='nix search nixpkgs'
+
+# systemd
+alias ss="sudo systemctl"
+alias sss="sudo systemctl start"
+alias ssS="sudo systemctl stop"
+alias sst="sudo systemctl status"
+alias ssr="sudo systemctl restart"
+alias sse="sudo systemctl enable"
+alias ssd="sudo systemctl disable"
+alias ssia="sudo systemctl is-active"
+alias ssie="sudo systemctl is-enabled"
+alias ssst='sudo systemctl status'
+alias ssdrl='sudo systemctl daemon-reload'
+alias ssrnm='sudo systemctl restart NetworkManager'
+alias ssrldm='sudo systemctl restart lightdm'
+
+# cds
+alias de="c desktop && clear"
+alias cdb="c bin"
+alias cdo="c o"
+alias cdk="cd /usr/src/linux"
+
+# git
+alias gs='git status'
+alias gp='git pull'
+alias gpp='git push'
+alias ga='git add'
+alias gap='git add --patch'
+alias gc='git commit'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gl='git log'
+alias gla='git log --all --graph --decorate'
+alias gl1='git log --first-parent' # useful for hiding things from merged branches
+alias gf='git fetch'
+alias gfa='git fetch --all'
+alias gcp='git cherry-pick'
+alias gr='git remote'
+alias grs='git remote show'
+alias gb='git branch'
+alias gbc='git branch -c'
+alias gsh='git show'
+alias gsw='git switch'
+alias gg='git add . && git commit -m "Update." && git pull && git push'
+alias ggg='git add . && git commit --amend --no-edit && git push -f'
+alias gcm='git checkout master'
+alias gcf='git cat-file -p'
+alias grp='git rev-parse'
+
+# miscellaneous
+alias weather='curl wttr.in' # awesome little website
+alias un7zip='7z x'
+
+# readline
+type bind &>/dev/null && {
+    # this makes C-o kill everything to the following whitespace, 
+    # like how C-w kills everything to the previous whitespace.
+    bind '"\C-o": "\C-]\ \C-f\C-w"'
+
+    # this makes alt+j and alt+k move backward and forward on space-delimited words.
+    bind '"\ej":shell-backward-word'
+    bind '"\ek":shell-forward-word'
+
+    # this makes C-b run cowsay
+    bind -x '"\C-b":cowsay boop'
+}
+
+
+#######################
+### shell functions ###
+#######################
+
+reset_IFS() {
+    # This is one of the few things in bash that can be done
+    # in seemingly only ONE way, and that way is obscure as fuck
+    IFS=$' \t\n'
+}
+
+reterm() {
+    exec $TERMINAL --working-directory="$PWD" --maximize
+}
+
+cddn() {
+    # cddn: cd dirname
+    pushd "$(dirname "$1")" >/dev/null;
+}
+
+chx() {
+    # chmod as user || as root if needed
+    chmod +x "$@" 2>/dev/null || sudo chmod +x "$@";
+}
+
+enter() {
+    # enter a directory, creating it if necessary
+    [[ -z "$1" ]] && echo "usage: ${FUNCNAME} <new-dir>" && return
+    mkdir -pv "$1" && pushd "$1" 2>/dev/null
+}
+
+unixjoke() {
+    # classic
+    cat << "EOF"
+    unzip; strip; touch; grep;
+    finger; mount; fsck;
+    more; yes; umount; sleep;
+EOF
+}
+
+field() {
+    awk "{print \$$1}"
+}
+

@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+usage () {
+    [[ -n "$1" ]] && printf "[*] ${1}\n"
+cat << EOF
+USAGE
+    $(basename $0) <options> <filenames>
+OPTIONS
+    -h, --help      Show this help
+    -s, --string    Only operate on the input strings (default)
+    -i, --inline    Actually change filenames (like sed -i)
+    -n, --dry-run   Do a dry-run and see what would happen (like rsync -n)
+EOF
+exit 1
+}
+
+fix_string() {
+    echo "$1" | tr "A-Z" "a-z"              \
+              | sed -E                      \
+                    -e 's/[_ ()]/-/g'       \
+                    -e 's/[-]+/-/g'         \
+                    -e 's/[-]$//'           \
+                    -e 's/[!]//g'           \
+                    -e 's/[,;]//g'          \
+                    -e "s/[‘’]//g"          \
+                    -e 's/[.]txt$//'        \
+                    -e 's/-[.]/./g'         \
+                    -e 's/[.]-/-/g'         \
+                    -e 's/[.]+/./g'         \
+                    -e 's/&/-and-/g'        \
+                    -e 's/[][]//g'          \
+                    -e "s/'//g"             \
+                    -e 's/[“”]/"/g'         \
+                    -e 's/^-//'             \
+                    -e 's/[+]/-/g'          \
+                    -e 's/[#]//g'           \
+                    -e 's/["]//g'           \
+                    -e 's/[：:]//g'         \
+                    -e 's/｜//g'            \
+                    -e 's/⧸/-/g'            \
+                    -e 's/[-]+/-/g'         \
+                    -e 's/[?]//g'
+}
+
+fix_names() {
+
+    action="$1"
+
+    newnames=()
+    for f in "${oldnames[@]}"; do
+        new=$(fix_string "$f")
+        newnames+=("$new")
+    done
+
+    if [[ "$action" == 'test' ]]; then
+
+        # Print the old and new filenames
+
+        log "OLDNAMES"
+        for f in "${oldnames[@]}"; do log2 "$f"; done
+        log "NEWNAMES"
+        for f in "${newnames[@]}"; do log2 "$f"; done
+
+        log 'NO CHANGES MADE. USE -i TO RENAME FILES'
+
+    elif [[ "$action" == 'inline' ]]; then
+
+        # Only make changes if the inline option is set
+
+        log "CHANGING FILENAMES"
+        for ((i=0; i<${#oldnames[@]}; i++)); do
+            if [[ "${oldnames[$i]}" != "${newnames[$i]}" ]]; then
+                printf "  "
+                mv -v "${oldnames[$i]}" "${newnames[$i]}"
+            fi
+        done
+
+    elif [[ "$action" == 'string' ]]; then
+        # Only operate on the input string
+        for s in "${newnames[@]}"; do
+            echo "$s"
+        done
+    else
+        die "Requested unknown action: ${action}. Fix your code."
+    fi
+
+    exit 0
+}
+
+if [[ ! -t 0 ]]; then
+    while read line; do
+        fix_string "$line"
+    done
+    exit 0 # whee!
+fi
+
+[[ -z "$1" ]] && usage
+
+action='string'
+oldnames=()
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)          usage;;
+        -s|--string)        action='string';;
+        -n|--dry-run)       action='test';;
+        -i|--inline)        action='inline';;
+        -*)                 usage "Unknown option: ${1}";;
+        *)                  oldnames+=("$1");;
+    esac
+    shift
+done
+
+fix_names "$action"

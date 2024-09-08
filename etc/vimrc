@@ -1,0 +1,107 @@
+"****************"
+"*** My vimrc ***"
+"****************"
+
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+ 
+" Re-enable some default things in case distros ship without them
+" source $VIMRUNTIME/vimrc_example.vim
+"
+" Use the lines below to avoid using the lines above, which also
+" enables insufferable backup tilde files on nixos that I can't
+" remove with any amount of configuration options.
+"
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Syntax highlighting
+syntax on
+
+" Filetype plugin
+filetype on
+filetype plugin on
+
+augroup filetype
+  autocmd BufNewFile,BufRead *.txt set filetype=human
+  autocmd BufNewFile,BufRead *.md  set filetype=human
+augroup END
+
+autocmd FileType make set noexpandtab shiftwidth=4 softtabstop=0
+
+" don't add newlines at the end of files,
+" conflicts with other people's codebases
+set nofixendofline
+
+" filetype plugin is fucking with autoindent ._.
+"let g:python_recommended_style=0
+set nocindent nosmartindent noautoindent
+
+" Turn off that silly parenthesis matching.
+let loaded_matchparen = 1
+
+" color scheme
+" others: default industry elflord slate
+colorscheme desert
+
+" keep swapfiles here
+set directory=$HOME/.vim
+set nobackup       "no backup files
+set nowritebackup  "only in case you don't want a backup file while editing
+set noswapfile     "no swap files  
+
+"" when both absolute and relative line numbers are
+"" enabled, vim shows absolute line number for the
+"" current line, and relative line numbers for all
+"" the other lines.
+set number  		" turn on absolute line numbers
+set relativenumber	" turn on relative line numbers
+
+" tabstospaces, and set tab width
+set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+"set tabstop=8 softtabstop=0 shiftwidth=8 noexpandtab
+
+" change tab width and tab expansion
+noremap :2 :set tabstop=2 softtabstop=0 shiftwidth=2 expandtab
+noremap :4 :set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+noremap :8 :set tabstop=8 softtabstop=0 shiftwidth=8 noexpandtab
+
+noremap :tabs   :set tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
+noremap :spaces :set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
+
+" incremental searching
+set incsearch
+
+" highlighted search
+set hlsearch
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" Use Control-N to unhighlight after a search
+" Formerly nnoremap <silent> <C-N> :silent noh<CR>
+" I added the silly :<C-h> trick here is to clear the ex mode bar as well
+nnoremap <C-N> :noh<CR>:<C-h>
+" Another method: The two <CR>s ensure that enter still behaves correctly.
+nnoremap <silent> <CR> :silent noh<CR><CR>
+
+"" clipboard
+"" the + register is the desktop clipboard (XA_SECONDARY)
+"" the * register is the mouse selection / middle mouse click buffer (XA_PRIMARY)
+set clipboard=unnamedplus    " makes 'anonymous' register aliased to the + register
+set clipboard=unnamed        " makes 'anonymous' register aliased to the * register
+
+"" copy with <C-c> in v-mode and n-mode.
+vnoremap <C-c> "+y
+nnoremap <C-c> "+yy
+
+"" cut with <C-c> in v-mode and n-mode.
+vnoremap <C-x> "+d
+nnoremap <C-x> "+dd
+
+" don't break words that wrap
+set linebreak
