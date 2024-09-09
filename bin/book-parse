@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+"""
+Parse a markdown file into sections based on headers
+"""
+
+import os
+import re
+import sys
+import argparse
+from collections import defaultdict
+
+def parse_command_line(args=None):
+
+    if args is None:
+        args = sys.argv[1:]
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "files",
+        nargs = '*',
+        type = str,
+        default = [],
+        help = "Files and directories to parse."
+    )
+
+    config = parser.parse_args(args)
+
+    return config
+
+
+def parse_markdown(markdown_text):
+    data = defaultdict(list)
+
+    # Regular expressions to capture the relevant sections
+    link_regex = re.compile(r'^## Link\n(https?://[^\n]+)', re.MULTILINE)
+    clip_section_regex = re.compile(r'^## Clips', re.MULTILINE)
+    clip_title_regex = re.compile(r'^### (.+)', re.MULTILINE)
+    start_end_regex = re.compile(r'^start = ([0-9]+:[0-9]+)\nend = ([0-9]+:[0-9]+)', re.MULTILINE)
+
+    # Extract the YouTube link
+    link_match = link_regex.search(markdown_text)
+    if link_match:
+        data['link'] = link_match.group(1)
+    else:
+        return None
+
+    # Extract the clips section and the titles with their start/end times
+    try:
+        clips_section = clip_section_regex.split(markdown_text, 1)[1]
+    except:
+        data['clips'] = []
+    else:
+        clip_titles = clip_title_regex.findall(clips_section)
+        start_end_times = start_end_regex.findall(clips_section)
+
+        # Associate each clip title with its corresponding start and end time
+        for i, title in enumerate(clip_titles):
+            if i < len(start_end_times):
+                start, end = start_end_times[i]
+                data['clips'].append({
+                    'title': title,
+                    'start': start,
+                    'end': end
+                })
+    finally:
+        return dict(data)
+    
+    raise RuntimeError(f"Impossible situation reached.")
+
+
+def main(argv):
+    config = parse_command_line(argv)
+    files = []
+    for file in config.files:
+        if os.path.isfile(file):
+            files.append(config.file)
+        if os.path.isdir(file):
+            for file in os.popen(f'find {file!r} -type f -name "*.md"'):
+                files.append(file.rstrip('\n'))
+    results = defaultdict(dict)
+    for file in files:
+        text = open(file).read()
+        name = os.path.basename(file)
+        book = os.path.basename(os.path.dirname(file))
+        result = parse_markdown(text)
+        if result is None:
+            continue
+        results[book][name] = result
+    return results
+
+
+if __name__ == '__main__':
+    import json
+    import pprint
+    results = main(sys.argv[1:])
+    print(json.dumps(results, indent=2))
