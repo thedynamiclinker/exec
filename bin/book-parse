@@ -27,6 +27,9 @@ def parse_command_line(args=None):
 
     config = parser.parse_args(args)
 
+    if not config.files:
+        config.files = ['.']
+
     return config
 
 
