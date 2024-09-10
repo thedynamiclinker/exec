@@ -27,6 +27,7 @@ export PKG="$HOME/pkg"
 export VISUAL='vim'
 export EDITOR='vim'
 export GEDITOR='gedit'
+export TERMINAL='gnome-terminal'
 
 ######################
 ### the dirs array ###
@@ -111,6 +112,7 @@ is_bash && {
 # whichever laptop or server we happen to be on at the time,
 # a bit like the prefix '/usr/local' as opposed to '/usr'
 
+export PRIVATE="$HOME/private"
 if [[ -d "${PRIVATE}" ]]; then
 
     if [[ -d "${PRIVATE}/bin" ]]; then
