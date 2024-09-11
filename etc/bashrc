@@ -438,3 +438,6 @@ field() {
     awk "{print \$$1}"
 }
 
+# convert
+jpg() { magick "$1" "${1%.*}.jpg"; }
+png() { magick "$1" "${1%.*}.png"; }
