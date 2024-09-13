@@ -131,7 +131,7 @@ shus = [
 ]
 
 input_root = os.getenv('OBSIDIAN')
-output_root = os.path.join(os.getenv('DROPBOX'), 'videos')
+output_root = os.path.join(os.getenv('DROPBOX'), 'eye-of-the-tiger', 'videos')
 
 for shu in shus:
 
