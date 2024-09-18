@@ -441,3 +441,13 @@ field() {
 # convert
 jpg() { magick "$1" "${1%.*}.jpg"; }
 png() { magick "$1" "${1%.*}.png"; }
+
+# find | grep
+f() {
+    find . | grep "$@"
+}
+
+# copy to desktop
+cpdt() {
+    cp -v "$@" ~/Desktop
+}
