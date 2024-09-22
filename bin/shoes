@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import json
+import argparse
 import subprocess
 
 def fixnames(text):
@@ -130,12 +131,23 @@ shus = [
     'We',
 ]
 
-input_root = os.getenv('OBSIDIAN')
+parser = argparse.ArgumentParser()
+parser.add_argument("pattern", type=str, nargs='*', default='.*')
+parser.add_argument("--input-root", type=str, default=os.getenv('OBSIDIAN'))
+args = parser.parse_args(sys.argv[1:])
+
+if args.input_root is None:
+    print(f"usage: shoes [tiger-root] [pattern]")
+    print(f"Must either have OBSIDIAN environment variable set, "
+          f"or pass Tiger root as first argument")
+    sys.exit(1)
+
 output_root = os.path.join(os.getenv('DROPBOX'), 'eye-of-the-tiger', 'videos')
 
 for shu in shus:
 
-    path = os.path.join(input_root, shu)
+    path = os.path.join(args.input_root, shu)
+    print(path)
     try:
         shoe = Shoe(path)
     except FileNotFoundError as e:
@@ -144,21 +156,22 @@ for shu in shus:
 
     for book in shoe.books:
 
-        if 'harmon' not in book.name:
-            print(f"Skipping {book.name}")
-            continue
-
         chapter_dir = os.path.join(
             output_root, shoe.name, 'compilation', book.name,
         )
 
         for chapter in book.chapters:
 
-            chapter.download(chapter_dir)
 
             clip_dir = os.path.join(
                 output_root, shoe.name, 'assembly', book.name, chapter.name
             )
+
+            if not any(re.search(pattern, clip_dir) for pattern in args.pattern):
+                print(f"Skipping {clip_dir}")
+                continue
+
+            chapter.download(chapter_dir)
 
             for clip in chapter.clips:
                 clip.download(clip_dir)
