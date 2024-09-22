@@ -144,6 +144,10 @@ for shu in shus:
 
     for book in shoe.books:
 
+        if 'harmon' not in book.name:
+            print(f"Skipping {book.name}")
+            continue
+
         chapter_dir = os.path.join(
             output_root, shoe.name, 'compilation', book.name,
         )
