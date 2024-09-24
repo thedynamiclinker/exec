@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source log.sh
+
 usage () {
     [[ -n "$1" ]] && printf "[*] ${1}\n"
 cat << EOF
