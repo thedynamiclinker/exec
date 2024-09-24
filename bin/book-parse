@@ -37,10 +37,10 @@ def parse_markdown(markdown_text):
     data = defaultdict(list)
 
     # Regular expressions to capture the relevant sections
-    link_regex = re.compile(r'^## Link\n(https?://[^\n]+)', re.MULTILINE)
+    link_regex = re.compile(r'^## Link\n\s*(https?://[^\n]+)', re.MULTILINE)
     clip_section_regex = re.compile(r'^## Clips', re.MULTILINE)
     clip_title_regex = re.compile(r'^### (.+)', re.MULTILINE)
-    start_end_regex = re.compile(r'^start = ([0-9]+:[0-9]+)\nend = ([0-9]+:[0-9]+)', re.MULTILINE)
+    start_end_regex = re.compile(r'^start = ((?:[0-9]+:)+[0-9]+)\nend = ((?:[0-9]+:)+[0-9]+)', re.MULTILINE)
 
     # Extract the YouTube link
     link_match = link_regex.search(markdown_text)
