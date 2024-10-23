@@ -439,8 +439,8 @@ field() {
 }
 
 # convert
-jpg() { for f in $(ls | grep -P '\.(webp|avif)$'); do magick "$f" "${f%.*}.jpg"; done; }
-png() { for f in $(ls | grep -P '\.(webp|avif)$'); do magick "$f" "${f%.*}.png"; done; }
+jpg() { for f in $(ls | grep -P '\.(webp|avif)$'); do magick "$f" "${f%.*}.jpg" && rm "$f"; done; }
+png() { for f in $(ls | grep -P '\.(webp|avif)$'); do magick "$f" "${f%.*}.png" && rm "$f"; done; }
 
 # find | grep
 f() {
