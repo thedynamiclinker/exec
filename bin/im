@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+
+red='\033[01;31m'
+blu='\033[01;34m'
+whi='\033[01;39m'
+end='\033[00m'
+
+die   () { printf "${red}ERROR${whi}: ${1}${end}\n"; exit 1;  }
+log   () { printf "${blu}[${whi}*${blu}]${whi} ${1}${end}\n"; }
+
+usage () {
+    # We can optionally pass in an explanation of what went wrong.
+    [[ -n "$1" ]] && log "${1}"
+    cat << EOF
+USAGE
+    $(basename $0) [OPTIONS]
+OPTIONS
+    --english,          -E          Switch input method to English
+    --chinese,          -C          Switch input method to Chinese
+    --japanese,         -J          Switch input method to Japanese
+    --korean,           -K          Switch input method to Korean
+    --devangari,        -D          Switch input method to Devangari
+    --telugu,           -T          Switch input method to Telugu
+    --hebrew,           -H          Switch input method to Hebrew
+    --arabic,           -A          Switch input method to Arabic
+    --russian,          -R          Switch input method to Russian
+    --greek,            -G          Switch input method to Greek
+
+    --start,            -i, on, +   Start IBus daemon
+    --stop,             -o, off, -  Stop IBus daemon
+    --setup,            -s          Open graphical setup window for input methods.
+    --kill-gtk-ui,      -x          Kill the GTK UI of a currently running IBus daemon
+    --minimal,          -m          Start IBus daemon & kill GTK UI. Workaround for Cinnamon Bug.
+    --help,             -h          Show this help
+EOF
+    exit 1
+}
+
+declare -A IM
+IM=(
+    [ENG]="xkb:us::eng"
+    [CHI]="libpinyin"
+    [JAP]="anthy"
+    [KOR]="hangul"
+    [ARA]="xkb:ara:mac-phonetic:ara"
+    [HEB]="xkb:il:phonetic:heb"
+    [DEV]="xkb:in:hin-kagapa:hin"
+    [TEL]="xkb:in:tel-kagapa:tel"
+    [RUS]="xkb:ru:phonetic:rus"
+    [GRE]="xkb:gr::ell"
+)
+
+### HELPER FUNCTIONS ###
+
+__ibus_is_running () {
+    pgrep ibus-daemon &>/dev/null;
+}
+
+__init_if_not_running () {
+    if __ibus_is_running; then 
+        return
+    else
+        ibus_start
+        sleep 0.5
+    fi
+}
+
+### INPUT METHOD SWITCHER FUNCTIONS ###
+
+switch_to_english () {
+    __init_if_not_running
+    log "Switching input method to English: ${IM[ENG]}"
+    ibus engine "${IM[ENG]}"
+}
+
+switch_to_chinese () {
+    __init_if_not_running
+    log "Switching input method to Chinese: ${IM[CHI]}"
+    ibus engine "${IM[CHI]}"
+}
+
+switch_to_japanese () {
+    __init_if_not_running
+    log "Switching input method to Japanese: ${IM[JAP]}"
+    ibus engine "${IM[JAP]}"
+}
+
+switch_to_korean () {
+    __init_if_not_running
+    log "Switching input method to Korean: ${IM[KOR]}"
+    ibus engine "${IM[KOR]}"
+}
+
+switch_to_arabic () {
+    __init_if_not_running
+    log "Switching input method to Arabic: ${IM[ARA]}"
+    ibus engine "${IM[ARA]}"
+}
+
+switch_to_hebrew () {
+    __init_if_not_running
+    log "Switching input method to Hebrew: ${IM[HEB]}"
+    ibus engine "${IM[HEB]}"
+}
+
+switch_to_devangari () {
+    __init_if_not_running
+    log "Switching input method to Devangari: ${IM[DEV]}"
+    ibus engine "${IM[DEV]}"
+}
+
+switch_to_telugu () {
+    __init_if_not_running
+    log "Switching input method to Telugu: ${IM[TEL]}"
+    ibus engine "${IM[TEL]}"
+}
+
+switch_to_russian () {
+    __init_if_not_running
+    log "Switching input method to Russian: ${IM[RUS]}"
+    ibus engine "${IM[RUS]}"
+}
+
+switch_to_greek () {
+    __init_if_not_running
+    log "Switching input method to Greek: ${IM[GRE]}"
+    ibus engine "${IM[GRE]}"
+}
+
+
+### IBUS CONTROL FUNCTIONS ###
+
+ibus_start () {
+    log "Starting ibus"
+    ibus-daemon --desktop=cinnamon &
+}
+
+ibus_stop () {
+    if __ibus_is_running; then
+        log "Killing ibus-daemon"
+        switch_to_english
+        killall ibus-daemon
+    else
+        log "IBus is not running."
+    fi
+}
+
+ibus_kill_gtk_ui () {
+    killall ibus-ui-gtk3
+}
+
+ibus_start_minimal () {
+    log "Starting ibus and killing the GTK UI"
+    ibus_start
+    ibus_kill_gtk_ui
+}
+
+ibus_restart () {
+    if __ibus_is_running; then 
+    log "Restarting ibus-daemon"
+        ibus restart
+    else
+    log "Restart requested, but ibus not running. Starting cold."
+        ibus_start
+    fi
+}
+
+ibus_setup () {
+    log "Opening ibus-setup. Warning, this might fuck with Cinnamon until we kill iBus."
+    ibus-setup
+}
+
+
+[[ -z "$1" ]] && usage
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+
+        --english|-E|E)         switch_to_english;;
+        --japanese|-J|J)        switch_to_japanese;;
+        --chinese|-C|C)         switch_to_chinese;;
+        --korean|-K|K)          switch_to_korean;;
+        --hebrew|-H|H)          switch_to_hebrew;;
+        --arabic|-A|A)          switch_to_arabic;;
+        --devangari|-D|D)       switch_to_devangari;;
+        --telugu|-T|T)          switch_to_telugu;;
+        --russian|-R|R)         switch_to_russian;;
+        --greek|-G|G)           switch_to_greek;;
+
+        --start|-i|i|on|+)      ibus_start;;
+        --stop|-o|o|off|-)      ibus_stop;;
+        --minimal|-m|m)         ibus_start_minimal;;    # Start IBus and then kill GTK UI. Workaround for Cinnamon bug.
+        --kill-gtk-ui|-x|x)     ibus_kill_gtk_ui;;
+        --restart|-r|r)         ibus_restart;;
+
+        --setup|-s|s)           ibus_setup;;
+        --help|-h|h)            usage;;
+
+        -*)                     usage "Unrecognized option: ${1}";;
+        *)                      usage;;
+    esac
+    shift
+done
+
+exit 0
