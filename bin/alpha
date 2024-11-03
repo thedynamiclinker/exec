@@ -1,0 +1,252 @@
+#!/usr/bin/env bash
+
+# Only for log, die, and colors
+
+source ~/.bashrc
+
+usage() {
+    # We can optionally pass in an explanation of what went wrong.
+    [[ -n "$1" ]] && log "${1}"
+    cat << EOF
+USAGE
+    $(basename $0) [OPTIONS]
+
+CHARSETS
+    root        r         Get root
+        greek,      g         Get greek alphabet
+            cyrillic,   c         Get cyrillic alphabet
+                ipa,        i         Get international phonetic alphabet
+            phoenician, p         Get phoenician alphabet
+        Greek,      G         Get greek alphabet, Josh edition
+    omega       o         Get root
+
+OPTIONS
+    --list,     -l      List all the things
+    --help,     -h      Show this help
+
+EOF
+    exit 1
+}
+
+list_all_things() {
+    local charsets=(greek ipa cyrillic phoenician)
+    local longopts=(--list --help)
+    local shortopts=(-l -h)
+    case $1 in
+        charsets)       echo ${charsets[@]};;
+        longopts)       echo ${longopts[@]};;
+        shortopts)      echo ${shortopts[@]};;
+        *)              echo ${charsets[@]};;
+    esac
+    exit 0
+}
+
+get_phoenician() {
+cat << "EOF"
+Aa    ʾ    /ʔ/    𐤀    Αα
+Bb    b    /b/    𐤁    Ββ
+Gg    g    /ɡ/    𐤂    Γγ
+Dd    d    /d/    𐤃    Δδ
+Ee    h    /h/    𐤄    Εε
+Ww    w    /w/    𐤅    Ϝϝ,Υυ
+Zz    z    /z/    𐤆    Ζζ
+Hh    ḥ    /ħ/    𐤇    Ηη
+ΘΘ    ṭ    /tˤ/   𐤈    Θθ
+Ii    y    /j/    𐤉    Ιι
+Kk    k    /k/    𐤊    Κκ
+Ll    l    /l/    𐤋    Λλ
+Mm    m    /m/    𐤌    Μμ
+Nn    n    /n/    𐤍    Νν
+Xx    s    /s/    𐤎    Ξξ(poss:Χχ)
+Oo    ʿ    /ʕ/    𐤏    Οο,Ωω
+Pp    p    /p/    𐤐    Ππ
+Ss    ṣ    /sˤ/   𐤑    Ϻϻ
+Qq    q    /q/    𐤒    Ϙϙ(poss:Φφ,Ψψ)
+Rr    r    /r/    𐤓    Ρρ
+ʃʃ    š    /ʃ/    𐤔    Σσς
+Tt    t    /t/    𐤕    Ττ
+EOF
+}
+
+get_cyrillic() {
+cat << "EOF"
+А а    A        /a/
+Б б    Be       /b/
+В в    Ve       /v/
+Г г    Ge       /ɡ/
+Д д    De       /d/
+Е е    Ye       /je/
+Ж ж    Zhe      /ʒ/
+З з    Ze       /z/
+И и    I        /ɪ/
+Й й    Short I  /j/
+К к    Ka       /k/
+Л л    El       /l/
+М м    Em       /m/
+Н н    En       /n/
+О о    O        /o/
+П п    Pe       /p/
+Р р    Er       /r/
+С с    Es       /s/
+Т т    Te       /t/
+У у    U        /u/
+Ф ф    Ef       /f/
+Х х    Kha      /x/
+Ц ц    Tse      /ts/
+Ч ч    Che      /tʃ/
+Ш ш    Sha      /ʃ/
+Щ щ    Shcha    /ʃtʃ/
+Ь ь    Sml yer  /ʲ/
+Ю ю    Yu       /ju/
+Я я    Ya       /ja/
+EOF
+}
+
+get_greek() {
+cat << "EOF"
+Αα  Alpha
+Ββ  Beta
+Γγ  Gamma
+Δδ  Delta
+Εε  Epsilon
+Ζζ  Zeta
+Ηη  Eta
+Θθ  Theta
+Ιι  Iota
+Κκ  Kappa
+Λλ  Lambda
+Μμ  Mu
+Νν  Nu
+Ξξ  Xi
+Οο  Omicron
+Ππ  Pi
+Ρρ  Rho
+Σσς Sigma
+Ττ  Tau
+Υυ  Upsilon
+Φφ  Phi
+Χχ  Chi
+Ψψ  Psi
+Ωω  Omega
+EOF
+}
+
+get_Greek() {
+cat << "EOF"
+Αα  Alpha
+Ββ  Beta
+Γγ  Gamma
+Δδ  Delta
+Εε  Epsilon
+Ζζ  Zeta
+Ηη  Eta
+Θθ  Theta
+Ιι  Iota
+Κκ  Kappa
+Λλ  Lambda
+Μμ  Mu
+Νν  Nu
+Ξξ  Xi
+Οο  Omicron
+Ππ  Pi
+Ϻκ  San
+Ϙι  Qoppa
+Ρρ  Rho
+Σσς Sigma
+Ττ  Tau
+Υυ  Upsilon
+Φφ  Phi
+Χχ  Chi
+Ψψ  Psi
+Ωω  Omega
+EOF
+}
+
+get_root() {
+cat << "EOF"
+Αω
+Βψ
+Γχ
+Δφ
+Ευ
+Ζτ
+Ησ
+Θρ
+Ιϙ
+Κϻ
+Λπ
+Μο
+Νξ
+Ξν
+Ομ
+Πλ
+Ϻκ
+Ϙι
+Ρθ
+Ση
+Τζ
+Υε
+Φδ
+Χγ
+Ψβ
+Ωα
+EOF
+}
+
+get_ipa_en() {
+cat << "EOF"
+p        pʰ, p          pen, spin, tip
+b        b, b̥           but, web
+t        tʰ, t, ɾ,      two, sting, bet
+d        d, d̥, ɾ        do, daddy, odd
+t͡ʃ       t͡ʃʰ, t͡ʃ        chair, nature, teach
+d͡ʒ       d͡ʒ, d͜ʒ̊         gin, joy, edge
+k        kʰ, k          cat, kill, skin, queen, unique, thick
+ɡ        ɡ, ɡ̊           go, get, beg
+f        f              fool, enough, leaf, off, photo
+v        v, v̥           voice, have, of
+θ        θ, t̪           thing, teeth
+ð        ð, ð̥, d̪        this, breathe, father
+s        s              see, city, pass
+z        z, z̥           zoo, rose
+ʃ        ʃ              she, sure, session, emotion, leash
+ʒ        ʒ, ʒ̊           genre, pleasure, beige, equation, seizure
+h        h, ɦ, ç        ham, hue
+m        m, ɱ           man, ham
+n        n              no, tin
+ŋ        ŋ              ringer, sing, finger, drink
+l        l,  ɫ, l̥, ...  left, bell, sable, please
+r        ɹʷ, ɹ, ɾ, ...  run, very, probably
+w        w, w̥           we, queen
+j        j              yes, nyala
+hw       ʍ, w           what
+
+Marginal consonants
+x        x, χ, k, kʰ    loch (Scottish), ugh
+ʔ        ʔ              uh-oh
+
+# Holy hell, lol
+# https://en.wikipedia.org/wiki/International_Phonetic_Alphabet_chart_for_English_dialects
+EOF
+}
+
+[[ -z "$1" ]] && usage
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)          usage;;
+        -l|--list)          shift; list_all_things "$1";;
+
+        i|ipa)              get_ipa_en;;
+        r|root)             get_root;;
+        o|omega)            get_root;;
+        G|Greek)            get_Greek;;
+        g|greek)            get_greek;;
+        c|cyrillic)         get_cyrillic;;
+        p|phoenician)       get_phoenician;;
+
+        -*)                 usage "Unrecognized option: ${1}";;
+        *)                  show_thing "${1}";;
+    esac
+    shift
+done
