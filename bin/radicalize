@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ -z $1 ]]; then
+    args=('.')
+else
+    args=("$@")
+fi
+
+export RADICALIZE="$(readlink -f $(dirname $(dirname "$0")))/lib/radicalize"
+cat "${RADICALIZE}/radicalize.jsonl" \
+    | grep "${args[@]}" \
+    | jq -Cc \
+    | sed -e 's/,/, /g' -e 's/:/: /g'

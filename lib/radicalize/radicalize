@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This script is not used, but it's the reference from which bin/radicalize was developed.
+# Might be useful to just make the script in bin a symlink to something more self
+# contained in here.
+
+# TODO: This code should *just* be about radicalizing the character,
+# not about providing the Heisig keywords, which vary between the
+# three series RTK, RTH, and RSH.
+
+if [[ -z $1 ]]; then
+    args=('.')
+else
+    args=("$@")
+fi
+
+cat "radicalize.jsonl" \
+    | grep "${args[@]}" \
+    | jq -Cc \
+    | sed -e 's/,/, /g' -e 's/:/: /g'
