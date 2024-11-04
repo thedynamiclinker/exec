@@ -7,7 +7,9 @@ else
 fi
 
 export RADICALIZE="$(readlink -f $(dirname $(dirname "$0")))/lib/radicalize"
+tabs 24
 cat "${RADICALIZE}/radicalize.jsonl" \
     | grep "${args[@]}" \
     | jq -Cc \
-    | sed -e 's/,/, /g' -e 's/:/: /g'
+    | sed -E -e 's/,/, /g' -e 's/:/: /g' \
+    | sed -E -e 's/(,)([^"]*")(word|impl|alts)/\1\t\2\3/g' \
