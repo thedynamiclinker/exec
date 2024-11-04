@@ -11,19 +11,25 @@
 0004:0:四:four:-:pent in/human legs
 0005:0:五:five:-:-
 20128:0:亠:lid radical:top hat:-
+#20128:0:亠:top hat radical:lid:-
 0006:0:六:six:-:top hat/animal legs
 0007:0:七:seven:diced:-
+#0007:0:七:diced:seven:-
 0008:0:八:eight:-:-
 0009:0:九:nine:baseball/baseball team:-
+#0009:0:九:baseball:nine/baseball team:-
 0010:0:十:ten:needle/cross:-
+#0010:0:十:needle radical:ten/cross:-
 #0011:0:口:mouth:-:-
 0012:0:日:sun:day/tongue wagging:-
 #0012:0:日:day:sun/tongue wagging:-
 0013:0:月:month:moon/flesh/bodypart/part of the body:-
+0013:0:月:moon:month/flesh/bodypart/part of the body:-
 #0013:0:月:flesh radical:moon/flesh/bodypart/part of the body:-
 #0013:0:月:bodypart radical:moon/flesh/bodypart/part of the body:-
 0000:0:-:twilight:-:-
 0014:0:田:rice field:field/brain:-
+0014:0:田:field:rice field/brain:-
 0015:0:目:eye:-:-
 32594:0:罒:blue eye radical:net:-
 0016:0:古:old:-:needle/mouth
@@ -38,6 +44,7 @@
 0024:0:呂:spine:-:mouth/drop
 0025:0:昌:prosperous:-:sun
 0026:0:早:early:sunflower:sun/needle
+#0026:0:早:sunflower:early:sun/needle
 0027:0:旭:rising sun:-:baseball/sun
 0028:0:世:generation:-:-
 0029:0:胃:stomach:-:brain/flesh
@@ -52,8 +59,10 @@
 0035:0:旧:olden times:-:walking stick/day
 0036:0:自:oneself:nose/nostrils:drop/eye
 0037:0:白:white:white bird/dove:drop/sun
+0037:0:白:dove:white/white bird:drop/sun
 0038:0:百:hundred:-:ceiling/white
 0039:0:中:in:middle:mouth/walking stick
+0039:0:中:middle:in:mouth/walking stick
 0040:0:千:thousand:-:drop/ten
 0041:0:舌:tongue:-:thousand/mouth
 24318:0:廾:two hands radical:two hands:-
@@ -64,13 +73,16 @@
 #0045:0:寸:glue:measurement/glued to:drop
 0046:0:専:speciality:specialty:ten/field/glue
 23555:0:尃:announce:Dr./acupuncturist:needle/speciality/drop
+23555:0:尃:acupuncturist:Dr./announce:needle/speciality/drop
 0047:2:博:Dr.:acupuncturist:needle/Dr.
 2103:0:ト:wand radical:divining rod/magic wand/wand:-
+#2103:0:ト:magic wand radical:divining rod/magic wand/wand:-
 0048:0:占:fortune-telling:-:divining rod/mouth
 0049:0:上:above:-:divining rod/floor
 0050:0:下:below:-:ceiling/divining rod
 0051:0:卓:eminent:-:divining rod/sunflower
 133533:0:𠦝:brilliant:mist:needle/sunflower
+133533:0:𠦝:mist:brilliant:needle/sunflower
 0052:0:朝:morning:-:mist/moon
 0000:0:ハ:animal legs:-:-
 #20799:0:儿:legs radical:human legs:-
@@ -83,12 +95,15 @@
 0000:0:䒑:antlers:-:horns
 0053:0:只:only:-:mouth/animal legs
 0054:0:貝:shellfish:shell/oyster/clam/money:eye/animal legs
+0054:0:貝:shell:shell/oyster/clam/money:eye/animal legs
+#0054:0:貝:money:shell/oyster/clam/shellfish:eye/animal legs
 0055:0:貞:upright:-:divining rod/shellfish
 0056:0:員:employee:-:mouth/shellfish
 0057:0:見:see:-:eye/human legs
 0058:0:児:newborn babe:-:olden times/human legs
 0059:0:元:beginning:-:two/human legs
 0060:0:頁:page:head:ceiling/shellfish/nose
+0060:0:頁:head radical:head:ceiling/shellfish/nose
 0061:0:頑:stubborn:-:beginning/head
 0062:0:凡:mediocre:-:drop/wind
 0063:0:負:defeat:-:ropebound/shellfish
@@ -100,6 +115,7 @@
 0069:0:的:bull's eye:bulls eye:white/ladle
 0070:0:首:neck:-:antlers/nose
 0071:0:乙:fish guts:fishhook:-
+0071:0:乙:fishhook:fish guts:-
 20058:0:乚:second radical:hook:-
 11908:0:⺄:second radical:grapnel:-
 0000:0:-:anchor:-:fish guts
@@ -107,6 +123,7 @@
 0073:0:直:straightaway:straight:needle/eye/anchor
 0000:0:-:tool:-:one/animal legs
 0074:1:具:tool:toolbox:eye/tool
+0074:1:具:toolbox:tool:eye/tool
 0075:0:真:true:-:needle/toolbox
 0000:0:𠂇:by ones side:by one's side:ten
 0076:0:工:craft:i beam/artificial:-
@@ -117,6 +134,7 @@
 0081:0:貢:tribute:-:craft/money
 0082:0:項:paragraph:-:craft/head
 0083:0:刀:sword:dagger:-
+#0083:0:刀:dagger radical:sword:-
 20994:0:刂:knife radical:saber:-
 0084:0:刃:blade:-:sword/drop
 0085:0:切:cut:-:diced/sword
@@ -139,15 +157,19 @@
 0099:0:好:fond:-:woman/child
 0100:0:如:likeness:-:woman/mouth
 0101:2:母:mama:mother/breast:-
+0101:2:母:breast:mother/mama:-
 27595:0:毋:do not radical:mother/mama:-
 0102:0:貫:pierce:-:mother/shellfish
 0103:0:兄:elder brother:teenager:mouth/human legs
+#0103:0:兄:teenager:elder brother:mouth/human legs
 0104:0:克:overcome:-:needle/teenager
 0105:0:小:little:-:-
 11916:0:⺌:small radical:small:-
 0106:0:少:few:-:little/drop
 0951:2:人:person:great person:-
 0107:0:大:large:big/large dog/st. bernard dog:one/great person
+0107:0:大:great:big/large dog/st. bernard dog:one/great person
+0107:0:大:st. bernard dog:big/large dog:one/great person
 21378:0:厂:cliff radical:cliff:-
 0109:0:夕:evening:-:-
 0108:0:多:many:-:evening
@@ -158,6 +180,7 @@
 0112:0:名:name:-:evening/mouth
 0113:0:石:stone:-:cliff/mouth
 0114:0:肖:resemblance:spark/candle:small/flesh
+0114:0:肖:candle:spark/resemblance:small/flesh
 0115:0:硝:nitrate:-:stone/spark
 21318:1:卆:graduate [old]:old graduate/game of cricket:baseball/needle
 0116:0:砕:smash:-:stone/game of cricket
@@ -174,6 +197,7 @@
 0127:0:川:stream:flood:-
 24028:0:巜:old river:-:-
 24027:0:巛:river radical:upstream:old river
+24027:0:巛:upstream:river radical:old river
 0000:0:-:downstream:-:-
 0128:0:州:state:-:stream/drops
 0129:0:順:obey:-:stream/head
@@ -206,6 +230,8 @@
 0153:0:埼:cape:-:land/strange
 0154:0:垣:hedge:-:ground/span
 0155:0:圭:squared jewel:ivy:soil
+0155:0:圭:ivy:squared jewel:soil
+0155:0:圭:bricks:squared jewel:soil
 0156:0:封:seal:-:ivy/glue
 21395:0:厓:precipice:-:cliff/ivy
 0157:0:涯:horizon:-:water/precipice
@@ -215,6 +241,7 @@
 0160:0:均:level:-:soil/equality
 0161:0:火:fire:fireplace/conflagration:-
 28780:0:灬:fire radical:oven fire/cooking fire/hearth:-
+#28780:0:灬:oven fire radical:fire/cooking fire/hearth:-
 0162:0:炎:inflammation:-:fire
 0163:0:煩:anxiety:-:fire/head
 0164:0:淡:thin:-:water/inflammation
@@ -227,6 +254,7 @@
 0171:0:魚:fish:-:ropebound/rice field/cooking fire
 0172:0:漁:fishing:-:water/fish
 0173:0:里:ri:computer/logic:field/land
+#0173:0:里:computer radical:ri:field/land
 0174:0:黒:black:-:computer/oven fire
 0175:0:墨:black ink:-:black/dirt
 0176:0:鯉:carp:-:fish/computer
@@ -235,6 +263,7 @@
 0179:0:埋:bury:-:dirt/computer
 20866:0:冂:down box radical:-:-
 0000:0:冂:hood:glass cover/glass canopy/cowl/riding hood/helmet:down box radical
+0000:0:冂:glass canopy:glass cover/cowl/riding hood/helmet:down box radical
 0180:0:同:same:monks/monk:one/mouth/hood
 0181:0:洞:den:-:water/same
 0182:0:胴:trunk:-:bodypart/same
@@ -310,7 +339,9 @@
 0236:0:桃:peach tree:-:tree/portent
 0237:0:眺:stare:-:eye/portent
 0238:0:犬:dog:chihuahua:large/drop
-29357:0:⺨:dog radical:pack of wild dogs/wild dogs:-
+29357:0:⺨:dogs radical:pack of wild dogs/wild dogs:-
+#29357:0:⺨:wild dogs radical:pack of wild dogs/wild dogs:-
+#29357:0:⺨:animal radical:pack of wild dogs/wild dogs:-
 0239:0:状:status quo:-:turtle/dog
 0240:0:黙:silence:-:black/dog
 32944:0:肰:dog meat:-:flesh/dog
@@ -323,6 +354,7 @@
 0246:0:特:special:-:cow/buddhist temple
 0247:0:告:revelation:-:tailless cow/mouth
 22309:0:圥:shroom:rice seedling:soil/human legs
+#22309:0:圥:rice seedling:shroom:soil/human legs
 0248:0:先:before:-:tailless cow/rice seedling
 0249:0:洗:wash:-:water/before
 131490:0:𠆢:man radical:umbrella:-
@@ -346,9 +378,11 @@
 0264:0:栓:plug:-:tree/whole
 0265:0:理:logic:-:king/computer
 0266:0:主:lord:candlestick:drop/king
+0266:0:主:candlestick:lord:drop/king
 0267:0:注:pour:-:water/candlestick
 0268:0:柱:pillar:-:wood/candlestick
 0269:0:金:gold:metal:umbrella/scepter/drop
+#0269:0:金:metal radical:gold:umbrella/scepter/drop
 0270:0:銑:pig iron:-:metal/before
 0271:0:鉢:bowl:-:gold/book
 0272:0:銅:copper:-:metal/monk
@@ -367,13 +401,16 @@
 0284:0:辺:environs:-:sword/road
 0285:0:巡:patrol:-:upstream/road
 0286:0:車:car:cart/wagon/vehicle:ten/field
+#0286:0:車:cart:car/wagon/vehicle:ten/field
 0287:0:連:take along:-:car/road
 0288:0:軌:rut:-:car/baseball
 21014:0:刖:cutting off feet:butcher:flesh/saber
+21014:0:刖:butcher:cutting off feet:flesh/saber
 20446:0:俞:approval:-:meeting/butcher
 0289:0:輸:transport:-:car/approval
 0290:0:前:in front:-:antlers/butcher
 22786:0:夂:go radical:walking legs:-
+#22786:0:夂:walking legs radical:go:-
 0291:0:各:each:-:walking legs/mouth
 0292:0:格:status:-:tree/each
 0293:0:略:abbreviation:-:field/each
@@ -387,6 +424,7 @@
 #20886:0:冖:crown radical:crown:-
 0300:0:冗:superfluous:-:crown/wind
 0301:0:軍:army:chariot:crown/car
+0301:0:軍:chariot:army:crown/car
 0302:0:輝:radiance:-:ray/chariot
 0303:0:運:carry:-:chariot/road
 0304:1:冠:crown:-:crown/beginning/glue
@@ -396,6 +434,7 @@
 0306:0:坑:pit:-:soil/whirlwind
 0000:0:-:tall:-:top hat/mouth
 0307:1:高:tall:expensive:tall/hood
+0307:1:高:expensive:tall:tall/hood
 0308:0:享:receive:-:tall/child
 23408:0:孰:which?:eventually:receive/round
 0309:0:塾:cram school:-:eventually/ground
@@ -410,6 +449,7 @@
 0317:0:周:circumference:lap:helmet/lidded crock
 0318:0:週:week:-:lap/road
 0319:0:士:gentleman:samurai:ten/floor
+#0319:0:士:samurai radical:gentleman:ten/floor
 0320:0:吉:good luck:aerosol can:samurai/mouth
 0321:0:壮:robust:-:turtle/samurai
 0322:0:荘:villa:-:flower/robust
@@ -426,6 +466,7 @@
 0327:0:書:write:-:brush/tongue wagging
 0328:0:津:haven:-:water/brush
 25909:0:攵:rap radical:taskmaster:-
+#25909:0:攵:taskmaster radical:rap:-
 0329:0:牧:breed:-:cow/taskmaster
 0330:0:攻:aggression:-:craft/taskmaster
 0331:0:敗:failure:-:clam/taskmaster
@@ -433,6 +474,7 @@
 0333:0:故:happenstance:-:old/taskmaster
 0334:0:敬:awe:-:flower/phrase/taskmaster
 0335:0:言:say:saying/speech/words:one/mouth
+#0335:0:言:words radical:saying/speech/say:one/mouth
 0336:0:警:admonish:-:awe/words
 0337:0:計:plot:-:words/needle
 0338:0:獄:prison:-:wild dogs/words/dog
@@ -451,11 +493,13 @@
 0351:0:諾:consent:-:words/young
 0352:0:諭:rebuke:-:words/approval
 24331:0:弋:shoot radical:arrow:drop
+#24331:0:弋:arrow radical:shoot:drop
 0353:0:式:style:-:arrow/craft
 0354:0:試:test:-:words/style
 0000:0:-:quiver:-:one/arrow
 0355:1:弐:two [alternate]:II:quiver/two
 25096:0:戈:halberd radical:fiesta:arrow
+#25096:0:戈:fiesta radical:halberd:arrow
 2091:0:或:a:a certain/certain:fiesta/mouth/floor
 0356:0:域:range:-:land/a certain
 25102:0:戎:savage:-:needle/fiesta
@@ -464,6 +508,7 @@
 0358:0:栽:plantation:-:thanksgiving/tree
 0359:0:載:load:-:thanksgiving/wagon
 25098:0:戊:5th calendar sign:parade:cliff/fiesta
+25098:0:戊:parade radical:5th calendar sign:cliff/fiesta
 0360:0:茂:overgrown:-:flower/parade
 0361:0:成:turn into:-:parade/chainbound
 0362:0:城:castle:-:dirt/turn into
@@ -475,6 +520,7 @@
 0366:0:減:dwindle:-:water/march/mouth
 25099:0:戋:slight:-:two/fiesta
 14766:0:㦮:mint:float:three/slight
+14766:0:㦮:float:mint:three/slight
 0367:0:桟:scaffold:-:tree/float
 0368:0:銭:coin:-:gold/float
 0369:0:浅:shallow:-:water/float
@@ -505,20 +551,22 @@
 0392:0:延:prolong:-:stretch/correct
 0393:0:誕:nativity:-:words/prolong
 2098:0:疋:critters:zoo:correct
+2098:0:疋:zoo:critters:correct
 0394:0:礎:cornerstone:-:stone/grove/zoo
 0395:0:婿:bridegroom:-:woman/zoo/moon
 20155:0:亻:man radical:person:-
 0000:0:-:rag:-:person
-0000:0:-:scarf:-:rag
+0000:0:𧘇:scarf:-:rag
 0396:0:衣:garment:clothes:top hat/scarf
-0000:0:-:top hat and scarf:-:top hat/scarf
+0000:0:衣:top hat and scarf:-:top hat/scarf
 31035:0:礻:altar radical:altar:-
 34916:0:衤:clothes radical:cloak:altar
+#34916:0:衤:cloak radical:clothes:altar
 0397:0:裁:tailor:-:thanksgiving/garment
 0398:0:装:attire:-:robust/garment
 0399:0:裏:back:-:top hat and scarf/computer
 0400:0:壊:demolition:-:ground/needle/blue eye/garment
-0401:0:哀:pathetic:-:tall/scarf/top hat and scarf/mouth
+0401:0:哀:pathetic:-:top hat and scarf/mouth
 34945:0:袁:long kimono:-:lidded crock/rag
 0402:0:遠:distant:-:long kimono/road
 0403:1:猿:monkey:-:wild dogs/long kimono
@@ -548,12 +596,15 @@
 0418:0:制:system:-:cow/towel/saber
 0419:0:製:made in...:-:system/garment
 21430:0:厶:private radical:elbow:-
+#21430:0:厶:elbow radical:private:-
 0000:0:-:wall:-:ceiling/elbow
 2102:0:云:quote:rising cloud:two/wall
+2102:0:云:rising cloud:quote:two/wall
 0420:0:転:revolve:-:car/rising cloud
 0421:0:芸:technique:-:flower/rising cloud
 0000:0:-:towel rack:-:ceiling/towel/nail
 0422:2:雨:rain:weather/drain:towel rack/drops
+0422:2:雨:weather:rain/drain:towel rack/drops
 0000:0:-:I Ching:iching:two
 0000:0:-:rain:weather:nail/crown/I Ching
 0423:0:雲:cloud:-:rain/rising cloud
@@ -563,12 +614,15 @@
 #20907:0:冫:ice radical:ice:-
 0427:0:冬:winter:-:walking legs/ice
 0428:0:天:heavens:-:ceiling/large
+#0428:0:天:heaven:-:ceiling/large
 22829:0:夭:early death:sapling:drop/large
 2080:0:呑:quaff:-:sapling/mouth
 2104:0:喬:heaven-high:angel:quaff/hood
+#2104:0:喬:angel:heaven-high:quaff/hood
 0429:0:橋:bridge:-:tree/angel
 0430:0:嬌:attractive:-:woman/angel
 0431:0:立:stand up:vase:-
+0431:0:立:vase:stand up:-
 0432:0:泣:cry:-:water/vase
 0433:0:章:badge:-:vase/sunflower
 0434:0:競:vie:-:stand up/teenager
@@ -584,6 +638,7 @@
 0442:0:滴:drip:-:water/antique
 0443:0:敵:enemy:-:antique/taskmaster
 0444:0:匕:spoon:sitting on the ground/sitting:-
+0444:0:匕:sitting:spoon/sitting on the ground:-
 0445:0:北:north:-:sitting on the ground
 0446:0:背:stature:-:north/bodypart
 0447:0:比:compare:-:spoon
@@ -610,6 +665,7 @@
 0464:0:腹:abdomen:-:bodypart/double back
 0465:0:複:duplicate:-:cloak/double back
 0466:0:欠:lack:yawn:ropebound/great person
+0466:0:欠:yawn:lack:ropebound/great person
 0467:0:吹:blow:-:mouth/lack
 0468:0:炊:cook:-:fire/yawn
 0469:0:歌:song:-:can/yawn
@@ -620,6 +676,7 @@
 0474:0:姿:figure:-:next/woman
 0475:0:諮:consult with:-:words/next/mouth
 21637:0:咅:spit out:muzzle:vase/mouth
+#21637:0:咅:muzzle radical:spit out:vase/mouth
 0476:0:賠:compensation:-:money/muzzle
 0477:0:培:cultivate:-:soil/muzzle
 0478:0:剖:divide:-:muzzle/saber
@@ -641,6 +698,7 @@
 0488:0:荒:laid waste:-:flower/watery waste
 0489:0:望:ambition:-:perish/moon/king
 0490:0:方:direction:compass:top hat/ten thousand
+#0490:0:方:compass:direction:top hat/ten thousand
 0491:0:妨:disturb:-:woman/compass
 0492:0:坊:boy:-:dirt/compass
 0493:0:芳:perfumed:-:flower/compass
@@ -670,6 +728,7 @@
 0000:0:-:deathcliff:-:cliff/ten thousand
 0514:0:栃:horse chestnut:-:tree/deathcliff
 2094:0:也:est:scorpion:-
+2094:0:也:scorpion:est:-
 0515:1:地:ground:-:ground/scorpion
 0516:0:池:pond:-:water/scorpion
 0517:0:虫:insect:-:in
@@ -697,6 +756,7 @@
 0536:0:竜:dragon:-:vase/eel
 0537:0:滝:waterfall:-:water/dragon
 35925:0:豕:pig radical:sow:ceiling
+35925:0:豕:sow:pig radical:ceiling
 0538:0:豚:pork:-:flesh/sow
 0539:0:逐:pursue:-:sow/road
 0540:0:遂:consummate:-:horns/sow/road
@@ -704,13 +764,17 @@
 0542:0:嫁:marry into:-:woman/house/sow
 0543:0:豪:overpowering:-:tall/crown/sow
 1049:0:勿:not:knot:chainbound/sword
-0000:0:-:piglets:-:ceiling/not
+#1049:0:勿:knot:not:chainbound/sword
+0000:0:勿:piglet:-:ceiling/not
+0000:0:勿:piglets:-:ceiling/not
 26140:0:昜:sunny:piggy bank:day/piglet
+#26140:0:昜:piggy bank:sunny:day/piglet
 0544:0:腸:intestines:-:flesh/piggy bank
 0545:0:場:location:-:soil/piggy bank
 0546:0:湯:hot water:-:water/piggy bank
 0547:0:羊:sheep:-:horns/king
 0548:0:美:beauty:-:sheep/large
+0548:0:美:beautiful:-:sheep/large
 0549:0:洋:ocean:-:water/sheep
 0550:0:詳:detailed:-:words/sheep
 0551:0:鮮:fresh:-:fish/sheep
@@ -742,9 +806,11 @@
 0571:0:権:authority:-:tree/pegasus
 0572:0:観:outlook:-:pegasus/see
 0573:0:羽:feathers:wings:-
+0573:0:羽:wings:feathers:-
 0574:0:習:learn:-:feathers/white bird
 0575:0:翌:the following:-:feathers/vase
 32735:1:翟:pheasant:futon:feathers/turkey
+32735:1:翟:futon:pheasant:feathers/turkey
 0576:0:曜:weekday:-:day/futon
 0577:0:濯:laundry:-:water/futon
 #22231:0:囗:enclosure radical:pent in/pent up:-
@@ -820,6 +886,7 @@
 0638:0:看:watch over:-:crippled hand/eye
 0639:0:摩:chafe:-:hemp/hand
 25164:0:扌:hand radical:fingers:-
+#25164:0:扌:fingers radical:hand:-
 0640:0:我:ego:-:hand/fingers/fiesta
 0641:0:義:righteousness:-:sheep/ego
 0642:0:議:deliberation:-:words/righteousness
@@ -893,6 +960,7 @@
 0704:0:友:friend:-:by ones side/crotch
 0705:0:抜:slip out:-:finger/friend
 27571:0:殳:weapon radical:missile:wind/crotch
+27571:0:殳:missile:weapon radical:wind/crotch
 0706:0:投:throw:-:finger/missile
 0707:0:没:drown:-:water/missile
 0708:0:設:establishment:-:words/missile
@@ -903,6 +971,7 @@
 0713:0:枝:bough:-:tree/branch
 0714:0:肢:limb:-:bodypart/branch
 22307:0:圣:sacred:spool/toilet paper:crotch/soil
+22307:0:圣:spool:sacred/toilet paper:crotch/soil
 0715:0:茎:stalk:-:flower/spool
 0716:0:怪:suspicious:-:state of mind/spool
 0717:0:軽:lightly:-:car/spool
@@ -1022,7 +1091,7 @@
 0814:0:烈:ardent:-:file/oven fire
 0815:0:死:death:-:bone/spoon
 0816:0:葬:interment:-:flower/death/two hands
-0000:0:-:popped out sunglasses:-:walking stick
+0000:0:㐄:popped out sunglasses:-:walking stick
 33307:0:舛:oppose radical:sunglasses:evening/popped out sunglasses
 2915:0:舜:rose of Sharon:-:birdhouse/sunglasses
 0817:0:瞬:wink:-:eye/rose of Sharon
@@ -1071,6 +1140,9 @@
 0856:0:巨:gigantic:-:mouth
 0857:0:拒:repel:-:finger/gigantic
 0858:0:力:power:muscle:-
+#0858:0:力:power:muscle:-
+#0858:0:力:muscle:power:-
+#0858:0:力:muscles:power:-
 21158:0:劦:cooperate:triceps:muscle
 0859:0:男:male:man:brain/power
 0860:0:労:labor:-:schoolhouse/power
@@ -1246,13 +1318,14 @@
 1014:0:俊:sagacious:-:person/prostitute
 1015:0:傍:bystander:-:person/stand up/crown/compass
 1016:0:久:long time:mummy:ropebound/great person
+1016:0:久:mummy:long time:ropebound/great person
 1017:0:畝:furrow:-:top hat/field/long time
 1018:0:囚:captured:-:great person/pent in
 1019:0:内:inside:-:great person/belt
 1020:0:丙:third class:-:ceiling/great person/belt
 1021:0:柄:design:-:tree/third class
 1022:0:肉:meat:-:inside
-1023:0:腐:rot:-:borough/meat
+1023:0:腐:rot:-:municipality/meat
 0000:0:-:assembly line:-:great person
 1024:0:座:sit:squat:cave/assembly line/soil
 1025:0:卒:graduate:-:top hat/assembly line/needle
@@ -1280,7 +1353,7 @@
 22864:0:奐:clear:-:ropebound/four/st. bernard dog
 1042:0:喚:yell:-:mouth/clear
 1043:0:換:interchange:-:finger/clear
-39730:0:鬲:cauldron radical:reki/chinese kettle:ceiling/mouth/hood/human legs/spike
+39730:0:鬲:cauldron radical:reki/chinese kettle:ceiling/mouth/hood/antlers/spike
 1044:0:融:dissolve:-:reki/insect
 0000:0:-:banner:-:compass/reclining
 1045:0:施:alms:-:banner/scorpion
@@ -1294,6 +1367,7 @@
 1051:0:易:easy:-:sun/not
 1052:0:賜:grant:-:money/easy
 23608:0:尸:corpse radical:flag/corpse:-
+23608:0:尸:flag radical:corpse:-
 1053:0:尿:urine:-:flag/water
 1054:0:尼:nun:-:flag/spoon
 1055:0:泥:mud:-:water/nun
@@ -1312,6 +1386,7 @@
 1068:0:漏:leak:-:water/flag/drain
 1069:0:刷:printing:-:flag/towel/saber
 1070:0:尺:shaku:shakuhachi:flag
+1070:0:尺:shakuhachi:shaku:flag
 1071:0:尽:exhaust:-:shaku/ice
 1072:0:沢:swamp:-:water/shaku
 1073:0:訳:translate:-:words/shaku
@@ -1328,6 +1403,7 @@
 1084:0:顧:look back:-:employ/head
 1085:0:啓:disclose:-:door/taskmaster/mouth
 1086:0:示:show:great altar:two/little
+#1086:0:示:great altar:show:two/little
 #31035:0:礻:altar radical:altar:-
 1087:0:礼:salutation:salute:altar/hook
 1088:0:祥:auspicious:-:altar/sheep
@@ -1337,8 +1413,8 @@
 1092:0:社:company:-:altar/soil
 1093:0:視:inspection:-:altar/see
 1094:0:奈:Nara:-:large/altar
-1095:0:尉:military officer:-:flag/altar/glue
-1096:0:慰:consolation:-:military officer/heart
+1095:0:尉:lieutenant:-:flag/altar/glue
+1096:0:慰:consolation:-:lieutenant/heart
 1097:0:款:goodwill:-:samurai/altar/yawn
 1098:0:禁:prohibition:-:grove/altar
 1099:0:襟:collar:-:cloak/prohibition
@@ -1348,6 +1424,7 @@
 1103:0:察:guess:-:house/ritual
 1104:0:擦:grate:-:finger/guess
 1105:0:由:reason:wherefore/sprout:field
+#1105:0:由:sprout radical:wherefore:field
 1106:0:抽:pluck:-:finger/sprout
 1107:0:油:oil:-:water/sprout
 1108:0:袖:sleeve:-:cloak/sprout
@@ -1410,6 +1487,7 @@
 1158:0:糖:sugar:-:rice/tang
 38582:0:隶:slave radical:sieve:rake/grains of rice
 1159:0:康:sane:ease:cave/sieve
+1159:0:康:ease:sane:cave/sieve
 1160:0:逮:apprehend:-:sieve/road
 0000:0:-:mop:-:broom/walking stick
 1161:0:伊:Italy:-:person/mop
@@ -1431,12 +1509,13 @@
 1174:0:遭:encounter:-:cadet/road
 1175:0:漕:rowing:-:water/cadet
 1176:0:槽:vat:-:tree/cadet
-1177:0:斗:Big Dipper:measuring cup:drops/ten
+1177:0:斗:big dipper:measuring cup:drops/ten
 1178:0:料:fee:-:measuring cup/rice
 1179:0:科:department:-:wheat/measuring cup
 1180:0:図:map:-:pent in/measuring cup
 1181:0:用:utilize:screwdriver:flesh/walking stick
 1182:0:庸:comfortable:commonplace:cave/rake/screwdriver
+#1182:0:庸:commonplace:comfortable:cave/rake/screwdriver
 1183:0:備:equip:-:person/flower/cliff/screwdriver
 0000:0:-:salad:-:flower/floor
 1184:0:昔:once upon a time:-:salad/day
@@ -1501,10 +1580,10 @@
 1234:0:弘:vast:-:bow/elbow
 1235:0:強:strong:-:vast/insect
 1236:0:弱:weak:-:bow/ice
-24343:0:弗:fluorine:dollar sign/dollar:condolences
-0000:0:-:cent:-:condolences
-1237:0:沸:seethe:-:water/dollar
-1238:0:費:expense:-:dollar/money
+24343:0:弗:fluorine:dollar sign/dollar:-
+24343:0:弗:dollar sign:fluorine/dollar:-
+1237:0:沸:seethe:-:water/dollar sign
+1238:0:費:expense:-:dollar sign/money
 1239:0:第:No.:-:bamboo/cent
 1240:0:弟:younger brother:-:horns/cent
 0000:0:-:snare:-:-
@@ -1522,7 +1601,7 @@
 1249:0:射:shoot:-:somebody/glue
 1250:0:謝:apologize:-:words/shoot
 32770:0:耂:old radical:old man:soil/walking stick
-1251:1:老:old man:wise man:old man/spoon
+1251:1:老:old man:wise man:old radical/spoon
 1252:0:考:consider:-:old man/slingshot
 1253:0:孝:filial piety:-:old man/child
 1254:0:教:teach:-:filial piety/taskmaster
@@ -1537,7 +1616,8 @@
 1262:0:猪:boar:-:wild dogs/puppet
 1263:0:渚:strand:-:water/puppet
 1264:0:賭:gamble:-:money/puppet
-22841:1:夹:insert between/scissors:-:husband/drops
+22841:1:夹:insert between:scissors:husband/drops
+22841:1:夹:scissors radical:-:husband/drops
 1265:0:峡:gorge:-:mountain/scissors
 1266:0:狭:cramped:-:wild dogs/scissors
 1267:0:挟:sandwiched:-:finger/scissors
@@ -1555,6 +1635,7 @@
 1278:0:校:school:exam:tree/mingle
 1279:2:足:leg:wooden leg/foot:mouth/mending
 11978:0:⻊:foot radical:leg/wooden leg:mouth/mending
+11978:0:⻊:wooden leg radical:leg/foot:mouth/mending
 1280:0:促:stimulate:-:person/foot
 1281:0:距:long-distance:-:leg/gigantic
 1282:0:路:path:-:leg/each
@@ -1570,7 +1651,6 @@
 1291:0:禍:calamity:-:altar/jawbone
 1292:0:渦:whirlpool:-:water/jawbone
 1293:0:過:overdo:-:jawbone/road
-11990:0:⻖:city radical:pinnacle:-
 1294:0:阪:Heights:-:pinnacle/anti-
 1295:0:阿:Africa:-:pinnacle/can
 1296:0:際:occasion:-:pinnacle/ritual
@@ -1593,7 +1673,7 @@
 1312:0:隔:isolate:-:pinnacle/reki
 1313:0:隠:conceal:-:pinnacle/vulture/broom/heart
 1314:0:堕:degenerate:-:pinnacle/possess/ground
-33277:0:臽:pothole:-:repobound/olden times
+33277:0:臽:pothole:-:ropebound/olden times
 1315:0:陥:collapse:-:pinnacle/pothole
 1316:1:穴:hole:-:house/eight
 0000:0:-:hole:-:house/human legs
@@ -1616,6 +1696,7 @@
 1331:0:兵:soldier:-:hill/animal legs
 1332:0:浜:seacoast:-:water/soldier
 24186:0:幺:short thread radical:cocoon:-
+24186:0:幺:cocoon radical:short thread radical:-
 1333:0:糸:thread:spiderman:cocoon/little
 1334:0:織:weave:-:thread/kazoo
 1335:0:繕:darning:-:thread/virtuous
@@ -1700,6 +1781,7 @@
 1405:0:領:jurisdiction:-:orders/head
 1406:0:鈴:small bell:-:gold/orders
 1407:0:勇:courage:-:chop-stamp/male
+1407:0:勇:courageous:-:chop-stamp/male
 39996:0:甬:alley:pogo stick:chop-stamp/utilize
 1408:0:通:traffic:-:alley/road
 1409:0:踊:dance:-:wooden leg/alley
@@ -1711,7 +1793,8 @@
 1414:0:犯:crime:-:wild dogs/fingerprint
 1415:0:厄:unlucky:-:cliff/fingerprint
 1416:0:危:dangerous:-:ropebound/unlucky
-0000:0:-:mailbox:-:-
+1416:0:危:danger:-:ropebound/unlucky
+0000:0:夗:mailbox:-:evening/stamp
 1417:0:宛:address:-:house/mailbox
 1418:1:腕:arm:-:bodypart/mailbox
 1419:0:苑:garden:-:flower/mailbox
@@ -1727,6 +1810,9 @@
 1425:1:印:stamp:-:staples/stamp
 1426:0:興:entertain:-:staples/same/tool
 1602:0:西:west:old west/empty whiskey:ceiling/four
+1602:0:西:empty whiskey:west/old west:ceiling/four
+#1602:0:西:whiskey:west:ceiling/four
+#1602:0:西:whiskey bottle:west:ceiling/four
 1427:0:酉:sign of the bird:whiskey bottle/whiskey:ceiling/four
 1428:0:酒:sake:-:water/whiskey
 1429:0:酌:bartending:-:whiskey/ladle
@@ -1778,6 +1864,7 @@
 1470:0:浪:wandering:-:water/good
 1471:0:娘:daughter:-:woman/good
 1472:0:食:eat:eating/food:umbrella/good
+#1472:0:食:food radical:eat/eating:umbrella/good
 1473:0:飯:meal:-:food/anti-
 1474:0:飲:drink:-:food/yawn
 1475:0:飢:hungry:-:food/wind
@@ -1805,8 +1892,9 @@
 1492:0:離:detach:-:darkwing/turkey
 26432:0:杀:hurt:-:sheaf/tree
 1493:0:殺:kill:-:hurt/missile
-23662:0:屮:sprout radical:left hand:mountain
-2033:0:屯:barracks:earthworm:drop/left hand/hook
+23662:0:屮:old grass radical:left hand:mountain
+#23662:0:屮:left hand radical:old grass:mountain
+2033:0:屯:barracks:earthworm:drop/old grass radical/hook
 1494:0:純:genuine:-:thread/earthworm
 1495:0:鈍:dull:-:metal/earthworm
 1496:0:辛:spicy:-:stand up/needle
@@ -1815,6 +1903,7 @@
 1498:0:梓:catalpa:-:tree/spicy
 1499:0:宰:superintend:-:house/spicy
 36767:0:辟:law:ketchup:flag/mouth/spicy
+36767:0:辟:ketchup:law:flag/mouth/spicy
 1500:1:壁:wall:-:ketchup/ground
 1501:0:避:evade:-:ketchup/road
 1502:0:新:new:-:red pepper/ax
@@ -1841,6 +1930,7 @@
 1517:0:菱:diamond:-:flower/goomba
 1518:0:陵:mausoleum:-:pinnacle/goomba
 1519:0:亥:sign of the hog:acorn:infant/person
+#1519:0:亥:acorn:sign of the hog:infant/person
 1520:0:核:nucleus:-:tree/acorn
 1521:0:刻:engrave:-:acorn/saber
 1522:0:該:above-stated:-:words/acorn
@@ -1882,12 +1972,12 @@
 1553:0:割:proportion:-:harm/saber
 1554:0:憲:constitution:-:house/grow up/blue eye/heart
 1555:0:生:life:cell:drop/grow up
-1556:0:星:star:-:sun/cell
-1557:0:姓:surname:-:woman/cell
-1558:0:性:sex:-:state of mind/cell
-1559:0:牲:animal sacrifice:-:cow/cell
-1560:0:産:products:-:vase/cliff/cell
-1561:0:隆:hump:-:pinnacle/walking legs/cell
+1556:0:星:star:-:sun/life
+1557:0:姓:surname:-:woman/life
+1558:0:性:sex:-:state of mind/life
+1559:0:牲:animal sacrifice:-:cow/life
+1560:0:産:products:-:vase/cliff/life
+1561:0:隆:hump:-:pinnacle/walking legs/life
 0000:0:-:bushes:-:cornstalk
 22790:0:夆:resistance:stinger:walking legs/bushes
 1562:0:峰:summit:-:mountain/resistance
@@ -1910,12 +2000,14 @@
 2099:0:菫:violet:cabbage:flower/sun/grow up
 1576:0:謹:discreet:-:words/cabbage
 1577:0:勤:diligence:-:cabbage/muscle
-0000:0:-:scarecrow:-:cabbage/large
+0000:0:堇:scarecrow:-:cabbage/large
+0000:0:堇:strawman:scarecrow:cabbage/large
 1578:0:漢:Sino-:-:water/scarecrow
 1579:0:嘆:sigh:-:mouth/scarecrow
 1580:0:難:difficult:-:scarecrow/turkey
 0000:0:-:silage:-:three/walking stick
 1581:0:華:splendor:splendid:flower/silage/needle
+#1581:0:華:splendid:splendor:flower/silage/needle
 1582:0:垂:droop:-:drop/silage/floor
 1583:0:睡:drowsy:-:eye/droop
 1584:0:錘:spindle:-:metal/droop
@@ -1937,17 +2029,17 @@
 1600:0:謙:self-effacing:-:words/concurrently
 1601:0:廉:bargain:-:cave/concurrently
 #1602:0:西:west:old west/empty whiskey:ceiling/four
-35200:0:覀:west radical:single malt:ceiling/blue eye
-1603:0:価:value:-:person/single malt
-1604:0:要:need:-:single malt/woman
+35200:0:覀:west radical:west:ceiling/blue eye
+1603:0:価:value:-:person/west
+1604:0:要:need:-:west/woman
 1605:0:腰:loins:-:bodypart/need
-1606:0:票:ballot:-:single malt/altar
+1606:0:票:ballot:-:west/altar
 1607:0:漂:drift:-:water/ballot
 1608:0:標:signpost:-:tree/ballot
-1609:0:栗:chestnut:-:single malt/tree
-1610:0:遷:transition:-:single malt/large/snake/road
-1611:0:覆:capsize:-:single malt/restore
-1612:0:煙:smoke:-:hearth/single malt/ground
+1609:0:栗:chestnut:-:west/tree
+1610:0:遷:transition:-:west/large/snake/road
+1611:0:覆:capsize:-:west/restore
+1612:0:煙:smoke:-:hearth/west/ground
 1613:0:南:south:-:hood/happiness
 1614:0:楠:camphor tree:-:tree/south
 1615:0:献:offering:-:south/dog
@@ -1983,8 +2075,10 @@
 1639:0:侯:marquis:-:person/key/dart
 1640:0:候:climate:-:marquis/walking stick
 22828:0:夬:archery glove:guillotine:key/large
+22828:0:夬:guillotine:archery glove:key/large
 1641:0:決:decide:-:water/guillotine
 1642:0:快:cheerful:-:state of mind/guillotine
+38858:0:𫝀:key radical:locket:variant of five
 38859:0:韋:tanned leather radical:locket:key/mouth/popped out sunglasses
 1643:0:偉:admirable:-:person/locket
 1644:0:違:difference:-:locket/road
@@ -2053,6 +2147,7 @@
 1701:0:仰:faceup:-:person/stamp box
 1702:0:迎:welcome:-:stamp box/road
 30326:0:癶:dotted tent radical:teepee:-
+#30326:0:癶:teepee radical:dotted tent:-
 1703:0:登:ascend:-:teepee/table
 1704:0:澄:lucidity:-:water/ascend
 1705:0:発:discharge:-:teepee/two/human legs
@@ -2073,12 +2168,15 @@
 1718:0:須:ought:-:shape/head
 1719:0:膨:swell:-:bodypart/drum/shape
 1720:2:参:visit:three/visit/nonplussed/III:elbow/large/shape
+1720:2:参:nonplussed:three/visit/III:elbow/large/shape
 1721:0:惨:wretched:-:state of mind/visit
 1722:0:修:discipline:-:master/shape
 13361:0:㐱:bushy:fancy umbrella:umbrella/shape
+#13361:0:㐱:fancy umbrella radical:bushy:umbrella/shape
 1723:0:珍:rare:-:scepter/fancy umbrella
 1724:0:診:checkup:-:words/fancy umbrella
 1725:0:文:sentence:plaid:top hat
+#1725:0:文:plaid:sentence:top hat
 1726:0:対:vis-a-vis:-:plaid/glue
 1727:1:紋:family crest:-:thread/plaid
 1728:0:蚊:mosquito:-:insect/plaid
@@ -2110,6 +2208,7 @@
 1751:0:横:sideways:-:tree/yellow
 2042:0:巳:sign of the snake:-:snake/mouth
 2096:0:巴:comma-design:mosaic:sun/sign of the snake
+2096:0:巴:mosaic:comma-design:sun/sign of the snake
 1752:0:把:grasp:-:finger/mosaic
 1753:0:色:color:-:ropebound/mosaic
 1754:0:絶:discontinue:-:thread/color
@@ -2137,6 +2236,7 @@
 0000:0:-:tub:oaken tub:reclining/dish
 1774:0:舞:stage:-:tub/sunglasses
 1775:0:無:nothingness:non:tub/oven fire
+1775:0:無:non:nothingness:tub/oven fire
 #0000:0:-:shelf:-:eye
 2034:0:且:moreover:shelf:eye/floor
 1776:0:組:association:-:thread/shelf
@@ -2149,8 +2249,9 @@
 1783:0:宜:best regards:-:house/shelf
 1784:0:畳:tatami mat:-:field/crown/shelf
 1785:0:並:row:-:horns/vase/drops
-0000:0:-:upside down in a row:row upside down:horns
-0000:0:-:down the row:downrow:vase/drops
+0000:0:业:upside down in a row:row upside down:horns
+0000:0:业:down the row:downrow:vase/drops
+0000:0:业:downrow:down the row:vase/drops
 1786:0:普:universal:-:row/sun
 1787:0:譜:musical score:-:words/universal
 1788:0:湿:damp:-:water/sun/down the row
@@ -2211,6 +2312,8 @@
 1834:0:民:people:-:mouth/family name
 1835:0:眠:sleep:-:eye/people
 2097:0:甫:offspring:dog tag/dogtag:arrowhead/screwdriver
+#2097:0:甫:dogtag:offspring/dog tag:arrowhead/screwdriver
+#2097:0:甫:dog tag:offspring:arrowhead/screwdriver
 1836:0:捕:catch:-:flower/dog tag
 1837:0:浦:bay:-:water/dog tag
 1838:0:蒲:bullrush:bulrush:seaweed/bay
@@ -2234,6 +2337,7 @@
 1853:0:盾:shield:-:drag/ten/eye
 1854:0:循:sequential:-:line/shield
 131234:0:𠂢:branching:tributary:drag/rag
+131234:0:𠂢:tributary:branching:drag/rag
 1855:0:派:faction:-:water/tributary
 1856:0:脈:vein:-:bodypart/tributary
 20049:0:乑:stand side by side:-:drag drops/rag
@@ -2281,7 +2385,7 @@
 1892:0:面:mask:-:ceiling/drop/pent in/eye
 1893:0:革:leather:-:flower/car
 1894:0:靴:shoes:-:leather/change
-1895:0:覇:hegemony:-:single malt/leather/moon
+1895:0:覇:hegemony:-:west/leather/moon
 0000:0:-:venetian mask:-:flag/sun
 1896:0:声:voice:-:samurai/venetian mask
 1897:0:呉:give:-:mouth/tool
@@ -2296,8 +2400,10 @@
 1906:0:邪:wicked:-:tusk/city walls
 1907:0:雅:gracious:-:tusk/turkey
 37318:0:釆:distinguish radical:animal tracks:drop/rice
+37318:0:釆:animal tracks:distinguish:drop/rice
 1908:0:釈:explanation:-:animal tracks/shakuhachi
 1909:0:番:turn:dice:animal tracks/field
+1909:0:番:dice:turn:animal tracks/field
 1910:0:審:hearing:-:house/dice
 1911:0:翻:flip:-:dice/feathers
 28504:0:潘:rice water:-:water/dice
@@ -2316,10 +2422,11 @@
 0000:0:-:mane:-:-
 1920:0:長:long:-:mane/hairpin
 0000:0:镸:hair:-:mane/wall
+0000:0:镸:hair radical:-:mane/wall
 1921:0:張:lengthen:-:bow/long
 1922:0:帳:notebook:-:towel/long
 1923:0:脹:dilate:-:flesh/long
-39647:0:髟:hair radical:braid:hair/shape
+39647:0:髟:hair:braid:hair/shape
 1924:0:髪:hair of the head:headhair:braid/friend
 1925:0:展:unfold:-:flag/salad/hairpin
 1926:0:喪:miss:-:soil/mouth/hairpin
@@ -2364,7 +2471,7 @@
 0000:0:-:mountain goat:-:horns/left hand
 1959:0:逆:inverted:-:mountain goat/road
 1960:0:塑:model:-:mountain goat/moon/soil
-1961:0:岡:Mount:-:glass canopy/mountain goat
+1961:0:岡:mount:-:glass canopy/mountain goat
 1962:0:鋼:steel:-:metal/mount
 1963:0:綱:hawser:-:thread/mount
 1964:0:剛:sturdy:-:mount/saber
@@ -2387,6 +2494,7 @@
 1976:0:象:elephant:-:rabbit/sow
 1977:0:像:statue:-:person/elephant
 1978:1:馬:horse:team of horses/carriage:mane/walking stick/tail feathers
+#1978:1:馬:carriage:team of horses/horse:mane/walking stick/tail feathers
 1979:0:駒:pony:-:team of horses/phrase
 1980:0:験:verification:-:team of horses/awl
 1981:0:騎:equestrian:-:team of horses/strange
@@ -2410,7 +2518,7 @@
 1997:0:劇:drama:-:tiger/sow/saber
 1998:0:虐:tyrannize:-:tiger/box/one
 0000:0:-:deer:-:cave/salad
-1999:1:鹿:deer:painting of a deer/deer painting/great deer:deer/compare
+1999:1:鹿:deer:deer painting/great deer:deer/compare
 2000:0:薦:recommend:-:flower/deer/slingshot/tail feathers
 2001:0:慶:jubilation:-:deer/crown/heart/walking legs
 2002:0:麗:lovely:-:ceiling/mediocre/great deer
@@ -2438,6 +2546,7 @@
 2023:0:魅:fascination:-:ghost/not yet
 2024:0:塊:clod:-:soil/ghost
 2981:1:龍:dragon [old]:old dragon:vase/flesh/slingshot/snake/three
+#2981:1:龍:old dragon radical:dragon [old]:vase/flesh/slingshot/snake/three
 2025:0:襲:attack:-:old dragon/garment
 2026:0:嚇:upbraid:menacing:mouth/red
 2027:0:朕:majestic plural:-:moon/golden calf
@@ -2447,6 +2556,7 @@
 2031:0:遵:abide by:-:revered/road
 2032:0:罷:quit:-:blue eye/ability
 #2033:0:屯:barracks:earthworm:drop/shovel/hook
+#2033:0:屯:earthworm:barracks:drop/shovel/hook
 #2034:0:且:moreover:-:eye/floor
 28577:0:澡:scrub:-:water/pallet
 2035:1:藻:seaweed:-:seaweed/scrub
@@ -2471,7 +2581,7 @@
 #0000:0:粦:shoeshine:tom cruise:usa/sunglasses
 2051:0:憐:sympathize with:sympathize:state of mind/tom cruise
 2052:0:燐:phosphorus:-:fire/tom cruise
-2053:0:麟:camelopard:-:painting of a deer/tom cruise
+2053:0:麟:camelopard:-:deer/tom cruise
 2054:0:鱗:scaled:-:fish/tom cruise
 2055:0:奄:encompassing:dachshund:large/eel
 2056:0:庵:hermitage:-:cave/encompassing
@@ -2485,7 +2595,7 @@
 #2063:0:臼:mortar:-:sun/staples
 2064:0:舅:father-in-law:-:mortar/man
 2065:0:鼠:mouse:-:mortar/plow/drops/hook
-2066:0:鑿:bore:chisel:row upside down/needle/mortar/missile/metal
+2066:0:鑿:bore:chisel:upside down in a row/needle/mortar/missile/metal
 2067:0:毀:break:-:mortar/soil/missile
 21471:0:叟:ancient man:-:mortar/walking stick/crotch
 2068:0:艘:small craft:-:boat/ancient man
@@ -2508,6 +2618,7 @@
 2079:0:沃:irrigate:-:water/sapling
 #2080:0:呑:quaff:-:sapling/mouth
 38893:0:韭:leek radical:green onion:jail cell/floor
+38893:0:韭:green onion:leek radical:jail cell/floor
 2081:0:韮:leek:-:flower/green onion
 38897:0:韱:wild onion:-:assembly line/fiesta/green onion
 2082:0:籤:lottery:-:bamboo/wild onion
@@ -2525,9 +2636,10 @@
 #2094:0:也:est:scorpion:-
 #2095:0:尭:lofty:straw man/strawman:haystack/one/human legs
 #2096:0:巴:comma-design:mosaic:sun/sign of the snake
-#2097:0:甫:offspring:dog tag/dogtag:arrowhead/screwdriver
+#2097:0:甫:dog tag radical:offspring/arrowhead/screwdriver:-
 #2098:0:疋:critters:zoo:correct
 #2099:0:菫:violet:cabbage:flower/sun/grow up
+#2099:0:菫:cabbage:violet:flower/sun/grow up
 #2100:0:曼:mandala:-:sun/blue eye/crotch
 #2101:0:巾:towel:-:belt/walking stick
 #2102:0:云:quote:rising cloud:two/wall
@@ -2586,7 +2698,7 @@
 2154:0:哨:scout:-:mouth/candle
 2155:0:嘲:derision:-:mouth/morning
 2156:0:咎:reprehend:-:each/great person
-32886:0:聶:whisper:-:ear
+32886:0:聶:whisper:-:ear/ear/ear
 2157:1:囁:whisper:-:mouth/whisper
 2158:0:喋:chatter:-:mouth/leaf
 2159:0:咽:windpipe:-:mouth/cause
@@ -2637,7 +2749,7 @@
 2201:0:姪:niece:-:woman/climax
 2202:0:嫉:envy:-:woman/rapidly
 2203:0:嬬:mistress:-:woman/demand
-2204:0:姥:aged woman:-:woman/wise man
+2204:0:姥:aged woman:-:woman/old man
 2205:0:姑:mother-in-law:-:woman/old
 2206:0:姐:young miss:-:woman/shelf
 2207:0:嬉:overjoyed:-:woman/rejoice
@@ -2701,7 +2813,7 @@
 2263:0:揖:interpretation:-:finger/mouth/ear
 2264:0:托:receptable:-:finger/lock of hair
 2265:0:捧:dedicate:-:finger/observance
-2266:0:撚:twirl:-:finger/sort of a thing
+2266:0:撚:twirl:-:finger/sort of thing
 2267:0:挺:counter for tools:tool counter:finger/courts
 2268:0:擾:commotion:-:finger/melancholy
 2269:0:捗:make headway:-:finger/walk
@@ -2715,7 +2827,7 @@
 2276:0:惟:ponder:-:state of mind/turkey
 2431:0:忽:instantaneously:-:knot/heart
 2277:0:惚:infatuation:-:state of mind/instantaneously
-2278:0:怜:quickwitted:-:state of mind/oders
+2278:0:怜:quickwitted:-:state of mind/orders
 2279:0:惇:considerate:-:state of mind/receive
 2280:0:憧:yearn:-:state of mind/juvenile
 2281:0:恰:as if:-:state of mind/fit
@@ -2739,12 +2851,13 @@
 15890:0:㸒:desire:-:vulture/porter
 2298:0:淫:lewd:-:water/desire
 20997:0:刅:invent:bloody sword:sword/drops
+20997:0:刅:bloody sword:invent:sword/drops
 2299:0:梁:roofbeam:-:water/bloody sword/tree
 2300:0:澱:sediment:-:water/Mr.
 2301:0:氾:widespread:-:water/fingerprint
 #2302:0:洛:old Kyoto:-:water/each
 2303:0:汝:thou:-:water/woman
-2304:0:漉:filter:-:water/deer painting
+2304:0:漉:filter:-:water/deer
 2305:0:瀕:on the verge of:-:water/repeatedly
 2306:0:濠:moat:-:water/overpowering
 2307:0:溌:spray:-:water/discharge
@@ -2798,13 +2911,13 @@
 2352:0:藝:old technique:-:talent/rising cloud
 2584:0:雉:pheasant:-:dart/turkey
 2353:0:薙:trim:-:flowers/pheasant
-2354:0:蓑:straw raincoat:-:flowers/declining
+2354:0:蓑:straw raincoat:-:flowers/decline
 2355:0:萎:numb:-:flowers/committee
 2356:0:苔:moss:-:flower/pedestal
 2357:0:蕩:prodigal:-:seaweed/hot water
 2358:0:蔽:cover over:-:flower/shredder
 2359:0:蔓:tendril:-:flowers/mandala
-2360:0:蓮:lotus:-:flowers/carry along
+2360:0:蓮:lotus:-:flowers/take along
 2361:0:芙:lotus flower:-:flowers/husband
 2362:0:蓉:lotus blossom:-:flowers/contain
 2363:0:蘭:orchid:-:flowers/rise high
@@ -2860,7 +2973,7 @@
 2404:0:蒜:garlic:-:flower/show
 21413:0:厥:clammy:-:cliff/mountain goat/yawn
 2405:0:蕨:bracken:-:flowers/clammy
-2406:0:蔚:grow plentiful:-:flower/liutenant
+2406:0:蔚:grow plentiful:-:flower/lieutenant
 2407:0:茜:madder red:-:flowers/west
 2408:0:莞:candle rush:-:flowers/perfect
 2409:0:蒐:collector:-:flowers/ghost
@@ -2912,7 +3025,7 @@
 2453:0:腎:kidney:-:wise/flesh
 2454:0:股:thigh:-:flesh/missile
 2455:0:膿:pus:-:flesh/agriculture
-2456:0:腑:viscera:-:flesh/borough
+2456:0:腑:viscera:-:flesh/municipality
 2457:0:胱:bladder:-:flesh/ray
 19989:0:丕:glorious:-:negative/floor
 2458:0:胚:embryo:-:flesh/glorious
@@ -2931,7 +3044,7 @@
 2471:0:楓:maple tree:-:tree/wind
 2472:0:枕:pillow:-:tree/crowned cripple
 2473:0:楊:purple willow:-:tree/piggy bank
-2474:0:椋:Oriental elm:-:tree/capitol
+2474:0:椋:Oriental elm:-:tree/capital
 2877:0:秦:Manchu dynasty:-:bonsai/wheat
 2475:0:榛:hazel:-:tree/Manchu dynasty
 2476:0:櫛:comb:-:tree/node
@@ -2947,7 +3060,7 @@
 2485:0:柊:holly:-:tree/winter
 2486:0:柚:citron:-:tree/sprout
 2487:0:椀:wooden bowl:-:tree/address
-2488:0:栂:hemlock:-:tree/mother
+2488:0:栂:hemlock:-:tree/mama
 2489:0:柾:spindle tree:-:tree/correct
 2490:0:榊:sacred Shinto tree:-:tree/gods
 2491:0:樫:evergreen oak:-:tree/strict
@@ -3007,8 +3120,9 @@
 2541:0:煤:soot:-:fire/so-and-so
 2542:0:煉:firing:-:fire/east
 27514:1:歺:death radical:depraved:magic wand/evening
-0000:0:-:pole dancer:-:depraved/crotch
-31922:0:粲:brightly:-:pole dancer/us
+27514:1:歺:depraved:death radical:magic wand/evening
+0000:0:𣦼:pole dancer:-:depraved/crotch
+31922:0:粲:brightly:-:pole dancer/rice
 2543:0:燦:dazzling:-:fire/brightly
 2544:0:灼:refulgent:-:fire/ladle
 2545:0:烙:branding:-:fire/each
@@ -3089,7 +3203,7 @@
 2616:0:穿:drill:-:hole/tusk
 2617:0:竃:kitchen stove:-:hole/soil/running tortoise
 2618:0:竪:longness:-:wise/vase
-2619:0:颯:rustling:-:vase/the wind
+2619:0:颯:rustling:-:vase/wind
 2620:0:站:outpost:-:vase/fortune-telling
 2621:0:靖:repose:-:vase/blue
 2622:0:妾:concubine:-:vase/woman
@@ -3098,7 +3212,7 @@
 2625:0:袷:lines kimono:-:cloak/fit
 2626:0:袴:pleated skirt:-:cloak/boast
 2627:0:襖:sliding door:-:cloak/core
-2628:0:笙:Chinese panpipe:-:bamboo/cell
+2628:0:笙:Chinese panpipe:-:bamboo/life
 2629:0:筏:raft:-:bamboo/fell
 2630:0:簾:bamboo blinds:-:bamboo/bargain
 2631:0:箪:rattan box:-:bamboo/simple
@@ -3110,6 +3224,7 @@
 #2637:0:筑:ancient harp:-:bamboo/bind
 2638:0:篭:cage:-:bamboo/dragon
 26781:1:條:twig [old]:old twig:master/tree
+26781:1:條:old twig:twig [old]:master/tree
 2639:0:篠:slender bamboo:-:bamboo/old twig
 2640:0:箸:chopsticks:-:bamboo/puppet
 2641:0:纂:redaction:-:calculate/large/thread
@@ -3125,7 +3240,7 @@
 2651:0:籾:unhulled rice:-:rice/blade
 2652:0:糠:rice bran:-:rice/ease
 2653:0:糞:excrement:-:rice/uncommon
-2654:0:粟:foxtail millet:-:single malt/rice
+2654:0:粟:foxtail millet:-:west/rice
 2655:0:繋:link up:-:car/missile/thread
 2656:0:綸:twine:-:thread/methodical
 2657:0:絨:carpet yarn:-:thread/savage
@@ -3149,6 +3264,7 @@
 2674:0:舵:rudder:-:boat/another
 2675:0:舷:gunwale:-:boat/mysterious
 20007:0:丱:childish hair:cactus:-
+20007:0:丱:cactus:childish hair:-
 2676:0:聯:strung together:-:ear/cocoon/cactus
 2677:0:聡:attentive:-:ear/public/heart
 2678:0:聘:summons:-:ear/sprout/snare
@@ -3273,6 +3389,7 @@
 2793:0:頗:exceedingly:-:pelt/head
 2794:0:頌:accolade:-:public/head
 21666:0:咢:outspokenly:alligator:mouth/noose
+21666:0:咢:alligator:outspokenly:mouth/noose
 2795:0:顎:chin:-:aligator/head
 2796:0:頚:neck and throat:-:spool/head
 2797:0:餌:feed:-:food/ear
@@ -3306,7 +3423,7 @@
 2824:1:鰐:alligator:-:fish/alligator
 2825:0:鮒:crucian:-:fish/adhere
 2826:0:鮨:sushi:-:fish/delicious
-32774:0:耆:senile:-:wise man/day
+32774:0:耆:senile:-:old man/day
 2827:0:鰭:fish fin:-:fish/senile
 2828:0:鴎:seagull:-:ward/bird
 2829:0:鵬:roc:-:companion/bird
@@ -3318,9 +3435,9 @@
 2835:0:鴨:wild duck:-:push/bird
 2836:0:鳶:kite falcon:-:arrow/bird
 2837:1:梟:owl:-:featherless bird/tree
-2838:0:塵:dust:-:painting of a deer/soil
-2839:0:麓:foot of a mountain:-:grove/painting of a deer
-2840:0:麒:giraffe:-:painting of a deer/bushel basket
+2838:0:塵:dust:-:deer/soil
+2839:0:麓:foot of a mountain:-:grove/deer
+2840:0:麒:giraffe:-:deer/bushel basket
 2841:0:冥:Hades:-:crown/sun/six
 2842:0:瞑:close the eyes:-:eye/Hades
 2843:0:暝:murky:-:sun/Hades
@@ -3364,7 +3481,7 @@
 2878:0:雀:sparrow:-:few/turkey
 2879:0:隼:peregrine falcon:-:turkey/needle
 2880:0:耀:shimmering:-:ray/futon
-2881:0:夷:ebisu:-:great/bow
+2881:0:夷:levelled destruction:-:great/bow
 2882:0:戚:relatives:-:uncle/parade
 2883:0:嚢:pouch:cyst:bishop/middle/eight/celery/top hat and scarf
 2884:0:丼:domburi:-:well/drop
@@ -3378,7 +3495,7 @@
 2892:0:匡:set straight:-:box/king
 2893:0:肇:founding:-:door/taskmaster/brush
 2894:0:麿:Utamaro:-:hemp/spine
-2895:0:叢:conglomerate:-:row upside down/soil/take
+2895:0:叢:conglomerate:-:upside down in a row/soil/take
 2896:0:肴:entreat:-:sheaf/possess
 2897:0:斐:symmetrically patterned:-:un-/plaid
 2898:0:卿:magistrate:-:sign of the hare/instant
@@ -3392,6 +3509,7 @@
 30591:0:睿:imperial:-:wand/crown/one/umbrella/eye
 2905:0:叡:sapience:-:imperial/crotch
 #2906:0:酋:chieftain:red bull:horns/whiskey
+#2906:0:酋:red bull:chieftain:horns/whiskey
 2907:0:鴬:nightingale:-:schoolhouse/bird
 2908:0:赫:incandescent:-:red
 2909:0:臥:supinate:-:minister/great person
@@ -3409,7 +3527,7 @@
 2921:0:胤:blood relative:-:human legs/cocoon/flesh
 2922:0:疏:transcription:-:zoo/barren
 2923:0:膏:ointment:-:expensive/flesh
-2924:0:魁:pioneer:-:ghost/Big Dipper
+2924:0:魁:pioneer:-:ghost/big dipper
 2925:0:馨:ambrosial:-:voice/missile/incense
 2926:0:牒:label:-:one-sided/leaf
 2927:0:瞥:glimpse:-:shredder/eye
@@ -3428,11 +3546,12 @@
 2939:0:聚:crowd:-:take/stand side by side
 2940:0:甦:resucitate:-:grow late/life
 11964:0:⺼:meat radical:meaty moon:wind/ice/meat
+#11964:0:⺼:meaty moon:meat radical:wind/ice/meat
 0000:0:-:butchery front:-:antlers/meaty moon/saber
 2941:0:剪:pruning:-:butchery front/sword
 2942:0:躾:upbringing:-:somebody/beautiful
 2943:0:夥:plentiful:-:fruit/many
-2944:0:鼾:snore:-:big nose/dry
+2944:0:鼾:snore:-:nose/dry
 2945:0:祟:cast a spell:-:exit/altar
 2946:0:粁:kilometer:-:rice/thousand
 2947:0:糎:centimeter:-:rice/rin
@@ -3454,6 +3573,7 @@
 2962:0:珈:jeweled hairpin:coffee creamer:king/add
 2963:0:琲:beaded hairpin:coffee:king/un-
 26371:1:會:meeting [old]:old meeting:meeting/pent in/small/sun
+#26371:1:會:old meeting:meeting [old]:meeting/pent in/small/sun
 2964:0:檜:Japanese cypress [old]:-:tree/old meeting
 2965:0:轡:bridle's bit:bridles bit:thread/cart/mouth
 29247:0:爿:half tree trunk radical:-:-
@@ -3462,6 +3582,7 @@
 2967:1:伍:five [old]:V:person/five
 2968:1:什:ten [alternate]:X:person/ten
 2969:1:萬:ten thousand [old]:old ten thousand:flower/talking cricket
+2969:1:萬:old ten thousand:ten thousand [old]:flower/talking cricket
 36790:0:辶:road radical:old road:road
 2970:0:邁:pass through:-:old ten thousand/old road
 2971:0:逞:tough:-:display/old road
@@ -3474,6 +3595,7 @@
 2978:1:巌:boulder [old]:-:mountain/stern
 2979:1:埜:plains [old]:-:grove/soil
 33293:1:舍:cottage [old]:old cottage:umbrella/tongue
+#33293:1:舍:old cottage:cottage [old]:umbrella/tongue
 2980:1:舘:Bldg. [old]:-:old cottage/bureaucrat
 #2981:1:龍:dragon [old]:old dragon:vase/flesh/slingshot/snake/three
 2982:0:寵:patronage:-:house/old dragon
@@ -3484,18 +3606,21 @@
 2987:1:嶽:Point [old]:-:mountain/prison
 2988:1:國:country [old]:-:pent in/a certain
 24032:0:巠:underground stream:sewer:ceiling/upstream/craft
+#24032:0:巠:sewer:underground stream:ceiling/upstream/craft
 2989:0:脛:shin:-:flesh/underground stream
 2990:0:勁:formidable:-:sewer/muscle
 25108:0:戔:tiny:old float:fiesta
+#25108:0:戔:old float:tiny:fiesta
 2991:0:箋:stationery:-:bamboo/tiny
 2992:0:祀:enshrine:-:show/snake
 29358:0:犮:pull out:-:dog/by ones side/sheaf
 2993:0:祓:exorcism:-:great altar/pull out
 2994:0:躇:dither:-:wooden leg/renowned/drop
 2995:1:壽:longevity [old]:old longevity:samurai/craft/one/inch
+#2995:1:壽:old longevity:longevity [old]:samurai/craft/one/inch
 2996:0:躊:hesitate:-:wooden leg/old longevity
 2997:0:彙:glossary:-:snout/crown/fruit
-2998:0:饅:manjuu:-:rotten food/mandala
+2998:0:饅:manjuu:-:food/mandala
 21312:1:區:ward [old]:old ward:box/goods
 2999:0:嘔:retch:-:mouth/old ward
 40701:0:黽:green frog:-:-
@@ -3534,7 +3659,7 @@
 3028:1:籠:cage [old]:old cage:bamboo/old dragon
 3029:0:羞:humiliate:-:wool/sign of the cow
 39727:0:鬯:sacrificial wine radical:fragrant herbs:ladybug/shovel/spoon
-3030:0:鬱:gloom:-:clearing/tin can/crown/fragrant herbs/shape
+3030:0:鬱:gloom:-:clearing/tin can/crown/sacrificial wine/shape
 #13356:0:㐬:barren:moses:infant/downstream
 #13358:0:㐮:assist:grass skirt:six/celery/scarf/top hat and scarf/eight
 #13361:0:㐱:bushy:fancy umbrella:umbrella/shape
@@ -3556,7 +3681,7 @@
 #20817:1:兑:exchange:devil:horns/teenager
 #20842:0:兪:snitch:-:meeting/meaty moon/old river
 #20857:0:兹:here:-:mysterious
-#20873:0:冉:tan:izanami:moon/field
+#20873:0:冉:tan:izanami:down box/dirt
 #20879:0:冏:light:-:helmet/human legs/mouth
 #20883:0:冓:put together:funnel:celery/again
 #20897:0:冡:ignorance:-:crown/one/sow
@@ -3573,11 +3698,13 @@
 #21261:0:匍:crawl:-:chainbound/offspring
 #21309:0:匽:crook:-:box/balmy
 #21312:1:區:ward [old]:old ward:box/goods
+#21312:1:區:old ward:ward [old]:box/goods
 #21318:1:卆:graduate [old]:game of cricket:baseball/needle
 #21350:0:卦:divination sign:-:ivy/magic wand
 #21395:0:厓:precipice:-:cliff/ivy
 #21413:0:厥:clammy:-:cliff/mountain goat/yawn
 #21431:0:厷:fore-arm:popeye:by ones side/elbow
+#21443:2:參:old nonplussed:visit [old]/three/old visit/III:elbow/fancy umbrella
 #21443:2:參:visit [old]:three/old visit/old nonplussed/III:elbow/fancy umbrella
 #21471:0:叟:ancient man:-:mortar/walking stick/crotch
 21509:0:吅:argue:-:mouth
@@ -3585,11 +3712,15 @@
 21675:1:咫:span [old]:-:shaku/only
 21928:0:喨:clear voice:-:mouth/translucent
 21934:1:單:simple [old]:old simple:argue/brain/needle
+#21934:1:單:old simple:simple [old]:argue/brain/needle
 #21951:0:喿:chirping:pallet:goods/tree
+#21951:0:喿:pallet:chirping:goods/tree
 32901:1:肅:solemn [old]:old solemn:rake/arm wrestling
 22063:0:嘯:whistle:-:mouth/old solemn
 22150:0:嚆:battlecry:-:mouth/mugwort
-22208:0:囀:warble:tweet:mouth/car/ten/field/elbow/glue
+22206:0:專:old acupuncturist:expert:car/glue
+22207:0:轉:old revolve:revolve:car/old acupuncturist
+22208:0:囀:warble:tweet:mouth/old acupuncturist
 #22309:0:圥:shroom:rice seedling:soil/human legs
 #22307:0:圣:sacred:spool/toilet paper:crotch/soil
 #22388:0:坴:clod of earth:earth clod:rice seedling/soil
@@ -3597,7 +3728,9 @@
 22751:0:壟:paddy dike:-:old dragon/soil
 #22772:0:壴:drum:-:samurai/table/good luck
 22777:1:壹:one [old]:old one:samurai/crown/beans
+22777:1:壹:old one:one [old]:samurai/crown/beans
 #22790:0:夆:resistance:stinger:walking legs/bushes
+#22790:0:夆:stinger:resistance:walking legs/bushes
 #22795:0:夋:linger:streetwalker/prostitute:license/walking legs
 #22796:0:夌:dawdle:goomba:shroom/walking legs
 #22797:0:复:double back:-:lying/day/walking legs
@@ -3623,6 +3756,7 @@
 #24041:0:巩:bind:-:craft/mediocre
 #24056:0:巸:wide chin:-:rear/sign of the snake
 #24090:1:帚:broom:cleaning utensils:broom/apron
+#24090:1:帚:cleaning utensils:broom:broom/apron
 #24091:0:帛:cloth:-:white/towel
 #24181:0:幵:even level:-:dry
 #24283:0:廛:fine residence:-:cave/computer/human legs/soil
@@ -3638,10 +3772,12 @@
 #25108:0:戔:tiny:old float:fiesta
 #25120:0:戠:collect:kazoo:sound/fiesta
 #25153:0:扁:vertically flat:manga:door/scrapbook
+#25153:0:扁:manga:vertically flat:door/scrapbook
 25300:1:拔:slip out [old]:-:fingers/pull out
 25542:0:揆:revolt:-:fingers/10th calendar sign
 25628:1:搜:search [old]:-:fingers/ancient man
 #25912:0:攸:at ease:master:person/walking stick/taskmaster
+#25912:0:攸:master:at ease:person/walking stick/taskmaster
 #25942:0:敖:pride:-:soil/set free
 #25949:0:敝:worn-out:shredder:small/little/hood/rice/taskmaster
 #25963:0:敫:ancient musical instrument:-:white/set free
@@ -3701,6 +3837,7 @@
 31146:1:禪:Zen [old]:-:show/old simple
 31152:1:禰:ancestral shrine [old]:-:altar/let it be
 #31162:0:禺:long-tailed monkey:talking cricket:brain/insect/belt
+#31162:0:禺:talking cricket:long-tailed monkey:brain/insect/belt
 #31163:0:离:rare beast:darkwing duck/darkwing:top hat/villain/belt/elbow
 31263:0:稟:salary in wheat:-:reporter/wheat
 #31308:0:穌:revive:-:fish/wheat
@@ -3720,17 +3857,20 @@
 32697:0:羹:hot soup:-:lamb/beauty
 #32735:1:翟:pheasant:futon:feathers/turkey
 32755:1:翳:shadow [old]:-:doctor/missile/feathers
-#32774:0:耆:senile:-:wise man/day
+#32774:0:耆:senile:-:old man/day
 #32785:0:耑:specialized:-:mountain/comb
 32882:1:聲:voice [old]:-:voice/missile/ear
-#32886:0:聶:whisper:-:ear
+#32886:0:聶:whisper:-:ear/ear/ear
 #32901:1:肅:solemn [old]:old solemn:rake/arm wrestling
+#32901:1:肅:old solemn:solemn [old]:rake/arm wrestling
 32902:1:肆:four [old]:IV:long/brush
 #32944:0:肰:dog meat:hot dog:flesh/dog
 33406:0:艾:moxa:-:grass/sheaf
 0000:0:-:gentleman villain:-:top hat/sword/family crest
 40778:0:齊:even radical:old adjusted:gentleman villain/fencepost/two
-33229:0:臍:navel:bellybutton:flesh/old adjusted
+#40778:0:齊:gentleman villain:old adjusted:even/fencepost/two
+#40778:0:齊:gentleman villain radical:old adjusted:even/fencepost/two
+33229:0:臍:navel:bellybutton:flesh/even
 #33252:0:臤:wise:-:minister/crotch
 #33277:0:臽:pothole:-:repobound/olden times
 #33293:1:舍:cottage [old]:old cottage:umbrella/tongue
@@ -3771,30 +3911,29 @@
 #38897:0:韱:wild onion:-:assembly line/fiesta/green onion
 38898:1:韲:salad:-:gentleman villain/green onion
 38968:1:頸:neck and throat [old]:-:sewer/head
-0000:0:-:rotten food:-:meeting/sun/two
-39145:0:飩:japanese noodles:-:rotten food/earthworm
-39147:0:飫:surfeited:-:rotten food/early death
-39149:0:飭:amend:-:rotten food/reclining/power
-39150:1:飮:drink [old]:-:rotten food/yawn
-39171:0:餃:gyoza:-:rotten food/mingle
-39177:0:餉:boiled rice:-:rotten food/yonder
-39186:0:餒:privation:-:rotten food/gentle
-39188:0:餔:late afternoon meal:-:rotten food/offspring
-39192:1:餘:too much [old]:-:rotten food/too much
-39197:1:餝:decorate [old]:-:rotten food/perfumed
-39198:0:餞:farewell gift:-:rotten food/tiny
-39200:1:餠:mochi [old]:-:rotten food/dry/drops
-39201:0:餡:bean jam:-:rotten food/chainbound/mortar
-39204:0:餤:food baked in dough:-:rotten food/inflammation
-39212:0:餬:rice broth:-:rotten food/uncivilized
-39230:0:餾:steaming rice:-:rotten food/detain
-39234:0:饂:udon:-:rotten food/captured/dish
-39229:0:餽:provide:-:rotten food/ghost
-39241:0:饉:famine:-:rotten food/cabbage
-39243:1:饋:provide [alternate]:-:rotten food/precious
-39244:0:饌:oblation:-:rotten food/southeast
-39248:0:饐:sour:-:rotten food/old one
-39249:1:饑:starve [old]:-:rotten food/how many
+39145:0:飩:japanese noodles:-:food/earthworm
+39147:0:飫:surfeited:-:food/early death
+39149:0:飭:amend:-:food/reclining/power
+39150:1:飮:drink [old]:-:food/yawn
+39171:0:餃:gyoza:-:food/mingle
+39177:0:餉:boiled rice:-:food/yonder
+39186:0:餒:privation:-:food/gentle
+39188:0:餔:late afternoon meal:-:food/offspring
+39192:1:餘:too much [old]:-:food/too much
+39197:1:餝:decorate [old]:-:food/perfumed
+39198:0:餞:farewell gift:-:food/tiny
+39200:1:餠:mochi [old]:-:food/dry/drops
+39201:0:餡:bean jam:-:food/chainbound/mortar
+39204:0:餤:food baked in dough:-:food/inflammation
+39212:0:餬:rice broth:-:food/uncivilized
+39230:0:餾:steaming rice:-:food/detain
+39234:0:饂:udon:-:food/captured/dish
+39229:0:餽:provide:-:food/ghost
+39241:0:饉:famine:-:food/cabbage
+39243:1:饋:provide [alternate]:-:food/precious
+39244:0:饌:oblation:-:food/southeast
+39248:0:饐:sour:-:food/old one
+39249:1:饑:starve [old]:-:food/how many
 #39342:0:馮:displeasure:-:ice/carriage
 39493:1:驅:drive [old]:-:carriage/old ward
 39663:0:髯:sideburns:whiskers:braid/tan
@@ -3808,10 +3947,11 @@
 #133533:0:𠦝:brilliant:mist:needle/sunflower
 #157917:0:𦣝:rear:-:-
 #20008:0:丨:line radical:walking stick:-
+#20008:0:丨:walking stick radical:line radical:-
 #20022:0:丶:dot radical:a drop of/drop:-
 20031:0:丿:slash radical:-:-
 #20058:0:乚:second radical:hook:-
-#11908:0:⺄:second radical:grapnel:-
+#11908:0:⺄:hook radical:second:-
 20101:0:亅:hook radical:-:-
 #20128:0:亠:lid radical:top hat:one
 #20155:0:亻:man radical:person:-
@@ -3819,15 +3959,19 @@
 #20799:0:儿:legs radical:human legs:-
 #20866:0:冂:down box radical:hood/glass cover/glass canopy/cowl/riding hood/helmet:-
 #20886:0:冖:cover radical:crown:-
-#20907:0:冫:ice radical:ice:drops
+#20907:0:冫:ice radical:ice:-
+#20907:0:冫:drops:ice:-
 #20960:0:几:table radical:wind radical/wind:-
 #20981:0:凵:open box radical:shovel:-
+#20981:0:凵:shovel radical:open box:-
 #20994:0:刂:knife radical:saber:-
+#20994:0:刂:saber radical:knife:-
 #21241:0:勹:wrap radical:bound up:-
 #21274:0:匚:right open box radical:box:-
 #21304:0:匸:hiding enclosure radical:-:ceiling/anchor
 #21353:0:卩:seal radical:stamp:-
 13630:0:㔾:seal radical:-:stamp
+13630:0:㔾:stamp radical:-:-
 #21378:0:厂:cliff radical:cliff:-
 #22231:0:囗:enclosure radical:pent in/pent up:-
 #21430:0:厶:private radical:elbow:-
@@ -3839,12 +3983,14 @@
 #23586:0:尢:lame radical:-:-
 23587:0:尣:lame radical:-:-
 #23608:0:尸:corpse radical:flag/corpse:-
-#23662:0:屮:sprout radical:left hand:mountain
+#23662:0:屮:sprout:left hand:mountain
 #24027:0:巛:river radical:upstream:-
 24028:0:巜:river radical:-:upstream
 #24186:0:幺:short thread radical:cocoon:-
 #24191:0:广:dotted cliff radical:cave:-
+#24191:0:广:cave radical:dotted cliff:-
 #24308:0:廴:long stride radical:stretch:-
+#24308:0:廴:stretch radical:long stride radical:-
 #24318:0:廾:two hands radical:two hands:-
 #24320:0:开:initiate:-:two/two hands
 #24331:0:弋:shoot radical:arrow:drop
@@ -3870,6 +4016,7 @@
 #27668:0:气:steam radical:air:reclining/one/grapnel
 #27701:0:⺡:water radical:water:-
 #27706:0:氺:water radical:grains of rice/rice grains:-
+#27706:0:氺:grains of rice radical:water radical/rice grains:-
 #28780:0:灬:fire radical:oven fire/cooking fire/cauldron/hearth:-
 29227:0:爫:claw radical:-:-
 #29243:0:爻:double x radical:sheaf stack:sheaf
@@ -3877,7 +4024,7 @@
 #20012:0:⺦:half tree trunk radical:turtle:ice/walking stick
 #11943:0:⺧:cow radical:tailless cow:drop/soil
 29276:0:牜:cow radical:-:cow
-#29357:0:⺨:dog radical:pack of wild dogs/wild dogs:-
+#29357:0:⺨:dogs radical:pack of wild dogs/wild dogs:-
 11945:0:⺩:jade radical:-:king
 29578:0:玊:jade radical:-:king
 11946:0:⺪:bolt of cloth radical:-:critters
@@ -3885,7 +4032,7 @@
 #30326:0:癶:dotted tent radical:teepee:-
 #31035:0:礻:altar radical:altar:-
 #31160:0:禸:track radical:-:belt/elbow
-#31166:0:禾:rice radical:wheat/cereal:drop/tree
+#31166:0:禾:wheat radical:wheat/cereal:drop/tree
 1195:0:⺮:bamboo radical:-:bamboo
 31993:0:糹:silk radical:-:thread
 32147:1:經:sutra [old]:-:thread/underground stream
@@ -3896,11 +4043,13 @@
 11958:0:⺶:sheep radical:-:sheep
 11959:0:⺷:sheep radical:-:sheep
 #32770:0:耂:old radical:old man:soil/walking stick
-#32786:0:耒:plow radical:Christmas tree:bushes/not yet/wheat
+#32786:0:耒:plow radical:christmas tree:bushes/not yet/wheat
+#32786:0:耒:christmas tree:plow radical:bushes/not yet/wheat
 #32895:0:聿:brush radical:brush:rake/two
 11963:0:⺻:brush radical:-:brush
 #11964:0:⺼:meat radical:meaty moon:wind/ice/meat
 #33307:0:舛:oppose radical:sunglasses:evening/popped out sunglasses
+#33307:0:舛:sunglasses:oppose radical:evening/popped out sunglasses
 #33390:0:艮:stopping radical:silver:sun
 33400:0:艸:grass radical:-:left hand/flower
 #33401:0:艹:grass radical:flower:one
@@ -3911,36 +4060,37 @@
 35329:0:訁:speech radical:-:say
 #35925:0:豕:pig radical:sow:ceiling
 #35960:0:豸:badger radical:skunk:-
-36209:0:赱:run radical:-:run
+36209:0:走:run radical:-:run
 #11978:0:⻊:foot radical:foot:mouth/mending
 #11980:0:⻌:road radical:road:-
 36789:0:辵:road radical:-:shape/mending/road
-#36790:0:辶:road radical:old road:road
+#36790:0:辶:old road radical:old road:road
 #11983:0:⻏:city radical:city walls:-
-#11990:0:⻖:city radical:pinnacle:-
-38429:0:阝:city radical:mound radical:pinnacle/city walls
+#11990:0:⻖:pinnacle radical:pinnacle:-
+38429:0:阝:mound radical:pinnacle radical:pinnacle
 #37318:0:釆:distinguish radical:animal tracks:drop/rice
 37330:0:釒:gold radical:-:gold
 38264:0:镸:long radical:-:mane/elbow/long
 #38582:0:隶:slave radical:sieve:rake/grains of rice
 #38585:0:隹:short-tailed bird radical:turkey:-
 38737:0:靑:blue radical:-:blue
-38755:0:靣:face radical:-:ceiling/drop/-times/mask
+38755:0:靣:face radical:-:ceiling/drop/-times
 #38859:0:韋:tanned leather radical:locket:key/mouth/popped out sunglasses
 #38893:0:韭:leek radical:green onion:jail cell/floor
 132648:0:𠘨:wind radical:table radical:wind
 39136:0:飠:eat radical:-:eat
-39641:0:髙:tall radical:-:top hat/sun/hood/mouth/expensive
-#39647:0:髟:hair radical:braid:hair/shape
+39641:0:髙:tall radical:-:top hat/sun/hood/mouth
+#39647:0:髟:hair:braid:hair/shape
 39717:0:鬥:fight radical:-:king
 #39727:0:鬯:sacrificial wine radical:fragrant herbs:ladybug/shovel/spoon
-#39730:0:鬲:cauldron radical:reki/chinese kettle:ceiling/mouth/hood/human legs/spike
+#39730:0:鬲:cauldron radical::ceiling/mouth/hood/antlers/spike
 20358:1:來:come [old]:old come:tree/assembly line
+#20358:1:來:old come:come [old]:tree/assembly line
 40613:0:麥:wheat radical:-:old come/walking legs/barley
-40643:0:黃:yellow radical:-:twenty/ceiling/sprout/animal legs/yellow
+40643:0:黃:yellow radical:-:twenty/ceiling/sprout/animal legs
 40657:0:黑:black radical:-:black
 40697:0:黹:embroidery radical:-:downrow/towel/wooden pole
-#40778:0:齊:even radical:old adjusted:gentleman villain/fencepost/two
+#40778:0:齊:even radical:old adjusted:top hat/dagger/scarf/two hands
 40786:0:齒:tooth radical:-:assembly line/tooth
 40860:0:龜:turtle radical:-:tortoise
 40864:0:龠:flute radical:-:meeting/mouth/scrapbook
