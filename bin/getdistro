@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# This not only adds points for having expected files,
+# but penalizes each candidate for lacking a file.
+# This avoids weirdness resulting from crazy things like,
+# e.g., the fact that I install Arch's abs system on gentoo.
+# This is important because having a subset of the expected files
+# may mean that someone (say) installed yum on debian, or maybe
+# installed a game called "pacman" on a distro other than arch.
+
+# keys: echo ${!scores[@]}
+# vals: echo ${scores[@]}
+
+# Exit early if we're obviously mint.
+# This helps us distinguish mint from ubuntu,
+# since mint's /etc/os-release says ubuntu in it
+if [[ ("$(ls /etc/xdg/autostart/mint* 2> /dev/null | wc -l)" > 2) && (-d "/etc/linuxmint/") ]]; then
+    echo "mint"
+    exit 0
+fi
+
+# If we've got /etc/os-release, use that
+if [[ -e /etc/os-release ]]; then
+    source /etc/os-release  &&
+    echo "$ID"              &&
+    exit 0
+fi
+
+# If we're here, then we have to do it the fun way :D
+declare -A scores
+scores[arch]=0
+scores[gentoo]=0
+scores[debian]=0
+scores[redhat]=0
+
+update_score() {
+    distro="$1"
+    location="$2"
+    if [[ -e "$location" ]]; then
+        ((++scores["$distro"]))
+    else
+        ((--scores["$distro"]))
+    fi
+}
+
+print_scores() {
+    for distro in ${!scores[@]}; do 
+        echo "${distro}:${scores[$distro]}"; 
+    done
+}
+
+
+# Some distros are hard to detect by nature.
+# Short-circuit the script if we see signs of them
+# 
+# Linux from scratch
+[[ -e /etc/lfs-release ]] && echo lfs && exit 0
+
+# Now start the scoring system
+
+# Gentoo
+update_score    gentoo      /etc/gentoo-release
+update_score    gentoo      /etc/portage/
+update_score    gentoo      /etc/portage/make.conf
+update_score    gentoo      /usr/portage/distfiles/
+update_score    gentoo      /usr/bin/emerge
+
+# Arch
+update_score    arch        /etc/arch-release
+update_score    arch        /etc/pacman.d/
+update_score    arch        /etc/pacman.conf
+update_score    arch        /var/cache/pacman/
+update_score    arch        /usr/bin/pacman
+
+# Redhat (includes fedora)
+update_score    redhat      /etc/redhat-release
+update_score    redhat      /etc/yum/
+update_score    redhat      /etc/yum.conf
+update_score    redhat      /var/cache/yum/
+update_score    redhat      /usr/bin/yum
+
+# Debian (no debian system nearby, so this is a bit less organized)
+update_score    debian      /etc/apt/conf.d/
+update_score    debian      /etc/apt/apt.conf
+update_score    debian      /usr/bin/apt
+update_score    debian      /usr/bin/dpkg
+update_score    debian      /etc/dpkg
+
+# Print the winner
+print_scores | sort -nr -k2 -t: | head -n1 | cut -d: -f1
