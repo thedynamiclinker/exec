@@ -101,6 +101,24 @@ is_bash && {
         export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
     fi
 
+    if which emerge &>/dev/null; then
+        PS1=(
+            "${_red}${USER:0:1}"
+            "${_yel}${USER:1:1}"
+            "${_cya}${USER:2:1}"
+            "${_blu}${USER:3:1}"
+            "${_pur}${USER:4:1}"
+            @
+            "${_red}g"
+            "${_yel}e"
+            "${_cya}n"
+            "${_blu}t"
+            "${_pur}o"
+            "${_whi}o"
+        )
+        export PS1="$(echo ${PS1[@]} | tr -d ' ') ${_pur}\w ${_blu}\$ ${_end}"
+    fi
+
     export PS2="${_blu}>>${_end} "
 }
 
