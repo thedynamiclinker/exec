@@ -108,7 +108,7 @@ is_bash && {
             "${_cya}${USER:2:1}"
             "${_blu}${USER:3:1}"
             "${_pur}${USER:4:1}"
-            @
+            "${_end}@"
             "${_red}g"
             "${_yel}e"
             "${_cya}n"
