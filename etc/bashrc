@@ -469,5 +469,3 @@ f() {
 cpdt() {
     cp -v "$@" ~/Desktop
 }
-
-export LD_PRELOAD="/usr/lib/libstdc++.so.6.0.33"
