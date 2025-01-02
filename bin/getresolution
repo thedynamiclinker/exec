@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if ! which xrandr &> /dev/null; then echo "Get xrandr, yo." && exit 1; fi
+
+xrandr | grep -P '(e?DP[^ ]*|HDMI[^ ]*|LVDS[^ ]*) connected' | grep -Po '\d{3,4}x\d{3,4}(?=[+])'
