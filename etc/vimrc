@@ -105,3 +105,6 @@ nnoremap <C-x> "+dd
 
 " don't break words that wrap
 set linebreak
+
+" highlight all
+nnoremap <C-a> ggVG
