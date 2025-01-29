@@ -108,3 +108,7 @@ set linebreak
 
 " highlight all
 nnoremap <C-a> ggVG
+
+" transparent background if terminal has one
+highlight Normal ctermbg=none
+highlight NonText ctermbg=none
