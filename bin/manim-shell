@@ -1,0 +1,3 @@
+#!/bin/bash
+
+manim -p --renderer=opengl $*
