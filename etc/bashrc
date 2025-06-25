@@ -486,3 +486,6 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 #export PATH=$PATH:$ANDROID_HOME/tools
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
 #export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# lean
+export PATH=$PATH:$HOME/.elan/bin
