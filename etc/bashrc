@@ -489,3 +489,10 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 
 # lean
 export PATH=$PATH:$HOME/.elan/bin
+export LEAN_PATH="$HOME/lib/lean:$LEAN_PATH"
+export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
+alias lr='lean-run'
+
+# these get automatically added by elan when you install it without a default version of lean
+export PATH="$PATH:/home/jason/.lmstudio/bin"
+export PATH="$HOME/.elan/bin:$PATH"
