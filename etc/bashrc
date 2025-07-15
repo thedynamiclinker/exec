@@ -102,20 +102,37 @@ is_bash && {
     fi
 
     if which emerge &>/dev/null; then
-        PS1=(
-            "${_red}${USER:0:1}"
-            "${_yel}${USER:1:1}"
-            "${_cya}${USER:2:1}"
-            "${_blu}${USER:3:1}"
-            "${_pur}${USER:4:1}"
-            "${_end}@"
-            "${_red}g"
-            "${_yel}e"
-            "${_cya}n"
-            "${_blu}t"
-            "${_pur}o"
-            "${_whi}o"
-        )
+        if [[ ${EUID} == 0 ]]; then
+            PS1=(
+                "${_red}${USER:0:1}"
+                "${_whi}${USER:1:1}"
+                "${_red}${USER:2:1}"
+                "${_whi}${USER:3:1}"
+                "${_red}${USER:4:1}"
+                "${_whi}@"
+                "${_red}g"
+                "${_whi}e"
+                "${_red}n"
+                "${_whi}t"
+                "${_red}o"
+                "${_whi}o"
+            )
+        else
+            PS1=(
+                "${_red}${USER:0:1}"
+                "${_yel}${USER:1:1}"
+                "${_cya}${USER:2:1}"
+                "${_blu}${USER:3:1}"
+                "${_pur}${USER:4:1}"
+                "${_end}@"
+                "${_red}g"
+                "${_yel}e"
+                "${_cya}n"
+                "${_blu}t"
+                "${_pur}o"
+                "${_whi}o"
+            )
+        fi
         export PS1="$(echo ${PS1[@]} | tr -d ' ') ${_pur}\w ${_blu}\$ ${_end}"
     fi
 
