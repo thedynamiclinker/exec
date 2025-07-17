@@ -513,3 +513,4 @@ alias lr='lean-run'
 # these get automatically added by elan when you install it without a default version of lean
 export PATH="$PATH:/home/jason/.lmstudio/bin"
 export PATH="$HOME/.elan/bin:$PATH"
+export LEAN_NUM_THREADS=$(nproc)
