@@ -360,10 +360,6 @@ alias eppum='sudo vim /etc/portage/package.unmask'
 alias eppl='sudo vim /etc/portage/package.license'
 alias eppak='sudo vim /etc/portage/package.accept_keywords'
 
-# nix
-alias nr='sudo nixos-rebuild switch'
-alias ns='nix search nixpkgs'
-
 # systemd
 alias ss="sudo systemctl"
 alias sss="sudo systemctl start"
@@ -514,3 +510,9 @@ alias lr='lean-run'
 export PATH="$PATH:/home/jason/.lmstudio/bin"
 export PATH="$HOME/.elan/bin:$PATH"
 export LEAN_NUM_THREADS=$(nproc)
+
+# Nix
+alias nrc="vim $HOME/.config/nix/nix.conf"
+alias nr='sudo nixos-rebuild switch'
+alias ns='nix search nixpkgs'
+
