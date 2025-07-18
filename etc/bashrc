@@ -512,7 +512,13 @@ export PATH="$HOME/.elan/bin:$PATH"
 export LEAN_NUM_THREADS=$(nproc)
 
 # Nix
-alias nrc="vim $HOME/.config/nix/nix.conf"
-alias nr='sudo nixos-rebuild switch'
-alias ns='nix search nixpkgs'
-
+nixos_rebuild_switch() { sudo nixos-rebuild switch; }
+nix_edit_config() { $EDITOR "$HOME/.config/nix/nix.conf"; }
+nix_search() { nix search nixpkgs; }
+nix_derivation_show() { nix derivation show "$1" | jq; }
+nix_find() { find "/nix/store" -type f | grep -P "$1"; }
+nix_flake_show() { nix flake show; }
+nix_profile_list() { nix profile list; }
+nix_profile_remove() { nix profile remove "$1"; }
+alias npl="nix profile list"
+alias npr="nix profile remove"
