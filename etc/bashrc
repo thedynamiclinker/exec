@@ -65,9 +65,10 @@ source python.sh
 # make a "physical environment"
 # venvs are for isolation,
 # not for humans
-penv main
-python_venv_prompt_off
-
+if [[ $(getdistro) -ne nixos ]]; then
+    penv main
+    python_venv_prompt_off
+fi
 
 ########################
 ### get search paths ###
@@ -512,7 +513,12 @@ export PATH="$HOME/.elan/bin:$PATH"
 export LEAN_NUM_THREADS=$(nproc)
 
 # Nix
+if [[ $(getdistro) -eq nixos ]]; then
+    alias locate='sudo plocate'
+fi
 nixos_rebuild_switch() { sudo nixos-rebuild switch; }
+nixos_rebuild_repl() { sudo nixos-rebuild repl; }
+nixos_edit_config() { sudo $EDITOR /etc/nixos/configuration.nix; }
 nix_edit_config() { $EDITOR "$HOME/.config/nix/nix.conf"; }
 nix_search() { nix search nixpkgs; }
 nix_derivation_show() { nix derivation show "$1" | jq; }
@@ -520,5 +526,13 @@ nix_find() { find "/nix/store" -type f | grep -P "$1"; }
 nix_flake_show() { nix flake show; }
 nix_profile_list() { nix profile list; }
 nix_profile_remove() { nix profile remove "$1"; }
+nix_search() { nix search nixpkgs "$1"; }
+alias n="echo /etc/nixos/configuration.nix"
+alias nn="cat /etc/nixos/configuration.nix"
+alias ns="nix search nixpkgs"
+alias nnn="sudo $EDITOR /etc/nixos/configuration.nix"
 alias npl="nix profile list"
 alias npr="nix profile remove"
+alias nrb="sudo nixos-rebuild switch"
+alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
+alias nrcp="sudo $EDITOR /etc/nixos/python.nix"

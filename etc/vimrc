@@ -112,3 +112,10 @@ nnoremap <C-a> ggVG
 " transparent background if terminal has one
 highlight Normal ctermbg=none
 highlight NonText ctermbg=none
+
+" Nix!
+augroup nix_indent
+  autocmd!
+  autocmd FileType nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
