@@ -6,6 +6,7 @@ export PATH="${EXEC}/bin:${EXEC}/lib:${PATH}"
 source os.sh
 source log.sh
 source paths.sh
+source which.sh
 
 if is_bash && is_linux; then
     shopt -s globstar # allow ** to glob recursively
