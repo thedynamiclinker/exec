@@ -249,7 +249,7 @@ alias ls="ls -h --color=auto --group-directories-first"
 alias l="ls -1"
 alias ll="ls -al"
 alias l="ls -1"
-alias grep="grep -P --color=auto"
+alias grep="grep -P --color=auto --exclude-dir=.git"
 alias ff="find . | grep"
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
@@ -485,34 +485,14 @@ cpdt() {
     cp -v "$@" ~/Desktop
 }
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-
-# For web and mobile
-
-## flutter
-#export PATH="$PATH:$HOME/flutter/bin"
-#export CHROME_EXECUTABLE="$(xdg-settings get default-web-browser | sed 's@[.]desktop$@@g' | xargs which)"
-
-## react native
-#export ANDROID_HOME=$HOME/Android/Sdk
-#export PATH=$PATH:$ANDROID_HOME/emulator
-#export PATH=$PATH:$ANDROID_HOME/tools
-#export PATH=$PATH:$ANDROID_HOME/tools/bin
-#export PATH=$PATH:$ANDROID_HOME/platform-tools
-
 # lean
-export PATH=$PATH:$HOME/.elan/bin
+export PATH="$PATH:$HOME/.elan/bin"
 export LEAN_PATH="$HOME/lib/lean:$LEAN_PATH"
 export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
+export LEAN_NUM_THREADS=$(nproc)
 alias lr='lean-run'
 
-# these get automatically added by elan when you install it without a default version of lean
-export PATH="$PATH:/home/jason/.lmstudio/bin"
-export PATH="$HOME/.elan/bin:$PATH"
-export LEAN_NUM_THREADS=$(nproc)
-
-# Nix
+# nix
 if [[ $(getdistro) -eq nixos ]]; then
     alias locate='sudo plocate'
 fi
