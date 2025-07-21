@@ -519,3 +519,8 @@ alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
+
+nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
+if [[ -e "$nix_config" ]]; then
+    source "$nix_config"
+fi
