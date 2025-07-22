@@ -1,0 +1,241 @@
+#!/usr/bin/env bash
+
+# Attempts to read the titlebar of the currently focused
+# window, and if it finds that the titlebar contains a pathname 
+# (as it typically does for, say, file managers and text editors),
+# then open a terminal in that directory. Linux needs this.
+
+
+### NEWER, *MUCH* SIMPLER VERSION: REVERT TO OLD VERSION IF IT BREAKS.
+
+# DEPENDENCIES: Relies on a script called "terminal" existing somewhere in the path.
+# Currently, it's just a file that says "gnome-terminal --maximize"
+window_cwd="$(get-active-window-cwd)"
+
+echo "$window_cwd"
+
+# Can't figure out the cwd? Default to Desktop
+[[ -z "${window_cwd}" ]] && window_cwd="${HOME}/Desktop"
+
+terminal --working-directory="${window_cwd}"
+
+exit 0
+
+#==================================================
+
+### NEW SIMPLER VERSION: REVERT TO OLD VERSION IF IT BREAKS
+
+[[ -z $TERMINAL ]] && source ~/.bashrc
+cmd=($(dconf dump /org/ | grep 'working-directory' | sed "s@^command='@@" | grep -Eo '^[^ ]* [^ ]*' | head -n 1))
+window_cwd="$(get-active-window-cwd)"
+
+# Let's just default to Desktop if we can't figure out the cwd
+[[ -z "${window_cwd}" ]] && window_cwd="${HOME}/Desktop"
+
+${cmd[@]} --working-directory="${window_cwd}"
+
+exit 0
+
+#==================================================
+
+### OLD TRIED AND TRUE VERSION THAT WORKED FOREVER
+### NOW TESTING A VERSION THAT RELIES ON THE NEW MORE GENERAL "get-active-window-cwd" SCRIPT I WROTE
+
+# Make sure the nemo option to show the full path in the titlebar is enabled.
+# For some reason, xdotool ctrl+r and variants won't let us refresh the window,
+# So we can't just use dconf to set it really quick and then restore it.
+#if [[ $(dconf read /org/nemo/preferences/show-full-path-titles 2>/dev/null) == false ]]; then
+#    dconf write /org/nemo/preferences/show-full-path-titles "true"
+#    xcowsay "I had to change your nemo preferences. Please refresh the window."
+#    exit 0
+#fi
+
+# We'll start by assuming the active window is our target.
+# Check whether the window title is of the form ^NAME - /path/to/stuff/NAME$
+# If not, then bail out.
+title="$(xdotool getactivewindow getwindowname)"
+got_it=$(echo "$title" | grep -Pc '^(.*)( - )(.*/)\1$')
+opendir="$(echo "$title" | grep -Po '/.*$')"
+[[ "$title" = "Home" ]]    && got_it=1 && opendir="$HOME"
+[[ "$title" = "Desktop" ]] && got_it=1 && opendir="$HOME/Desktop"
+[[ "$got_it" -eq 0 ]] && xcowsay "This doesn't look like a nemo window. Whatcha doing???" && exit 1
+
+if [[ ! -d "$opendir" ]]; then
+    before="$(echo "$opendir" | sed -r 's@(.*)[.][.][.](.*)@\1@g')"
+    after="$(echo "$opendir" | sed -r 's@(.*)[.][.][.](.*)@\2@g')"
+    candidates="$(find "${before}"* | grep -- "${after}")"
+    xcowsay "${before}"
+    xcowsay "${after}"
+    xcowsay "${candidates}"
+    #xcowsay "Window title isn't a directory. Fix your regex, loser."
+    #exit 1
+fi
+
+# If we made it this far, open a terminal!
+[[ -z $TERMINAL ]] && source ~/.bashrc
+
+# Get the correct command from our dconf settings, and run it! ;)
+cmd=($(dconf dump /org/ | grep 'working-directory' | sed "s@^command='@@" | grep -Eo '^[^ ]* [^ ]*'))
+${cmd[@]} --working-directory="$opendir"
+
+#"$(dconf dump /org/ | grep -Eo "[^']*working-directory=/home/$USER/Desktop[^']*" | sed s@--working.*@--working-directory=\""${opendir}"\"@)"
+#"$(dconf dump /org/ | grep -Eo "[^']*working-directory=/home/$USER/Desktop[^']*" | sed s@/home/$USER/Desktop@\"${opendir}\"@)"
+#"$(dconf dump /org/ | grep -Eo "[^']*working-directory=/home/$USER/Desktop[^']*" | sed s@--working.*@--working-directory=\""${opendir}"\"@)"
+
+#if [[ $TERMINAL == terminator ]]; then
+#    terminator --maximise --working-directory="$opendir"
+#elif [[ $TERMINAL == "gnome-terminal" ]]; then
+#    gnome-terminal --maximize --working-directory="$opendir"
+#else
+#    echo 'WTF did you define $TERMINAL to be?'
+#fi
+
+exit 0
+
+################################################################
+### OTHER IDEAS, IN CASE THE ABOVE STRATEGY EVER BREAKS DOWN ###
+################################################################
+
+# Another (pretty solid) way to determine if we're dealing with a nemo window
+#############################################################################
+# For nemo windows, the xprop command below shows:
+# WM_CLASS(STRING) = "nemo", "Nemo"
+# For the *desktop* nemo window however, this shows:
+# WM_CLASS(STRING) = "desktop_window", "Nemo"
+xprop -id $(xdotool getactivewindow) WM_CLASS | grep -Pcq '"nemo"' && echo yep
+
+
+# Old but decent strategy. Works when there is only one nemo window
+###################################################################
+# window="$(xdotool search --onlyvisible --name ".* - /.*")"
+# title="$(xprop -id $window WM_NAME)"
+# opendir=$(echo "$title" | sed -r -e 's@[^"]*"[^/]*@@' -e 's@"$@@')
+# [[ -n "$opendir" ]] && terminator --maximise --working-directory="$opendir"
+
+
+# Another idea (bit of a kludge)
+################################
+# Use xdotool ctrl+l and other keypresses to copy the path out of the entry bar.
+
+
+############################################
+### OLD IDEAS, FROM OLD FOCUSTERM SCRIPT ###
+############################################
+release_keys () {
+    xdotool keyup shift
+    xdotool keyup ctrl
+    xdotool keyup alt
+    xdotool keyup super
+    xdotool keyup Menu
+    xdotool keyup function
+}
+
+die () {
+    release_keys
+    exit 1
+}
+
+# The --clearmodifiers flag acts as if shift isn't pressed, even if we
+# activated this script with a key combination involving shift.
+
+# Make sure the focused window is a file manager
+pid="$(xdotool getactivewindow getwindowpid)"
+cmd="$(cat /proc/"$pid"/cmdline)"
+[[ $(echo "$cmd" | grep -Eci "nemo|nautilus") == 0 ]] && die
+
+# File managers in Linux, at least on desktop environments, 
+# are typically both the "file manager" and the "desktop window"
+# (e.g., type nemo -q or nautilus -q to see the sense in which
+# this sentence is true, and the sense in which it isn't)
+# As such, even if our window is identified as "nemo" or 
+# "nautilus" or whatever, we still need to make sure that
+# the window we've identified isn't the entire desktop.
+desktop=$(xprop -id $(xdotool getactivewindow) WM_CLASS | grep -c "desktop_window")
+if (("$desktop" > 0)); then exit 1; fi
+
+release_keys    # lets us not use --clearmodifiers below
+xdotool key --clearmodifiers Menu Down Down Down Down Return
+
+# spin until the focused window is our terminal of choice
+while true; do
+    pid="$(xdotool getactivewindow getwindowpid)"
+    cmd="$(cat /proc/"$pid"/cmdline)"
+    [[ $(echo "$cmd" | grep -c "$TERMINAL") > 0 ]] && break
+done
+xdotool key --clearmodifiers super+Return
+release_keys    # May not always be necessary, but it helps
+exit 0
+
+###############################
+### Other crazy X11 fuckery ###
+###############################
+
+# xprop -root '\t$0' _NET_ACTIVE_WINDOW
+# xprop -id "$window" WM_NAME
+# xprop -id "$window" WM_CLASS
+
+# Commands like this have the potential to hugely improve this script
+# xdotool search --class . behave %@ focus getwindowname getwindowpid
+# xdotool search --class termin getwindowname
+
+# Emulate "focus follows mouse"
+# xdotool search . behave %@ mouse-enter windowfocus
+
+# Tile a window to the left half of the screen
+# for id in $(xdotool search --name gedit); do 
+#     xdotool windowsize "$id" 50% 100%
+# done
+
+# Move roughly to a window's exit button
+# eval $(xdotool getactivewindow getwindowgeometry --shell) && 
+# xdotool mousemove "$WIDTH" "$HEIGHT"
+
+# Move a window to the specified position
+# xdotool getactivewindow windowmove 100 200
+
+# Hah! "Map" or "Unmap" a window, which is X11 terminology for making 
+# it either appear or completely disappear!
+# xdotool windowunmap $(xdotool search --name gedit | tail -n 1)
+# xdotool windowmap $(xdotool search --name gedit | tail -n 1)
+
+# Change the focus (note, this may not bring it to the foreground)
+# xdotool windowfocus $(xdotool search --name gedit | tail -n 1)
+
+# Minimize a window
+# xdotool windowminimize $(xdotool search --name gedit | tail -n 1)
+
+# Raise a window
+# xdotool windowraise $(xdotool search --name gedit | tail -n 1)
+
+# Set window properties
+# xdotool set_window --name 'gee edit!' $(xdotool search --name gedit | tail -n 1)
+
+# Send a specific keystroke to all the "gedit" windows
+# for id in $(xdotool search --name gedit); do 
+#     xdotool key --window "$id" ctrl+alt+space
+# done
+
+# In a list of windows owned by a given process, find the "new" one
+# nemos=()
+# for id in $(xdotool search --name nemo); do nemos+=("$id"); done
+# (do stuff that generates a new window, possibly invisibly)
+# for id in $(xdotool search --name nemo); do
+#     if (( $(echo ${nemos[@]} | grep -c "$id") == 0 )); then break; fi
+# done
+
+
+# COMMAND CHAINING
+# 
+# The notation %1, %2, %N, %@, etc. refers to the window stack.
+# Basically, you usually only want to do something to one window or all windows
+# that are the output of some expression. To act on one window, use %1 for the
+# --window argument. To act on all such windows, use %@
+# 
+# Minimize all visible gedit windows using my cinnamon keyboard shortcut
+# xdotool search --onlyvisible --name gedit key --window %@ ctrl+alt+space
+# 
+# Minimize all visible gedit windows using *only* xdotool.
+# xdotool search --onlyvisible --name gedit windowminimize %@
+# 
+# # Minimize all visible gedit windows, and wait until we're done to proceed
+# xdotool search --onlyvisible --name gedit windowminimize --sync %@

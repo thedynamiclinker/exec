@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+bla='\033[01;30m' red='\033[01;31m' gre='\033[01;32m'
+yel='\033[01;33m' blu='\033[01;34m' pur='\033[01;35m'
+cya='\033[01;36m' gra='\033[01;37m' whi='\033[01;39m'
+end='\033[00m'
+
+die   () { printf "${red}ERROR${whi}: ${1}${end}\n"; exit 1;  }
+log   () { printf "${blu}[${whi}*${blu}]${whi} ${1}${end}\n"; }
+
+define_variables() {
+    window_title="$(xdotool getactivewindow getwindowname)"
+    window_pid="$(xdotool getactivewindow getwindowpid)"
+    window_prog="$(cat /proc/${window_pid}/cmdline)"
+}
+
+# complains about null byte in command substitution when we cat
+# /proc/${window_pid}/cmdline and store the result in a variable.
+define_variables 2>/dev/null
+
+## For debugging 
+# echo "$window_prog"
+# echo "$window_pid"
+# echo "$window_title"
+
+if [[ "$1" == '-v' ]]; then
+    LOG=log
+    shift
+else
+    LOG=true
+fi
+
+# Currently works for nemo, gedit
+if [[ "$window_prog" =~ nemo ]]; then
+    $LOG "We've got a nemo window"
+    # This is more complicated than it needs to be. I stole it from my old focusterm script.
+    got_it=$(echo "$window_title" | grep -Pc '^(.*)( - )(.*/)\1$')
+    window_cwd="$(echo "$window_title" | grep -Po '/.*$')"
+    [[ "$window_title" = "Home" ]]    && got_it=1 && window_cwd="$HOME"
+    [[ "$window_title" = "Desktop" ]] && got_it=1 && window_cwd="$HOME/Desktop"
+    [[ "$got_it" -eq 0 ]] && xcowsay "This doesn't look like a nemo window. Whatcha doing???" && exit 1
+
+    if [[ ! -d "$window_cwd" ]]; then
+
+        # The window title is too long and has been truncated with a ... in the middle.
+        # We used to just fail here, but fuck it, let's handle this.
+        before="$(echo "$window_cwd" | sed -r 's@(.*)[.][.][.](.*)@\1@g')"
+        after="$(echo "$window_cwd" | sed -r 's@(.*)[.][.][.](.*)@\2@g')"
+        candidates="$(find "${before}"* | grep -- "${after}" | while read f; do dirname "$f"; done | sort | uniq)"
+        window_cwd="$(python3 <<- EOF
+		lines = """${candidates}"""
+		longest_line = sorted((len(line), line) for line in lines.split('\n'))[-1][1]
+		print(longest_line)
+EOF
+)"
+		#echo "$window_cwd" > ~/Desktop/test-for-get-active-window-cwd
+        xcowsay -r 150 "Just guessing here" --config <(echo "min_display_time=0")
+    fi
+
+    #[[ ! -d "$window_cwd" ]] && xcowsay "Window title isn't a directory. Fix your regex, loser." && exit 1
+
+elif [[ "$window_prog" =~ gedit ]]; then
+    $LOG "We've got a gedit window"
+    window_cwd="$(echo "$window_title" | grep -Po '[(][^()]*[)](?= - gedit)' | sed -r -e 's@^[(]@@' -e 's@[)]$@@' -e 's@^Home @@')"
+
+# Eventually realized the multiple tabs problem made this more unwieldy than it'd be worth.
+# elif [[ "$window_prog" =~ gnome-terminal ]]; then
+    # $LOG "We've got a gnome-terminal window. Not sure what to do with these."
+    # Get the child processess of the gnome-terminal window, check which ones are bash, and readlink the child processes /proc/$pid/cwd/
+    # ps --ppid "$window_pid" | grep bash | sed 's@^ @@' | cut -f1 -d' ' | while read pid; do readlink -f /proc/$pid/cwd/; done
+    #$LOG $window_name
+    #$LOG $PWD
+    #$LOG `readlink -f /proc/${window_pid}/cwd`
+    #window_cwd="${PWD}"
+    # echo $PWD
+    # ( echo $PWD )
+    # ps aux | grep get-active-window-cwd | head -n 1
+    #window_cwd="$(readlink -f /proc/${window_pid}/cwd)"
+
+else
+    window_cwd=
+fi
+
+# Finally: Tell the caller what the focused window's CWD is.
+echo "${window_cwd}" | sed "s@.*[~]@$HOME@"
+
+exit 0
+
+

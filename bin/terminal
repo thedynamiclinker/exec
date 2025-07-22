@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source ~/.bashrc
+$TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
