@@ -1,0 +1,154 @@
+[/]
+custom-list=['custom25', 'custom22', 'custom20', 'custom18', 'custom16', 'custom14', 'custom12', 'custom10', 'custom8', 'custom6', 'custom4', 'custom1', 'custom0', 'custom2', 'custom3', 'custom5', 'custom7', 'custom9', 'custom11', 'custom13', 'custom17', 'custom19', 'custom21', 'custom23', 'custom24', 'custom26', 'custom27', 'custom28']
+show-desklets=@as []
+
+[custom-keybindings/custom0]
+binding=['<Primary><Alt>b']
+command='terminal'
+name='terminal'
+
+[custom-keybindings/custom1]
+binding=['<Alt>Delete']
+command='trash'
+name='trash'
+
+[custom-keybindings/custom10]
+binding=['<Super>c']
+command='im --chinese'
+name='im-chinese'
+
+[custom-keybindings/custom11]
+binding=['<Super>e']
+command='im --english'
+name='im-english'
+
+[custom-keybindings/custom12]
+binding=['<Super>j']
+command='im --japanese'
+name='im-japanese'
+
+[custom-keybindings/custom13]
+binding=['<Super>k']
+command='im --korean'
+name='im-korean'
+
+[custom-keybindings/custom14]
+binding=['<Shift><Alt>o']
+command='o obsidian'
+name='o-obsidian'
+
+[custom-keybindings/custom16]
+binding=['<Primary><Shift><Alt>s']
+command='o scratch'
+name='o-scratch'
+
+[custom-keybindings/custom17]
+binding=['<Super>s']
+command='im s'
+name='im-settings'
+
+[custom-keybindings/custom18]
+binding=['<Super>h']
+command='im --hebrew'
+name='im-hebrew'
+
+[custom-keybindings/custom19]
+binding=['<Super>t']
+command='im --telugu'
+name='im-telugu'
+
+[custom-keybindings/custom2]
+binding=['<Shift><Alt>b']
+command='/home/jason/bin/focusterm'
+name='focusterm'
+
+[custom-keybindings/custom20]
+binding=['<Super>d']
+command='im --devangari'
+name='im-devangari'
+
+[custom-keybindings/custom21]
+binding=['<Super>a']
+command='im --arabic'
+name='im-arabic'
+
+[custom-keybindings/custom22]
+binding=['<Super>i']
+command='im i'
+name='im-on'
+
+[custom-keybindings/custom23]
+binding=['<Super>o']
+command='im o'
+name='im-off'
+
+[custom-keybindings/custom24]
+binding=['<Super>g']
+command='im --greek'
+name='im-greek'
+
+[custom-keybindings/custom25]
+binding=['<Super>r']
+command='im --russian'
+name='im-russian'
+
+[custom-keybindings/custom26]
+binding=['<Primary><Shift><Alt>a']
+command='my address'
+name='my-address'
+
+[custom-keybindings/custom27]
+binding=['<Primary><Alt>p']
+command='browser neverssl.com'
+name='browser-neverssl'
+
+[custom-keybindings/custom28]
+binding=['<Primary><Shift><Alt>p']
+command='my shebang-python'
+name='my-shebang-python'
+
+[custom-keybindings/custom3]
+binding=['<Shift><Alt>e']
+command='fm'
+name='fm'
+
+[custom-keybindings/custom4]
+binding=['<Shift><Alt>d']
+command='get-date --short'
+name='get-date --short'
+
+[custom-keybindings/custom5]
+binding=['<Primary><Shift>d']
+command='get-date --long'
+name='get-date --long'
+
+[custom-keybindings/custom6]
+binding=['<Primary><Shift><Alt>d']
+command='my debug'
+name='my debug'
+
+[custom-keybindings/custom7]
+binding=['<Primary><Alt>r']
+command='reconky'
+name='reconky'
+
+[custom-keybindings/custom8]
+binding=['<Primary><Alt>q']
+command='recinnamon'
+name='recinnamon'
+
+[custom-keybindings/custom9]
+binding=['<Primary><Alt>w']
+command='renemo'
+name='renemo'
+
+[media-keys]
+home=['XF86Explorer']
+restart-cinnamon=['<Control><Alt>Escape']
+video-rotation-lock=@as []
+
+[wm]
+increase-opacity=@as []
+minimize=['<Primary><Alt>space']
+show-desktop=['<Primary><Alt>d']
+toggle-maximized=['<Alt>F10', '<Super>Return']
