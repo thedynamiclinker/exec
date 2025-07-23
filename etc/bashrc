@@ -515,13 +515,21 @@ alias nnn="sudo $EDITOR /etc/nixos/configuration.nix"
 alias ns="nix search nixpkgs"
 alias npl="nix profile list"
 alias npr="nix profile remove"
-alias nrb="sudo nixos-rebuild switch"
-alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
 alias nix-channel='sudo nix-channel'
+alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 
+nrb() {
+    if [[ -e /etc/nixos/flake.nix ]]; then
+        sudo nixos-rebuild switch --flake
+    else
+        sudo nixos-rebuild switch
+    fi
+}
+
+# Nix on other OSes
 nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
 if [[ -e "$nix_config" ]]; then
     source "$nix_config"
