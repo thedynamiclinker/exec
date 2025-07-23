@@ -529,8 +529,11 @@ nrb() {
     fi
 }
 
-# Nix on other OSes
+export NIX_FLAGS="--no-warn-dirty" 
+
+# nix on other OSes
 nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
 if [[ -e "$nix_config" ]]; then
     source "$nix_config"
 fi
+
