@@ -494,10 +494,32 @@ export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
 export LEAN_NUM_THREADS=$(nproc)
 alias lr='lean-run'
 
+###########
+### nix ###
+###########
+
 # nix
+
+export NIX_FLAGS="--no-warn-dirty" 
+
+nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
+if [[ -e "$nix_config" ]]; then
+    source "$nix_config"
+fi
+
+
+# nixos
+
 if [[ $(getdistro) -eq nixos ]]; then
     alias locate='sudo plocate'
 fi
+nrb() {
+    if [[ -e /etc/nixos/flake.nix ]]; then
+        sudo nixos-rebuild switch --flake
+    else
+        sudo nixos-rebuild switch
+    fi
+}
 nixos_rebuild_switch() { sudo nixos-rebuild switch; }
 nixos_rebuild_repl() { sudo nixos-rebuild repl; }
 nixos_edit_config() { sudo $EDITOR /etc/nixos/configuration.nix; }
@@ -521,19 +543,7 @@ alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab compl
 alias nix-channel='sudo nix-channel'
 alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 
-nrb() {
-    if [[ -e /etc/nixos/flake.nix ]]; then
-        sudo nixos-rebuild switch --flake
-    else
-        sudo nixos-rebuild switch
-    fi
-}
+# home-manager
 
-export NIX_FLAGS="--no-warn-dirty" 
-
-# nix on other OSes
-nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
-if [[ -e "$nix_config" ]]; then
-    source "$nix_config"
-fi
+alias hms="home-manager switch"
 
