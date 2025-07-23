@@ -515,7 +515,7 @@ if [[ $(getdistro) -eq nixos ]]; then
 fi
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
-        sudo nixos-rebuild switch --flake
+        sudo nixos-rebuild switch ${NIX_FLAGS} --flake /etc/nixos/flake.nix
     else
         sudo nixos-rebuild switch
     fi
