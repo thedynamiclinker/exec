@@ -544,6 +544,4 @@ alias nix-channel='sudo nix-channel'
 alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 
 # home-manager
-
 alias hms="home-manager switch"
-
