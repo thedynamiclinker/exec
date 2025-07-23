@@ -500,7 +500,7 @@ alias lr='lean-run'
 
 # nix
 
-export NIX_FLAGS="--no-warn-dirty" 
+export NIX_FLAGS="--no-warn-dirty"  # This doesn't seem to work
 
 nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
 if [[ -e "$nix_config" ]]; then
@@ -515,7 +515,7 @@ if [[ $(getdistro) -eq nixos ]]; then
 fi
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
-        sudo nixos-rebuild switch ${NIX_FLAGS} --flake /etc/nixos/flake.nix
+        sudo nixos-rebuild switch --flake /etc/nixos/flake.nix
     else
         sudo nixos-rebuild switch
     fi
