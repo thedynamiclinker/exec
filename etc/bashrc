@@ -540,7 +540,6 @@ alias npr="nix profile remove"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
-alias nix-channel='sudo nix-channel'
 alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
 
 # home-manager
