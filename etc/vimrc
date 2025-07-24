@@ -113,7 +113,7 @@ nnoremap <C-a> ggVG
 highlight Normal ctermbg=none
 highlight NonText ctermbg=none
 
-" Nix!
+" Nix! <3
 augroup nix_indent
   autocmd!
   autocmd FileType nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
