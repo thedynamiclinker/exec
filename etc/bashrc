@@ -499,19 +499,15 @@ alias lr='lean-run'
 
 # nix
 
-export NIX_FLAGS="--no-warn-dirty"  # This doesn't seem to work
-
-nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
-if [[ -e "$nix_config" ]]; then
-    source "$nix_config"
-fi
-
-
-# nixos
-
 if [[ $(getdistro) -eq nixos ]]; then
     alias locate='sudo plocate'
+else
+    nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
+    if [[ -e "$nix_config" ]]; then
+        source "$nix_config"
+    fi
 fi
+
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
         sudo nixos-rebuild switch --flake /etc/nixos/
@@ -519,6 +515,15 @@ nrb() {
         sudo nixos-rebuild switch
     fi
 }
+
+work() {
+    if [[ $(getdistro) -eq nixos ]]; then
+        nix develop path:/etc/nixos#work
+    else
+        echo "You don't know how to work on this OS yet."
+    fi
+}
+
 nixos_rebuild_switch() { sudo nixos-rebuild switch; }
 nixos_rebuild_repl() { sudo nixos-rebuild repl; }
 nixos_edit_config() { sudo $EDITOR /etc/nixos/configuration.nix; }
