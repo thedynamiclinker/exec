@@ -488,7 +488,9 @@ cpdt() {
 }
 
 # lean
-export PATH="$PATH:$HOME/.elan/bin"
+if [[ -e "$HOME/.elan/bin" ]]; then
+    export PATH="$HOME/.elan/bin:$PATH"
+fi
 export LEAN_PATH="$HOME/lib/lean:$LEAN_PATH"
 export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
 export LEAN_NUM_THREADS=$(nproc)
@@ -531,6 +533,7 @@ nrb() {
 
 work() {
     if [[ $(getdistro) -eq nixos ]]; then
+        c work
         nix develop path:/etc/nixos#work
     else
         echo "You don't know how to work on this OS yet."
