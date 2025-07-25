@@ -287,7 +287,6 @@ alias sm='synergy-share'
 alias ud='updatedb'
 alias rn='ranger'
 alias open="xdg-open"
-alias nw='networth'
 
 # python
 _IPYTHON_ARGS=(
@@ -531,6 +530,11 @@ nix_flake_show() { nix flake show; }
 nix_profile_list() { nix profile list; }
 nix_profile_remove() { nix profile remove "$1"; }
 nix_search() { nix search nixpkgs "$1"; }
+nix_which() { strings "$(which "$1")" | grep -Po "(?<=makeCWrapper ')[^']+(?=')"; }
+wn() { nix_which "$1"; }
+ewn() { $EDITOR "$(nix_which "$1")"; }
+cwn() { cat "$(nix_which "$1")"; }
+
 alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
 alias nnn="sudo $EDITOR /etc/nixos/configuration.nix"
