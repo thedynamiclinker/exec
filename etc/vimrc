@@ -103,6 +103,10 @@ nnoremap <C-c> "+yy
 vnoremap <C-x> "+d
 nnoremap <C-x> "+dd
 
+vnoremap <C-v> "+p
+nnoremap <C-v> "+pp
+inoremap <C-v> <ESC>l"+pp
+
 " don't break words that wrap
 set linebreak
 
