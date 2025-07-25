@@ -66,9 +66,10 @@ source python.sh
 # make a "physical environment"
 # venvs are for isolation,
 # not for humans
-if [[ $(getdistro) -ne nixos ]]; then
-    penv main
-    python_venv_prompt_off
+if [[ $(getdistro) != nixos ]]; then
+    #penv main
+    #python_venv_prompt_off
+    true
 fi
 
 ########################
@@ -499,7 +500,7 @@ alias lr='lean-run'
 
 # nix
 
-if [[ $(getdistro) -eq nixos ]]; then
+if [[ $(getdistro) == nixos ]]; then
     alias locate='sudo plocate'
 else
     nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
@@ -507,6 +508,18 @@ else
         source "$nix_config"
     fi
 fi
+
+if [[ -e $HOME/.nix-profile ]]; then
+    #if [[ $(which python) =~ .*nix-profile.* ]]; then
+    #    deactivate
+    #fi
+    #deactivate
+    # NOTE: The next line HAS to be HERE,
+    # BELOW the deactivate, because venvs
+    # are absolute cancer.
+    export PATH="$HOME/.nix-profile/bin:$PATH"
+fi
+
 
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
