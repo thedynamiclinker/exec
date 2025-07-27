@@ -1,0 +1,131 @@
+#!/usr/bin/env python
+
+__all__ = [
+    'publicip',
+]
+
+import os
+import sys
+import json
+import pprint
+import requests
+import argparse
+import functools
+
+MODES = ['all', 'region', 'city', 'gps', 'publicip']
+
+def parse_command_line(sys_argv):
+
+    prog, *args = sys_argv
+
+    parser = argparse.ArgumentParser(prog=prog)
+
+    parser.add_argument(
+        "ip",
+        nargs = '?',
+        default = None,
+        help = "Optionally specify ip for query."
+    )
+
+    parser.add_argument(
+        "-a",
+        "--all",
+        action = 'store_true',
+        help = "Print all info returned from ipdata."
+    )
+
+    parser.add_argument(
+        "-r",
+        "--region",
+        action = 'store_true',
+        help = "Return region (for US, this is the state)."
+    )
+
+    parser.add_argument(
+        "-c",
+        "--city",
+        action = 'store_true',
+        help = "Return city."
+    )
+
+    parser.add_argument(
+        "-g",
+        "--gps",
+        action = 'store_true',
+        help = "Return latitude and longitude."
+    )
+
+    parser.add_argument(
+        "-p",
+        "--publicip",
+        action = 'store_true',
+        help = "Return public ip."
+    )
+
+    config = parser.parse_args(args)
+
+    modes = []
+    for mode in MODES:
+        if getattr(config, mode) == True:
+            modes.append(mode)
+
+    if len(modes) == 0:
+        modes = ['all']
+    if len(modes) >= 2:
+        raise ValueError(f"Multiple modes specified: {sys_argv}")
+
+    [mode] = modes
+    config.mode = mode
+
+    return config
+
+@functools.lru_cache(maxsize=None)
+def get_raw_data(ip):
+    apikey = 'a67925afd1b9951b058779b0ae2d9ff7065efc3fac7aba366f1ea289'
+    optional_slash_and_ip = f"/{ip}" if ip else ''
+    url = f"https://api.ipdata.co{optional_slash_and_ip}?api-key={apikey}"
+    response = requests.get(url)
+    content = response.content.decode()
+    data = json.loads(content)
+    return data
+
+@functools.lru_cache(maxsize=1)
+def publicip():
+    return requests.get('https://icanhazip.com').content.decode().strip()
+
+def main(*sys_argv):
+
+    config = parse_command_line(sys_argv)
+    ip = config.ip
+    mode = config.mode
+
+    data = get_raw_data(ip)
+
+    if mode == 'all':
+        pprint.pprint(data)
+
+    elif mode == 'region':
+        print(f"{data['city']}, {data['region']}")
+
+    elif mode == 'city':
+        print(f"{data['city']}")
+
+    elif mode == 'gps':
+        print(f"{data['latitude']}, {data['longitude']}")
+
+    elif mode == 'publicip':
+        if ip is not None:
+            raise ValueError(f"Cannot specify both ip and mode='publicip'")
+        try:
+            print(data['ip'])
+        except Exception as e:
+            print(publicip())
+            #print(data['message'])
+    else:
+        raise ValueError(f"Unrecognized mode: {mode}")
+
+    return data
+
+
+if __name__ == '__main__':
+    main(*sys.argv)
