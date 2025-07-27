@@ -7,6 +7,7 @@ source os.sh
 source log.sh
 source paths.sh
 source which.sh
+source completion.sh
 
 if is_bash && is_linux; then
     shopt -s globstar # allow ** to glob recursively
