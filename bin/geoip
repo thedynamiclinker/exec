@@ -12,7 +12,7 @@ import requests
 import argparse
 import functools
 
-MODES = ['all', 'region', 'city', 'gps', 'publicip']
+MODES = ['all', 'region', 'city', 'gps', 'publicip', 'zipcode']
 
 def parse_command_line(sys_argv):
 
@@ -62,6 +62,12 @@ def parse_command_line(sys_argv):
         help = "Return public ip."
     )
 
+    parser.add_argument(
+        "--zipcode",
+        action = 'store_true',
+        help = "Return zipcode."
+    )
+
     config = parser.parse_args(args)
 
     modes = []
@@ -81,6 +87,7 @@ def parse_command_line(sys_argv):
 
 @functools.lru_cache(maxsize=None)
 def get_raw_data(ip):
+    # free api key, no privileges, nothing secret
     apikey = 'a67925afd1b9951b058779b0ae2d9ff7065efc3fac7aba366f1ea289'
     optional_slash_and_ip = f"/{ip}" if ip else ''
     url = f"https://api.ipdata.co{optional_slash_and_ip}?api-key={apikey}"
@@ -109,6 +116,9 @@ def main(*sys_argv):
 
     elif mode == 'city':
         print(f"{data['city']}")
+
+    elif mode == 'zipcode':
+        print(f"{data['postal']}")
 
     elif mode == 'gps':
         print(f"{data['latitude']}, {data['longitude']}")
