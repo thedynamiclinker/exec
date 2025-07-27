@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+which inotifywait &>/dev/null || {
+    echo "Install inotify-tools."
+    exit 1
+}
+
+# If caled with the -i flag, increase the max number of inotify watches allowed by the kernel.
+[[ $1 == '-i' ]] && shift && echo $((8192*64)) | sudo tee /proc/sys/fs/inotify/max_user_watches
+
+[[ -z "$1" ]] && path="$(pwd)/"
+[[ -n "$1" ]] && path="$@"
+echo "Watching: $path"
+
+# Same as above, but a bit less verbose by only looking for opens.
+inotifywait -qmr ${path[*]}
+
+# Notify us whenever a particular file type below a particular
+# directory is opened (for any purpose: read, write, exec, etc.)
+# find <dir> -name "*.jpg" | inotifywait -qm -e open --fromfile -
