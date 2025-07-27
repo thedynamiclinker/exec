@@ -552,6 +552,9 @@ nix_profile_remove() { nix profile remove "$1"; }
 nix_search() { nix search nixpkgs "$1"; }
 nix_which() { readlink -f "$(which "$1")"; }
 nix_get_nixos_install_tools() { nix profile add nixpkgs#nixos-install-tools; }
+nixos_rebuild_boot() { nixos-rebuild boot --flake .#$(hostname); }
+nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/profiles/system; }
+
 wn() { nix_which "$1"; }
 ewn() { $EDITOR "$(nix_which "$1")"; }
 cwn() { cat "$(nix_which "$1")"; }
