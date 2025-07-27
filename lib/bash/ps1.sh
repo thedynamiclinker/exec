@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 clip_prompt_if_its_super_long() {
     # If we're starting-up in a directory with a really-long

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # resolve aliases before passing them to cw, ew
 resolve() {

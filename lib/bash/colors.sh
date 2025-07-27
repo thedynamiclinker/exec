@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Colors (for colored output in scripts and functions, e.g., log, die, etc.)
 end="\e[00m"

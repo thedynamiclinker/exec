@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 venv() {
     local PYTHON=${PYTHON:-python}
