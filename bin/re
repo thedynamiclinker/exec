@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [[ -z "$1" ]]; then
+    echo "usage: $(basename $0) <conky|nemo|cinnamon>"
+    exit 1
+fi
+
+if [[ "$NAME" == 'conky' ]]; then
+    killall conky
+    sleep 1
+    conky-smart-start
+elif [[ "$NAME" == 'nemo' ]]; then
+    nemo-desktop -q
+    sleep 0.5
+    nemo-desktop
+elif [[ "$NAME" == 'cinnamon' ]]; then
+    cinnamon --replace
+fi
