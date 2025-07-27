@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# usage: weather [zipcode]
+
+metric=0    # 0 for F, 1 for C
+zip=${1}
+
+# If empty, try to determine zipcode using geoip script.
+if [[ -z $1 ]]; then
+    zip="$(geoip --zipcode)"
+fi
+
+base_url="http://rss.accuweather.com/rss/liveweather_rss.asp"
+get_url="${base_url}?metric=${metric}&locCode=${zip}"
+
+output="$(curl -s --connect-timeout 30 "${get_url}" \
+        | grep -Po '(?<=Currently: )[^<]+')"
+
+temperature="$(echo "${output#*: }" | sed 's@F@°F@')"
+conditions="${output%: *}"
+
+# [[ -n ${conditions} ]] && echo "${conditions}, ${temperature}"
+echo "${temperature}"

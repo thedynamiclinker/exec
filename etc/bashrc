@@ -412,7 +412,6 @@ alias gcf='git cat-file -p'
 alias grp='git rev-parse'
 
 # miscellaneous
-alias weather='curl wttr.in' # awesome little website
 alias un7zip='7z x'
 
 # readline
