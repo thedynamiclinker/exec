@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# depends: glog
+
+BROWSERS=(
+    google-chrome-beta
+    google-chrome
+    google-chrome-stable
+    brave-browser-beta
+    brave-browser
+    brave
+    firefox
+    NONE
+)
+
+for browser in "${BROWSERS[@]}"; do
+    which "$browser" &> /dev/null && break
+done
+
+if [[ "$browser" == NONE ]]; then
+    source mime.sh
+    browser="$(get_default_application 'text/html')"
+fi
+
+if [[ -z "$browser" ]]; then
+    glog "Couldn't determine browser, even after jumping through hoops. Fix ~/bin/browser."
+else
+    "$browser" $@
+fi
