@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# This functionality is also provided with
+# much more detail by `geoip --publicip`
 curl -s https://icanhazip.com
