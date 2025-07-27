@@ -54,7 +54,6 @@ dirs+=(
     [lib]="${LIB}"
     [etc]="${ETC}"
     [pkg]="${PKG}"
-    [o]="${BIN}/o"
 )
 
 ###########################
@@ -66,10 +65,9 @@ source python.sh
 # make a "physical environment"
 # venvs are for isolation,
 # not for humans
-if [[ $(getdistro) != nixos ]]; then
-    #penv main
-    #python_venv_prompt_off
-    true
+if [[ ! -d /etc/nixos ]]; then
+    penv main
+    python_venv_prompt_off
 fi
 
 ########################
