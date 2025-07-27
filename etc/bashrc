@@ -551,6 +551,7 @@ nix_profile_list() { nix profile list; }
 nix_profile_remove() { nix profile remove "$1"; }
 nix_search() { nix search nixpkgs "$1"; }
 nix_which() { readlink -f "$(which "$1")"; }
+nix_get_nixos_install_tools() { nix profile add nixpkgs#nixos-install-tools; }
 wn() { nix_which "$1"; }
 ewn() { $EDITOR "$(nix_which "$1")"; }
 cwn() { cat "$(nix_which "$1")"; }
