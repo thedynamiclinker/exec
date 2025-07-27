@@ -1,6 +1,6 @@
 # LD's custom ~/.bashrc. Woot!
 
-export EXEC="${HOME}/exec"
+export EXEC="$(dirname "$(dirname "$BASH_SOURCE")")"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
 source os.sh
