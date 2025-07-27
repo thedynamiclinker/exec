@@ -1,6 +1,0 @@
-#!/usr/bin/env python
-
-def יהוה():
-    print("So sayeth the L||D")
-
-יהוה()

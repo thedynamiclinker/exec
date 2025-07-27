@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo "$(basename $0): You got race-car'd! 🏎️"

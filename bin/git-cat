@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [[ -z $1 ]] || [[ -z $2 ]]; then
-    echo "usage: $(basename $0) <commit> <path>"
-fi
-commit="$1"
-path="$2"
-
-git show "$commit":"$path"

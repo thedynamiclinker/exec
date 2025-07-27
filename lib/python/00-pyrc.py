@@ -1,0 +1,151 @@
+#!/usr/bin/env python -B
+
+# Put this file in:
+# $HOME/.ipython/profile_default/startup/
+# and it will act like a pythonic .bashrc.
+
+# to disable this file, uncomment this
+# __import__('sys').exit(0)
+
+# Don't warn about being in a venv
+from warnings import filterwarnings
+filterwarnings("ignore", category=UserWarning, message="Attempting to work in a virtualenv.*")
+
+failed = {}
+
+import os, sys, threading, itertools
+
+def exec_code(code):
+    try:
+        exec(code, globals())
+    except Exception as e:
+        failed['pyrc'] = e
+
+with open(__file__) as fp:
+    lines = fp.read().splitlines()
+
+import_lines = itertools.dropwhile(lambda line: '#'*8 not in line, lines)
+source = '\n'.join(import_lines)
+thread = threading.Thread(target=exec_code, args=(source,))
+thread.daemon=True
+thread.start()
+
+sys.exit(0)
+
+#########
+
+# start executing here.
+# keep track of the status of certain
+# packages that are often not present.
+
+import os
+import re
+import io
+import ast
+import dis
+import sys
+import glob
+import json
+import math
+import time
+import types
+import ctypes
+import base64
+import signal
+import struct
+import string
+import socket
+import pickle
+import random
+import typing
+import atexit
+import asyncio
+import logging
+import hashlib
+import zipfile
+import inspect
+import pathlib
+import argparse
+import datetime
+import tempfile
+import operator
+import warnings
+import requests
+import textwrap
+import importlib
+import functools
+import itertools
+import traceback
+import contextlib
+import collections
+import dataclasses
+
+# concurrency libraries
+import threading
+import subprocess
+import concurrent.futures
+import multiprocessing as mp
+import multiprocessing.managers
+import multiprocessing.sharedctypes
+import multiprocessing.synchronize
+import multiprocessing.shared_memory
+
+from collections import deque
+from collections import Counter
+from collections import defaultdict
+
+from functools import wraps
+from functools import reduce
+from functools import partial
+from functools import lru_cache
+
+from threading import Thread
+from multiprocessing import Process
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
+
+
+try:
+    import numpy as np
+except Exception as e:
+    failed['numpy'] = e
+
+# necessary if we keep ipython magics in another file
+from IPython import get_ipython
+
+from IPython.core.magic import register_line_cell_magic
+
+@register_line_cell_magic
+def xc(line, cell=None):
+    import subprocess
+    import platform
+    if cell is None:
+        # called as %xc (line magic)
+        data = line
+    else:
+        # called as %%xc (cell magic)
+        data = re.sub('\n+$', '\n', cell)
+
+    s = data.encode()
+
+    if platform.system() == 'Linux':
+        p = subprocess.Popen(
+            ['xclip', '-selection', 'p'],
+            stdin = subprocess.PIPE,
+        )
+        p.communicate(s)
+
+        p = subprocess.Popen(
+            ['xclip', '-selection', 'c'],
+            stdin = subprocess.PIPE,
+        )
+        p.communicate(s)
+
+    elif platform.system() == 'Darwin':
+
+        p = subprocess.Popen(
+            ['pbcopy'],
+            stdin = subprocess.PIPE,
+        )
+        p.communicate(s)
+
