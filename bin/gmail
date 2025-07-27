@@ -29,9 +29,12 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
-PRIVATE_DIR = os.getenv("PRIVATE")
-CREDENTIALS_DIR = os.path.join(PRIVATE_DIR, 'etc')
-TOKEN_PATH = f'{CREDENTIALS_DIR}/gmail-token.pickle'
+SECRET = os.getenv("SECRET")
+if SECRET is None:
+    print(f"Prefix not found: SECRET.")
+    sys.exit(1)
+
+TOKEN_PATH = f'{SECRET}/etc/gmail-token.pickle'
 CREDENTIALS_PATH = f'{CREDENTIALS_DIR}/gmail-credentials.json'
 
 def get_number_of_unread_emails():
