@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+clean_trashdir () {
+    [[ -z   "$1" ]] && echo "Usage: clean_trashdir <trashdir>" && return
+    [[ ! -e "$1" ]] && echo "[*] Warning: $1 doesn't exist" && return
+    [[ ! -d "$1" ]] && echo "[*] Warning: $1 is not a directory" && return
+    [[ ! -d "$1"/files ]] && echo "[*] Warning: $1 doesn't look like a trashdir (no files/ directory)" && return
+    [[ ! -d "$1"/info  ]] && echo "[*] Warning: $1 doesn't look like a trashdir (no info/ directory)"  && return
+    TRASH="$1"
+    echo "[+] Found trash directory: $1"
+    rm -rfv "$TRASH"/{files,info}/{*,.[^.]*}
+}
+
+clean_trashdir "$HOME/.local/share/Trash"
+clean_trashdir "$HOME/Desktop/.Trash-1000"
