@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# depends: glog
+# depends: log.sh, mime.sh
+
+source log.sh
 
 BROWSERS=(
     google-chrome-beta
