@@ -35,7 +35,7 @@ if SECRET is None:
     sys.exit(1)
 
 TOKEN_PATH = f'{SECRET}/etc/gmail-token.pickle'
-CREDENTIALS_PATH = f'{CREDENTIALS_DIR}/gmail-credentials.json'
+CREDENTIALS_PATH = f'{SECRET}/etc/gmail-credentials.json'
 
 def get_number_of_unread_emails():
 

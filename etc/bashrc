@@ -254,6 +254,7 @@ alias ff="find . | grep"
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
 alias diff='diff -u'
+alias fm='open'
 
 # sudos
 alias reboot='sudo reboot'
