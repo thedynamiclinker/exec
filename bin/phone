@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+
+# depends: adb
+
+import os
+import sys
+import argparse
+import subprocess
+
+def parse_command_line(progname, *args):
+
+    parser = argparse.ArgumentParser(progname)
+
+    parser.add_argument(
+        'action',
+        nargs = '?',
+        choices = ('push', 'pull', 'shell')
+    )
+
+    config, remaining_args = parser.parse_known_args(args)
+
+    if config.action is None:
+        parser.print_help()
+        sys.exit(1)
+
+    elif config.action in ('pull', 'push'):
+
+        parser.add_argument(
+            'src_path',
+            nargs = '?',
+            default = None,
+        )
+
+        parser.add_argument(
+            'dst_path',
+            nargs = '?',
+            default = None,
+        )
+
+        config = parser.parse_args(args, namespace = config)
+
+    elif config.action == 'shell':
+
+        pass
+
+    return config
+
+
+def pull(src_path, dst_path):
+    return subprocess.run(['adb', 'pull', '-a', src_path, dst_path])
+
+def push(src_path, dst_path):
+    return subprocess.run(['adb', 'push', '-a', src_path, dst_path])
+
+def shell(*args):
+    cmd = ['adb', 'shell'] + list(args)
+    print(cmd)
+    return subprocess.run(cmd)
+
+
+if __name__ == '__main__':
+
+    config = parse_command_line(*sys.argv)
+
+    if config.action == 'pull':
+        src_path = config.src_path or '/sdcard/stuff/neo'
+        dst_path = config.dst_path or 'phone-stuff'
+        p = pull(src_path, dst_path)
+
+    elif config.action == 'push':
+        dst_path = config.src_path
+        src_path = config.dst_path
+        p = pull(src_path, dst_path)
+
+    elif config.action == 'shell':
+        args = sys.argv[2:]
+        p = shell(*args)
+
+    else:
+        raise ValueError(f"Unrecognized action: {config.action}")
+
