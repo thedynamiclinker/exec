@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+findmnt -n -o SOURCE /
