@@ -1,3 +1,4 @@
+# exec/etc/bashrc
 # LD's custom ~/.bashrc. Woot!
 
 export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
@@ -20,10 +21,6 @@ fi
 
 # directories
 export DESKTOP="$HOME/Desktop"
-export BIN="$HOME/bin"
-export LIB="$HOME/lib"
-export ETC="$HOME/etc"
-export PKG="$HOME/pkg"
 
 # programs
 export VISUAL='vim'
@@ -51,10 +48,9 @@ declare -A dirs
 dirs+=(
     [desktop]="${DESKTOP}"
     [exec]="${EXEC}"
-    [bin]="${BIN}"
-    [lib]="${LIB}"
-    [etc]="${ETC}"
-    [pkg]="${PKG}"
+    [exec/bin]="${EXEC}/bin"
+    [exec/lib]="${EXEC}/lib"
+    [exec/etc]="${EXEC}/etc"
 )
 
 ###########################
@@ -76,8 +72,9 @@ fi
 ########################
 
 paths=(
-    "${HOME}/bin"
-    "${HOME}/.local/bin"
+    "${EXEC}/bin"
+    "${EXEC}/bin/o"
+    "${EXEC}/lib/bash"
 )
 
 python_paths=(
@@ -163,7 +160,11 @@ done
 
 unset d
 
-# this is necessary for tensorflow to not be retarded
+for completion in "${EXEC}/lib/bash/completions"/*.sh; do
+    source "$completion"
+done
+
+# export the variables for subprocesses
 export PATH="$PATH"
 export PYTHONPATH="$PYTHONPATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
@@ -224,13 +225,10 @@ clip_prompt_if_its_super_long
 alias ls="ls -h --color=auto --group-directories-first"
 alias l="ls -1"
 alias ll="ls -al"
-alias l="ls -1"
 alias grep="grep -P --color=auto --exclude-dir=.git"
-alias ff="find . | grep"
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
 alias diff='diff -u'
-alias fm='open'
 
 # sudos
 alias reboot='sudo reboot'
@@ -299,8 +297,8 @@ alias ca='clean' # legacy alias, now that `clean` is the default
 alias caa='clean -a'
 
 # config files
-alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
-alias brcp="$EDITOR ${BASHRC_PRIVATE} && source ${BASHRC_PRIVATE}"
+alias brc="$EDITOR ${HOME}/.bashrc && source ${HOME}/.bashrc"
+alias brce="$EDITOR ${EXEC}/etc/bashrc && source ${EXEC}/etc/bashrc"
 alias vrc="$EDITOR ~/.vimrc"
 
 # general
@@ -461,39 +459,16 @@ cpdt() {
     cp -v "$@" ~/Desktop
 }
 
-# lean
-if [[ -d "$HOME/.elan/bin" ]]; then
-    add_to_path "$HOME/.elan/bin"
-fi
-export LEAN_PATH="$HOME/lib/lean:$LEAN_PATH"
-export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
-export LEAN_NUM_THREADS=$(nproc)
-alias lr='lean-run'
-
 ###########
 ### nix ###
 ###########
 
-# nix
-
 if [[ $(getdistro) == nixos ]]; then
     alias locate='sudo plocate'
-else
-    nix_config="$HOME/.nix-profile/etc/profile.d/nix.sh"
-    if [[ -e "$nix_config" ]]; then
-        source "$nix_config"
-    fi
 fi
 
-if [[ -e $HOME/.nix-profile ]]; then
-    #if [[ $(which python) =~ .*nix-profile.* ]]; then
-    #    deactivate
-    #fi
-    #deactivate
-    # NOTE: The next line HAS to be HERE,
-    # BELOW the deactivate, because venvs
-    # are absolute cancer.
-    export PATH="$HOME/.nix-profile/bin:$PATH"
+if [[ -e "$HOME/.nix-profile/bin" ]]; then
+    add_to_path "$HOME/.nix-profile/bin"
 fi
 
 
@@ -514,6 +489,18 @@ work() {
     fi
 }
 
+wn() {
+    nix_which "$1";
+}
+
+ewn() {
+    $EDITOR "$(nix_which "$1")";
+}
+
+cwn() {
+    cat "$(nix_which "$1")";
+}
+
 nixos_rebuild_switch() { sudo nixos-rebuild switch; }
 nixos_rebuild_repl() { sudo nixos-rebuild repl; }
 nixos_edit_config() { sudo $EDITOR /etc/nixos/configuration.nix; }
@@ -526,13 +513,9 @@ nix_profile_list() { nix profile list; }
 nix_profile_remove() { nix profile remove "$1"; }
 nix_search() { nix search nixpkgs "$1"; }
 nix_which() { readlink -f "$(which "$1")"; }
-nix_get_nixos_install_tools() { nix profile add nixpkgs#nixos-install-tools; }
-nixos_rebuild_boot() { nixos-rebuild boot --flake .#$(hostname); }
+nix_get_nixos_install_tools() { nix profile add "nixpkgs#nixos-install-tools"; }
+nixos_rebuild_boot() { nixos-rebuild boot --flake ".#$(hostname)"; }
 nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/profiles/system; }
-
-wn() { nix_which "$1"; }
-ewn() { $EDITOR "$(nix_which "$1")"; }
-cwn() { cat "$(nix_which "$1")"; }
 
 alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
@@ -544,7 +527,5 @@ alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
 alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
-
-# home-manager
 alias hms="home-manager switch"
 alias cdh="c home-manager"
