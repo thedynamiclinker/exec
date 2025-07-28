@@ -1,6 +1,6 @@
 # LD's custom ~/.bashrc. Woot!
 
-export EXEC="$(readlink -f "$BASH_SOURCE" | xargs dirname | xargs dirname)"
+export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
 source os.sh
