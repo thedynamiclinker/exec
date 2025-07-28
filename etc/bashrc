@@ -141,31 +141,6 @@ is_bash && {
     export PS2="${_blu}>>${_end} "
 }
 
-###############
-### private ###
-###############
-
-# The $PRIVATE prefix contains things that are specific to
-# whichever laptop or server we happen to be on at the time,
-# a bit like the prefix '/usr/local' as opposed to '/usr'
-
-export PRIVATE="$HOME/private"
-if [[ -d "${PRIVATE}" ]]; then
-
-    if [[ -d "${PRIVATE}/bin" ]]; then
-        add_to_path "${PRIVATE}/bin"
-    fi
-
-    if [[ -d "${PRIVATE}/lib/python" ]]; then
-        add_to_python_path "${PRIVATE}/lib/python"
-    fi
-
-    BASHRC_PRIVATE="${PRIVATE}/etc/bashrc"
-    if [[ -e "${BASHRC_PRIVATE}" ]]; then
-        source "${BASHRC_PRIVATE}"
-    fi
-
-fi
 
 ########################
 ### set search paths ###
