@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+if [ -n "$1" ]; then
+    # If we were passed arguments, echo them and recursively
+    # call ourselves in a pipe. This allows us to type
+    # "xc some long command" to copy "some long command"
+    # to the clipboard
+    echo $@ | $(basename $0)
+    exit 0
+fi
+
+die() { echo "$(basename $0): $@" && exit 1; }
+
+case "$OSTYPE" in
+
+    *darwin*)
+
+        cat <&0 | gsed -z 's@\n$@@g' | pbcopy
+        ;;
+
+    *linux*)
+        case "$TERM" in
+            *dumb*|*xterm*)
+                # The 'dumb' value seems to be set when we run this
+                # from a script that gets called via a desktop environment
+                # defined keyboard shortcut, e.g. when we bind ctrl+shift+d
+                # to the command `date | xc` in our desktop environment's
+                # keyboard shortcuts. In that situation we're not exactly
+                # running from a terminal in the usual sense, so the $TERM
+                # variable is set to the dummy value "dumb".
+                # echo "TERM=$TERM, OSTYPE=$OSTYPE, tty=$(tty)"
+                input="$(cat <&0)" # a bit more portable than /dev/stdin
+                echo -n "$input" | xclip -selection p &&
+                echo -n "$input" | xclip -selection c
+                exit 0
+                ;;
+            linux) 
+                die 'not a supported terminal type: $(tty)="'$(tty)'"'
+                ;;
+            *)
+                die "can't determine what type of tty you're using"
+                ;;
+        esac
+        ;;
+    *)
+        die 'unrecognized $OSTYPE: ' "$OSTYPE"
+esac
