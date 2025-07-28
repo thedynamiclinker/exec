@@ -304,6 +304,7 @@ alias ca='clean' # legacy alias, now that `clean` is the default
 alias caa='clean -a'
 
 # config files
+alias src="source ${HOME}/.bashrc"
 alias brc="$EDITOR ${HOME}/.bashrc && source ${HOME}/.bashrc"
 alias brce="$EDITOR ${EXEC}/etc/bashrc && source ${EXEC}/etc/bashrc"
 alias vrc="$EDITOR ~/.vimrc"
