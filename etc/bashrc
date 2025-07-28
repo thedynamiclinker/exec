@@ -462,8 +462,8 @@ cpdt() {
 }
 
 # lean
-if [[ -e "$HOME/.elan/bin" ]]; then
-    export PATH="$HOME/.elan/bin:$PATH"
+if [[ -d "$HOME/.elan/bin" ]]; then
+    add_to_path "$HOME/.elan/bin"
 fi
 export LEAN_PATH="$HOME/lib/lean:$LEAN_PATH"
 export LEAN_SRC_PATH="$HOME/lib/lean:$LEAN_SRC_PATH"
