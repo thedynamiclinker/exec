@@ -103,9 +103,9 @@ nnoremap <C-c> "+yy
 vnoremap <C-x> "+d
 nnoremap <C-x> "+dd
 
-vnoremap <C-v> "+p
-nnoremap <C-v> "+pp
-inoremap <C-v> <ESC>l"+pp
+"vnoremap <C-v> "+p
+"nnoremap <C-v> "+pp
+"inoremap <C-v> <ESC>l"+pp
 
 " don't break words that wrap
 set linebreak
@@ -117,9 +117,25 @@ nnoremap <C-a> ggVG
 highlight Normal ctermbg=none
 highlight NonText ctermbg=none
 
+" don't auto-continue comments
+autocmd FileType * setlocal formatoptions-=cro
+
 " Nix! <3
 augroup nix_indent
   autocmd!
   autocmd FileType nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
+" Toggle between expandtab (spaces) and noexpandtab (tabs) with <Leader><Tab>
+" <Leader> is usually '\' by default
+function! ToggleTabs()
+  if &expandtab
+    set noexpandtab
+    echo "Indenting with TABS"
+  else
+    set expandtab
+    echo "Indenting with SPACES"
+  endif
+endfunction
+" Bind to <Leader><Tab> (default: \Tab)
+nnoremap <Leader><Tab> :call ToggleTabs()<CR>
