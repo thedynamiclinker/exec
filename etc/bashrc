@@ -44,13 +44,20 @@ source dirs.sh
 
 unset dirs
 declare -A dirs
-
 dirs+=(
-    [desktop]="${DESKTOP}"
     [exec]="${EXEC}"
     [exec/bin]="${EXEC}/bin"
     [exec/lib]="${EXEC}/lib"
     [exec/etc]="${EXEC}/etc"
+)
+
+# EXPERIMENTAL: Can we define slashed tab-completable array keys
+# with c, o, and p, in which the slashes don't correspond to specific file paths?
+unset files
+declare -A files
+files+=(
+    [bashrc]="${HOME}/.bashrc"
+    [bashrc/exec]="${EXEC}/etc/bashrc"
 )
 
 ###########################
