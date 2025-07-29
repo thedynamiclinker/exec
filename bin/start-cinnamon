@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# cinnamon on wsl,
+# because sometimes,
+# work gives you windows
+
+export DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0
+export LIBGL_ALWAYS_INDIRECT=1
+#exec dbus-launch --exit-with-session cinnamon-session
+
+dbus-launch --exit-with-session bash -c "
+    cinnamon-session &
+    muffin &
+    nemo &
+    nemo-desktop &
+    cinnamon-settings &
+    while :; do sleep 60; done
+"
