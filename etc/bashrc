@@ -540,4 +540,5 @@ alias cdh="c home-manager"
 
 # Don't ask...
 export LD_LIBRARY_PATH="$(nix eval --impure --expr 'with import <nixpkgs> {}; gcc.cc.lib + "/lib"' --raw):$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; zlib + "/lib"' --raw):$LD_LIBRARY_PATH"
 
