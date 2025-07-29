@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+if [[ -z $1 || -z $2 ]]; then
+    echo "usage: $(basename $0) <pypkg> <version>"
+    exit 1
+fi
+
+name="$1"
+version="$2"
+python_version="311"
+platform='manylinux'
+arch='x86_64'
+
+curl -s "https://pypi.org/pypi/${name}/${version}/json" | jq -r "
+    .urls[]
+    | select(.filename | test(\"${python_version}.*${platform}.*${arch}\"))
+    | .url, .digests.sha256
+"
+
+# Next output something like this:
+
+#cat << EOF
+#python.buildPythonPackage {
+#  pname = "${name}";
+#  version = "${version}";
+#  src = fetch {
+#    pname = "${name}";
+#    version = "${version}";
+#    sha256 = "${sha256}";
+#  };
+#  propagatedBuildInputs = [ ${deps} ];
+#}
+#EOF
