@@ -373,7 +373,8 @@ alias ga='git add'
 alias gap='git add --patch'
 alias gc='git add . && git commit'
 alias gcm='git add . && git commit -m'
-alias gca='git add . && git commit --amend --no-edit'
+alias gca='git add . && git commit --amend'
+alias gcan='git add . && git commit --amend --no-edit'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gl='git log'
@@ -482,7 +483,7 @@ fi
 
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
-        sudo nixos-rebuild switch --flake /etc/nixos/
+        sudo nixos-rebuild switch --flake /etc/nixos/#default
     else
         sudo nixos-rebuild switch
     fi
