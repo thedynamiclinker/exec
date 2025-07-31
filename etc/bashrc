@@ -488,7 +488,7 @@ fi
 
 nrb() {
     if [[ -e /etc/nixos/flake.nix ]]; then
-        sudo nixos-rebuild switch --flake /etc/nixos/#default
+        sudo nixos-rebuild switch --flake /etc/nixos/
     else
         sudo nixos-rebuild switch
     fi
