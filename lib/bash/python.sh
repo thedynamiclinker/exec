@@ -32,6 +32,16 @@ wenv() {
     echo "$VIRTUAL_ENV"
 }
 
+senv() {
+    if [[ -d "$PWD/.venv" ]]; then
+        source .venv/bin/activate
+    fi
+}
+
+fenv() {
+    deactivate
+}
+
 activate() {
     if [[ -z "$1" ]]; then
         echo "usage: activate <env>"
