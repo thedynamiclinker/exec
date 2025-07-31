@@ -549,5 +549,5 @@ export LD_LIBRARY_PATH="$(nix eval --impure --expr 'with import <nixpkgs> {}; gc
 export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; zlib + "/lib"' --raw):$LD_LIBRARY_PATH"
 
 #export DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0
-export DISPLAY=:0.0
+#export DISPLAY=:0.0
 export LIBGL_ALWAYS_INDIRECT=1

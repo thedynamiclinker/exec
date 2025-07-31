@@ -36,6 +36,7 @@ senv() {
     if [[ -d "$PWD/.venv" ]]; then
         source .venv/bin/activate
     fi
+    clip_prompt_if_its_super_long
 }
 
 fenv() {
