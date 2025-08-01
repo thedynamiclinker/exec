@@ -87,7 +87,8 @@ p() {
 }
 
 push() {
-    pushd "$1" >/dev/null
+    local d="$1"
+    pushd "${dirs[$d]}" >/dev/null
     dir="$(basename "$PWD")"
     printf "${whi}...${red}(${blu}${dir}${whi}${end}\n" >&2
 }
@@ -111,5 +112,7 @@ is_bash && {
     complete -F _bash_complete_using_dirs_array p
     complete -F _bash_complete_using_dirs_array o
     complete -F _bash_complete_using_dirs_array c
+    complete -F _bash_complete_using_dirs_array push
+    complete -F _bash_complete_using_dirs_array pop # useless completion, but it's only fair
 }
 
