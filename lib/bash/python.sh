@@ -12,6 +12,7 @@ venv() {
         $PYTHON -m venv "$env"
     fi
     source "$env/bin/activate"
+    pip install --upgrade pip
 }
 
 penv() {
@@ -26,6 +27,7 @@ penv() {
         $PYTHON -m venv --system-site-packages "$env"
     fi
     source "$env/bin/activate"
+    pip install --upgrade pip
 }
 
 wenv() {

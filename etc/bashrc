@@ -271,7 +271,7 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.highlight_matching_brackets=False
     --TerminalInteractiveShell.autoformatter=None
 )
-alias py="ipython --no-banner ${_IPYTHON_ARGS[*]}"
+alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
 alias py11="python3.11 -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
 alias pip="python -m pip"
 alias pdb="python -m pdb"
