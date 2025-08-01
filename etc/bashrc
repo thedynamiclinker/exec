@@ -397,6 +397,9 @@ alias gsw='git switch'
 alias gg='git add . && git commit -m "Update." && git pull && git push'
 alias gcf='git cat-file -p'
 alias grp='git rev-parse'
+alias stat='git show --stat'
+alias show='git show'
+alias pick='git cherry-pick'
 
 # miscellaneous
 alias un7zip='7z x'
