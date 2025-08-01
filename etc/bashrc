@@ -66,16 +66,6 @@ files+=(
 
 source python.sh
 
-# make a "physical environment"
-# venvs are for isolation,
-# not for humans
-if [[ ! -d /etc/nixos ]]; then
-    # Let's try to do without this
-    true
-    #penv main
-    #python_venv_prompt_off
-fi
-
 ########################
 ### get search paths ###
 ########################
