@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-env="$HOME/env/$1"
-if [[ ! -e "$env" ]]; then
-    mkdir -pv "$(dirname "$env")"
-    python -m venv "$env"
-fi
-source "$env/bin/activate"
