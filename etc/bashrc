@@ -533,7 +533,7 @@ alias npr="nix profile remove"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
-alias nrc="sudo $EDITOR /etc/nixos/configuration.nix"
+alias nrc="c nixos && $EDITOR -p flake.nix configuration.nix"
 alias hms="home-manager switch"
 alias cdh="c home-manager"
 
