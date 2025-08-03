@@ -42,7 +42,7 @@ export TERMINAL='gnome-terminal'
 
 source dirs.sh
 
-unset dirs
+#unset dirs
 declare -A dirs
 dirs+=(
     [exec]="${EXEC}"
