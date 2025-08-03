@@ -545,6 +545,7 @@ hashes() {
 if [[ -e /etc/nixos ]]; then
     export LD_LIBRARY_PATH="$(nix eval --impure --expr 'with import <nixpkgs> {}; gcc.cc.lib + "/lib"' --raw):$LD_LIBRARY_PATH"
     export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; zlib + "/lib"' --raw):$LD_LIBRARY_PATH"
+#    export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; glibc + "/lib"' --raw):$LD_LIBRARY_PATH"
 fi
 
 #export DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0
