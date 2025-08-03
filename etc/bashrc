@@ -537,6 +537,9 @@ alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab compl
 alias nrc="c nixos && $EDITOR -p flake.nix configuration.nix"
 alias hms="home-manager switch"
 alias cdh="c home-manager"
+alias ms="c nixos && make system"
+alias mh="c nixos && make home"
+alias m="c nixos && make"
 
 hashes() {
     nix-prefetch-github --nix $(git remote get-url origin | sed -e 's@https://github.com/@@' -e 's@[.]git$@@' -e 's@/@ @')
