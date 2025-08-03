@@ -300,7 +300,7 @@ alias caa='clean -a'
 # config files
 alias src="source ${HOME}/.bashrc"
 alias brc="$EDITOR ${HOME}/.bashrc && source ${HOME}/.bashrc"
-alias brce="$EDITOR ${EXEC}/etc/bashrc && source ${EXEC}/etc/bashrc"
+alias brce="$EDITOR ${EXEC}/etc/bashrc && source ${HOME}/.bashrc"
 alias vrc="$EDITOR ~/.vimrc"
 
 # general
