@@ -19,6 +19,8 @@ rw() { realpath $(which "$1"); }
 crw() { cat $(realpath $(which "$1")); }
 erw() { $EDITOR $(realpath $(which "$1")); }
 
+lddw() { ldd "$(realpath "$(which "$1")")"; }
+
 cddn() {
     loc="$(which "$(resolve "$1")")"
     dir="$(dirname "$loc")"
