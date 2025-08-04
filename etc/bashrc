@@ -551,3 +551,6 @@ if [[ -e /etc/nixos ]]; then
 fi
 
 export LIBGL_ALWAYS_INDIRECT=1  # personal
+
+# git tab completion for the juicy sexy plumbing commands!
+export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
