@@ -86,6 +86,11 @@ p() {
     fi
 }
 
+ensure_in() {
+    # a version of c that doesn't re-push "$1" onto dir stack if we're already in there
+    if [[ "$(realpath "$PWD")" != "$(realpath "${dirs["$1"]}")" ]]; then c "$1"; fi
+}
+
 push() {
     local d="$1"
     pushd "${dirs[$d]}" >/dev/null
