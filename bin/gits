@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# lib
+
+red="${end}\e[1;31m"
+blu="${end}\e[1;34m"
+whi="${end}\e[1;39m"
+end="\e[00m"
+
+push() { 
+    local d="$1";
+    pushd "$d" > /dev/null;
+    dir="$(basename "$PWD")";
+    printf "${whi}...${red}(${blu}${dir}${whi}${end}\n" 1>&2
+}
+
+pop() { 
+    dir="$(basename "$PWD")";
+    popd > /dev/null;
+    printf "${whi}...${blu}${dir}${red})${end}\n\n" 1>&2
+}
+
+# main
+
+if [ -z $1 ]; then
+    echo "usage: $(basename $0) <git-command> [dir]"
+    exit 1
+fi
+
+cmd="${1}"
+#dir="${2:-.}"
+dir="${PWD}"
+
+if [ ! -d "$dir" ]; then
+    echo "error: not a directory: $2"
+    exit 1
+fi
+
+pushd "$dir" >/dev/null
+for thing in *; do
+
+    [ ! -d "$thing/.git" ] && continue
+
+    # now we know it's a repo
+    repo="$thing"
+
+    push "$repo"
+    echo "================="
+    echo "# $pkg"
+    git $@
+    pop
+done
+popd >/dev/null
+echo "================="
