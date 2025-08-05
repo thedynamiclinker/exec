@@ -7,6 +7,9 @@ LOADERS = [pickle.load]
 
 try:
     import pandas
+    pandas.set_option('display.max_rows', None)
+    pandas.set_option('display.max_columns', None)
+    pandas.set_option('display.width', 0)
     LOADERS.append(pandas.compat.pickle_compat.load)
 except:
     pass
@@ -18,7 +21,7 @@ def try_load(fp):
         try:
             return loader(fp)
         except Exception as e:
-            pass
+            exceptions.append(e)
     else:
         print(f"Hey you got some exceptions...")
         for n, e in enumerate(exceptions):
