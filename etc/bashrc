@@ -540,4 +540,6 @@ export LIBGL_ALWAYS_INDIRECT=1  # personal
 
 # git tab completion for the juicy sexy plumbing commands!
 export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
-complete -F __git_complete gits
+source "$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
+___git_complete gits __git_main
+
