@@ -348,7 +348,6 @@ alias sse="sudo systemctl enable"
 alias ssd="sudo systemctl disable"
 alias ssia="sudo systemctl is-active"
 alias ssie="sudo systemctl is-enabled"
-alias ssst='sudo systemctl status'
 alias ssdrl='sudo systemctl daemon-reload'
 alias ssrnm='sudo systemctl restart NetworkManager'
 alias ssrldm='sudo systemctl restart lightdm'
@@ -361,36 +360,23 @@ alias cdk="cd /usr/src/linux"
 
 # git
 alias gs='git status'
+alias gb='git branch'
 alias gp='git pull'
 alias gpp='git push'
-alias ga='git add'
-alias gap='git add --patch'
-alias gc='git add . && git commit'
-alias gcm='git commit -m'
-alias gac='git add . && git commit -m'
-alias gca='git commit --amend'
-alias gcn='git add . && git commit --amend --no-edit'
-alias gcan='git add . && git commit --amend --no-edit'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gl='git log'
-alias gla='git log --all --graph --decorate'
-alias gl1='git log --first-parent' # useful for hiding things from merged branches
-alias gf='git fetch'
-alias gfa='git fetch --all'
-alias gcp='git cherry-pick'
+alias glagd='git log --all --graph --decorate'
 alias gr='git remote'
 alias grs='git remote show'
-alias gb='git branch'
-alias gbc='git branch -c'
-alias gsh='git show'
-alias gsw='git switch'
 alias gg='git add . && git commit -m "Update." && git pull && git push'
-alias gcf='git cat-file -p'
-alias grp='git rev-parse'
-alias stat='git show --stat'
-alias show='git show'
-alias pick='git cherry-pick'
+alias ga='git add .'
+alias gac='git add . && git commit'
+alias gaca='git add . && git commit --amend'
+alias gacan='git add . && git commit --amend --no-edit'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gcan='git commit --amend --no-edit'
 
 # readline
 type bind &>/dev/null && {
