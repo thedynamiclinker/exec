@@ -17,7 +17,7 @@ push() {
 pop() { 
     dir="$(basename "$PWD")";
     popd > /dev/null;
-    printf "${whi}...${blu}${dir}${red})${end}\n\n" 1>&2
+    printf "${whi}...${blu}${dir}${red})${end}\n" 1>&2
 }
 
 # main
@@ -28,7 +28,6 @@ if [ -z $1 ]; then
 fi
 
 cmd="${1}"
-#dir="${2:-.}"
 dir="${PWD}"
 
 if [ ! -d "$dir" ]; then
@@ -44,11 +43,10 @@ for thing in *; do
     # now we know it's a repo
     repo="$thing"
 
-    push "$repo"
     echo "================="
-    echo "# $pkg"
+    push "$repo"
     git $@
     pop
 done
-popd >/dev/null
 echo "================="
+popd >/dev/null
