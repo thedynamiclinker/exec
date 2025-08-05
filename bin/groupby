@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+
+"""
+shell groupby
+"""
+
+import os
+import io
+import sys
+import signal
+import argparse
+import pandas as pd
+
+def sigpipe(signum, frame):
+    # if our output is being piped into a command like head
+    # that closes down the pipe we're writing our output to
+    # before we're done writing, we can stop writing early.
+    # python sends a BrokenPipeError by default, and writes
+    # the exception to stderr and this seems to be the only
+    # way to prevent python from doing that.
+    os._exit(0)
+
+signal.signal(signal.SIGPIPE, sigpipe)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', nargs='?', type=str, default=None, help="File to process")
+parser.add_argument('-f', '--field', type=int, default=1, help="Column number to group by")
+parser.add_argument('-F', '--in-sep', type=str, default='\s+', help="Input field separator")
+parser.add_argument('-1', '--out-sep-1', type=str, default='\t', help="Output index separator")
+parser.add_argument('-2', '--out-sep-2', type=str, default='\t', help="Output field separator")
+args = parser.parse_args(sys.argv[1:])
+
+if args.file is None:
+    file = io.StringIO(sys.stdin.read())
+else:
+    file = args.file
+
+df = pd.read_csv(file, sep=args.in_sep, header=None)
+df.columns = list(range(1, len(df.columns)+1))
+groups = df.groupby(args.field)
+
+colon = args.out_sep_1
+comma = args.out_sep_2
+
+for key, group in groups:
+    g = group.set_index(args.field)
+    v = g.values.ravel()
+    fmt = comma.join(map(str, v))
+    line = f"{key}{colon}{fmt}"
+    print(line)
