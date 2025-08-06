@@ -11,5 +11,6 @@ shift
 UNTIL=$(date +%Y-%m-%d) # now
 
 OPTIONS=(--regexp-ignore-case --perl-regexp)  # make this toggleable when it causes problems
+EXCLUDE=(-- . ':(exclude)yarn.lock' ':(exclude)package.json' ':(exclude,glob)**/*.ipynb')
 
-git log --author="$WHO" --since="$SINCE" --until="now" --reverse --patch ${OPTIONS[@]} $@
+git log --author="$WHO" --since="$SINCE" --until="now" ${OPTIONS[@]} $@ ${EXCLUDE[@]}
