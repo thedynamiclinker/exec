@@ -2,22 +2,29 @@
 
 # lib
 
-red="${end}\e[1;31m"
-blu="${end}\e[1;34m"
-whi="${end}\e[1;39m"
-end="\e[00m"
+if [[ ! -t 1 ]]; then
+    red=""
+    blu=""
+    whi=""
+    end=""
+else
+    red="${end}\e[1;31m"
+    blu="${end}\e[1;34m"
+    whi="${end}\e[1;39m"
+    end="\e[00m"
+fi
 
 push() { 
     local d="$1";
     pushd "$d" > /dev/null;
     dir="$(basename "$PWD")";
-    printf "${whi}...${red}(${blu}${dir}${whi}${end}\n" 1>&2
+    printf "${whi}...${red}(${blu}${dir}${whi}${end}\n"
 }
 
 pop() { 
     dir="$(basename "$PWD")";
     popd > /dev/null;
-    printf "${whi}...${blu}${dir}${red})${end}\n" 1>&2
+    printf "${whi}...${blu}${dir}${red})${end}\n"
 }
 
 # main
