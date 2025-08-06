@@ -552,3 +552,7 @@ export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
 source "$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
 ___git_complete gits __git_main
 
+# This correctly seds the code! But we probably need to do this to the whole file above...
+#
+# source <(type __git_main | tail -n +2 | sed -r 's@(.*__gitcomp.*--list-cmds.*);@\1 | while read cmd; do if [[ $cmd =~ ^commit-.* ]]; then echo $cmd; fi; done@g')
+
