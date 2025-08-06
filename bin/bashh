@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# bashh: a plain bash shell with nothing on it
+# useful for when you're not sure if a problem
+# is because of all the insane shit youve been
+# doing in your ~/.bashrc and elsewhere, or if
+# its actually a problem with the thing that's
+# complaining, broken, or w/e your current bug
+# happens to be. dont ask me, i just work here
+env -i PATH="$PATH" TERM="$TERM" bash --norc --noprofile -i
