@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Usage: git people [1M|2w|3d|...]
+
+AGO="${1:-1M}"
+NUM="${AGO::-1}"    # All but last char
+UNIT="${AGO: -1}"   # Last char
+
+shift               # We already used $1
+
+case "$UNIT" in
+    Y) RELATIVE="$NUM year ago";;
+    M) RELATIVE="$NUM month ago";;
+    w) RELATIVE="$NUM week ago";;
+    d) RELATIVE="$NUM day ago";;
+    *) echo "Invalid duration: use Nd, Nw, or NM (e.g., 10d, 2w, 1M)" >&2; exit 1;;
+esac
+
+SINCE=$(date --date="$RELATIVE" +%Y-%m-%d)
+
+git shortlog -sne --since="$SINCE" --until=now $@
