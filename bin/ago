@@ -5,10 +5,10 @@ NUM="${AGO::-1}"    # All but last char
 UNIT="${AGO: -1}"   # Last char
 
 case "$UNIT" in
-    Y) RELATIVE="$NUM year ago";;
-    M) RELATIVE="$NUM month ago";;
-    w) RELATIVE="$NUM week ago";;
-    d) RELATIVE="$NUM day ago";;
+    Y|y) RELATIVE="$NUM year ago";;
+    M|m) RELATIVE="$NUM month ago";;
+    W|w) RELATIVE="$NUM week ago";;
+    D|d) RELATIVE="$NUM day ago";;
     *) echo "Invalid duration: use Nd, Nw, or NM (e.g., 10d, 2w, 1M)" >&2; exit 1;;
 esac
 
