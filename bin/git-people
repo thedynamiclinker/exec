@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Usage: git people [1M|2w|3d|...]
+# Usage: git people [1y|1m|2w|3d|etc]
 
 SINCE=$(ago "$1")
 shift

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Usage: git person [1y|1m|2w|3d|etc]
+
+WHO="$1"
+SINCE=$(ago "$2")
+
+shift
+shift
+
+UNTIL=$(date +%Y-%m-%d) # now
+
+OPTIONS=(--regexp-ignore-case --perl-regexp)  # make this toggleable when it causes problems
+
+git log --author="$WHO" --since="$SINCE" --until="now" --reverse --patch ${OPTIONS[@]} $@
