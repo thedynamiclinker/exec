@@ -9,7 +9,7 @@ regex="$1"
 
 git rev-list HEAD | while read commit; do
 
-    git ls-tree -r "$commit" | grep "$regex" | while read line; do
+    git ls-tree -r "$commit" | grep -P "$regex" | while read line; do
 
         printf "commit:${commit}\t${line}\n"
 
