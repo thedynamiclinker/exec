@@ -3,6 +3,8 @@
 # Usage: git people [1M|2w|3d|...]
 
 SINCE=$(ago "$1")
+shift
+
 UNTIL=$(date +%Y-%m-%d) # now
 
 git shortlog -sne --since="$SINCE" --until="$UNTIL" $@
