@@ -77,7 +77,6 @@ paths=(
 )
 
 python_paths=(
-    "${DESKTOP}"
     "${EXEC}/lib/python"
 )
 
