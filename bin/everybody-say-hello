@@ -1,4 +1,25 @@
 #!/usr/bin/env bash
 
-# Run dev shell for Hello Corporation © ® ™
-nix develop github:notarealdeveloper/nixos#hello-corporation
+pkg="Hello Corporation Development Environment©®™"
+
+develop() {
+    nix develop github:notarealdeveloper/nixos#hello-corporation
+}
+
+install() {
+    nix profile install github:notarealdeveloper/nixos#hello-corporation
+}
+
+usage() {
+	cat <<- EOF
+		usage:
+		$(basename $0) [-d|--develop]		Use virtual ${pkg}
+		$(basename $0) [-i|--install]		Install the ${pkg}
+	EOF
+    exit 0
+}
+
+case $1 in
+    -i|--install)   install;;
+    -d|--develop)   develop;;
+esac
