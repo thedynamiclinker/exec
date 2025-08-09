@@ -4,11 +4,14 @@
 export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
+if [[ -z ${BASH_VERSION:-} ]]; then
+    complete() { true; }
+fi
+
 source os.sh
 source log.sh
 source paths.sh
 source which.sh
-source completion.sh
 
 if is_bash && is_linux; then
     shopt -s globstar # allow ** to glob recursively
@@ -158,9 +161,12 @@ done
 
 unset d
 
-for completion in "${EXEC}/lib/bash/completions"/*.sh; do
-    source "$completion"
-done
+if [[ -n ${BASH_VERSION:-} && $- == *i* ]]; then
+    source completion.sh
+    for completion in "${EXEC}/lib/bash/completions"/*.sh; do
+        source "$completion"
+    done
+fi
 
 # export the variables for subprocesses
 export PATH="$PATH"
