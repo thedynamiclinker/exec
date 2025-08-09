@@ -30,5 +30,4 @@ fi
 case "$1" in
     -i|--install)   install;;
     -d|--develop)   develop;;
-    *)              usage;;
 esac
