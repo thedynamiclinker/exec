@@ -3,7 +3,7 @@
 pkg="Hello Corporation Development Environment©®™"
 
 develop() {
-    nix develop github:notarealdeveloper/nixos#hello-corporation
+    nix develop --refresh github:notarealdeveloper/nixos#hello-corporation
 }
 
 install() {
