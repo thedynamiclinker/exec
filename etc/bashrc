@@ -549,7 +549,9 @@ export LIBGL_ALWAYS_INDIRECT=1  # personal
 
 # git tab completion for the juicy sexy plumbing commands!
 export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
-source "$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
+git_completions_file="$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
+source <(cat "$git_completions_file" | sed -r 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | while read cmd; do if [[ ! $cmd =~ ^commit-.* ]]; then echo $cmd; fi; done)@g')
+
 ___git_complete gits __git_main
 
 # This correctly seds the code! But we probably need to do this to the whole file above...
