@@ -139,3 +139,10 @@ function! ToggleTabs()
 endfunction
 " Bind to <Leader><Tab> (default: \Tab)
 nnoremap <Leader><Tab> :call ToggleTabs()<CR>
+
+" Treat shebangs that use env + bash as bash
+augroup bash_env_shebang
+  autocmd!
+  autocmd BufRead,BufNewFile * if getline(1) =~# '^#!.*env\s\+bash' | setfiletype bash | endif
+  autocmd BufRead,BufNewFile *.org setfiletype bash  " For Hello Corporation
+augroup END
