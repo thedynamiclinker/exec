@@ -1,0 +1,1119 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+root="${PWD}/hello"
+export DESTDIR="${root}/install"
+
+mkdir -p "${DESTDIR}/"{bin,lib,include,share/hello,pylib}
+pushd "${root}" >/dev/null
+
+###############################################################################
+# Level 1 - C (gcc, one file)
+###############################################################################
+
+mkdir -p level1/c-gcc
+
+cat > level1/c-gcc/hello.c <<'EOF'
+#include <stdio.h>
+
+int main(void) {
+    puts("Hello from C");
+    return 0;
+}
+EOF
+
+cat > level1/c-gcc/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+build:
+	gcc -O2 -Wall -Wextra -o hello hello.c
+
+install:
+	mkdir -p $(DESTDIR)/bin
+	cp -f hello $(DESTDIR)/bin/hello-c-gcc
+
+run:
+	@"$(DESTDIR)/bin/hello-c-gcc"
+
+clean:
+	rm -f hello
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - C (gcc, multi-file with static .a)
+###############################################################################
+
+mkdir -p level1/c-lib
+
+cat > level1/c-lib/hello.c <<'EOF'
+#include "hello_lib.h"
+
+int main(void) {
+    hello_c_library();
+    return 0;
+}
+EOF
+
+cat > level1/c-lib/hello_lib.h <<'EOF'
+#pragma once
+void hello_c_library(void);
+EOF
+
+cat > level1/c-lib/hello_lib.c <<'EOF'
+#include <stdio.h>
+#include "hello_lib.h"
+
+void hello_c_library(void) {
+    puts("Hello from a C static library");
+}
+EOF
+
+cat > level1/c-lib/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+CC ?= gcc
+AR ?= ar
+CFLAGS ?= -O2 -Wall -Wextra
+
+LIB := libhello_clib.a
+
+all: build
+
+build: $(LIB) hello
+
+hello.o: hello.c hello_lib.h
+	$(CC) $(CFLAGS) -c hello.c
+
+hello_lib.o: hello_lib.c hello_lib.h
+	$(CC) $(CFLAGS) -c hello_lib.c
+
+$(LIB): hello_lib.o
+	$(AR) rcs $@ $^
+
+hello: hello.o $(LIB)
+	$(CC) $(CFLAGS) -o $@ hello.o -L. -lhello_clib
+
+install:
+	mkdir -p $(DESTDIR)/bin $(DESTDIR)/lib $(DESTDIR)/include
+	cp -f hello $(DESTDIR)/bin/hello-c-lib
+	cp -f $(LIB) $(DESTDIR)/lib/
+	cp -f hello_lib.h $(DESTDIR)/include/
+
+run:
+	@"$(DESTDIR)/bin/hello-c-lib"
+
+clean:
+	rm -f hello *.o *.a
+
+.PHONY: all build run install clean
+EOF
+
+
+###############################################################################
+# Level 1 - C (GNU autotools with --enable-shout)
+###############################################################################
+
+mkdir -p level1/c-autotools/m4 level1/c-autotools/src
+
+cat > level1/c-autotools/configure.ac <<'EOF'
+AC_INIT([hello-autotools],[0.0.1],[hello@example.com])
+AM_INIT_AUTOMAKE([-Wall foreign])
+AC_PROG_CC
+
+AC_ARG_ENABLE([shout],
+  [AS_HELP_STRING([--enable-shout],[Uppercase HELLO])],
+  [], [enable_shout=no])
+
+AS_IF([test "x$enable_shout" = "xyes"],
+  [AC_DEFINE([HELLO_SHOUT],[1],[Shout hello])], [])
+
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES([Makefile src/Makefile])
+AC_OUTPUT
+EOF
+
+cat > level1/c-autotools/Makefile.am <<'EOF'
+SUBDIRS = src
+EOF
+
+cat > level1/c-autotools/src/Makefile.am <<'EOF'
+bin_PROGRAMS = hello-autotools
+hello_autotools_SOURCES = main.c
+AM_CPPFLAGS = -I$(top_builddir)
+EOF
+
+cat > level1/c-autotools/src/main.c <<'EOF'
+#include <stdio.h>
+#include "config.h"
+
+int main(void) {
+#ifdef HELLO_SHOUT
+    puts("HELLO FROM C WITH AUTOTOOLS (shout)");
+#else
+    puts("Hello from C with autotools");
+#endif
+    return 0;
+}
+EOF
+
+cat > level1/c-autotools/GNUmakefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+CFLAGS  ?= -O2 -g -Wall -Wextra
+
+CONFIG_STAMPS := config.status src/Makefile
+
+all: build
+
+$(CONFIG_STAMPS): configure.ac src/Makefile.am
+	autoreconf -i
+	CFLAGS="$(CFLAGS)" ./configure --prefix="$(DESTDIR)" --enable-shout=no
+
+configure: $(CONFIG_STAMPS)
+.PHONY: configure
+
+build: configure
+	$(MAKE) -C src all
+
+install:
+	$(MAKE) -C src install
+
+run:
+	@"$(DESTDIR)/bin/hello-autotools"
+
+clean:
+	-$(MAKE) -C src distclean
+	rm -rf autom4te.cache aclocal.m4 configure config.h.in config.log \
+	       config.status Makefile.in src/Makefile.in
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - C (Meson)
+###############################################################################
+
+mkdir -p level1/c-meson
+
+cat > level1/c-meson/meson.build <<'EOF'
+project('hello-meson', 'c', version: '0.1.0')
+executable('hello-meson', 'main.c', install: true)
+EOF
+
+cat > level1/c-meson/main.c <<'EOF'
+#include <stdio.h>
+
+int main(void) {
+    puts("Hello from C with Meson");
+    return 0;
+}
+EOF
+
+cat > level1/c-meson/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+build:
+	CFLAGS="-O2 -Wall -Wextra" meson setup builddir --prefix "$(DESTDIR)"
+	meson compile -C builddir
+
+install:
+	meson install -C builddir
+
+run:
+	@"$(DESTDIR)/bin/hello-meson"
+
+clean:
+	rm -rf builddir
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - Shell script
+###############################################################################
+
+mkdir -p level1/sh
+
+cat > level1/sh/hello.sh <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+echo "Hello from POSIX shell script"
+EOF
+
+chmod +x level1/sh/hello.sh
+
+cat > level1/sh/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+build: ; @true
+
+install:
+	mkdir -p $(DESTDIR)/bin
+	cp -f hello.sh $(DESTDIR)/bin/hello-sh
+
+run:
+	@"$(DESTDIR)/bin/hello-sh"
+
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 1 - Python (one file)
+###############################################################################
+
+mkdir -p level1/py-onefile
+
+cat > level1/py-onefile/hello.py <<'EOF'
+print("Hello from Python (one file)")
+EOF
+
+cat > level1/py-onefile/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+
+all: build
+
+build: ; @true
+
+install:
+	mkdir -p $(PYTARGET)/hello_onefile
+	cp -f hello.py $(PYTARGET)/hello_onefile/__main__.py
+run:
+	@PYTHONPATH="$(PYTARGET)" python3 -m hello_onefile
+
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 1 - Python (dir package on PYTHONPATH, no build files)
+###############################################################################
+
+mkdir -p level1/py_dir_package
+
+cat > level1/py_dir_package/__init__.py <<'EOF'
+def msg() -> str:
+    return "Hello from Python (dir package on PYTHONPATH, no build files)"
+EOF
+
+cat > level1/py_dir_package/__main__.py <<'EOF'
+from . import msg
+print(msg())
+EOF
+
+cat > level1/py_dir_package/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+PKG := py_dir_package
+
+all: build
+build: ; @true
+
+install:
+	mkdir -p $(PYTARGET)/$(PKG)
+	cp -f __init__.py __main__.py $(PYTARGET)/$(PKG)/
+
+run:
+	@PYTHONPATH="$(PYTARGET)" python3 -m $(PKG)
+
+clean:
+	@true
+
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - Python (setup.py)
+###############################################################################
+
+mkdir -p level1/py-setup/src/hello_setup
+
+cat > level1/py-setup/src/hello_setup/__init__.py <<'EOF'
+def hello() -> str:
+    return "Hello from Python (setup.py)"
+EOF
+
+cat > level1/py-setup/src/hello_setup/__main__.py <<'EOF'
+from . import hello
+def main() -> None:
+    print(hello())
+if __name__ == "__main__":
+    main()
+EOF
+
+cat > level1/py-setup/setup.py <<'EOF'
+from setuptools import setup, find_packages
+setup(
+    name="hello-setup",
+    version="0.0.1",
+    package_dir={"": "src"},
+    packages=find_packages("src"),
+    entry_points={"console_scripts": ["hello-setup=hello_setup.__main__:main"]},
+)
+EOF
+
+cat > level1/py-setup/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+all: build
+build:
+	python3 -m pip install --no-build-isolation --no-deps --target "$(PYTARGET)" .
+install: ; @true
+run:
+	@PYTHONPATH="$(PYTARGET)" python3 -c 'import hello_setup as m; print(m.hello())'
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 1 - Python (pyproject + src layout)
+###############################################################################
+
+mkdir -p level1/py-pyproject-src/src/hello_srcpkg
+
+cat > level1/py-pyproject-src/src/hello_srcpkg/__init__.py <<'EOF'
+def hello() -> str:
+    return "Hello from Python (pyproject + src layout)"
+EOF
+
+cat > level1/py-pyproject-src/src/hello_srcpkg/__main__.py <<'EOF'
+from . import hello
+def main() -> None:
+    print(hello())
+if __name__ == "__main__":
+    main()
+EOF
+
+cat > level1/py-pyproject-src/pyproject.toml <<'EOF'
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hello-srcpkg"
+version = "0.0.1"
+requires-python = ">=3.8"
+scripts = { "hello-srcpkg" = "hello_srcpkg.__main__:main" }
+EOF
+
+cat > level1/py-pyproject-src/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+
+all: build
+
+build:
+	python3 -m pip install --no-build-isolation --no-deps --target "$(PYTARGET)" .
+
+install: ; @true
+
+run:
+	@PYTHONPATH="$(PYTARGET)" python3 -c 'import hello_srcpkg as m; print(m.hello())'
+
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 1 - Python (Cython + runtime .so)
+###############################################################################
+
+mkdir -p level1/py-cython-runtime-so/src/hello_cython
+
+cat > level1/py-cython-runtime-so/pyproject.toml <<'EOF'
+[build-system]
+requires = ["setuptools>=68", "wheel", "Cython>=3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hello-cython-rtso"
+version = "0.0.1"
+requires-python = ">=3.8"
+EOF
+
+cat > level1/py-cython-runtime-so/src/hello_cython/__init__.py <<'EOF'
+import ctypes
+ctypes.CDLL("libgreet.so")  # must be in a directory listed in LD_LIBRARY_PATH
+
+def hello() -> str:
+    return "Hello from Python (Cython package) via external libgreet.so"
+EOF
+
+cat > level1/py-cython-runtime-so/src/hello_cython/greeter.pyx <<'EOF'
+# cython: language_level=3
+def greet():
+    return "Hello (Cython) calling out to external lib at import time"
+EOF
+
+cat > level1/py-cython-runtime-so/setup.cfg <<'EOF'
+[options]
+package_dir =
+    = src
+packages = find:
+[options.packages.find]
+where = src
+[build_ext]
+inplace = 1
+EOF
+
+cat > level1/py-cython-runtime-so/setup.py <<'EOF'
+from setuptools import setup, Extension, find_packages
+from Cython.Build import cythonize
+exts = cythonize([Extension("hello_cython.greeter", ["src/hello_cython/greeter.pyx"])])
+setup(
+    name="hello-cython-rtso",
+    version="0.0.1",
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    ext_modules=exts,
+)
+EOF
+
+cat > level1/py-cython-runtime-so/libgreet.c <<'EOF'
+void greet_external(void) { }
+EOF
+
+cat > level1/py-cython-runtime-so/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+all: build
+
+build:
+	gcc -fPIC -shared -o libgreet.so libgreet.c
+	mkdir -p $(DESTDIR)/lib
+	cp -f libgreet.so $(DESTDIR)/lib/
+	python3 -m pip install --no-build-isolation --no-deps --target "$(PYTARGET)" .
+
+install: ; @true
+
+run:
+	@LD_LIBRARY_PATH="$(DESTDIR)/lib" PYTHONPATH="$(PYTARGET)" \
+	  python3 -c "import hello_cython as m; print(m.hello())"
+
+clean:
+	rm -f libgreet.so
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - Haskell (cabal)
+###############################################################################
+
+mkdir -p level1/hs-cabal/app
+
+cat > level1/hs-cabal/hello-cabal.cabal <<'EOF'
+cabal-version:       >=1.10
+name:                hello-cabal
+version:             0.0.1
+build-type:          Simple
+
+executable hello-cabal
+  main-is:             Main.hs
+  hs-source-dirs:      app
+  build-depends:       base >=4.7 && <5
+  default-language:    Haskell2010
+EOF
+
+cat > level1/hs-cabal/app/Main.hs <<'EOF'
+module Main where
+main :: IO ()
+main = putStrLn "Hello from Haskell (cabal)"
+EOF
+
+cat > level1/hs-cabal/Makefile <<'EOF'
+# level1/hs-cabal/Makefile
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+.cabal-updated:
+	cabal update -v0
+	touch $@
+
+build: .cabal-updated
+	cabal build
+
+# Try to copy the built exe into our local install prefix.
+install:
+	mkdir -p "$(DESTDIR)/bin"
+	@bin_path="$$(cabal list-bin hello-cabal 2>/dev/null)"; \
+	if [ -n "$$bin_path" ] && [ -x "$$bin_path" ]; then \
+	  cp -f "$$bin_path" "$(DESTDIR)/bin/hello-cabal"; \
+	else \
+	  f="$$(find dist-newstyle -type f -name hello-cabal -perm -u+x 2>/dev/null | head -n1)"; \
+	  [ -n "$$f" ] && cp -f "$$f" "$(DESTDIR)/bin/hello-cabal"; \
+	fi
+
+run:
+	@"$(DESTDIR)/bin/hello-cabal"
+
+clean:
+	rm -f .cabal-updated
+EOF
+
+###############################################################################
+# Level 1 - Rust (rustc + Makefile)
+###############################################################################
+
+mkdir -p level1/rs-rustc
+
+cat > level1/rs-rustc/main.rs <<'EOF'
+fn main() {
+    println!("Hello from Rust with rustc + Makefile");
+}
+EOF
+
+cat > level1/rs-rustc/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+RUSTC ?= rustc
+
+all: build
+
+build:
+	$(RUSTC) -O -o hello main.rs
+
+install:
+	mkdir -p $(DESTDIR)/bin
+	cp -f hello $(DESTDIR)/bin/hello-rustc
+
+run:
+	@"$(DESTDIR)/bin/hello-rustc"
+
+clean: ; rm -f hello
+.PHONY: all build run install clean
+EOF
+
+###############################################################################
+# Level 1 - Rust (cargo)
+###############################################################################
+
+mkdir -p level1/rs-cargo/src
+
+cat > level1/rs-cargo/Cargo.toml <<'EOF'
+[package]
+name = "hello-cargo"
+version = "0.0.1"
+edition = "2021"
+
+[profile.release]
+opt-level = 3
+EOF
+
+cat > level1/rs-cargo/src/main.rs <<'EOF'
+fn main() {
+    println!("Hello from Rust (cargo)");
+}
+EOF
+
+cat > level1/rs-cargo/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+build: ; cargo build --quiet
+
+install:
+	mkdir -p $(DESTDIR)/bin
+	[ -x target/release/hello-cargo ] || cargo build --release --quiet
+	[ -x target/release/hello-cargo ] && cp -f target/release/hello-cargo $(DESTDIR)/bin/
+
+run:
+	@"$(DESTDIR)/bin/hello-cargo"
+
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 2 - C (depends on Level 1 c-make lib)
+###############################################################################
+mkdir -p level2/c-dep
+
+cat > level2/c-dep/main.c <<'EOF'
+#include <stdio.h>
+
+#ifdef DEP_IS_CLIB
+  #include "hello_lib.h"
+#else
+  #include "hello_make.h"
+#endif
+
+int main(void) {
+    puts("Hello from Level2 C (depends on a Level1 C static lib)");
+#ifdef DEP_IS_CLIB
+    hello_c_library();
+#else
+    hello_make();
+#endif
+    return 0;
+}
+EOF
+
+cat > level2/c-dep/Makefile <<'EOF'
+# level2/c-dep/Makefile
+SHELL := /usr/bin/env bash
+
+DESTDIR ?= $(CURDIR)/install
+
+# Try level1/c-make first, else level1/c-lib
+DEP_CMAKE := $(abspath $(CURDIR)/../../level1/c-make)
+DEP_CLIB  := $(abspath $(CURDIR)/../../level1/c-lib)
+
+ifeq ($(wildcard $(DEP_CMAKE)),)
+  ifeq ($(wildcard $(DEP_CLIB)),)
+    $(error Could not locate dependency dir: expected $(DEP_CMAKE) or $(DEP_CLIB))
+  endif
+  DEP_DIR    := $(DEP_CLIB)
+  DEP_PREFIX := $(DEP_DIR)/install
+  DEP_HDR    := hello_lib.h
+  DEP_LIB    := hello_clib
+  DEP_DEFINE := -DDEP_IS_CLIB=1
+else
+  DEP_DIR    := $(DEP_CMAKE)
+  DEP_PREFIX := $(DEP_DIR)/install
+  DEP_HDR    := hello_make.h
+  DEP_LIB    := hello_make
+  DEP_DEFINE :=
+endif
+
+CC      ?= gcc
+CFLAGS  ?= -O2 -Wall -Wextra
+CPPFLAGS := -I"$(DEP_PREFIX)/include" $(DEP_DEFINE)
+LDFLAGS ?= -L"$(DEP_PREFIX)/lib"
+LIBS    ?= -l$(DEP_LIB)
+
+all: build
+
+# Ensure Level1 dep is installed to its own prefix first
+deps:
+	+$(MAKE) -C "$(DEP_DIR)" install
+
+build: deps
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o hello main.c $(LIBS)
+
+install: build
+	mkdir -p "$(DESTDIR)/bin"
+	cp -f hello "$(DESTDIR)/bin/hello-c-dep"
+
+run:
+	@"$(DESTDIR)/bin/hello-c-dep"
+
+clean:
+	rm -f hello
+
+.PHONY: all deps build run install clean
+EOF
+
+###############################################################################
+# Level 2 - Shell (needs sourced lib)
+###############################################################################
+
+mkdir -p level2/sh-dep
+
+cat > level2/sh-dep/hello_lib.sh <<'EOF'
+hello_lib() { echo "Hello from sourced library (hello_lib.sh)"; }
+EOF
+cat > level2/sh-dep/hello.sh <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+if [ -n "${HELLO_LIB_SH_DIR:-}" ] && [ -f "${HELLO_LIB_SH_DIR}/hello_lib.sh" ]; then
+  . "${HELLO_LIB_SH_DIR}/hello_lib.sh"
+else
+  echo "Could not find hello_lib.sh; set HELLO_LIB_SH_DIR" >&2; exit 1
+fi
+echo "Hello from Level2 shell (needs sourced lib)"
+hello_lib
+EOF
+
+chmod +x level2/sh-dep/hello.sh
+
+cat > level2/sh-dep/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+
+all: build
+
+build:
+	@true
+
+install:
+	mkdir -p $(DESTDIR)/bin $(DESTDIR)/share/hello
+	cp -f hello.sh $(DESTDIR)/bin/hello-sh-dep
+	cp -f hello_lib.sh $(DESTDIR)/share/hello/hello_lib.sh
+
+run:
+	@HELLO_LIB_SH_DIR="$(DESTDIR)/share/hello" "$(DESTDIR)/bin/hello-sh-dep"
+
+.PHONY: all build run install
+EOF
+
+
+###############################################################################
+# Level 2 - Python (depends on Level 1 pyproject package)
+###############################################################################
+
+mkdir -p level2/py-dep/src/hello_dep
+
+cat > level2/py-dep/src/hello_dep/__init__.py <<'EOF'
+from hello_srcpkg import hello as base_hello
+def hello() -> str:
+    return "Hello from Python Level2 (depends on hello-srcpkg) -> " + base_hello()
+EOF
+
+cat > level2/py-dep/src/hello_dep/__main__.py <<'EOF'
+from . import hello
+def main() -> None:
+    print(hello())
+if __name__ == "__main__":
+    main()
+EOF
+
+cat > level2/py-dep/pyproject.toml <<'EOF'
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hello-dep"
+version = "0.0.1"
+requires-python = ">=3.8"
+dependencies = ["hello-srcpkg>=0.0.1"]
+scripts = { "hello-dep" = "hello_dep.__main__:main" }
+EOF
+
+cat > level2/py-dep/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+PYTARGET := $(DESTDIR)/pylib
+L1_PY_PREFIX ?= $(CURDIR)/../../level1/py-pyproject-src/install/pylib
+
+all: build
+# Make sure level1 is installed to its own local prefix so we can import it
+
+deps:
+	$(MAKE) -C ../../level1/py-pyproject-src install
+
+build: deps
+	python3 -m pip install --no-build-isolation --no-deps --target "$(PYTARGET)" .
+
+install:
+	@true
+
+run:
+	@PYTHONPATH="$(PYTARGET):$(L1_PY_PREFIX)" python3 -m hello_dep
+
+.PHONY: all build run install deps
+EOF
+
+###############################################################################
+# Level 2 - Haskell (depends on Level 1)
+###############################################################################
+
+mkdir -p level2/hs-dep/app
+
+cat > level2/hs-dep/hello-dep.cabal <<'EOF'
+cabal-version:       >=1.10
+name:                hello-dep
+version:             0.0.1
+build-type:          Simple
+
+executable hello-dep
+  main-is:             Main.hs
+  hs-source-dirs:      app
+  build-depends:       base >=4.7 && <5
+  default-language:    Haskell2010
+EOF
+
+cat > level2/hs-dep/app/Main.hs <<'EOF'
+module Main where
+main :: IO ()
+main = putStrLn "Hello from Haskell Level2 (depends on Level1 via cabal.project)"
+EOF
+
+cat > level2/hs-dep/cabal.project <<'EOF'
+packages:
+  ../../level1/hs-cabal
+  .
+EOF
+
+cat > level2/hs-dep/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+all: build
+
+build:
+	cabal update -v0
+	cabal build
+
+install:
+	mkdir -p "$(DESTDIR)/bin"
+	@bin_path="$$(cabal list-bin hello-dep 2>/dev/null)"; \
+	if [ -n "$$bin_path" ] && [ -x "$$bin_path" ]; then \
+	  cp -f "$$bin_path" "$(DESTDIR)/bin/hello-dep"; \
+	else \
+	  f="$$(find dist-newstyle -type f -name hello-dep -perm -u+x 2>/dev/null | head -n1)"; \
+	  [ -n "$$f" ] && cp -f "$$f" "$(DESTDIR)/bin/hello-dep"; \
+	fi
+
+run:
+	@"$(DESTDIR)/bin/hello-dep"
+
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Level 2 - Rust (depends on Level 1 cargo project)
+###############################################################################
+mkdir -p level2/rs-dep/src
+
+cat > level2/rs-dep/Cargo.toml <<'EOF'
+[package]
+name = "hello-dep-rs"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+hello-cargo = { path = "../../level1/rs-cargo" }
+EOF
+
+cat > level2/rs-dep/src/main.rs <<'EOF'
+fn main() {
+    println!("Hello from Rust Level2 (depends on hello-cargo)");
+}
+EOF
+
+cat > level2/rs-dep/Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+DESTDIR ?= $(CURDIR)/install
+all: build
+build: ; cargo build --quiet
+install:
+	mkdir -p $(DESTDIR)/bin
+	[ -x target/release/hello-dep-rs ] || cargo build --release --quiet
+	[ -x target/release/hello-dep-rs ] && cp -f target/release/hello-dep-rs $(DESTDIR)/bin/
+run: ; "$(DESTDIR)/bin/hello-dep-rs"
+.PHONY: all build run install
+EOF
+
+###############################################################################
+# Top-level Makefile (just recurses)
+###############################################################################
+cat > Makefile <<'EOF'
+SHELL := /usr/bin/env bash
+
+SUBS := \
+  level1/c-gcc \
+  level1/c-lib \
+  level1/c-autotools \
+  level1/c-meson \
+  level1/sh \
+  level1/py-onefile \
+  level1/py_dir_package \
+  level1/py-setup \
+  level1/py-pyproject-src \
+  level1/py-cython-runtime-so \
+  level1/hs-cabal \
+  level1/rs-rustc \
+  level1/rs-cargo \
+  level2/c-dep \
+  level2/sh-dep \
+  level2/py-dep \
+  level2/hs-dep \
+  level2/rs-dep
+
+.PHONY: build run install clean help $(SUBS)
+
+build: $(SUBS)
+$(SUBS):
+	@$(MAKE) -C $@ build
+
+install:
+	@for d in $(SUBS); do $(MAKE) -C $$d install; done
+
+run:
+	@for d in $(SUBS); do $(MAKE) -C $$d --quiet run; done
+
+help:
+	@echo "Targets:"
+	@echo "  build    build all subprojects"
+	@echo "  run      run all subprojects (from each local install/)"
+	@echo "  install  install each subproject to its own install/"
+	@echo "  clean    remove generated files"
+
+clean:
+	@rm -rfv "install" level1 level2 Makefile
+EOF
+
+echo "Bootstrap complete.
+
+Try:
+  make
+  make install
+  make run
+
+Each subproject now installs into its own ./install unless you pass DESTDIR=/path.
+"
+
+popd >/dev/null
+
+
+cat > Makefile << 'EOF'
+CORP := hello
+
+build:
+	$(MAKE) -C $(CORP) build
+
+install:
+	$(MAKE) -C $(CORP) install
+
+run:
+	@$(MAKE) -C $(CORP) --quiet run
+
+clean:
+	rm -rf hello Makefile README.md
+EOF
+
+sed -i "s@hello@$(basename "$root")@g" Makefile
+
+cat > .gitignore << EOF
+Makefile
+README.md
+$(basename "$root")/
+EOF
+
+#################
+### README.md ###
+#################
+
+cat > README.md << 'EOF'
+# Hello World! © ® ™
+
+This is the true story of The Hello Corporation,
+an organization where all the software is Hello World.
+
+Many other Enterprises in the software space think
+we have it easy over here at The Hello Corporation,
+because all our software is trivial.
+
+Nothing could be further from the truth. We find that
+software development at The Hello Corporation is just
+as complex and difficult as at other enterprises.
+
+This is not a joke. We're not making things complex
+on purpose to make fun of over-engineered software,
+like the classic "Fizzbuzz Enterprise Edition" repo.
+
+Nor are we a bunch of slackers who just get high all
+the time, despite the fact that our name is THC©®™.
+
+We founded The Hello Corporation to help your company.
+
+If you work in technology, whether as a developer or
+a manager or an executive, there are probably a lot of
+things you and your team do that you believe are
+"best practices." Many of them probably are. But how
+would you know if some of those practices had been
+implemented in subtly incorrect ways that made them
+useless, or even actively harmful? How would you know
+if some simple requirement you'd imposed on your team
+in the hope of a 5-10% benefit on some metric or other
+was was causing every project you worked on to take
+twice as long?
+
+How is a manager or executive at a technology company
+supposed to understand which of the many things their
+business does are imposing excessive costs for zero
+benefit?
+
+We founded The Hello Corporation to help your company
+answer those questions, by offering a standard environment
+in which any organization can carry out a complexity audit.
+
+An "audit" is an official inspection of some aspect of
+an individual or organization by an independent body.
+
+An audit is something you do when you want an outside
+expert's opinion on whether you're screwing something up.
+
+Every field has its own form of audit.
+
+- For security, we have static analysis and pentesting.
+- For finances, we have accountants, and, well, audits.
+- For complexity, we have nothing.
+
+Complexity is the ultimate enemy in software development.
+- Not bugs.
+- Not vulnerabilities.
+- Not slow execution.
+
+The eternal enemy your dev team faces every hour of
+every day at work is complexity.
+
+Looking around at most tech companies and dev teams,
+it's hard not to conclude that complexity won.
+
+Who do you call when you need to simplify things?
+When you're having trouble onboarding new employees
+because everything is chaotic, even after all those
+efforts you made to document this or standardize that?
+
+We believe a standardized concept of complexity auditing
+is an essential service that every technology company
+could benefit from, but which is entirely absent from
+the industry at present.
+
+That what we do, here at The Hello Corporation.
+
+We help technology companies audit every aspect
+of their stack, including:
+
+- onboarding
+- development
+  - within project
+    - documentation
+    - testing
+    - version control
+    - dev environments
+    - ci/cd pipelines
+  - between project
+    - code-reuse
+    - packaging
+    - dependency management
+    - vcs collaboration models
+- security
+  - authentication (iam, sso)
+  - vulnerability management
+
+and anything else that the developers on your team come
+into contact with on a daily basis.
+
+How can we audit all those things?
+
+By asking how your team's processes for handling each item
+above would scale if all the complexity of your real
+software was removed.
+
+Because as we say here at The Hello Corporation:
+
+> If your current processes make it difficult to scale hello world,
+> you may want to rethink your business model.
+
+Welcome to The Hello Corporation.©®™
+
+The Github Enterprise is now live at:
+  - https://github.com/enterprises/hellocorporation
+EOF
