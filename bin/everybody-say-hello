@@ -12,14 +12,19 @@ install() {
 
 usage() {
 	cat <<- EOF
-		usage:
-		$(basename $0) [-d|--develop]		Use virtual ${pkg}
-		$(basename $0) [-i|--install]		Install the ${pkg}
+		usage: $(basename $0) [options]
+
+		options:
+
+	        [-d|--develop]       Use virtual ${pkg}
+
+	        [-i|--install]       Install the ${pkg}
 	EOF
     exit 0
 }
 
-case $1 in
+case "$1" in
     -i|--install)   install;;
     -d|--develop)   develop;;
+    *)              usage;;
 esac
