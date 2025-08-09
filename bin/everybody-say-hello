@@ -23,6 +23,10 @@ usage() {
     exit 0
 }
 
+if [[ -z "$1" ]]; then
+    develop
+fi
+
 case "$1" in
     -i|--install)   install;;
     -d|--develop)   develop;;
