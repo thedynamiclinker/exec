@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Run dev shell for Hello Corporation © ® ™
+nix develop github:notarealdeveloper/nixos#hello-corporation
