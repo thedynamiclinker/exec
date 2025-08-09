@@ -538,15 +538,17 @@ hashes() {
 
 if [[ -e /etc/nixos ]]; then
     if [[ ! ${LD_LIBRARY_PATH} =~ gcc ]]; then
-        #export LD_LIBRARY_PATH="$(nix eval --impure --expr 'with import <nixpkgs> {}; gcc.cc.lib + "/lib"' --raw):$LD_LIBRARY_PATH"
-        #export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; zlib + "/lib"' --raw):$LD_LIBRARY_PATH"
+        if [[ $(cat /sys/class/net/w*/operstate) != down ]]; then
+            #export LD_LIBRARY_PATH="$(nix eval --impure --expr 'with import <nixpkgs> {}; gcc.cc.lib + "/lib"' --raw):$LD_LIBRARY_PATH"
+            #export LD_LIBRARY_PATH="$(nix eval  --impure --expr 'with import <nixpkgs> {}; zlib + "/lib"' --raw):$LD_LIBRARY_PATH"
 
-        # could be better, but at least isn't using the internet anymore
-        if nix_which zlib &>/dev/null; then
-            export  LD_LIBRARY_PATH="$(nix_which zlib)/lib:$LD_LIBRARY_PATH"
-        fi
-        if nix_which gcc.cc.lib &>/dev/null; then
-            export  LD_LIBRARY_PATH="$(nix_which gcc.cc.lib)/lib:$LD_LIBRARY_PATH"
+            # could be better, but at least isn't using the internet anymore
+            if nix_which zlib &>/dev/null; then
+                export  LD_LIBRARY_PATH="$(nix_which zlib)/lib:$LD_LIBRARY_PATH"
+            fi
+            if nix_which gcc.cc.lib &>/dev/null; then
+                export  LD_LIBRARY_PATH="$(nix_which gcc.cc.lib)/lib:$LD_LIBRARY_PATH"
+            fi
         fi
     fi
 fi
