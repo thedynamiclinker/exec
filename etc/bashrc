@@ -4,10 +4,6 @@
 export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
-if [[ -z ${BASH_VERSION:-} ]]; then
-    complete() { true; }
-fi
-
 source os.sh
 source log.sh
 source paths.sh
