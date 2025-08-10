@@ -516,7 +516,6 @@ nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/pro
 
 alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
-alias nnn="sudo $EDITOR /etc/nixos/configuration.nix"
 alias nw="nix_which"
 alias ns="nix search nixpkgs"
 alias npl="nix profile list"
@@ -549,16 +548,17 @@ if [[ -e /etc/nixos ]]; then
     fi
 fi
 
-export LIBGL_ALWAYS_INDIRECT=1  # personal
+export LIBGL_ALWAYS_INDIRECT=1
 
 # git tab completion for the juicy sexy plumbing commands!
 export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
+
+# but don't interfere with tab completion on git commit,
+# so exclude completion for the plumbing commands
+# git commit-graph and git commit-tree
 git_completions_file="$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
-source <(cat "$git_completions_file" | sed -r 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | while read cmd; do if [[ ! $cmd =~ ^commit-.* ]]; then echo $cmd; fi; done)@g')
+source <(cat "$git_completions_file" | sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | grep -v commit-)@g')
 
+# complete our `gits` command the same as `git` itself,
+# since it supports all the same commands as plurals.
 ___git_complete gits __git_main
-
-# This correctly seds the code! But we probably need to do this to the whole file above...
-#
-# source <(type __git_main | tail -n +2 | sed -r 's@(.*__gitcomp.*--list-cmds.*);@\1 | while read cmd; do if [[ $cmd =~ ^commit-.* ]]; then echo $cmd; fi; done@g')
-
