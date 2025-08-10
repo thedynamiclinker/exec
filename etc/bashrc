@@ -381,6 +381,20 @@ alias gcm='git commit -m'
 alias gca='git commit --amend'
 alias gcan='git commit --amend --no-edit'
 
+# gits
+alias ggs='gits status'
+alias ggb='gits branch'
+alias ggp='gits pull'
+alias ggd='gits diff'
+alias ggl='gits log'
+alias gga='gits add .'
+alias ggc='gits commit'
+alias ggg='gits add . && git commit && git pull && git push'
+
+# cds
+alias cs='c src'
+
+
 # readline
 type bind &>/dev/null && {
     # this makes C-o kill everything to the following whitespace, 
