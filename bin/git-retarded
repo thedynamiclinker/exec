@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+# Place this in your path to extend git with a new and
+# useful command called `git retarded` (note the space)
+
+import webbrowser
+webbrowser.open("https://youtu.be/LX-7AnOx22k?si=iHE36-PnLoA7X-0m&t=47")
