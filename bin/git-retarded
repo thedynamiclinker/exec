@@ -4,4 +4,4 @@
 # useful command called `git retarded` (note the space)
 
 import webbrowser
-webbrowser.open("https://youtu.be/LX-7AnOx22k?si=iHE36-PnLoA7X-0m&t=47")
+webbrowser.open("https://youtu.be/LX-7AnOx22k&t=47")
