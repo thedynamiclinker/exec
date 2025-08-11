@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker run --rm -it -v "$PWD":/w -w /w gentoo/stage3:latest
