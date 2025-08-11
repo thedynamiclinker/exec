@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+xhost +local:root
+
+docker run --rm -it \
+  --name windows95 \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+  --device /dev/snd \
+  toolboc/windows95:latest
