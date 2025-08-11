@@ -53,14 +53,14 @@ c() {
     # Check to see if the argument is in the list of available dirs
     key="$1"
     val="${dirs[$key]}"
-    if dir_in_dirs $1 && dir_exists $1 && [[ "$PWD" != "${dirs[$1]}" ]]; then
+    if dir_in_dirs $1 && dir_exists $1; then
         pushd "${dirs[$1]}" >/dev/null
         clip_prompt_if_its_super_long
         return 0
     elif dir_in_dirs $1; then
-        echo "The key ${key} is in the dirs array but this path doesn't exist: $val" >&2
+        echo "The key '${key}' is in the dirs array but this path doesn't exist: '$val'" >&2
         return 1
-    elif dir_exists_raw "$1" && [[ "$PWD" != "$1" ]]; then
+    elif dir_exists_raw "$1"; then
         # the dir exists but isn't in the dirs array
         pushd "$1" >/dev/null
         return 0
