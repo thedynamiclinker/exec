@@ -2,9 +2,11 @@
 
 xhost +local:root
 
-docker run --rm -it \
+docker run -it \
   --name windows95 \
-  -e DISPLAY=$DISPLAY \
-  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --device /dev/snd \
+  -e DISPLAY=unix$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   toolboc/windows95:latest
+
+xhost -local:root
