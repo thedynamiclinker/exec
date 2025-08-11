@@ -1,0 +1,5 @@
+#!/bin/bash
+
+gh api user/orgs --jq '.[].login' | while read org; do
+    gh api orgs/$org/repos --paginate --jq '.[].full_name'
+done
