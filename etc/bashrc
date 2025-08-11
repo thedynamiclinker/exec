@@ -522,7 +522,7 @@ nix_flake_show() { nix flake show; }
 nix_profile_list() { nix profile list; }
 nix_profile_remove() { nix profile remove "$1"; }
 nix_search() { nix search nixpkgs "$1"; }
-nix_which() { nix path-info "nixpkgs#${1}"; }
+nix_which() { nix path-info "${2:-nixpkgs}#${1}"; }
 nix_get_nixos_install_tools() { nix profile add "nixpkgs#nixos-install-tools"; }
 nixos_rebuild_boot() { nixos-rebuild boot --flake ".#$(hostname)"; }
 nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/profiles/system; }
