@@ -2,7 +2,7 @@
 
 xhost +local:root
 
-docker run -it \
+docker run --rm -it \
   --name windows95 \
   --device /dev/snd \
   -e DISPLAY=unix$DISPLAY \
