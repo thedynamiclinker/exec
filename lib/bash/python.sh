@@ -8,7 +8,7 @@ venv() {
     fi
     env="$HOME/env/$1"
     if [[ ! -e "$env" ]]; then
-        mkdir -pv "$(dirname "$env")"
+        mkdir -p "$(dirname "$env")"
         $PYTHON -m venv "$env"
     fi
     source "$env/bin/activate"
@@ -23,11 +23,21 @@ penv() {
     fi
     env="$HOME/env/$1"
     if [[ ! -e "$env" ]]; then
-        mkdir -pv "$(dirname "$env")"
+        mkdir -p "$(dirname "$env")"
         $PYTHON -m venv --system-site-packages "$env"
     fi
     source "$env/bin/activate"
     "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
+}
+
+rmenv() {
+    if [[ -n "$VIRTUAL_ENV" ]] \
+    && [[ -d "$VIRTUAL_ENV" ]] \
+    && [[ $(which python) =~ "$VIRTUAL_ENV".* ]] \
+    && [[ $(which python) =~ "$HOME".* ]] \
+    then
+        rm -r "$VIRTUAL_ENV" && deactivate
+    fi
 }
 
 wenv() {
