@@ -39,7 +39,7 @@ rmenv() {
         echo "${FUNCNAME}: removing env ${VIRTUAL_ENV} and deactivating"
         rm -r "$VIRTUAL_ENV" && deactivate
     else
-        echo "${FUNCNAME}: not convinced it's safe. doing nothing."
+        echo "${FUNCNAME}: doing nothing."
     fi
 }
 
