@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
-user="$1"
-if [[ -z $2 ]]; then
-    prefix=""
-else
-    prefix="${2}/"
+if [[ -z $1 ]]; then
+    #echo "usage: $(basename $0) <user-or-org>"
+    #exit 1
+    echo "fuck it, here we go"
 fi
 
-git repos "$1" | while read repo; do
-    if [[ -d "$repo" ]]; then
+owner="$1"  # user or org
+prefix="${2:-.}"
+
+git repos --verbose "$owner" | while read repo url; do
+    path="$prefix/$repo"
+    if [[ -d "$path" ]]; then
         continue
     fi
-    git clone "$repo" "$prefix$repo"
+    git clone "$url" "$path"
 done
 
