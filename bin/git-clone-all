@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
+user="$1"
+if [[ -z $2 ]]; then
+    prefix=""
+else
+    prefix="${2}/"
+fi
+
 git repos "$1" | while read repo; do
     if [[ -d "$repo" ]]; then
         continue
     fi
-    git clone "$repo" "$repo"
+    git clone "$repo" "$prefix$repo"
 done
 

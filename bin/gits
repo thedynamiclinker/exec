@@ -37,6 +37,12 @@ fi
 cmd="${1}"
 dir="${PWD}"
 
+if [[ $cmd == clone ]]; then
+    shift
+    git clone-all $*
+    exit 0
+fi
+
 if [ ! -d "$dir" ]; then
     echo "error: not a directory: $2"
     exit 1
