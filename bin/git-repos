@@ -3,14 +3,30 @@
 # note: orgs can be treated as users, but not
 # vice-versa, so this works for orgs as well
 
-if [[ -z $1 ]]; then
-    query="user/repos"
-else
-    name="$1"
-    query="users/$name/repos"
-fi
+format='simple'
+query="user/repos"      # if unspecified, default to current user
 
-gh api "$query" --paginate | jq -r '.[].full_name'
+while [[ -n $1 ]]; do
+    case $1 in
+        -v|--verbose)   format="both";;
+        -u|--urls)      format="urls";;
+        -s|--simple)    format="simple";;
+        -*)             echo "error: git repos: unrecognized option: $1" && exit 1;;
+        *)              query="users/$1/repos";;
+    esac
+    shift
+done
+
+if [[ $format == simple ]]; then
+    gh api "$query" --paginate --jq '.[].full_name' | cat
+elif [[ $format == urls ]]; then
+    gh api "$query" --paginate --jq '.[].clone_url' | cat
+elif [[ $format == both ]]; then
+    gh api "$query" --paginate --jq '.[] | [.full_name, .clone_url] | @tsv' | column -t | cat
+else
+    echo "error: git repos: impossible situation reached"
+    exit 1
+fi
 
 # to exclude repos that the user has been added to
 # as a collaborator but doesn't either own or belong
