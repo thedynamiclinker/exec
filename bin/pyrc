@@ -1,4 +1,4 @@
-#!/usr/bin/env python -B
+#!/usr/bin/env -S python -B
 
 # Put this file in:
 # $HOME/.ipython/profile_default/startup/
@@ -17,7 +17,13 @@ filterwarnings(
 
 failed = {}
 
-import os, sys, threading, itertools
+import os, re, sys, threading, itertools
+
+if not re.search('/.ipython/', sys.argv[0]):
+    # if we're being executed by someone other than ipython,
+    # assume it's us executing ourselves, and open us in $EDITOR
+    if os.getenv('EDITOR', None) is not None:
+        os.system(f"exec $EDITOR {__file__}")
 
 def exec_code(code):
     try:
@@ -74,7 +80,6 @@ import datetime
 import tempfile
 import operator
 import warnings
-import requests
 import textwrap
 import importlib
 import functools
@@ -108,6 +113,11 @@ from multiprocessing import Process
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import ProcessPoolExecutor
 
+
+try:
+    import requests
+except Exception as e:
+    failed['requests'] = e
 
 try:
     import numpy as np
