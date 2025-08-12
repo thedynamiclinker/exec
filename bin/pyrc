@@ -114,6 +114,12 @@ try:
 except Exception as e:
     failed['numpy'] = e
 
+try:
+    import pandas as pd
+except Exception as e:
+    failed['pandas'] = e
+
+
 # necessary if we keep ipython magics in another file
 from IPython import get_ipython
 
