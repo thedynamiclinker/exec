@@ -1,5 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-gh api user/orgs --jq '.[].login' | while read org; do
-    gh api orgs/$org/repos --paginate --jq '.[].full_name'
-done
+{
+    # this lists *some* of the org repos but not all
+    # so let's grab both sets and deduplicate
+    gh api user/repos --jq '.[].full_name'
+
+    gh api user/orgs --jq '.[].login' | while read org; do
+        gh api orgs/$org/repos --jq '.[].full_name'
+    done
+} | sort | uniq
