@@ -9,7 +9,11 @@
 
 # Don't warn about being in a venv
 from warnings import filterwarnings
-filterwarnings("ignore", category=UserWarning, message="Attempting to work in a virtualenv.*")
+filterwarnings(
+    "ignore",
+    category=UserWarning,
+    message="Attempting to work in a virtualenv.*"
+)
 
 failed = {}
 
