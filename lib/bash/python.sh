@@ -12,7 +12,7 @@ venv() {
         $PYTHON -m venv "$env"
     fi
     source "$env/bin/activate"
-    "$PYTHON" -m pip install --upgrade pip > /dev/null
+    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
 penv() {
@@ -27,7 +27,7 @@ penv() {
         $PYTHON -m venv --system-site-packages "$env"
     fi
     source "$env/bin/activate"
-    "$PYTHON" -m pip install --upgrade pip > /dev/null
+    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
 wenv() {
