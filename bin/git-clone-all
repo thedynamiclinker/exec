@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-if [[ -z $1 ]]; then
-    #echo "usage: $(basename $0) <user-or-org>"
-    #exit 1
-    echo "fuck it, here we go"
-fi
-
 owner="$1"  # user or org
 prefix="${2:-.}"
 
