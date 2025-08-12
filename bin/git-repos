@@ -17,18 +17,26 @@ while [[ -n $1 ]]; do
     shift
 done
 
-if [[ $format == simple ]]; then
-    gh api "$query" --paginate --jq '.[].full_name' | cat
-elif [[ $format == urls ]]; then
-    gh api "$query" --paginate --jq '.[].clone_url' | cat
-elif [[ $format == both ]]; then
-    gh api "$query" --paginate --jq '.[] | [.full_name, .clone_url] | @tsv' | column -t | cat
-else
-    echo "error: git repos: impossible situation reached"
-    exit 1
-fi
+format_output() {
+    if [[ $format == simple ]]; then
+        jq -r '.[].full_name' 
+    elif [[ $format == urls ]]; then
+        jq -r '.[].clone_url' 
+    elif [[ $format == both ]]; then
+        jq -r '.[] | [.full_name, .clone_url] | @tsv' | column -t
+    else
+        echo "error: git repos: impossible situation reached"
+        exit 1
+    fi
+}
 
-# to exclude repos that the user has been added to
-# as a collaborator but doesn't either own or belong
-# to an organization that owns, do this:
-# gh api "$query" --paginate | jq -r --arg self $(gh api user --jq '.login') '.[] | select(.owner.login == $self or .owner.type == "Organization") | .full_name'
+filter_irrelevant() {
+    if [[ $query == user/repos ]]; then
+        self="$(gh api user --jq '.login')"
+        jq -r --arg self "$self" '.[] | [select(.owner.login == $self or .owner.type == "Organization")]'
+    else
+        cat
+    fi
+}
+
+gh api "$query" --paginate | filter_irrelevant | format_output
