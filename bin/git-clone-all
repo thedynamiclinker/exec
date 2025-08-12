@@ -4,6 +4,7 @@ owner="$1"  # user or org
 prefix="${2:-.}"
 
 git repos --verbose "$owner" | while read repo url; do
+    repo="${repo,,}" # lowercase the org and repo name
     path="$prefix/$repo"
     if [[ -d "$path" ]]; then
         continue
