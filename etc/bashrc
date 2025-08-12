@@ -261,7 +261,6 @@ alias rmv='rm -v'
 alias sm='synergy-share'
 alias ud='updatedb'
 alias rn='ranger'
-alias open="xdg-open"
 alias e="$EDITOR"
 alias b='popd'
 

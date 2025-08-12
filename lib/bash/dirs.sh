@@ -46,26 +46,26 @@ c() {
     # want to make the code more complicated to compensate
     [[ -z $1 ]] && cd && return 0
 
-    case $1 in
+    case "$1" in
         -|..) cd "$1"; return 0;;
     esac
 
     # Check to see if the argument is in the list of available dirs
     key="$1"
-    val="${dirs[$key]}"
-    if dir_in_dirs $1 && dir_exists $1; then
-        pushd "${dirs[$1]}" >/dev/null
+    val="${dirs["$key"]}"
+    if dir_in_dirs "$key" && dir_exists "$key"; then
+        pushd "$val" >/dev/null
         clip_prompt_if_its_super_long
         return 0
-    elif dir_in_dirs $1; then
-        echo "The key '${key}' is in the dirs array but this path doesn't exist: '$val'" >&2
+    elif dir_in_dirs "$key"; then
+        echo "The key '$key' is in the dirs array,"
+        echo "but this path doesn't exist: '$val'" >&2
         return 1
-    elif dir_exists_raw "$1"; then
-        # the dir exists but isn't in the dirs array
-        pushd "$1" >/dev/null
+    elif dir_exists_raw "$key"; then
+        pushd "$key" >/dev/null
         return 0
     else
-        echo "The key ${key} is not in the list of available dirs." >&2
+        echo "error: ${FUNCNAME} could not figure out how to cd to: $key." >&2
         return 2
     fi
 }
