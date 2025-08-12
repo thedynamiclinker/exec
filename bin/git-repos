@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-{
-    # this lists *some* of the org repos but not all
-    # so let's grab both sets and deduplicate
-    gh api user/repos --jq '.[].full_name'
+# note: orgs can be treated as users, but not
+# vice-versa, so this works for orgs as well
 
-    gh api user/orgs --jq '.[].login' | while read org; do
-        gh api orgs/$org/repos --jq '.[].full_name'
-    done
-} | sort | uniq
+if [[ -z $1 ]]; then
+    query="user/repos"
+else
+    name="$1"
+    query="users/$name/repos"
+fi
+
+gh api "$query" --paginate | jq -r '.[].full_name'
+
+# to exclude repos that the user has been added to
+# as a collaborator but doesn't either own or belong
+# to an organization that owns, do this:
+# gh api "$query" --paginate | jq -r --arg self $(gh api user --jq '.login') '.[] | select(.owner.login == $self or .owner.type == "Organization") | .full_name'
