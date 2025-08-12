@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+[[ -z "$1" ]] && {
+    echo "usage: $(basename "$0") <ref>"
+    exit 1
+}
+
+hash="$(git rev-parse "$1")"
+type="$(git cat-file -t "$hash")"
+
+case $type in
+    blob)           git cat-file -p "$hash";;
+    tree|commit)    git ls-tree     "$hash";;
+    *)              echo "Wtf is this: type='$type' hash='$hash'"
+                    exit 1
+                    ;;
+esac
