@@ -552,7 +552,7 @@ if [[ -e /etc/nixos ]]; then
     if [[ ! ${LD_LIBRARY_PATH} =~ gcc ]]; then
         if [[ $(cat /sys/class/net/w*/operstate) != down ]]; then
             for pkg in zlib gcc.cc.lib; do
-                path="$(nix_which "$pkg" &>/dev/null)"
+                path="$(nix_which "$pkg" 2>/dev/null)"
                 if [[ $? -eq 0 ]]; then
                     add_to_ld_library_path "${path}/lib"
                 fi
