@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git repos "$1" | while read repo; do
+    if [[ -d "$repo" ]]; then
+        continue
+    fi
+    git clone "$repo" "$repo"
+done
+
