@@ -392,7 +392,7 @@ alias ggd='gits diff'
 alias ggl='gits log'
 alias gga='gits add .'
 alias ggc='gits commit'
-alias ggg='gits add . && git commit && git pull && git push'
+alias ggg='gits add . && gits commit && gits pull && gits push'
 
 # cds
 alias cs='c src'
