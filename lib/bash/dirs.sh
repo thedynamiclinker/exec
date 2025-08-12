@@ -107,17 +107,59 @@ pop() {
 # bash completions
 
 _bash_complete_using_dirs_array() {
-    local possible_dirs=($(echo ${!dirs[@]}))
+    local possible_keys=($(echo ${!dirs[@]}))
     local curr_word="${COMP_WORDS[COMP_CWORD]}"
     local prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
-    COMPREPLY=($(compgen -W "${possible_dirs[*]}" -- ${curr_word}))
+    COMPREPLY=($(compgen -W "${possible_keys[*]}" -- ${curr_word}))
+}
+
+_EXPERIMENTAL_bash_complete_using_dirs_array() {
+    local possible_keys=($(echo ${!dirs[@]}))
+    local curr_word="${COMP_WORDS[COMP_CWORD]}"
+    local prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
+    if [[ ! ${curr_word} =~ .*/.* ]]; then
+        # act normal for keys that don't end with a slash
+        COMPREPLY=($(compgen -W "${possible_keys[*]}" -- ${curr_word}))
+        return
+    elif [[ ${curr_word} =~ .*/ ]]; then
+        key="${curr_word%%/*}"     # turns 'a/b/c' into 'a'
+        sub="${curr_word#$key/}"   # turns 'a/b/c' into 'b/c'
+        val="${dirs["$key"]}"
+        loc="$val$sub"
+        rel=($(for path in $(ls $loc/); do echo /${path#$val}; done))
+        #echo "key=$key"
+        #echo "val=$val"
+        #echo "sub=$sub"
+        #echo "loc=$loc"
+        #echo "abs=${abs[*]}"
+        #echo
+        for x in "${rel[*]}"; do echo "$x"; done
+        #COMPREPLY=($(compgen -W "${abs[*]}" -- ${curr_word}))
+        COMPREPLY=($(compgen -W "${rel[*]}" -- ${curr_word}))
+    else
+        key="${curr_word%%/*}"     # turns 'a/b/c' into 'a'
+        sub="${curr_word#$key/}"   # turns 'a/b/c' into 'b/c'
+        val="${dirs["$key"]}"
+        loc="$val$sub"
+        rel=($(for path in $(ls $loc/); do echo ${path#${val}/}; done))
+        #echo "key=$key"
+        #echo "val=$val"
+        #echo "sub=$sub"
+        #echo "loc=$loc"
+        #echo "abs=${abs[*]}"
+        echo
+        for x in "${rel[*]}"; do echo "$x"; done
+        #COMPREPLY=($(compgen -W "${abs[*]}" -- ${curr_word}))
+        COMPREPLY=($(compgen -W "${rel[*]}" -- ${curr_word}))
+    fi
 }
 
 is_bash && {
     complete -F _bash_complete_using_dirs_array p
     complete -F _bash_complete_using_dirs_array o
     complete -F _bash_complete_using_dirs_array c
+
     complete -F _bash_complete_using_dirs_array push
-    complete -F _bash_complete_using_dirs_array pop # useless completion, but it's only fair
+    complete -F _bash_complete_using_dirs_array pop # for fairness (lol)
 }
 
