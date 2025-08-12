@@ -36,6 +36,7 @@ rmenv() {
     && [[ $(which python) =~ "$VIRTUAL_ENV".* ]] \
     && [[ $(which python) =~ "$HOME".* ]] \
     then
+        echo "Removing env ${VIRTUAL_ENV} and deactivating"
         rm -r "$VIRTUAL_ENV" && deactivate
     fi
 }
