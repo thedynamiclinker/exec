@@ -61,12 +61,12 @@ repo="$cache/$rev"
 if [[ ! -d "$repo" ]]; then
     mkdir -p repo
     # trap 'rm -rf "$repo"' EXIT
-    git init --bare "$repo" >/dev/null
-    git -C "$repo" remote add origin "$url" >/dev/null
+    git init --bare "$repo" &>/dev/null
+    git -C "$repo" remote add origin "$url" &>/dev/null
 
     # do a git fetch but don't get any blobs.
     git -C "$repo" -c protocol.version=2 fetch \
-        --depth=1 --filter=blob:none origin "$rev" >/dev/null
+        --depth=1 --filter=blob:none origin "$rev" &>/dev/null
 fi
 
 read mode type hash path < <(git -C "$repo" ls-tree "$rev" -- "$path")
