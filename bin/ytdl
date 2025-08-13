@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+prefix=
+args=(--no-check-certificate)
+while [[ -n $1 ]]; do
+    case $1 in
+        -p|--prefix)    shift; prefix="$1";;
+        *)              args+=($1)
+    esac
+    shift
+done
+
+if [[ -n $prefix ]]; then
+    output="${prefix}-%(title)s.%(ext)s" 
+else
+    output="%(title)s.%(ext)s" 
+fi
+filename="$(yt-dlp --print filename -o "${output}" "${args[@]}")"
+finalname="$(fixnames -s "$filename")"
+yt-dlp -o "$finalname" "${args[@]}"
