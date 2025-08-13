@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Declare dependencies on arbitrary files
+# within arbitrary remote git repositories.
+
+# If multiple projects need the same data
+# dependency and the blobs match, they can
+# automatically share it without knowing
+# about each other. If one deletes it, the
+# other will refetch it as needed, without
+# having to realize it's doing so.
+
+if [[ -z $1 ]] || [[ -z $2 ]]; then
+    echo "usage: $(basename "$0") <url> <path>"
+    exit 1
+fi
+
+as_path=
+refresh=
+while [[ -n "${1:-}" ]]; do
+    case $1 in
+        -c|--contents)  as_path=;;
+        -p|--path)      as_path=1;;
+        -r|--refresh)   refresh="$1";;
+        -u|--url)       shift; url="$1";;
+        -f|--file)      shift; path="$1";;
+        -*)             echo "unrecognized option: $1" && exit 1;;
+        *)              if [[ -z "${url:-}" ]]; then
+                            url="$1"
+                        elif [[ -z "${path:-}" ]]; then
+                            path="${1:-}"
+                        else
+                            echo "got multiple values for url or path:"
+                            echo "url=$url"
+                            echo "path=$path"
+                            echo "arg=$1"
+                        fi
+                        ;;
+    esac
+shift
+done
+
+cache="${HOME}/.cache/blob"
+mkdir -p "$cache"
+
+remotes="$cache/remote"
+mkdir -p "$remotes"
+
+read urlhash _ < <(sha1sum <<< "$url")
+if [[ ! -e "$remotes/$urlhash" ]] || [[ -n "$refresh" ]]; then
+    read rev ref < <(git ls-remote "$url" HEAD)
+    echo "$rev" > "$remotes/$urlhash"
+else
+    rev="$(cat "$remotes/$urlhash")"
+fi
+
+repo="$cache/$rev"
+
+if [[ ! -d "$repo" ]]; then
+    mkdir -p repo
+    trap 'rm -rf "$repo"' EXIT
+    git init --bare "$repo" >/dev/null
+    git -C "$repo" remote add origin "$url" >/dev/null
+
+    # do a git fetch but don't get any blobs.
+    git -C "$repo" -c protocol.version=2 fetch \
+        --depth=1 --filter=blob:none origin "$rev"
+fi
+
+read mode type hash path < <(git -C "$repo" ls-tree "$rev" -- "$path")
+
+outpath="$cache/$hash"
+if [[ ! -e "$outpath" ]]; then
+    mkdir -p "$(dirname "$outpath")"
+    git -C "$repo" cat-file -p "$hash" > "$outpath"
+fi
+
+if [[ -n "$as_path" ]]; then
+    echo "$outpath"
+else
+    cat "$outpath"
+fi
