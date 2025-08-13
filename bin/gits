@@ -58,7 +58,7 @@ for thing in *; do
 
     echo "================="
     push "$repo"
-    git $@
+    git "$@"
     pop
 done
 echo "================="
