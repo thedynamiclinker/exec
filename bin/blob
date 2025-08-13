@@ -12,7 +12,7 @@ set -euo pipefail
 # other will refetch it as needed, without
 # having to realize it's doing so.
 
-if [[ -z $1 ]] || [[ -z $2 ]]; then
+if [[ -z ${1:-} ]] || [[ -z ${2:-} ]]; then
     echo "usage: $(basename "$0") <url> <path>"
     exit 1
 fi
@@ -23,7 +23,7 @@ while [[ -n "${1:-}" ]]; do
     case $1 in
         -c|--contents)  as_path=;;
         -p|--path)      as_path=1;;
-        -r|--refresh)   refresh="$1";;
+        -r|--refresh)   refresh=1;;
         -u|--url)       shift; url="$1";;
         -f|--file)      shift; path="$1";;
         -*)             echo "unrecognized option: $1" && exit 1;;
@@ -60,13 +60,13 @@ repo="$cache/$rev"
 
 if [[ ! -d "$repo" ]]; then
     mkdir -p repo
-    trap 'rm -rf "$repo"' EXIT
+    # trap 'rm -rf "$repo"' EXIT
     git init --bare "$repo" >/dev/null
     git -C "$repo" remote add origin "$url" >/dev/null
 
     # do a git fetch but don't get any blobs.
     git -C "$repo" -c protocol.version=2 fetch \
-        --depth=1 --filter=blob:none origin "$rev"
+        --depth=1 --filter=blob:none origin "$rev" >/dev/null
 fi
 
 read mode type hash path < <(git -C "$repo" ls-tree "$rev" -- "$path")
