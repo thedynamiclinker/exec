@@ -395,6 +395,7 @@ alias ggg='gits add . && gits commit && gits pull && gits push'
 
 # cds
 alias cs='c src'
+alias cn='c nixos'
 
 
 # readline
