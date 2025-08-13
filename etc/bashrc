@@ -563,6 +563,8 @@ fi
 
 export LIBGL_ALWAYS_INDIRECT=1
 
+export PYTHONDONTWRITEBYTECODE=1
+
 # git tab completion for the juicy sexy plumbing commands!
 export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
 
