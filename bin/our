@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# declare a dict in bash
+declare -A things
+
+things=(
+    [address]="600 Pearly Eye Dr Unit C, Pflugerville, TX, 78660"
+    [business-address]="506 S Spring St #13308 SMB#68165 Los Angeles, CA, 90013"
+    [email]="root@thedynamiclinker.com"
+    [gmail]="beforeweknowhow@gmail.com"
+    [website]="https://thedynamiclinker.com"
+    [linkedin]="https://linkedin.com/company/thedynamiclinker"
+    [twitter]="https://x.com/dynamic_linker"
+    [github]="git clone git@github.com:thedynamiclinker/"
+)
+
+usage() {
+    # We can optionally pass in an explanation of what went wrong.
+    [[ -n "$1" ]] && log "${1}"
+    cat << EOF
+USAGE
+    $(basename $0) [OPTIONS]
+
+OPTIONS
+    --list, -l      List all things
+    --help, -h      Show this help
+
+THINGS:
+$(for f in ${!things[@]}; do echo $f; done | sort | sed -r -z 's@\n@ @g' | fold -w 70 -s | sed 's@.*@    &@g')
+EOF
+    exit 1
+}
+
+thing_is_available() {
+    echo ${!things[*]} | sed -z -r 's@ @\n@g' | grep -cq "^${1}$"
+}
+
+# For automatically adding new keys to our tab-completion
+list_all_things() {
+    echo ${!things[*]}
+    exit 0
+}
+
+show_thing () {
+    local key="${1}"
+    local thing="${things[$key]}"
+
+    if ! thing_is_available "$key"; then
+        die "Thing $key not in list of available things."
+    fi
+
+    echo "${thing}"
+    echo "${thing}" | xc
+
+    exit 0
+}
+
+[[ -z "$1" ]] && usage
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)          usage;;
+        -l|--list)          list_all_things;;
+        -*)                 usage "Unrecognized option: ${1}";;
+        *)                  show_thing "${1}";;
+    esac
+    shift
+done
