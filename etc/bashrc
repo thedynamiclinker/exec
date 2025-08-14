@@ -443,6 +443,13 @@ enter() {
     mkdir -pv "$1" && pushd "$1" 2>/dev/null
 }
 
+vx() {
+    for f in "$@"; do
+        touch "$f" && chmod +x "$f"
+    done
+    vim -p "$@"
+}
+
 unixjoke() {
     # classic
     cat << "EOF"
