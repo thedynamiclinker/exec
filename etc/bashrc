@@ -273,9 +273,9 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
-alias pip="python -m pip"
-alias pdb="python -m pdb"
-alias pip-dammit="python -m pip install --no-deps --no-compile --no-build-isolation" # for airplanes
+#alias pip="python -m pip"
+#alias pdb="python -m pdb"
+#alias pip-dammit="python -m pip install --no-deps --no-compile --no-build-isolation" # for airplanes
 
 # fundamentals: lower priority
 alias po='acpi'

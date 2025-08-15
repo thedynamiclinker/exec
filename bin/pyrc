@@ -29,7 +29,8 @@ def exec_code(code):
     try:
         exec(code, globals())
     except Exception as e:
-        failed['pyrc'] = e
+        try: failed['pyrc'] = e
+        except: pass
 
 with open(__file__) as fp:
     lines = fp.read().splitlines()
