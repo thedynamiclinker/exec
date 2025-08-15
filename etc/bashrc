@@ -556,11 +556,11 @@ hashes() {
     nix-prefetch-github --nix $(git remote get-url origin | sed -e 's@https://github.com/@@' -e 's@[.]git$@@' -e 's@/@ @')
 }
 
-if [[ -e /etc/nixos ]]; then
+if [[ -e /etc/nix ]]; then
     if [[ ! ${LD_LIBRARY_PATH} =~ gcc ]]; then
-        if [[ $(cat /sys/class/net/w*/operstate) != down ]]; then
+        if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
             for pkg in zlib gcc.cc.lib; do
-                path="$(nix_which "$pkg" 2>/dev/null)"
+                path="$(nix_which "$pkg")"
                 if [[ $? -eq 0 ]]; then
                     add_to_ld_library_path "${path}/lib"
                 fi
