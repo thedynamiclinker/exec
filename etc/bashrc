@@ -382,8 +382,7 @@ alias grso='git remote show origin'
 alias grsu='git remote show upstream'
 alias gsm='git switch master 2> /dev/null || git switch main'
 
-alias gg='git add . && git commit && git pull'
-alias gg+='git add . && git commit --amend --no-edit && git pull'
+alias gg='git add . && git commit && git pull && git push'
 
 # gits
 alias ggs='gits status'
