@@ -361,6 +361,7 @@ alias cdk="cd /usr/src/linux"
 # git
 alias gs='git status'
 alias gb='git branch'
+alias gba='git branch --all'
 alias gp='git pull'
 alias gpp='git push'
 alias gd='git diff'
