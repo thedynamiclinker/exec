@@ -226,7 +226,7 @@ alias ls="ls -h --color=auto --group-directories-first"
 alias l="ls -1"
 alias ll="ls -al"
 alias duh="du -hd0"
-alias grep="grep -P --color=auto --exclude-dir=.git"
+alias grep="grep -P --color=auto --exclude-dir=.git --exclude='*.ps' --exclude='*.pdf'"
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
 alias diff='diff -u'
