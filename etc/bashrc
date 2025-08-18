@@ -381,6 +381,7 @@ alias gcan='git commit --amend --no-edit'
 alias grs='git remote show'
 alias grso='git remote show origin'
 alias grsu='git remote show upstream'
+alias gaita='git add --intent-to-add .'
 alias gsm='git switch master 2> /dev/null || git switch main'
 
 alias g+='git add . && git commit --amend --no-edit && git pull'
