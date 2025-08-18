@@ -56,18 +56,20 @@ c() {
     if dir_in_dirs "$key" && dir_exists "$key"; then
         pushd "$val" >/dev/null
         clip_prompt_if_its_super_long
-        return 0
+        retval=0
     elif dir_in_dirs "$key"; then
         echo "The key '$key' is in the dirs array,"
         echo "but this path doesn't exist: '$val'" >&2
-        return 1
+        retval=1
     elif dir_exists_raw "$key"; then
         pushd "$key" >/dev/null
-        return 0
+        retval=0
     else
         echo "error: ${FUNCNAME} could not figure out how to cd to: $key." >&2
-        return 2
+        retval=2
     fi
+    cd "$(realpath "$PWD")" # jesus...
+    return $retval
 }
 
 p() {
