@@ -559,7 +559,8 @@ hashes() {
 }
 
 if [[ -e /etc/nix ]]; then
-    if [[ -n "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
+    #if [[ -n "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
+    if [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
         if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
             for pkg in zlib gcc.cc.lib; do
                 path="$(nix_which "$pkg")"
