@@ -398,11 +398,6 @@ alias gga='gits add .'
 alias ggc='gits commit'
 
 
-# cds
-alias cs='c src'
-alias cn='c nixos'
-
-
 # readline
 type bind &>/dev/null && {
     # this makes C-o kill everything to the following whitespace, 
