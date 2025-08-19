@@ -281,6 +281,7 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
+alias PY="python3.15 -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
 #alias pip="python -m pip"
 #alias pdb="python -m pdb"
 #alias pip-dammit="python -m pip install --no-deps --no-compile --no-build-isolation" # for airplanes
