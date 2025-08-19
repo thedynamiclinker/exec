@@ -49,12 +49,11 @@ if [ ! -d "$dir" ]; then
 fi
 
 pushd "$dir" >/dev/null
-for thing in *; do
+find "$dir" -maxdepth 4 -type d -name .git -exec dirname '{}' ';' | while read repo; do
 
-    [ ! -d "$thing/.git" ] && continue
+    [ ! -d "$repo/.git" ] && continue
 
     # now we know it's a repo
-    repo="$thing"
 
     echo "================="
     push "$repo"
