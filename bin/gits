@@ -17,12 +17,14 @@ fi
 push() { 
     local d="$1";
     pushd "$d" > /dev/null;
-    dir="$(basename "$PWD")";
+    #dir="$(basename "$PWD")";
+    dir="$PWD"
     printf "${whi}...${red}(${blu}${dir}${whi}${end}\n"
 }
 
 pop() { 
-    dir="$(basename "$PWD")";
+    #dir="$(basename "$PWD")";
+    dir="$PWD"
     popd > /dev/null;
     printf "${whi}...${blu}${dir}${red})${end}\n"
 }
