@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+stdlib="$(python -c 'print(__import__("sysconfig").get_path("stdlib"))')"
+sitepkgs="$(python -c 'print(__import__("site").getsitepackages()[0])')"
+
+python -m trace --trace --ignore-dir="$stdlib" --ignore-dir="$sitepkgs" $*
