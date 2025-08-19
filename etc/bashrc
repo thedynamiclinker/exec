@@ -290,10 +290,11 @@ python-latest() {
 }
 #PV=$(python-latest)
 PV=3.15
-alias Python="PYTHONPATH=$HOME/.local/lib/python${PV} python${PV}" # horrible, just horrible
-alias Pip="python${PV} -m pip"
-alias Pdb="python${PV} -m pdb"
-alias Py="python${PV} -m IPython ${_IPYTHON_ARGS[*]}"
+hack="PYTHONPATH=$HOME/.local/lib/python${PV}"
+alias Python="$hack python${PV}" # horrible, just horrible
+alias Pip="$hack python${PV} -m pip"
+alias Pdb="$hack python${PV} -m pdb"
+alias Py="$hack python${PV} -m IPython ${_IPYTHON_ARGS[*]}"
 
 # fundamentals: lower priority
 alias po='acpi'
