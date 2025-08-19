@@ -281,6 +281,9 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
+alias pip='python -m pip'
+alias pdb='python -m pdb'
+
 python-latest() {
     type -ap python3 | xargs realpath | while read python; do $python --version; done | sort | tail -1 | cut -d ' ' -f2 | cut -d. -f 1,2
 }
