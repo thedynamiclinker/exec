@@ -288,7 +288,8 @@ alias pdb='python -m pdb'
 python-latest() {
     type -ap python3 | xargs realpath | while read python; do $python --version; done | sort | tail -1 | cut -d ' ' -f2 | cut -d. -f 1,2
 }
-PV=$(python-latest)
+#PV=$(python-latest)
+PV=3.15
 alias Python="python${PV}"
 alias Pip="python${PV} -m pip"
 alias Pdb="python${PV} -m pdb"
