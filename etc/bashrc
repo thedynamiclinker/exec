@@ -166,7 +166,7 @@ fi
 
 # experiment: prefixes in $HOME/dst
 if [[ -d "$HOME/dst" ]]; then
-    for dir in "$(ls "$HOME/dst"/*)"; do
+    for dir in "$HOME/dst"/*; do
         [[ ! -d "$dir" ]] && continue
         add_to_path "$dir/bin"
     done
