@@ -281,10 +281,14 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
-alias py-head="python3.15 -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
-alias pip-head="python3.15 -m pip"
-alias pdb-head="python3.15 -m pdb"
-#alias pip-dammit="python -m pip install --no-deps --no-compile --no-build-isolation" # for airplanes
+python-latest() {
+    type -ap python3 | xargs realpath | while read python; do $python --version; done | sort | tail -1 | cut -d ' ' -f2 | cut -d. -f 1,2
+}
+PV=$(python-latest)
+alias Python="python${PV}"
+alias Pip="python${PV} -m pip"
+alias Pdb="python${PV} -m pdb"
+alias Py="python${PV} -m IPython ${_IPYTHON_ARGS[*]}"
 
 # fundamentals: lower priority
 alias po='acpi'
