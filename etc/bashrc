@@ -290,7 +290,7 @@ python-latest() {
 }
 #PV=$(python-latest)
 PV=3.15
-alias Python="python${PV}"
+alias Python="PYTHONPATH=$HOME/.local/lib/python${PV} python${PV}" # horrible, just horrible
 alias Pip="python${PV} -m pip"
 alias Pdb="python${PV} -m pdb"
 alias Py="python${PV} -m IPython ${_IPYTHON_ARGS[*]}"
