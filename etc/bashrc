@@ -613,8 +613,3 @@ source <(cat "$git_completions_file" | sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)
 # complete our `gits` command the same as `git` itself,
 # since it supports all the same commands as plurals.
 ___git_complete gits __git_main
-
-if [[ -e "$HOME/.pythonrc.py" ]]; then
-    export PYTHONSTARTUP="$HOME/.pythonrc.py"
-fi
-
