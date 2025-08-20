@@ -569,6 +569,7 @@ alias npl="nix profile list"
 alias npr="nix profile remove"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
 alias nrr="sudo nixos-rebuild repl"
+alias nfu="nix flake update && git add . && git commit"
 alias nr="nix repl --expr 'let pkgs = import <nixpkgs> {}; in pkgs'" # tab complete on nixpkgs
 alias nrc="c nixos && $EDITOR -p configuration.nix"
 alias nrcf="c nixos && $EDITOR -p flake.nix"
