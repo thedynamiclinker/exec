@@ -48,10 +48,6 @@ let loaded_matchparen = 1
 " others: default industry elflord slate
 colorscheme desert
 
-" look for ctags in these locations
-" set tags=./.git/tags,./tags,tags;
-set tags=./.git/tags;
-
 " keep swapfiles here
 set directory=$HOME/.vim
 set nobackup       "no backup files
@@ -149,3 +145,12 @@ augroup org_as_bash
   autocmd!
   autocmd BufRead,BufNewFile *.org setfiletype bash
 augroup END
+
+" Look for ctags in these locations
+set tags=./.git/tags;
+
+" Always show a choices list for the tag under cursor
+nnoremap <C-]> g]
+
+" Show more context in the ctags list
+set showfulltag
