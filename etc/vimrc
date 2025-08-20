@@ -48,6 +48,9 @@ let loaded_matchparen = 1
 " others: default industry elflord slate
 colorscheme desert
 
+" look for ctags in these locations
+set tags=./.git/tags,./tags,tags;
+
 " keep swapfiles here
 set directory=$HOME/.vim
 set nobackup       "no backup files
