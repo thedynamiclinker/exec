@@ -150,7 +150,7 @@ augroup END
 set tags=./.git/tags;
 
 " Always show a choices list for the tag under cursor
-nnoremap <C-]> g]
+" nnoremap <C-]> g]
 
 " Show more context in the ctags list
 set showfulltag
