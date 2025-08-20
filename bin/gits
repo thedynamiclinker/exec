@@ -51,7 +51,7 @@ if [ ! -d "$dir" ]; then
 fi
 
 pushd "$dir" >/dev/null
-find "$dir" -maxdepth 4 -type d -name .git -exec dirname '{}' ';' | while read repo; do
+find -L "$dir" -maxdepth 4 -type d -name .git -exec dirname '{}' ';' | while read repo; do
 
     [ ! -d "$repo/.git" ] && continue
 
