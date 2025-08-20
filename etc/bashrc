@@ -418,7 +418,7 @@ alias ggc='gits commit'
 alias ggg='gits add . && gits commit && gits pull && gits push'
 
 # ctags
-alias tags="universal-ctags -- -f .git/tags --recurse --tag-relative=yes --fields=+l --extras=+q --kinds-all=* --exclude=.git --exclude=.direnv --exclude='result*'"
+alias tags="universal-ctags -f .git/tags --recurse --tag-relative=yes --fields=+l --extras=+q --kinds-all=* --exclude=.git --exclude=.direnv --exclude='result*'"
 
 # readline
 type bind &>/dev/null && {
