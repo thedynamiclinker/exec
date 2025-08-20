@@ -49,7 +49,8 @@ let loaded_matchparen = 1
 colorscheme desert
 
 " look for ctags in these locations
-set tags=./.git/tags,./tags,tags;
+" set tags=./.git/tags,./tags,tags;
+set tags=./.git/tags;
 
 " keep swapfiles here
 set directory=$HOME/.vim
