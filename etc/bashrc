@@ -281,9 +281,9 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 #alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
-alias py="python -m IPython ${_IPYTHON_ARGS[*]}"
-alias pip='python -m pip'
-alias pdb='python -m pdb'
+py()  { python3.${1:-13} -m IPython ${_IPYTHON_ARGS[*]}; }
+pip() { python3.${1:-13} -m pip; }
+pdb() { python3.${1:-13} -m pdb; }
 
 python-latest() {
     type -ap python3 | xargs realpath | while read python; do $python --version; done | sort | tail -1 | cut -d ' ' -f2 | cut -d. -f 1,2
@@ -295,6 +295,7 @@ alias Python="$PYTHON"
 alias Pip="$PYTHON -m pip"
 alias Pdb="$PYTHON -m pdb"
 alias Py="$PYTHON -m IPython ${_IPYTHON_ARGS[*]}"
+unset PYTHON
 #hack="PYTHONPATH=$HOME/.local/lib/python${PV}/site-packages"
 #alias Python="$hack python${PV}" # horrible, just horrible
 #alias Pip="$hack python${PV} -m pip"
