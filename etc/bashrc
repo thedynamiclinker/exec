@@ -286,6 +286,10 @@ ipy() { python3.${1:-13} -m IPython ${_IPYTHON_ARGS[*]}; }
 pip() { python3.${1:-13} -m pip; }
 pdb() { python3.${1:-13} -m pdb; }
 
+alias Py="py 15"
+alias Pip="pip 15"
+alias Pdb="pdb 15"
+
 #hack="PYTHONPATH=$HOME/.local/lib/python${PV}/site-packages"
 #alias Python="$hack python${PV}" # horrible, just horrible
 #alias Pip="$hack python${PV} -m pip"
