@@ -153,4 +153,4 @@ set tags=./.git/tags;
 " nnoremap <C-]> g]
 
 " Show more context in the ctags list
-set showfulltag
+" set showfulltag
