@@ -281,14 +281,23 @@ _IPYTHON_ARGS=(
     --TerminalInteractiveShell.autoformatter=None
 )
 #alias py="python -m IPython --no-banner ${_IPYTHON_ARGS[*]}"
-py()  { python3.${1:-13} -m IPython ${_IPYTHON_ARGS[*]}; }
-ipy() { python3.${1:-13} -m IPython ${_IPYTHON_ARGS[*]}; }
-pip() { python3.${1:-13} -m pip; }
-pdb() { python3.${1:-13} -m pdb; }
+py()  { python -m IPython ${_IPYTHON_ARGS[*]}; }
+pip() { python -m pip; }
+pdb() { python -m pdb; }
 
-alias Py="py 15"
-alias Pip="pip 15"
-alias Pdb="pdb 15"
+py14()  { python3.14 -m IPython ${_IPYTHON_ARGS[*]}; }
+pip14() { python3.14 -m pip; }
+pdb14() { python3.14 -m pdb; }
+py15()  { python3.15 -m IPython ${_IPYTHON_ARGS[*]}; }
+pip15() { python3.15 -m pip; }
+pdb15() { python3.15 -m pdb; }
+
+py14t()  { python3.14t -m IPython ${_IPYTHON_ARGS[*]}; }
+pip14t() { python3.14t -m pip; }
+pdb14t() { python3.14t -m pdb; }
+py15t()  { python3.15t -m IPython ${_IPYTHON_ARGS[*]}; }
+pip15t() { python3.15t -m pip; }
+pdb15t() { python3.15t -m pdb; }
 
 #hack="PYTHONPATH=$HOME/.local/lib/python${PV}/site-packages"
 #alias Python="$hack python${PV}" # horrible, just horrible
