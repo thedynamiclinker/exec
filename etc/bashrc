@@ -427,7 +427,7 @@ alias grhh='git reset --hard HEAD'
 alias gsm='git switch master 2> /dev/null || git switch main'
 
 alias g+='git add . && git commit --amend --no-edit && git pull'
-alias gg='git add . && git commit && git pull && git push'
+alias gg='git add . && git commit && git pull'
 
 # gits
 alias ggs='gits status'
@@ -437,7 +437,7 @@ alias ggd='gits diff'
 alias ggl='gits log'
 alias gga='gits add .'
 alias ggc='gits commit'
-alias ggg='gits add . && gits commit && gits pull && gits push'
+alias ggg='gits add . && gits commit && gits pull'
 
 # ctags
 alias tags="universal-ctags -f .git/tags --recurse --tag-relative=yes --fields=+l --extras=+q --kinds-all=* --exclude=.git --exclude=.direnv --exclude='result*'"
