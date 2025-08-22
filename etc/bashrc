@@ -288,6 +288,12 @@ pdb()       { python -m pdb $@; }
 pytest()    { python -m pytest $@; }
 ipy()       { python -m IPython ${_IPYTHON_ARGS[*]} $@; }
 
+py13()      { python3.13 $@; }
+pip13()     { python3.13 -m pip $@; }
+pdb13()     { python3.13 -m pdb $@; }
+pytest13()  { python3.13 -m pytest $@; }
+ipy13()     { python3.13 -m IPython ${_IPYTHON_ARGS[*]} $@; }
+
 py14()      { python3.14 $@; }
 pip14()     { python3.14 -m pip $@; }
 pdb14()     { python3.14 -m pdb $@; }
@@ -299,6 +305,12 @@ pip15()     { python3.15 -m pip $@; }
 pdb15()     { python3.15 -m pdb $@; }
 pytest15()  { python3.15 -m pytest $@; }
 ipy15()     { python3.15 -m IPython ${_IPYTHON_ARGS[*]} $@; }
+
+py13t()     { python3.13t $@; }
+pip13t()    { python3.13t -m pip $@; }
+pdb13t()    { python3.13t -m pdb $@; }
+pytest13t() { python3.13t -m pytest $@; }
+ipy13t()    { python3.13t -m IPython ${_IPYTHON_ARGS[*]} $@; }
 
 py14t()     { python3.14t $@; }
 pip14t()    { python3.14t -m pip $@; }
