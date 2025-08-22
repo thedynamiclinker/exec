@@ -15,6 +15,22 @@ venv() {
     "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
+venv14() {
+    PYTHON=python3.14 venv $@
+}
+
+venv15() {
+    PYTHON=python3.15 venv $@
+}
+
+venv14t() {
+    PYTHON=python3.14t venv $@
+}
+
+venv15t() {
+    PYTHON=python3.15t venv $@
+}
+
 penv() {
     local PYTHON=${PYTHON:-python}
     if [[ -z $1 ]]; then
