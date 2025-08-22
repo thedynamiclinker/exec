@@ -14,17 +14,19 @@ else
     end="\e[00m"
 fi
 
+root="$PWD"
+
 push() { 
     local d="$1";
     pushd "$d" > /dev/null;
-    #dir="$(basename "$PWD")";
-    dir="$PWD"
+    dir="${d/$root/}"
+    dir="${dir#/}"
     printf "${whi}...${red}(${blu}${dir}${whi}${end}\n"
 }
 
 pop() { 
-    #dir="$(basename "$PWD")";
-    dir="$PWD"
+    dir="${PWD/$root/}"
+    dir="${dir#/}"
     popd > /dev/null;
     printf "${whi}...${blu}${dir}${red})${end}\n"
 }
