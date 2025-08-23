@@ -623,7 +623,7 @@ if [[ -e /etc/nix ]]; then
     #if [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
         if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
             for pkg in zlib gcc.cc.lib; do
-                path="$(nix_which "$pkg")"
+                path="$(nix path-info --offline "nixpkgs#$pkg")"
                 if [[ $? -eq 0 ]]; then
                     add_to_ld_library_path "${path}/lib"
                 fi
