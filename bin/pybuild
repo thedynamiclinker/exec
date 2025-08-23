@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+source ~/.bashrc
+c nixos
+
+usage() {
+    [[ -n "$1" ]] && echo "${1}"
+    cat << EOF
+USAGE
+    $(basename $0) [OPTIONS]
+
+OPTIONS
+    --help, -h      Show this help
+
+EOF
+    exit 1
+}
+
+free_threading=
+python=315
+packages=()
+
+[[ -z "$1" ]] && usage
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)              usage;;
+        -t|--free-threading)    free_threading=FreeThreading;;
+        -p|--python)            shift; python="$1";;
+        *)                      packages+=("$1");;
+    esac
+    shift
+done
+
+args=($(for package in ${packages[@]}; do echo ".#python${python}${free_threading}.pkgs.${package}"; done))
+echo "Running: nix build --print-build-logs ${args[@]}"
+nix build --print-build-logs ${args[@]}
