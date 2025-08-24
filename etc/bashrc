@@ -189,10 +189,11 @@ is_linux && {
     fi
 
     # wireless and ethernet devices
-    [[ -d /sys/class/net ]] && {
-        export WDEV="$(ls /sys/class/net/ | grep -m1 '^w')"
-        export EDEV="$(ls /sys/class/net/ | grep -m1 '^e')"
-    }
+    #[[ -d /sys/class/net ]] && {
+        #export WDEV="$(ls /sys/class/net/ | grep -m1 '^w')"
+        #export EDEV="$(ls /sys/class/net/ | grep -m1 '^e')"
+    #    true
+    #}
 
     # terminal colors
     [[ "$TERM" = "xterm" ]] && export TERM=xterm-256color
@@ -208,7 +209,7 @@ is_linux && {
     export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=01;34:ln=32:bn=32:se=36'
 
     # determine SWAP partition
-    export SWAP="$(cat /proc/swaps | tail -n +2 | cut -f1 -d' ')"
+    #export SWAP="$(cat /proc/swaps | tail -n +2 | cut -f1 -d' ')"
 }
 
 ############################################################
@@ -621,14 +622,14 @@ hashes() {
 if [[ -e /etc/nix ]]; then
     if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
     #if [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
-        if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
+        #if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
             for pkg in zlib gcc.cc.lib; do
                 path="$(nix path-info --offline "nixpkgs#$pkg")"
                 if [[ $? -eq 0 ]]; then
                     add_to_ld_library_path "${path}/lib"
                 fi
             done
-        fi
+        #fi
     fi
 fi
 
