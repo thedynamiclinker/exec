@@ -1,0 +1,8 @@
+#!/usr/bin/env -S nix eval --file
+
+let
+  pkgs = import <nixpkgs> {};
+  lib  = pkgs.lib;
+  x = true;
+in
+  lib.mergeAttrsList ((lib.optional x { a = "b"; }) ++ (lib.optional x { c = "d"; }))
