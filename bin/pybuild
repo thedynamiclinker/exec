@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-source ~/.bashrc
-c nixos
-
 usage() {
     [[ -n "$1" ]] && echo "${1}"
     cat << EOF
