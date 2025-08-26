@@ -553,39 +553,18 @@ if [[ -e "$HOME/.nix-profile/bin" ]]; then
 fi
 
 nrb() {
-    if [[ -e /etc/nixos/flake.nix ]]; then
-	    sudo nixos-rebuild --print-build-logs switch --flake /etc/nixos#$(hostname)
+    if [[ $(getdistro) == nixos ]]; then
+	    sudo nixos-rebuild --print-build-logs switch --flake .#$(hostname)
     else
         sudo nixos-rebuild switch
     fi
-}
-
-work() {
-    if [[ $(getdistro) -eq nixos ]]; then
-        c work
-        nix develop path:/etc/nixos#work
-    else
-        echo "You don't know how to work on this OS yet."
-    fi
-}
-
-wn() {
-    nix_which "$1";
-}
-
-ewn() {
-    $EDITOR "$(nix_which "$1")";
-}
-
-cwn() {
-    cat "$(nix_which "$1")";
 }
 
 nixos_rebuild_switch() { sudo nixos-rebuild switch; }
 nixos_rebuild_repl() { sudo nixos-rebuild repl; }
 nixos_edit_config() { sudo $EDITOR /etc/nixos/configuration.nix; }
 nix_edit_config() { $EDITOR "$HOME/.config/nix/nix.conf"; }
-nix_search() { nix search nixpkgs; }
+nix_search() { nix search nixpkgs $@; }
 nix_derivation_show() { nix derivation show "$1" | jq; }
 nix_find() { find "/nix/store" -type f | grep -P "$1"; }
 nix_flake_show() { nix flake show; }
@@ -611,9 +590,9 @@ alias nrc="c nix && $EDITOR -p configuration.nix"
 alias nrcf="c nix && $EDITOR -p flake.nix"
 alias cdh="c home-manager"
 alias hms="ensure_in home-manager && home-manager switch"
-alias ms="ensure_in nixos; make system"
-alias mh="ensure_in nixos && make home"
-alias m="ensure_in nixos && make"
+alias ms="ensure_in nix; make system"
+alias mh="ensure_in nixo&& make home"
+alias m="ensure_in nix && make"
 
 hashes() {
     nix-prefetch-github --nix $(git remote get-url origin | sed -e 's@https://github.com/@@' -e 's@[.]git$@@' -e 's@/@ @')
