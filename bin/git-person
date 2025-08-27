@@ -29,4 +29,4 @@ while [[ -n $1 ]]; do
     shift
 done
 
-git log ${OPTIONS[@]} ${EXCLUDE[@]}
+git log "${OPTIONS[@]}" "${EXCLUDE[@]}"
