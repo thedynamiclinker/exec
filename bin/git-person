@@ -18,6 +18,7 @@ while [[ -n $1 ]]; do
         -u|--until)
             shift
             OPTIONS+=(--until="$1")
+            ;;
         -*)
             OPTIONS+=("$1")
             ;;
