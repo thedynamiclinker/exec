@@ -46,6 +46,22 @@ penv() {
     "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
+penv14() {
+    PYTHON=python3.14 penv $@
+}
+
+penv15() {
+    PYTHON=python3.15 penv $@
+}
+
+penv14t() {
+    PYTHON=python3.14t penv $@
+}
+
+penv15t() {
+    PYTHON=python3.15t penv $@
+}
+
 rmenv() {
     if [[ -n "$VIRTUAL_ENV" ]] \
     && [[ -d "$VIRTUAL_ENV" ]] \
