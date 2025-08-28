@@ -1,0 +1,3 @@
+#!/usr/bin/env -S tail -1
+
+echo "$(case a in b) echo 'hi!' esac)"
