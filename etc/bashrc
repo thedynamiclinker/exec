@@ -598,18 +598,29 @@ hashes() {
     nix-prefetch-github --nix $(git remote get-url origin | sed -e 's@https://github.com/@@' -e 's@[.]git$@@' -e 's@/@ @')
 }
 
-if [[ -e /etc/nix ]]; then
-    if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
-        #if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
-            for pkg in zlib gcc.cc.lib; do
-                path="$(nix path-info --offline --no-net "nixpkgs#$pkg")"
-                if [[ $? -eq 0 ]]; then
-                    add_to_ld_library_path "${path}/lib"
-                fi
-            done
-        #fi
-    fi
-fi
+# Dear Rara,
+# If and when stuff breaks for ya (because the hell lines are now commented out)
+# just add this to configuration.nix:
+# ============================================
+#  programs.nix-ld.enable = true;
+#  programs.nix-ld.libraries = with pkgs; [
+#    zlib
+#    stdenv.cc.cc.lib
+#  ];
+# ============================================
+#
+#if [[ -e /etc/nix ]]; then
+#    if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
+#        #if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
+#            for pkg in zlib gcc.cc.lib; do
+#                path="$(nix path-info --offline --no-net "nixpkgs#$pkg")"
+#                if [[ $? -eq 0 ]]; then
+#                    add_to_ld_library_path "${path}/lib"
+#                fi
+#            done
+#        #fi
+#    fi
+#fi
 
 export LIBGL_ALWAYS_INDIRECT=1
 
