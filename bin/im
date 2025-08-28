@@ -139,14 +139,14 @@ ibus_stop () {
     if __ibus_is_running; then
         log "Killing ibus-daemon"
         switch_to_english
-        killall ibus-daemon
+        killall -r ibus-daemon
     else
         log "IBus is not running."
     fi
 }
 
 ibus_kill_gtk_ui () {
-    killall ibus-ui-gtk3
+    killall -r ibus-ui-gtk3
 }
 
 ibus_start_minimal () {
