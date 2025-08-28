@@ -147,7 +147,7 @@ augroup org_as_bash
 augroup END
 
 " Look for ctags in these locations
-set tags=./.git/tags;
+set tags=./tags,./.git/tags;
 
 " Always show a choices list for the tag under cursor
 " nnoremap <C-]> g]
