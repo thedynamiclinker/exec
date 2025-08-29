@@ -59,7 +59,7 @@ set noswapfile     "no swap files
 "" current line, and relative line numbers for all
 "" the other lines.
 set number  		" turn on absolute line numbers
-set relativenumber	" turn on relative line numbers
+"set relativenumber	" turn on relative line numbers
 
 " tabstospaces, and set tab width
 set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
