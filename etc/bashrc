@@ -611,17 +611,24 @@ hashes() {
 #
 # Update: Fucking jesus numpy, ok, reverting for now
 #
-if [[ -e /etc/nix ]]; then
-    if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
-#        #if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
-            for pkg in zlib gcc.cc.lib; do
-                path="$(nix path-info --offline --no-net "nixpkgs#$pkg")"
-                if [[ $? -eq 0 ]]; then
-                    add_to_ld_library_path "${path}/lib"
-                fi
-            done
-#        #fi
+# ============================================
+#
+# Update to the Update: Fuck it.
+# Doing the smart thing that I
+# should have done forever ago.
+#
+# ============================================
+
+if command -v nix > /dev/null; then
+    if [[ ! -e "$HOME/.goddammitnix" ]]; then
+        for pkg in zlib gcc.cc.lib; do
+            nix path-info "nixpkgs#$pkg" 2>/dev/null >> "$HOME/.goddammitnix"
+        done
     fi
+    readarray -t paths < ~/.goddammitnix
+    for path in ${paths[@]}; do
+        add_to_ld_library_path "${path}/lib"
+    done
 fi
 
 export LIBGL_ALWAYS_INDIRECT=1
