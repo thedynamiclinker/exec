@@ -625,8 +625,8 @@ if command -v nix > /dev/null; then
             nix path-info "nixpkgs#$pkg" 2>/dev/null >> "$HOME/.goddammitnix"
         done
     fi
-    readarray -t paths < ~/.goddammitnix
-    for path in ${paths[@]}; do
+    mapfile -t < ~/.goddammitnix
+    for path in ${MAPFILE[@]}; do
         add_to_ld_library_path "${path}/lib"
     done
 fi
