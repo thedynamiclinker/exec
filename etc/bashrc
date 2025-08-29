@@ -609,18 +609,20 @@ hashes() {
 #  ];
 # ============================================
 #
-#if [[ -e /etc/nix ]]; then
-#    if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
+# Update: Fucking jesus numpy, ok, reverting for now
+#
+if [[ -e /etc/nix ]]; then
+    if [[ -z "$LD_LIBRARY_PATH" ]] && [[ ! "$LD_LIBRARY_PATH" =~ gcc ]]; then
 #        #if [[ $(ip addr show up scope global | grep inet | wc -l) > 0 ]]; then
-#            for pkg in zlib gcc.cc.lib; do
-#                path="$(nix path-info --offline --no-net "nixpkgs#$pkg")"
-#                if [[ $? -eq 0 ]]; then
-#                    add_to_ld_library_path "${path}/lib"
-#                fi
-#            done
+            for pkg in zlib gcc.cc.lib; do
+                path="$(nix path-info --offline --no-net "nixpkgs#$pkg")"
+                if [[ $? -eq 0 ]]; then
+                    add_to_ld_library_path "${path}/lib"
+                fi
+            done
 #        #fi
-#    fi
-#fi
+    fi
+fi
 
 export LIBGL_ALWAYS_INDIRECT=1
 
