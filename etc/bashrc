@@ -595,7 +595,7 @@ alias mh="ensure_in nix && make home"
 alias m="ensure_in nix && make"
 
 ff() {
-    find | grep $@
+    find -L ! -path "*/.git*" | grep $@
 }
 
 hashes() {
