@@ -155,5 +155,5 @@ set tags=./tags,./.git/tags;
 " Show more context in the ctags list
 " set showfulltag
 
-" Make '-' a word character, so ctrl+p completes past it
-:set iskeyword+=-
+" Make '-' and '.' a word character, so ctrl+p completes past it
+set iskeyword+=-,.
