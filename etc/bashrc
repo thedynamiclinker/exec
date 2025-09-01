@@ -594,6 +594,10 @@ alias ms="ensure_in nix; make system"
 alias mh="ensure_in nix && make home"
 alias m="ensure_in nix && make"
 
+ff() {
+    find | grep $@
+}
+
 hashes() {
     nix-prefetch-github --nix $(git remote get-url origin | sed -e 's@https://github.com/@@' -e 's@[.]git$@@' -e 's@/@ @')
 }
