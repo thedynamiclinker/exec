@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AGO="${1:-1M}"
+AGO="${1:-5Y}"
 NUM="${AGO::-1}"    # All but last char
 UNIT="${AGO: -1}"   # Last char
 
