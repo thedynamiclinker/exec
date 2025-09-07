@@ -23,6 +23,10 @@ venv15() {
     PYTHON=python3.15 venv $@
 }
 
+venv13t() {
+    PYTHON=python3.13t venv $@
+}
+
 venv14t() {
     PYTHON=python3.14t venv $@
 }
