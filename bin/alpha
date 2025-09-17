@@ -12,13 +12,11 @@ USAGE
     $(basename $0) [OPTIONS]
 
 CHARSETS
+    phoenician, p         Get phoenician alphabet
+    cyrillic,   c         Get cyrillic alphabet
+    ipa,        i         Get international phonetic alphabet
+    greek,      g         Get greek alphabet
     root        r         Get root
-        greek,      g         Get greek alphabet
-            cyrillic,   c         Get cyrillic alphabet
-                ipa,        i         Get international phonetic alphabet
-            phoenician, p         Get phoenician alphabet
-        Greek,      G         Get greek alphabet, Josh edition
-    omega       o         Get root
 
 OPTIONS
     --list,     -l      List all the things
