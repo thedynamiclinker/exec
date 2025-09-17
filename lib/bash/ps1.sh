@@ -10,10 +10,10 @@ clip_prompt_if_its_super_long() {
 
 # make prompt shorter or longer
 shorter_prompt() {
-    export PS1="$(echo "$PS1" | sed "s@w@W@g")"
+    export PS1="$(echo "$PS1" | sed 's@\\w@\\W@g')"
 }
 longer_prompt() {
-    export PS1="$(echo "$PS1" | sed "s@W@w@g")"
+    export PS1="$(echo "$PS1" | sed 's@\\W@\\w@g')"
 }
 alias sp='shorter_prompt'
 alias lp='longer_prompt'
