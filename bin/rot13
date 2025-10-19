@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import os, sys
+
+n = 13
+
+if len(sys.argv) >= 3 and sys.argv[1] == '-f' and os.path.isfile(sys.argv[2]):
+    s = open(sys.argv[2]).read().strip()
+elif os.isatty(0):
+    s = ' '.join(sys.argv[1:])
+else:
+    try:
+        n = int(sys.argv[1])
+    except:
+        pass
+    s = sys.stdin.read().strip('\n')
+
+d = {}
+for c in (65, 97):
+    for i in range(26):
+        d[chr(i+c)] = chr((i+n) % 26 + c)
+
+print("".join([d.get(c, c) for c in s]))
