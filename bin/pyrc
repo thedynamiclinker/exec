@@ -130,6 +130,18 @@ try:
 except Exception as e:
     failed['pandas'] = e
 
+# pandas display toggle
+def pd_fmt_show_all():
+    import pandas as pd
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_colwidth', None)
+
+def pd_fmt_reset():
+    import pandas as pd
+    pd.set_option('display.max_rows', 60)
+    pd.set_option('display.max_columns', 0)
+    pd.set_option('display.max_colwidth', 50)
 
 # necessary if we keep ipython magics in another file
 from IPython import get_ipython
