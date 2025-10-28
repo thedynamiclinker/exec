@@ -1,0 +1,3 @@
+#!/bin/sh
+
+grep -o '[A-Za-z]' | sed -Ez 's@\n@@g' | tr a-z A-Z | sed -E 's@[AEIOU]@@g'
