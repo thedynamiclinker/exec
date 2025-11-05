@@ -163,14 +163,6 @@ if [[ -n ${BASH_VERSION:-} && $- == *i* ]]; then
     done
 fi
 
-# experiment: prefixes in $HOME/dst
-#if [[ -d "$HOME/dst" ]]; then
-#    for dir in "$HOME/dst"/*; do
-#        [[ ! -d "$dir" ]] && continue
-#        add_to_path "$dir/bin"
-#    done
-#fi
-
 # export the variables for subprocesses
 export PATH="$PATH"
 export PYTHONPATH="$PYTHONPATH"
