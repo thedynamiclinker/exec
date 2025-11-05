@@ -71,7 +71,6 @@ source python.sh
 
 paths=(
     "${EXEC}/bin"
-    "${EXEC}/bin/o"
     "${EXEC}/lib/bash"
 )
 
