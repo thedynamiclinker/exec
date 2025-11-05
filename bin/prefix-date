@@ -1,0 +1,137 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+import glob
+import argparse
+import datetime
+
+class colors:
+
+    black  = "\033[01;30m"
+    red    = "\033[01;31m"
+    green  = "\033[01;32m"
+    yellow = "\033[01;33m"
+    blue   = "\033[01;34m"
+    purple = "\033[01;35m"
+    cyan   = "\033[01;36m"
+    gray   = "\033[01;37m"
+    white  = "\033[01;39m"
+
+    light_black  = "\033[00;30m"
+    light_red    = "\033[00;31m"
+    light_green  = "\033[00;32m"
+    light_yellow = "\033[00;33m"
+    light_blue   = "\033[00;34m"
+    light_purple = "\033[00;35m"
+    light_cyan   = "\033[00;36m"
+    light_gray   = "\033[00;37m"
+    light_white  = "\033[00;39m"
+
+    end = "\033[00m"
+
+
+def parse_command_line(args):
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "paths",
+        nargs = '+',
+        help = "Files to prefix with the date of their last modified time."
+    )
+
+    parser.add_argument(
+        "-i",
+        "--in-place",
+        action = 'store_true',
+        help = "Actually change filenames."
+    )
+
+    parser.add_argument(
+        "-t",
+        "--datetime",
+        action = 'store_true',
+        help = "Prefix full datetimes."
+    )
+
+    parser.add_argument(
+        "-s",
+        "--space",
+        action = 'store_true',
+        help = "Surround the hyphen after the date with spaces"
+    )
+
+    config = parser.parse_args(args)
+
+    if 'datetime' in sys.argv[0]:
+        config.datetime = True
+
+    return config
+
+def file_to_modified_date(file, full=True):
+    mtime_ts = os.stat(file).st_mtime
+    mtime_dt = datetime.datetime.fromtimestamp(mtime_ts)
+    if full:
+        mtime = mtime_dt.strftime('%Y%m%d-%H%M%S')
+    else:
+        mtime = mtime_dt.strftime('%Y%m%d')
+    return mtime
+
+def match_candidates_to_regex(regex, candidate_paths):
+    files = []
+    for path in candidate_paths:
+        #if (match := re.match('^[a-z].*[.]py', path)) is not None:
+        if (match := re.match(re.escape(regex), path)) is not None:
+            file = match.group()
+            if os.path.isfile(file):
+                files.append(file)
+    return files
+
+def main():
+
+    config = parse_command_line(sys.argv[1:])
+
+    if config.in_place:
+        prefix = f'{colors.green}[RENAMING]{colors.end}'
+    else:
+        prefix = f'{colors.yellow}[DRY RUN]{colors.end}'
+
+    if len(config.paths) == 1:
+        [argument] = config.paths
+        candidate_paths = sorted([f for f in glob.glob('*') if os.path.isfile(f)])
+        config.paths = match_candidates_to_regex(argument, candidate_paths)
+
+    # make sure everything exists before doing anything
+    for path in config.paths:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"File {path} does not exist")
+
+    if config.space:
+        dash = ' - '
+    else:
+        dash = '-'
+
+    for old_path in config.paths:
+
+        mtime = file_to_modified_date(old_path, config.datetime)
+
+        dirname  = os.path.dirname(old_path)
+        old_basename = os.path.basename(old_path)
+        new_basename = f"{mtime}{dash}{old_basename}"
+
+        new_path = os.path.join(dirname, new_basename)
+
+        print(
+            f"{prefix}: {colors.white}renaming "
+            f"{colors.blue}{old_path} "
+            f"{colors.white}to "
+            f"{colors.blue}{new_path}{colors.end}"
+        )
+
+        if config.in_place:
+            os.rename(old_path, new_path)
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+stem, ext = os.path.splitext(sys.argv[1])
+print(ext)

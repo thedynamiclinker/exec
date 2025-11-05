@@ -1,0 +1,47 @@
+#!/bin/sh
+
+usage() {
+    echo "usage: $(basename $0) [-l|--long] [-d|--date] [-h|--help] <file>"
+    exit 1
+}
+
+[[ -z "$1" ]] && usage
+
+files=()
+date_only=
+long_type=
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)          usage;;
+        -d|--date)          date_only=1;;
+        -l|--long)          long_type=1;;
+        *)                  files+=("$1");;
+    esac
+    shift
+done
+
+for f in ${files[@]}; do
+
+    out="$(stat -c %y "$f")"
+
+    out="$(echo "$out" | sed -e 's@[.].*@@')"
+
+
+    if [[ -n $long_type ]]; then
+        out="$(echo "$out" | sed -e 's@[: ]@-@g')"
+    else
+        out="$(echo "$out" | sed -e 's@[:]@-@g' -e 's@[-]@@g' -e 's@[ ]@-@g')"
+    fi
+
+    if [[ -n $date_only ]]; then
+        if [[ -n $long_type ]]; then
+            echo "error: $(basename $0) does not support combining -l with -d"
+            exit 1
+        fi
+        out="$(echo "$out" | sed -e 's@[-].*@@g')"
+    fi
+
+    echo "$out"
+done
+
