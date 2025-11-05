@@ -414,7 +414,6 @@ alias ssrldm='sudo systemctl restart lightdm'
 # cds
 alias de="c desktop && clear"
 alias cdb="c bin"
-alias cdo="c o"
 alias cdk="cd /usr/src/linux"
 
 # git
