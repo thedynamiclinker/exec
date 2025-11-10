@@ -15,6 +15,10 @@ venv() {
     "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
+venv11() {
+    PYTHON=python3.11 venv $@
+}
+
 venv14() {
     PYTHON=python3.14 venv $@
 }
