@@ -582,6 +582,7 @@ nix_which() { nix path-info "${2:-nixpkgs}#${1}"; }
 nix_get_nixos_install_tools() { nix profile add "nixpkgs#nixos-install-tools"; }
 nixos_rebuild_boot() { nixos-rebuild boot --flake ".#$(hostname)"; }
 nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/profiles/system; }
+nixos_delete_generations() { sudo nix-env -p /nix/var/nix/profiles/system --delete-generations +${1:-2}; }
 
 alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
