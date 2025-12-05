@@ -1,0 +1,3803 @@
+#!/usr/bin/env bash
+
+me="$0"
+
+chars=()
+only_kanji=
+exact_match=
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        --only-kanji)       only_kanji=1;;
+        e|-e|--exact)       exact_match=1;;
+        *)                  chars+=("$1");;
+    esac
+    shift
+done
+
+if [[ "$exact_match" == 1 ]]; then
+    bef='\t'
+    aft='(\t|$)'
+else
+    bef=''
+    aft=''
+fi
+
+# Sets tabs to display with a width of 14.
+# tabs 14
+
+header="RTHn	RSHn	RTKn	TH	SH	JK	RTHw	RSHw	RTKw"
+printf "${header}\n"
+if [[ -n $only_kanji ]]; then
+    for kanji in "${chars[@]}"; do
+        grep -Pi "${bef}${kanji}${aft}" "$me" | cut -f2 | sed -r -z 's@\n@@g';
+    done
+    printf '\n'
+else
+    for kanji in "${chars[@]}"; do
+        grep -Pi "${bef}${kanji}${aft}" "$me"
+    done
+fi
+
+
+exit 0
+
+#########################
+### BEGIN HEISIG FILE ###
+#########################
+# The remainder of the file is a tab delimited CSV.
+
+0001	0001	0001	一	一	一	one	one	one
+0002	0002	0002	二	二	二	two	two	two
+0003	0003	0003	三	三	三	three	three	three
+0004	0004	0004	四	四	四	four	four	four
+0005	0005	0005	五	五	五	five	five	five
+0006	0006	0006	六	六	六	six	six	six
+0007	0007	0007	七	七	七	seven	seven	seven
+0008	0008	0008	八	八	八	eight	eight	eight
+0009	0009	0009	九	九	九	nine	nine	nine
+0010	0010	0010	十	十	十	ten	ten	ten
+0011	0011	0011	口	口	口	mouth	mouth	mouth
+0012	0012	0012	日	日	日	day	day	day
+0013	0013	0013	月	月	月	month	month	month
+0014	0014	0014	田	田	田	rice field	rice field	rice field
+0015	0015	0015	目	目	目	eye	eye	eye
+0016	0016	0016	古	古	古	ancient	ancient	old
+0017	0017	2470	胡	胡	胡	recklessly	recklessly	uncivilized
+0018	0019	0017	吾	吾	吾	I (literary)	I (literary)	I
+0019	0020	0019	朋	朋	朋	companion	companion	companion
+0020	0021	0020	明	明	明	bright	bright	bright
+0021	0022	0021	唱	唱	唱	sing	sing	chant
+0022	0023	0022	晶	晶	晶	sparkling	sparkling	sparkle
+0023	0024	0023	品	品	品	goods	goods	goods
+0024	0025	0025	昌	昌	昌	prosperous	prosperous	prosperous
+0025	0026	0026	早	早	早	early	early	early
+0026	0027	0027	旭	旭	旭	rising sun	rising sun	rising sun
+0027	0028	0028	世	世	世	generation	generation	generation
+0028	0029	0029	胃	胃	胃	stomach	stomach	stomach
+0029	0030	0030	旦	旦	旦	daybreak	daybreak	nightbreak
+0030	0031	0033	凹	凹	凹	concave	concave	concave
+0031	0032	0034	凸	凸	凸	convex	convex	convex
+0032	0033	0036	自	自	自	oneself	oneself	oneself
+0033	0034	0037	白	白	白	white	white	white
+0034	0035	0038	百	百	百	hundred	hundred	hundred
+0035	0036	0038x	皂	皂		soap	soap	
+0036	0038	0039	中	中	中	middle	middle	in
+0037	0039	0040	千	千	千	thousand	thousand	thousand
+0038	0040	0041	舌	舌	舌	tongue	tongue	tongue
+0039	0041	0042	升	升	升	liter	liter	measuring box
+0040	0041	0043	昇	升	昇	rise up		rise up
+0041	0042	0044	丸	丸	丸	pill	pill	round
+0042	0043	2103	卜	卜	卜	divination	divination	augury
+0043	0044	0048	占	占	占	tell fortunes	tell fortunes	fortune-telling
+0044	0045	0049	上	上	上	above	above	above
+0045	0046	0050	下	下	下	below	below	below
+0046	0047	0050b	卡	卡	卡	card	card	
+0047	0048	0051	卓	卓	卓	eminent	eminent	eminent
+0048	0049	0052	朝	朝	朝	dynasty	dynasty	morning
+0049	0050	2155	嘲	嘲	嘲	ridicule	ridicule	derision
+0050	0051	0053	只	只	只	only	only	only
+0051	0052	0054	貝	贝	貝	shellfish	shellfish	shellfish
+0052	0053	2736	貼	贴	貼	paste	paste	affix
+0053	0054	0055	貞	贞	貞	chaste	chaste	upright
+0054	0055	0056	員	员	員	employee	employee	employee
+0055	0058	0057	見	见	見	see	see	see
+0056	0059	0059	元	元	元	beginning	beginning	beginning
+0057	0060	0060	頁	页	頁	page	page	page
+0058	0061	0061	頑	顽	頑	stubborn	stubborn	stubborn
+0059	0062	0062	凡	凡	凡	ordinary	ordinary	mediocre
+0060	0063	0066	肌	肌	肌	muscle	muscle	texture
+0061	0064	0063	負	负	負	defeated	defeated	defeat
+0062	0066		勻	匀		uniform	uniform	
+0063	0067	0065	句	句	句	sentence	sentence	phrase
+0064	0068	0067	旬	旬	旬	decameron	decameron	decameron
+0065	0069	0068	勺	勺	勺	ladle	ladle	ladle
+0066	0070	0069	的	的	的	bull's eye	bull's eye	bull's eye
+0067	0071	0070	首	首	首	heads	heads	neck
+0068	0072	0073	直	直	直	straight	straight	straightaway
+0069	0073	0832	置	置	置	set up	set up	placement
+0070	0074	0074	具	具	具	tool	tool	tool
+0071	0075	0075	真	真	真	true	true	true
+0072	0076	0076	工	工	工	work	work	craft
+0073	0077	0077	左	左	左	left	left	left
+0074	0078	0078	右	右	右	right	right	right
+0075	0079	0079	有	有	有	possess	possess	possess
+0076	0080	0080	賄	贿	賄	bribe	bribe	bribe
+0077	0081	0081	貢	贡	貢	tribute	tribute	tribute
+0078	0082	0082	項	项	項	item	item	paragraph
+0079	0083	0083	刀	刀	刀	sword	sword	sword
+0080	0084	0084	刃	刃	刃	blade	blade	blade
+0081	0085	0085	切	切	切	cut	cut	cut
+0082	0086	0086	召	召	召	summon	summon	seduce
+0083	0087	0087	昭	昭	昭	evident	evident	shining
+0084	0088	0088	則	则	則	rule	rule	rule
+0085	0089	0089	副	副	副	vice-	vice-	vice-
+0086	0090	0091	丁	丁	丁	fourth	fourth	street
+0087	0091		叮	叮	叮	sting	sting	
+0088	0092	0093	可	可	可	can	can	can
+0089	0093		哥	哥	哥	older brother	older brother	
+0090	0094	0094	頂	顶	頂	crest	crest	place on the head
+0091	0095	0071	乙	乙	乙	second	second	fish guts
+0092	0097	0095	子	子	子	child	child	child
+0093	0098	0096	孔	孔	孔	cavity	cavity	cavity
+0094	0099		吼	吼	吼	roar	roar	
+0095	0101	0097	了	了	了	(-ed)	(-ed)	complete
+0096	0102	0098	女	女	女	woman	woman	woman
+0097	0103	0099	好	好	好	good	good	fond
+0098	0104	0100	如	如	如	be like	be like	likeness
+0099	0105	0101	母	母	母	mother	mother	mama
+0100	0106	0102	貫	贯	貫	pierce	pierce	pierce
+0101	0107	0103	兄	兄	兄	elder brother	elder brother	elder brother
+0102	0108	0104	克	克	克	overcome	overcome	overcome
+0103	0109	0105	小	小	小	small	small	little
+0104	0110	0106	少	少	少	few	few	few
+0105	0111	XXXX	吵	吵	吵	noisy	noisy	XXXX
+0106	0113	0107	大	大	大	large	large	large
+0107	0114	2903	尖	尖	尖	tip	tip	sharp point
+0108	0115	0109	夕	夕	夕	evening	evening	evening
+0109	0116	0108	多	多	多	many	many	many
+0110	0117	XXXX	夠	够	XX	enough	enough	XXXX
+0111	0118	0111	外	外	外	outside	outside	outside
+0112	0119	0112	名	名	名	name	name	name
+0113	0124	0125	厚	厚	厚	thick	thick	thick
+0114	0125	0113	石	石	石	stone	stone	stone
+0115	0126	0117	砂	砂	砂	gravel	gravel	sand
+0116	0127	0123	妙	妙	妙	wonderful	wonderful	exquisite
+0117	0128	0114	肖	肖	肖	resemble	resemble	resemblance
+0118	0129	0118	削	削	削	peel	peel	plane
+0119	0130	0119	光	光	光	ray	ray	ray
+0120	0131	0120	太	太	太	overly	overly	plump
+0121	0132	0124	省	省	省	economize	economize	focus
+0122	0133	0126	奇	奇	奇	strange	strange	strange
+0123	0134	0127	川	川	川	stream	stream	stream
+0124	0135	0128	州	州	州	state	state	state
+0125	0136	0129	順	顺	順	obey	obey	obey
+0126	0137	0130	水	水	水	water	water	water
+0127	0138	0132	永	永	永	eternity	eternity	eternity
+0128	0140	0934	求	求	求	request	request	request
+0129	0141	0133	泉	泉	泉	spring	spring	spring
+0130	0142	0134	原	原	原	flatlands	flatlands	meadow
+0131	0571	0135	願	愿	願	wish	wish	petition
+0132	0432x	0138	沖	冲	沖	wash away		open sea
+0133	0143	0136	泳	泳	泳	swim	swim	swim
+0134	0144	2289	洲	洲	洲	continent	continent	continent
+0135	0145	0137	沼	沼	沼	marsh	marsh	marsh
+0136	0146	2296	沙	沙	沙	sand	sand	grains of sand
+0137	0147	0139	江	江	江	Yangtze	Yangtze	creek
+0138	0148	0140	汁	汁	汁	juice	juice	soup
+0139	0149	0141	潮	潮	潮	tide	tide	tide
+0140	0150	0142	源	源	源	source	source	source
+0141	0151	0143	活	活	活	lively	lively	lively
+0142	0152	0144	消	消	消	extinguish	extinguish	extinguish
+0143	0431	0145	況	况	況	situation	situation	but of course
+0144	0153	0146	河	河	河	river	river	river
+0145	0156	0148	湖	湖	湖	lake	lake	lake
+0146	0157	0149	測	测	測	fathom	fathom	fathom
+0147	0158	0150	土	土	土	soil	soil	soil
+0148	0159	0160	均	均	均	equal	equal	level
+0149	0160		肚	肚	肚	belly	belly	
+0150	0162	2190	填	填	填	fill in	fill in	stuff up
+0151	0163	0151	吐	吐	吐	spit	spit	spit
+0152	0165		哇	哇	哇	waaah!	waaah!	
+0153	0166	0045	寸	寸	寸	Chinese inch	Chinese inch	measurement
+0154	0167	0156	封	封	封	seal	seal	seal
+0155	0169	0158	寺	寺	寺	Buddhist temple	Buddhist temple	Buddhist temple
+0156	0168	0159	時	时	時	time	time	time
+0157	0170	0161	火	火	火	fire	fire	fire
+0158	0172	0168	灰	灰	灰	ashes	ashes	ashes
+0159	0173	0163	煩	烦	煩	vexed	vexed	anxiety
+0160	0174	0162	炎	炎	炎	inflammation	inflammation	inflammation
+0161	0175	0164	淡	淡	淡	thin	thin	thin
+0162	0194	0167	災	灾	災	disaster	disaster	disaster
+0163	0178	0170	照	照	照	illuminate	illuminate	illuminate
+0164	0154	0171	魚	鱼	魚	fish	fish	fish
+0165	0155	0172	漁	渔	漁	fishing	fishing	fishing
+0166	0376	2095	堯	尧	尭	Yao	Yao	lofty
+0167	0377	1200	燒	烧	焼	fever	fever	bake
+0168	0378	1201	曉	晓	暁	dawn	dawn	daybreak
+0169	0179	0173	里	里	里	li	li	ri
+0170	0180	0177	量	量	量	quantity	quantity	quantity
+0171	0181	0179	埋	埋	埋	bury	bury	bury
+0172	0182	0174	黑	黑	黒	black	black	black
+0173	0177	0169	點	点	点	spot	spot	spot
+0174	0183	0175	墨	墨	墨	black ink	black ink	black ink
+0175	0184	0018	冒	冒	冒	risk	risk	risk
+0176	0185	0180	同	同	同	same	same	same
+0177	0186	0181	洞	洞	洞	cave	cave	den
+0178	0188	0183	向	向	向	orientation	orientation	yonder
+0179	0190	0184	尚	尚	尚	esteem	esteem	esteem
+0180	0191	0185	字	字	字	character	character	character
+0181	0192	0186	守	守	守	guard	guard	guard
+0182	0193	0187	完	完	完	finish	finish	perfect
+0183	0857	1572	實	实	実	reality	reality	reality
+0184	0195	0188	宣	宣	宣	proclaim	proclaim	proclaim
+0185	0196	0189	宵	宵	宵	nighttime	nighttime	wee hours
+0186	0197	0190	安	安	安	peaceful	peaceful	relax
+0187	0198	0191	宴	宴	宴	banquet	banquet	banquet
+0188	0199	0192	寄	寄	寄	mail	mail	draw near
+0189	0200	0193	富	富	富	wealthy	wealthy	wealth
+0190	0201	0194	貯	贮	貯	store up	store up	savings
+0191	0202	0195	木	木	木	tree	tree	tree
+0192	0203	0196	林	林	林	woods	woods	grove
+0193	0204	0197	森	森	森	forest	forest	forest
+0194	0207	0205	植	植	植	plant	plant	plant
+0195	0208	0203	杏	杏	杏	apricot	apricot	apricot
+0196	0209	2181	呆	呆	呆	dim-witted	dim-witted	dumbfounded
+0197	0210	0206	枯	枯	枯	withered	withered	wither
+0198	0211	0208	村	村	村	village	village	town
+0199	0212	0209	相	相	相	one another	one another	inter-
+0200	0213	0211	本	本	本	notebook	notebook	book
+0201	0214	0214	案	案	案	case	case	plan
+0202	0215	0216	未	未	未	not yet	not yet	not yet
+0203	0216	0217	末	末	末	last	last	extremity
+0204	0217	0218	沫	沫	沫	foam	foam	splash
+0205	0218	0219	味	味	味	flavor	flavor	flavor
+0206	0219	0220	妹	妹	妹	younger sister	younger sister	younger sister
+0207	0220	1781	查	查	査	investigate	investigate	investigate
+0208	0221		渣	渣	渣	sediment	sediment	
+0209	0222	0509	染	染	染	dye	dye	dye
+0210	0223	2511	李	李	李	plum	plum	damson
+0211	0224		桌	桌	桌	table	table	
+0212	0226	0223	若	若	若	as if	as if	young
+0213	0227	0224	草	草	草	grass	grass	grass
+0214	0229	0225	苦	苦	苦	suffering	suffering	suffering
+0215	0230	0226	寬	宽	寛	wide	wide	tolerant
+0216	0018	0228	葉	叶	葉	leaf	leaf	leaf
+0217	0231	2105	莫	莫	莫	nobody	nobody	shalt
+0218	0232	0229	模	模	模	imitate	imitate	imitation
+0219	0233	0230	漠	漠	漠	desert	desert	vague
+0220	0234	0231	墓	墓	墓	grave	grave	grave
+0221	0235	0234	苗	苗	苗	seedling	seedling	seedling
+0222	0236		瞄	瞄	瞄	aim	aim	
+0223	0237	0235	兆	兆	兆	portent	portent	portent
+0224	0238	0236	桃	桃	桃	peach	peach	peach tree
+0225	0239	0238	犬	犬	犬	pooch	pooch	dog
+0226	0240	2087	尤	尤	尤	remarkable	remarkable	understandably
+0227	0246	0240	默	默	黙	silent	silent	silence
+0228	0247	0241	然	然	然	sort of thing	sort of thing	sort of thing
+0229	0248		哭	哭	哭	cry	cry	
+0230	0249	0121	器	器	器	utensil	utensil	utensil
+0231	0250	0122	臭	臭	臭	stinking	stinking	stinking
+0232	0251	2341	狗	狗	狗	dog	dog	pup
+0233	0241	2149	厭	厌	厭	detest	detest	despondent
+0234	0164	0152	壓	压	圧	pressure	pressure	pressure
+0235	0252	0245	牛	牛	牛	cow	cow	cow
+0236	0253	0246	特	特	特	special	special	special
+0237	0254	0247	告	告	告	declare	declare	revelation
+0238	0255	2311	浩	浩	浩	vast	vast	abounding
+0239	0256	0248	先	先	先	before	before	before
+0240	0257	0249	洗	洗	洗	wash	wash	wash
+0241	0259	0250	介	介	介	introduce	introduce	jammed in
+0242	0260	0251	界	界	界	world	world	world
+0243	0261	0252	茶	茶	茶	tea	tea	tea
+0244	0677	0752	會	会	会	meeting	meeting	meeting
+0245	0262	0253	合	合	合	fit	fit	fit
+0246	0263		哈	哈	哈	ha!	ha!	
+0247	0264	0254	塔	塔	塔	pagoda	pagoda	pagoda
+0248	0265	0255	王	王	王	king	king	king
+0249	0266	0256	玉	玉	玉	jade	jade	jewel
+0250	0268	0935	球	球	球	ball	ball	ball
+0251	0269	0259	現	现	現	present	present	present
+0252	0270	2567	玩	玩	玩	play	play	toy
+0253	0271	0260	狂	狂	狂	crazy	crazy	lunatic
+0254	0272	0261	皇	皇	皇	emperor	emperor	emperor
+0255	0273		煌	煌	煌	resplendent	resplendent	
+0256	0274	0262	呈	呈	呈	submit	submit	display
+0257	0275	0263	全	全	全	whole	whole	whole
+0258	0276	0265	理	理	理	logic	logic	logic
+0259	0277	0266	主	主	主	lord	lord	lord
+0260	0278	0267	注	注	注	pour	pour	pour
+0261	0279	0269	金	金	金	gold	gold	gold
+0262	0281	0272	銅	铜	銅	copper	copper	copper
+0263	0282	0273	釣	钓	釣	go fishin'	go fishin'	angling
+0264	0283	0274	針	针	針	needle	needle	needle
+0265	0284	2766	釘	钉	釘	nail	nail	nail
+0266	0285	0275	銘	铭	銘	inscription	inscription	inscription
+0267	0286	0276	鎮	镇	鎮	at ease	at ease	tranquillize
+0268	0287	0277	道	道	道	way	way	road-way
+0269	0522	0278	導	导	導	guide	guide	guidance
+0270	0293	0280	迅	迅	迅	speedy	speedy	swift
+0271	0294	0281	造	造	造	create	create	create
+0272	0296	0285	巡	巡	巡	patrol	patrol	patrol
+0273	0299		逛	逛	逛	stroll	stroll	
+0274	0300	0286	車	车	車	car	car	car
+0275	0301	0287	連	连	連	one after another	one after another	take along
+0276	0302	2360	蓮	莲	蓮	lotus	lotus	lotus
+0277	0303	0290	前	前	前	in front	in front	in front
+0278	0304	2941	剪	剪	剪	shears	shears	pruning
+0279	0305	0289	輸	输	輸	transport	transport	transport
+0280	0306		逾	逾	逾	exceed	exceed	
+0281	0309	0291	各	各	各	each	each	each
+0282	0310	0292	格	格	格	pattern	pattern	status
+0283	0312	0294	客	客	客	guest	guest	guest
+0284	0313	0295	額	额	額	forehead	forehead	forehead
+0285	0314	0296	夏	夏	夏	summer	summer	summer
+0286	0315	2302	洛	洛	洛	L.A.	L.A.	old Kyoto
+0287	0316	0299	落	落	落	fall	fall	fall
+0288	0318	0300	冗	冗	冗	superfluous	superfluous	superfluous
+0289	0319		沉	沉	沉	profound	profound	
+0290	0320	0301	軍	军	軍	army	army	army
+0291	0321	0302	輝	辉	輝	radiance	radiance	radiance
+0292	0429	0303	運	运	運	carry	carry	carry
+0293	0322	0304	冠	冠	冠	crown	crown	crown
+0294	0205	0305	夢	梦	夢	dream	dream	dream
+0295	0323	0306	坑	坑	坑	pit	pit	pit
+0296	0325	0307	高	高	高	tall	tall	tall
+0297	0326	0308	享	享	享	enjoy	enjoy	receive
+0298	0327	0310	熟	熟	熟	ripe	ripe	mellow
+0299	0328	0311	亭	亭	亭	pavilion	pavilion	pavilion
+0300	0329	2920	亮	亮	亮	shiny	shiny	translucent
+0301	0330	0312	京	京	京	capital	capital	capital
+0302	0434	0313	涼	凉	涼	cool	cool	refreshing
+0303	0331	0314	景	景	景	scenery	scenery	scenery
+0304	0332	1969	就	就	就	at once	at once	concerning
+0305	0333	0317	周	周	周	circumference	circumference	circumference
+0306	0333x	0318	週	周	週	week		week
+0307	0334	0319	士	士	士	soldier	soldier	gentleman
+0308	0335	0320	吉	吉	吉	lucky	lucky	good luck
+0309	0858	0831	買	买	買	buy	buy	buy
+0310	0859	0323	賣	卖	売	sell	sell	sell
+0311	1393	0327	書	书	書	book	book	write
+0312	1175	1170	畫	画	画	drawing	drawing	brush-stroke
+0313	0363		劃	划	劃	scratch	scratch	
+0314	0339	0330	攻	攻	攻	attack	attack	aggression
+0315	0341	0331	敗	败	敗	fail	fail	failure
+0316	0342	0333	故	故	故	deliberately	deliberately	happenstance
+0317	0343	0936	救	救	救	rescue	rescue	salvation
+0318	0344	0334	敬	敬	敬	revere	revere	awe
+0319	0345		敞	敞	敞	spacious	spacious	
+0320	0346	0335	言	言	言	say	say	say
+0321	0347	0336	警	警	警	police	police	admonish
+0322	0348	0337	計	计	計	plan	plan	plot
+0323	0350	0338	獄	狱	獄	prison	prison	prison
+0324	0351	0340	討	讨	討	condemn	condemn	chastise
+0325	0352	0341	訓	训	訓	instruction	instruction	instruction
+0326	0354	0344	話	话	話	talk	talk	tale
+0327	0355	0346	詩	诗	詩	poem	poem	poem
+0328	0356	0347	語	语	語	language	language	word
+0329	0860	0348	讀	读	読	read	read	read
+0330	0357	0349	調	调	調	tune	tune	tune
+0331	0358	0350	談	谈	談	discuss	discuss	discuss
+0332	1319	2414	這	这	這	this	this	crawl
+0333	0359	0353	式	式	式	style	style	style
+0334	0360	0354	試	试	試	test	test	test
+0335	0361		戈	戈	戈	halberd	halberd	
+0336	0364	2091	或	或	或	or	or	a
+0337	0365	0357	賊	贼	賊	burglar	burglar	burglar
+0338	0366	0359	載	载	載	laden	laden	load
+0339	0730	0846	鐵	铁	鉄	iron	iron	iron
+0340	0367	0360	茂	茂	茂	lush	lush	overgrown
+0341	0368	0361	成	成	成	turn into	turn into	turn into
+0342	0369	0362	城	城	城	city	city	castle
+0343	0370	0363	誠	诚	誠	sincere	sincere	sincerity
+0344	0371	0364	威	威	威	might	might	intimidate
+0345	0171	0365	滅	灭	滅	destroy	destroy	destroy
+0346	0372x		咸	咸	咸	everybody		
+0347	0433	0366	減	减	減	reduce	reduce	dwindle
+0348	1020	1928	單	单	単	list	list	simple
+0349	0362	1929	戰	战	戦	war	war	war
+0350	0373	0368	錢	钱	銭	coin	coin	coin
+0351	0374	0369	淺	浅	浅	shallow	shallow	shallow
+0352	0375		賤	贱	賤	cheap	cheap	
+0353	0379	0370	止	止	止	stop	stop	stop
+0354	0380	0371	步	步	歩	footstep	footstep	walk
+0355	0381	0372	涉	涉	渉	ford	ford	ford
+0356	0382	0373	頻	频	頻	repeatedly	repeatedly	repeatedly
+0357	0383	0374	肯	肯	肯	agree	agree	agreement
+0358	0384	0375	企	企	企	look forward to	look forward to	undertake
+0359	0691	0512	歲	岁	歳	years of age	years of age	year-end
+0360	0385	0377	武	武	武	military	military	warrior
+0361	0386	0378	賦	赋	賦	levy	levy	levy
+0362	0387	0379	正	正	正	correct	correct	correct
+0363	0389	0381	政	政	政	politics	politics	politics
+0364	0390	0382	定	定	定	settle on	settle on	determine
+0365	0391	0384	走	走	走	walk	walk	run
+0366	0392	0385	超	超	超	transcend	transcend	transcend
+0367	0393	0387	越	越	越	surpass	surpass	surpass
+0368	0394	0388	是	是	是	be	be	just so
+0369	0395	0389	題	题	題	topic	topic	topic
+0370	0398	0391	建	建	建	build	build	build
+0371	0396	0392	延	延	延	prolong	prolong	prolong
+0372	0397	0393	誕	诞	誕	nativity	nativity	nativity
+0373	0399		楚	楚	楚	clear	clear	
+0374	0690	0394	礎	础	礎	foundation	foundation	cornerstone
+0375	0400	0396	衣	衣	衣	clothing	clothing	garment
+0376	0179x	2973	裡	里	裡	inside		back [old]
+0377	0403	0401	哀	哀	哀	grief	grief	pathetic
+0378	0404		袁	袁	袁	Yuan	Yuan	
+0379	0289	0402	遠	远	遠	distant	distant	distant
+0380	0995	0400	壞	坏	壊	bad	bad	demolition
+0381	0405	0404	初	初	初	elementary	elementary	first time
+0382	0410	2101	巾	巾	巾	towel	towel	towel
+0383	0414	0405	布	布	布	cloth	cloth	linen
+0384	0416	0408	帽	帽	帽	hat	hat	cap
+0385	0417	0409	幕	幕	幕	curtain	curtain	curtain
+0386	0418	2512	棉	棉	棉	cotton	cotton	raw cotton
+0387	1386		幫	帮	幫	help	help	
+0388	0419	0412	市	市	市	market	market	market
+0389	0420	0414	肺	肺	肺	lungs	lungs	lungs
+0390	0421	0415	帶	带	帯	sash	sash	sash
+0391	0422	0416	滯	滞	滞	stagnant	stagnant	stagnate
+0392	0423	0417	刺	刺	刺	thorn	thorn	thorn
+0393	0424	0418	制	制	制	system	system	system
+0394	0424x	0419	製	制	製	manufacture		made in...
+0395	0428x	2102	云	云	云	utter		quote
+0396	0425	0422	雨	雨	雨	rain	rain	rain
+0397	0428	0423	雲	云	雲	cloud	cloud	cloud
+0398	0426	0425	雷	雷	雷	thunder	thunder	thunder
+0399	1484	0535	電	电	電	electricity	electricity	electricity
+0400	0427	0426	霜	霜	霜	frost	frost	frost
+0401	0430	0131	冰	冰	氷	ice	ice	icicle
+0402	0435	0427	冬	冬	冬	winter	winter	winter
+0403	0436	0428	天	天	天	heavens	heavens	heavens
+0404	0440		夭	夭	夭	die young	die young	
+0405	0441	2104	喬	乔	喬	pretend	pretend	heaven-high
+0406	0442	0429	橋	桥	橋	bridge	bridge	bridge
+0407	0443	0430	嬌	娇	嬌	attractive	attractive	attractive
+0408	0444	0431	立	立	立	standing up	standing up	stand up
+0409	0445	0432	泣	泣	泣	weep	weep	cry
+0410	0446	2620	站	站	站	station	station	outpost
+0411	0447	0433	章	章	章	chapter	chapter	badge
+0412	0448	0434	競	竞	競	compete	compete	vie
+0413	0449	0435	帝	帝	帝	sovereign	sovereign	sovereign
+0414	0450	0436	童	童	童	juvenile	juvenile	juvenile
+0415	0280	0438	鐘	钟	鐘	bell	bell	bell
+0416	0451	0439	商	商	商	salesman	salesman	make a deal
+0417	0290	0441	適	适	適	suitable	suitable	suitable
+0418	0340	0443	敵	敌	敵	enemy	enemy	enemy
+0419	0453	0444	匕	匕	匕	ancient spoon	ancient spoon	spoon
+0420	0454	0445	北	北	北	north	north	north
+0421	0455	0446	背	背	背	back	back	stature
+0422	0456	0447	比	比	比	compare	compare	compare
+0423	0457	0448	昆	昆	昆	descendants	descendants	descendants
+0424	0458	0450	混	混	混	mix	mix	mix
+0425	0459	0449	皆	皆	皆	all	all	all
+0426	0460	2043	此	此	此	this (literary)	this (literary)	this here
+0427	0461	2046	些	些	些	somewhat	somewhat	whit
+0428	0462		它	它	它	it	it	
+0429	0463	0455	旨	旨	旨	purpose	purpose	delicious
+0430	0464	0456	脂	脂	脂	grease	grease	fat
+0431	0467	0458	每	每	毎	every	every	every
+0432	0468	0460	梅	梅	梅	small plum	small plum	plum
+0433	0469	0461	海	海	海	sea	sea	sea
+0434	0470	0462	乞	乞	乞	beg	beg	beg
+0435	0471	2175	吃	吃	吃	eat	eat	stammer
+0436	1279	0463	乾	干	乾	dry	dry	drought
+0437	0472	0465	複	复	複	duplicate	duplicate	duplicate
+0438	0473	0464	腹	腹	腹	abdomen	abdomen	abdomen
+0439	0474	0466	欠	欠	欠	lack	lack	lack
+0440	0475	0467	吹	吹	吹	blow	blow	blow
+0441	0476	0469	歌	歌	歌	song	song	song
+0442	0477	0470	軟	软	軟	soft	soft	soft
+0443	0478	0471	次	次	次	next	next	next
+0444	0479	0473	資	资	資	assets	assets	assets
+0445	0480	0474	姿	姿	姿	looks	looks	figure
+0446	0481	0475	諮	咨	諮	consult with	consult with	consult with
+0447	0482	0476	賠	赔	賠	compensate	compensate	compensation
+0448	0483	0477	培	培	培	cultivate	cultivate	cultivate
+0449	0484	0479	音	音	音	sound	sound	sound
+0450	0485	0480	暗	暗	暗	dark	dark	darkness
+0451	0486	0481	韻	韵	韻	rhyme	rhyme	rhyme
+0452	0353	0482	識	识	識	knowledge	knowledge	discriminating
+0453	0415	2233	幟	帜	幟	streamer	streamer	pennant
+0454	0487		竟	竟	竟	unexpectedly	unexpectedly	
+0455	0488	0483	鏡	镜	鏡	mirror	mirror	mirror
+0456	0489	0484	境	境	境	boundary	boundary	boundary
+0457	0490	0485	亡	亡	亡	deceased	deceased	deceased
+0458	0491	0486	盲	盲	盲	blind	blind	blind
+0459	0492	0487	妄	妄	妄	absurd	absurd	delusion
+0460	0493	0489	望	望	望	expect	expect	ambition
+0461	0494	0490	方	方	方	direction	direction	direction
+0462	0495	0491	妨	妨	妨	hinder	hinder	disturb
+0463	0496	0496	放	放	放	release	release	set free
+0464	0497	0497	激	激	激	excite	excite	violent
+0465	1283x	2900	於	于	於	(all-purpose preposition)		within
+0466	0498		旁	旁	旁	side	side	
+0467	0499		兌	兑	兌	convert	convert	
+0468	0500	0498	脫	脱	脱	undress	undress	undress
+0469	0501	0499	說	说	説	speak	speak	explanation
+0470	0502	0501	曾	曾	曽	formerly	formerly	formerly
+0471	0503	0502	增	增	増	increase	increase	increase
+0472	0504	0503	贈	赠	贈	make a present of	make a present of	presents
+0473	1249	0504	東	东	東	east	east	east
+0474	1250	0505	棟	栋	棟	building	building	ridgepole
+0475	1251	0506	凍	冻	凍	freeze	freeze	frozen
+0476	0505	2094	也	也	也	also	also	est
+0477	0506		她	她	她	she	she	
+0478	0507	0515	地	地	地	ground	ground	ground
+0479	0508	0516	池	池	池	pond	pond	pond
+0480	0509	0517	蟲	虫	虫	insects	insect	insect
+0481	0513	0519	蛇	蛇	蛇	serpent	serpent	snake
+0482	0514	2683	蛋	蛋	蛋	egg	egg	protein
+0483	1170	0524	風	风	風	wind	wind	wind
+0484	1171		諷	讽	諷	mock	mock	
+0485	0515	0525	己	己	己	self	self	self
+0486	0517	0528	改	改	改	alter	alter	reformation
+0487	0518	0529	記	记	記	remember	remember	scribe
+0488	0519	2937	已	已	已	already	already	stop short
+0489	0520	0530	包	包	包	wrap	wrap	wrap
+0490	0521	0533	泡	泡	泡	bubbles	bubbles	bubbles
+0491	0516	0526	起	起	起	begin	begin	rouse
+0492	0525	0541	家	家	家	house	house	house
+0493	0526	0545	場	场	場	site	site	location
+0494	0527	0546	湯	汤	湯	soup	soup	hot water
+0495	0528	0547	羊	羊	羊	sheep	sheep	sheep
+0496	0529	0548	美	美	美	beautiful	beautiful	beauty
+0497	0530	0549	洋	洋	洋	ocean	ocean	ocean
+0498	0531	0551	鮮	鲜	鮮	fresh	fresh	fresh
+0499	0288	0552	達	达	達	reach	reach	accomplished
+0500	0532	0933	樣	样	様	appearance	appearance	Esq.
+0501	0535	0554	差	差	差	fall short of	fall short of	distinction
+0502	0538	0559	集	集	集	gather	gather	gather
+0503	1362	0561	進	进	進	advance	advance	advance
+0504	0539	0564	準	准	準	standard	standard	semi-
+0505	0540	2712	誰	谁	誰	who?	who?	who
+0506	0541		售	售	售	vend	vend	
+0507	0512		雖	虽	雖	although	although	
+0508	0972	0567	確	确	確	reliable	reliable	assurance
+0509	0542	0568	午	午	午	noon	noon	noon
+0510	0543	0569	許	许	許	permit	permit	permit
+0511	0544	0573	羽	羽	羽	feathers	feathers	feathers
+0512	0545	0574	習	习	習	learn	learn	learn
+0513	0546	2933	翔	翔	翔	soar	soar	soar
+0514	0547	0579	困	困	困	trapped	trapped	quandary
+0515	0548	0580	固	固	固	solid	solid	harden
+0516	0549	0581	國	国	国	country	country	country
+0517	0550	1811	圓	圆	円	round	round	circle
+0518	0551	0583	因	因	因	cause	cause	cause
+0519	0553	0585	園	园	園	park	park	park
+0520	0554	0586	回	回	回	return	return	-times
+0521	0554x	2886	迴	回	廻	revolve		circling
+0522	0555	1180	圖	图	図	picture	picture	map
+0523	0557	0588	店	店	店	store	store	store
+0524	0558	0589	庫	库	庫	warehouse	warehouse	warehouse
+0525	0559	2626	褲	裤	袴	trousers	trousers	pleated skirt
+0526	0121		廠	厂	廠	factory	factory	
+0527	0560	0592	床	床	床	bed	bed	bed
+0528	0561	0593	麻	麻	麻	hemp	hemp	hemp
+0529	0563	0595	心	心	心	heart	heart	heart
+0530	0564	0596	忘	忘	忘	forget	forget	forget
+0531	0565	0597	忍	忍	忍	endure	endure	endure
+0532	0794	0598	認	认	認	recognize	recognize	acknowledge
+0533	0568	0600	志	志	志	aspiration	aspiration	intention
+0534	0568x	0601	誌	志	誌	annals		document
+0535	0569	0605	思	思	思	consider	consider	think
+0536	0572	0608	意	意	意	idea	idea	idea
+0537	0573	0609	想	想	想	think	think	concept
+0538	0574	0610	息	息	息	breath	breath	breath
+0539	0575	0613	恐	恐	恐	fear	fear	fear
+0540	0576	0615	感	感	感	feel	feel	emotion
+0541	0577	0631	憾	憾	憾	regret	regret	remorse
+0542	0578	0616	憂	忧	憂	worried	worried	melancholy
+0543	0580		怕	怕	怕	dread	dread	
+0544	0581	0618	忙	忙	忙	busy	busy	busy
+0545	0582	0627	慣	惯	慣	accustomed to	accustomed to	accustomed
+0546	0999	0828	懷	怀	懐	cherish	cherish	pocket
+0547	0583	0635	必	必	必	certainly	certainly	invariably
+0548	0584	0637	手	手	手	hand	hand	hand
+0549	0585	0638	看	看	看	look at	look at	watch over
+0550	0587		拿	拿	拿	hold	hold	
+0551	0588	0640	我	我	我	I	I	ego
+0552	1182	0641	義	义	義	righteousness	righteousness	righteousness
+0553	1183	0642	議	议	議	deliberate	deliberate	deliberation
+0554	1184	2686	蟻	蚁	蟻	ant	ant	ant
+0555	0589	0645	抱	抱	抱	embrace	embrace	embrace
+0556	0590	0648	抗	抗	抗	combat	combat	confront
+0557	0591	0649	批	批	批	criticize	criticize	criticism
+0558	0592	0650	招	招	招	beckon	beckon	beckon
+0559	0593	0653	打	打	打	strike	strike	strike
+0560	0594	0659	指	指	指	finger	finger	finger
+0561	0595	0660	持	持	持	support	support	hold
+0562	0597	0661	括	括	括	include	include	fasten
+0563	0598	0665	提	提	提	bring up	bring up	propose
+0564	0599	0662	揮	挥	揮	brandish	brandish	brandish
+0565	0600	0663	推	推	推	push	push	conjecture
+0566	0604	0672	接	接	接	welcome	welcome	touch
+0567	0605	0674	掛	挂	掛	hang	hang	hang
+0568	0606	2259	按	按	按	press down on	press down on	press down on
+0569	0607		掉	掉	掉	drop	drop	
+0570	0608	3017	拉	拉	拉	pull	pull	yank
+0571	0609		啦	啦	啦	!!	!!	
+0572	0610		找	找	找	look for	look for	
+0573	0614	0675	研	研	研	grind away	grind away	polish
+0574	0615	2558	弄	弄	弄	play with	play with	tinker with
+0575	0617	0678	鼻	鼻	鼻	nose	nose	nose
+0576	0618	0679	刑	刑	刑	punishment	punishment	punish
+0577	0619	0680	型	型	型	mold	mold	mold
+0578	0620	0681	才	才	才	genius	genius	genius
+0579	0621	0682	財	财	財	riches	riches	property
+0580	0623	0684	存	存	存	deposit	deposit	suppose
+0581	0624	0685	在	在	在	at	at	exist
+0582	0625	0686	乃	乃	乃	only then	only then	from
+0583	0626		奶	奶	奶	milk	milk	
+0584	0627	0688	及	及	及	catch up with	catch up with	reach out
+0585	0628	0689	吸	吸	吸	inhale	inhale	suck
+0586	0630	0692	史	史	史	history	history	history
+0587	0631	0694	更	更	更	even more	even more	grow late
+0588	0632	0695	硬	硬	硬	hard	hard	stiff
+0589	0633	0696	又	又	又	again	again	or again
+0590	0635	0704	友	友	友	friend	friend	friend
+0591	0636	0697	雙	双	双	pair	pair	pair
+0592	0051x	0699	隻	只	隻	one of a pair		vessels
+0593	0899	0700	護	护	護	protect	protect	safeguard
+0594	0245	0701	獲	获	獲	seize	seize	seize
+0595	0639	0572	觀	观	観	observe	observe	outlook
+0596	0640	0570	歡	欢	歓	joyous	joyous	delight
+0597	0646	0706	投	投	投	throw	throw	throw
+0598	0647	0707	沒	没	没	not have	not have	drown
+0599	0648	0708	設	设	設	establish	establish	establishment
+0600	0649	2454	股	股	股	thigh	thigh	thigh
+0601	0650	0711	支	支	支	offshoot	offshoot	branch
+0602	0651	0712	技	技	技	skill	skill	skill
+0603	0652	0713	枝	枝	枝	branch	branch	bough
+0604	0653	0718	叔	叔	叔	uncle	uncle	uncle
+0605	0654	0719	督	督	督	superintend	superintend	coach
+0606	0655	0720	寂	寂	寂	lonely	lonely	loneliness
+0607	0656	0722	反	反	反	against	against	anti-
+0608	0657	0724	板	板	板	plank	plank	plank
+0609	0658	0725	返	返	返	go back	go back	return
+0610	0661	1855	派	派	派	faction	faction	faction
+0611	0139	1856	脈	脉	脈	blood vessels	blood vessels	vein
+0612	0663	0727	爪	爪	爪	claw	claw	claw
+0613	0664		抓	抓	抓	grab	grab	
+0614	0665x	2090	采	采	采	pluck		grab
+0615	0665	0733	採	采	採	pick	pick	pick
+0616	0666	0734	菜	菜	菜	vegetable	vegetable	vegetable
+0617	0667	0735	受	受	受	accept	accept	accept
+0618	0668	0736	授	授	授	confer	confer	impart
+0619	0669	0737	愛	爱	愛	love	love	love
+0620	0671	0743	雄	雄	雄	grand	grand	masculine
+0621	0672	0744	台	台	台	platform	platform	pedestal
+0622	0673	0746	治	治	治	govern	govern	reign
+0623	0674	0747	始	始	始	commence	commence	commence
+0624	0675	0750	去	去	去	go	go	gone
+0625	0676	0751	法	法	法	method	method	method
+0626	0678	0753	至	至	至	until	until	climax
+0627	0679	0754	室	室	室	room	room	room
+0628	0680	0755	到	到	到	arrive	arrive	arrival
+0629	0681	0757	互	互	互	mutual	mutual	mutually
+0630	0682	0761	充	充	充	sufficient	sufficient	allot
+0631	0683	0759	育	育	育	education	education	bring up
+0632	0684	0764	流	流	流	flow	flow	current
+0633	0685		梳	梳	梳	comb	comb	
+0634	0688	0768	山	山	山	mountain	mountain	mountain
+0635	0689	0767	出	出	出	exit	exit	exit
+0636	1236	0709	擊	击	撃	beat	beat	beat
+0637	0692	0775	密	密	密	secret	secret	secrecy
+0638	0693	0779	入	入	入	enter	enter	enter
+0639	0840	1019	內	内	内	internal	internal	inside
+0640	0841		吶	呐	吶	holler	holler	
+0641	0694	0781	分	分	分	part	part	part
+0642	0695	0782	貧	贫	貧	impoverished	impoverished	poverty
+0643	0696	0784	公	公	公	public	public	public
+0644	0697	0785	松	松	松	pine tree	pine tree	pine tree
+0645	0698	0788	谷	谷	谷	valley	valley	valley
+0646	0699	0789	浴	浴	浴	bathe	bathe	bathe
+0647	0700	0792	欲	欲	欲	desire	desire	longing
+0648	0700x	2984	慾	欲	慾	lust		longing [old]
+0649	0701	0790	容	容	容	contain	contain	contain
+0650	0702	0791	溶	溶	溶	dissolve	dissolve	melt
+0651	0947	1153	當	当	当	work as	work as	hit
+0652	0948		檔	档		files	files	
+0653	0704	0797	黨	党	党	political party	political party	party
+0654	0705	0799	常	常	常	often	often	usual
+0655	0706	0798	堂	堂	堂	main room	main room	public chamber
+0656	0707	0802	皮	皮	皮	covering	covering	pelt
+0657	0708	0803	波	波	波	waves	waves	waves
+0658	0709	0804	婆	婆	婆	old woman	old woman	old woman
+0659	0710	0806	破	破	破	break	break	rend
+0660	0711	0807	被	被	被	quilt	quilt	incur
+0661	0712		歹	歹	歹	malicious	malicious	
+0662	0713	0812	列	列	列	line up	line up	file
+0663	0714	0814	烈	烈	烈	intense	intense	ardent
+0664	0715	0815	死	死	死	death	death	death
+0665	0716	0816	葬	葬	葬	inter	inter	interment
+0666	0717	0818	耳	耳	耳	ear	ear	ear
+0667	0718	0819	取	取	取	take	take	take
+0668	0719	0820	趣	趣	趣	interest	interest	gist
+0669	0720	0821	最	最	最	most	most	utmost
+0670	0721	0824	職	职	職	job	job	post
+0671	0634	0825	聖	圣	聖	holy	holy	holy
+0672	0722	0826	敢	敢	敢	brave	brave	daring
+0673	1355	1936	嚴	严	厳	strict	strict	stern
+0674	0723	2100	曼	曼	曼	drawn out	drawn out	mandala
+0675	0724	0829	慢	慢	慢	slow	slow	ridicule
+0676	0725	0830	漫	漫	漫	overflow	overflow	loose
+0677	0996	0836	環	环	環	ring	ring	ring
+0678	0998	0837	還	还	還	give back	give back	send back
+0679	0726	0838	夫	夫	夫	husband	husband	husband
+0680	0727	0841	規	规	規	regulations	regulations	standard
+0681	0728	0842	替	替	替	replace	replace	exchange
+0682	0729	0845	失	失	失	lose	lose	lose
+0683	0731	0848	臣	臣	臣	feudal official	feudal official	retainer
+0684	1012	0854	臨	临	臨	be about to	be about to	look to
+0685	1014	0852	賢	贤	賢	worthy	worthy	intelligent
+0686	1013	0853	堅	坚	堅	firm	firm	strict
+0687	0732	0858	力	力	力	power	power	power
+0688	0738		另	另	另	another	another	
+0689	0739	0090	別	别	別	don't	don't	separate
+0690	0740	0656	拐	拐	拐	turn	turn	kidnap
+0691	0741	0859	男	男	男	male	male	male
+0692	0742	0863	功	功	功	achievement	achievement	achievement
+0693	0747	0702	奴	奴	奴	slave	slave	guy
+0694	0748	0865	努	努	努	toil	toil	toil
+0695	0749	0867	加	加	加	add	add	add
+0696	0750	0868	賀	贺	賀	congratulate	congratulate	congratulations
+0697	0751	0869	架	架	架	shelf	shelf	erect
+0698	0744	0872	協	协	協	cooperate	cooperate	co-
+0699	0754	0873	行	行	行	line of business	line of business	going
+0700	0755	0874	律	律	律	law	law	rhythm
+0701	0472x	0875	復	复	復	recover		restore
+0702	0756	0876	得	得	得	must	must	gain
+0703	0757	0879	待	待	待	treat	treat	wait
+0704	0758	0880	往	往	往	toward	toward	journey
+0705	0760	0889	微	微	微	tiny	tiny	delicate
+0706	0761	0890	街	街	街	street	street	boulevard
+0707	0759	0885	德	德	徳	morality	morality	benevolence
+0708	0925	0827	聽	听	聴	listen	listen	listen
+0709	0122	0591	廳	厅	庁	hall	hall	government office
+0710	0762		禾	禾	禾	standing grain	standing grain	
+0711	0763	0894	程	程	程	journey	journey	extent
+0712	0764	0897	和	和	和	harmony	harmony	harmony
+0713	0767	0898	移	移	移	shift	shift	shift
+0714	0768	0900	秋	秋	秋	autumn	autumn	autumn
+0715	0769	0901	愁	愁	愁	gloomy	gloomy	distress
+0716	0771	0906	利	利	利	profit	profit	profit
+0717	0772	0911	香	香	香	perfume	perfume	incense
+0718	0773	0912	季	季	季	seasons	seasons	seasons
+0719	0774	0913	委	委	委	committee	committee	committee
+0720	0775	0914	秀	秀	秀	elegant	elegant	excel
+0721	0776	0915	透	透	透	penetrate	penetrate	transparent
+0722	0777	0916	誘	诱	誘	entice	entice	entice
+0723	0737	0376	歷	历	歴	experience	experience	curriculum
+0724	0778	0919	米	米	米	rice	rice	rice
+0725	0780	0924	迷	迷	迷	lost	lost	astray
+0726	0781	2709	謎	谜	謎	riddle	riddle	riddle
+0727	0782	0931	類	类	類	kind	kind	sort
+0728	0786	0937	竹	竹	竹	bamboo	bamboo	bamboo
+0729	0787	0938	笑	笑	笑	laugh	laugh	laugh
+0730	0788	0942	箱	箱	箱	box	box	box
+0731	1423	0943	筆	笔	筆	pen	pen	writing brush
+0732	0789	0945	等	等	等	etc.	etc.	etc.
+0733	0790	0946	算	算	算	calculate	calculate	calculate
+0734	0791	0947	答	答	答	answer	answer	solution
+0735	0792	0948	策	策	策	strategy	strategy	scheme
+0736	0793	0951	人	人	人	person	person	person
+0737	2089	1018	囚	囚	囚	prisoner	prisoner	captured
+0738	0796		份	份	份	portion	portion	
+0739	0044x	0048x	佔	占	占	occupy		fortune-telling
+0740	0525x	0541x	傢	家	傢	furniture		
+0741	0799		你	你	你	you	you	
+0742	0800		您	您	您	you (respectful)	you (respectful)	
+0743	0802	2968	什	什	什	what?	what?	X
+0744	0307	0298	條	条	条	strip	strip	twig
+0745	0803	0978	值	值	値	value	value	price
+0746	0804	2132	做	做	做	make	make	make do
+0747	0805	0953	但	但	但	however	however	however
+0748	0806	0954	住	住	住	dwell	dwell	dwell
+0749	0807	0955	位	位	位	position	position	rank
+0750	0808	0959	件	件	件	piece	piece	affair
+0751	0809		仍	仍	仍	still	still	
+0752	0810	0961	他	他	他	he	he	other
+0753	0812	0965	休	休	休	rest	rest	rest
+0754	0814	0969	信	信	信	faith	faith	faith
+0755	0815	0971	依	依	依	depend on	depend on	reliant
+0756	0816	0972	例	例	例	example	example	example
+0757	0258	0973	個	个	個	individual	individual	individual
+0758	0817	0974	健	健	健	healthy	healthy	healthy
+0759	0818	0977	停	停	停	halt	halt	halt
+0760	0819	0980	倒	倒	倒	upside down	upside down	overthrow
+0761	0820	0988	仁	仁	仁	benevolence	benevolence	humanity
+0762	0821	0993	優	优	優	excellent	excellent	tenderness
+0763	0822	0996	傷	伤	傷	wound	wound	wound
+0764	0823	0997	保	保	保	safeguard	safeguard	protect
+0765	0824		堡	堡	堡	fort	fort	
+0766	0825	1000	付	付	付	pay	pay	adhere
+0767	0826	1002	府	府	府	government office	government office	municipality
+0768	0827		俯	俯	俯	bow one's head	bow one's head	
+0769	0828	1005	代	代	代	substitute for	substitute for	substitute
+0770	0829	1006	袋	袋	袋	bag	bag	sack
+0771	0830	1008	化	化	化	transform	transform	change
+0772	0833	1009	花	花	花	flower	flower	flower
+0773	0834	1010	貨	货	貨	commodities	commodities	freight
+0774	0835	1012	何	何	何	whatwhichwhowherewhy?	whatwhichwhowherewhy?	what
+0775	0836	0991	便	便	便	convenient	convenient	convenience
+0776	0837	0691	丈	丈	丈	100 Chinese Inches	100 Chinese inches	length
+0777	0838	0990	使	使	使	use	use	use
+0778	0839	1016	久	久	久	long time	long time	long time
+0779	0324	1017	畝	亩	畝	Chinese acre	Chinese acre	furrow
+0780	0842	1020	丙	丙	丙	third	third	third class
+0781	0843	1021	柄	柄	柄	handle	handle	design
+0782	0844	1022	肉	肉	肉	meat	meat	meat
+0783	0845	1023	腐	腐	腐	rotten	rotten	rot
+0784	0847	1857	眾	众	衆	multitude	multitude	masses
+0785	0848	2844	坐	坐	坐	sit	sit	sitting in meditation
+0786	0849	1024	座	座	座	seat	seat	sit
+0787	1435	1673	檢	检	検	examine	examine	examination
+0788	1436		臉	脸	臉	face	face	
+0789	0783	1884	來	来	来	come	come	come
+0790	1208	1533	麥	麦	麦	wheat	wheat	barley
+0791	0851	0454	喝	喝	喝	drink	drink	hoarse
+0792	0852	0451	渴	渴	渇	thirsty	thirsty	thirst
+0793	0853	1003	任	任	任	appoint	appoint	responsibility
+0794	0854	0508	廷	廷	廷	royal court	royal court	courts
+0795	0855	0590	庭	庭	庭	court of law	court of law	courtyard
+0796	0861	1028	以	以	以	by means of	by means of	by means of
+0797	0862	1029	似	似	似	similar	similar	similar
+0798	0863	1030	併	并	併	combine	combine	join
+0799	0864		拼	拼	拼	piece together	piece together	
+0800	0865	0024	呂	吕	呂	spine	spine	spine
+0801	0866	2121	侶	侣	侶	associate	associate	partner
+0802	0867	0326	榮	荣	栄	glory	glory	flourish
+0803	0868	0860	勞	劳	労	labor	labor	labor
+0804	0869	1034	營	营	営	camp	camp	occupation
+0805	0870	1035	善	善	善	virtuous	virtuous	virtuous
+0806	0871	1036	年	年	年	year	year	year
+0807	0872	1037	夜	夜	夜	night	night	night
+0808	0873	1038	液	液	液	liquid	liquid	fluid
+0809	1326	1042	喚	唤	喚	call out	call out	yell
+0810	1327	1043	換	换	換	exchange	exchange	interchange
+0811	0874	1048	旅	旅	旅	travel	travel	trip
+0812	0875	1045	施	施	施	execute	execute	alms
+0813	0876		游	游	游	go swimming	go swimming	
+0814	0876x	1047	遊	游	遊	tour		play
+0815	0877	1049	勿	勿	勿	not	not	not
+0816	0878	2431	忽	忽	忽	suddenly	suddenly	instantaneously
+0817	0879	1050	物	物	物	thing	thing	thing
+0818	0880	1051	易	易	易	easy	easy	easy
+0819	0881	1052	賜	赐	賜	grant	grant	grant
+0820	0882	2222	屍	尸	屍	corpse	corpse	corpse
+0821	0883	1054	尼	尼	尼	nun	nun	nun
+0822	0884		呢	呢	呢	woolen cloth	woolen cloth	
+0823	0885	1055	泥	泥	泥	mud	mud	mud
+0824	0886	1058	屋	屋	屋	habitation	habitation	roof
+0825	0887	1059	握	握	握	grip	grip	grip
+0826	0888	1063	居	居	居	reside	reside	reside
+0827	0889	2759	鋸	锯	鋸	saw	saw	handsaw
+0828	0892	1065	層	层	層	story	story	stratum
+0829	0893	1066	局	局	局	bureau	bureau	bureau
+0830	0896	1076	戶	户	戸	door	door	door
+0831	0897	1078	房	房	房	domicile	domicile	tassel
+0832	0898	1083	雇	雇	雇	hire	hire	employ
+0833	0523	1084	顧	顾	顧	look back	look back	look back
+0834	0900	1086	示	示	示	show	show	show
+0835	0901	1092	社	社	社	society	society	company
+0836	0903	1093	視	视	視	inspect	inspect	inspection
+0837	0904	1090	福	福	福	happiness	happiness	blessing
+0838	0906	1098	禁	禁	禁	prohibit	prohibit	prohibition
+0839	0907	1099	襟	襟	襟	front of a garment	front of a garment	collar
+0840	0908	1100	宗	宗	宗	religion	religion	religion
+0841	0909	1101	崇	崇	崇	worship	worship	adore
+0842	0910	1102	祭	祭	祭	offer sacrifice	offer sacrifice	ritual
+0843	0911	1103	察	察	察	scrutinize	scrutinize	guess
+0844	0912	1104	擦	擦	擦	scrub	scrub	grate
+0845	0913	1105	由	由	由	wherefore	wherefore	wherefore
+0846	0914	1106	抽	抽	抽	take out	take out	pluck
+0847	0915	1107	油	油	油	oil	oil	oil
+0848	0916	1113	甲	甲	甲	first	first	armor
+0849	0917	1114	押	押	押	pawn	pawn	push
+0850	0918	1117	申	申	申	express	express	speaketh
+0851	0919	1118	伸	伸	伸	extend	extend	expand
+0852	0920	1119	神	神	神	gods	gods	gods
+0853	0921	1121	果	果	果	fruit	fruit	fruit
+0854	0922	1123	課	课	課	lesson	lesson	chapter
+0855	0923		顆	颗	顆	granule	granule	
+0856	0924	1125	斤	斤	斤	catty	catty	ax
+0857	0926	1127	所	所	所	place	place	place
+0858	0927	1129	近	近	近	near	near	near
+0859	0928	2092	斬	斩	斬	hew	hew	chop off
+0860	0929	1134	暫	暂	暫	temporary	temporary	temporarily
+0861	0930	1135	漸	渐	漸	gradually	gradually	steadily
+0862	0660	1137	質	质	質	quality	quality	substance
+0863	0935	1138	斥	斥	斥	reprimand	reprimand	reject
+0864	0936	1139	訴	诉	訴	accuse	accuse	accusation
+0865	0937		乍	乍	乍	for the first time	for the first time	
+0866	0938		怎	怎	怎	how?	how?	
+0867	0939	1140	昨	昨	昨	yesterday	yesterday	yesterday
+0868	0940	1142	作	作	作	do	do	make
+0869	0941	1143	雪	雪	雪	snow	snow	snow
+0870	0946	1146	急	急	急	anxious	anxious	hurry
+0871	0945	1145	尋	寻	尋	seek	seek	inquire
+0872	0943	1151	婦	妇	婦	married woman	married woman	lady
+0873	0944	1152	掃	扫	掃	sweep	sweep	sweep
+0874	0949	1144	錄	录	録	record	record	record
+0875	0950		碌	碌	碌	commonplace	commonplace	
+0876	0951	1154	爭	争	争	contend	contend	contend
+0877	0952	1155	淨	净	浄	clean	clean	clean
+0878	0953	1156	事	事	事	matter	matter	matter
+0879	0954	1157	唐	唐	唐	Tang	Tang	Tang
+0880	0955	1158	糖	糖	糖	sugar	sugar	sugar
+0881	0956	1159	康	康	康	hale	hale	sane
+0882	0957		尹	尹	尹	overseer	overseer	
+0883	0958	1161	伊	伊	伊	Queen Elizabeth	Queen Elizabeth	Italy
+0884	0959	1162	君	君	君	monarch	monarch	old boy
+0885	0960		裙	裙	裙	skirt	skirt	
+0886	0961	1163	群	群	群	crowd	crowd	flock
+0887	0962	3006	而	而	而	and	and	and then
+0888	0963	1165	需	需	需	need	need	demand
+0889	0964	1166	儒	儒	儒	Confucian	Confucian	Confucian
+0890	0965	2563	瑞	瑞	瑞	auspicious	auspicious	fortunate
+0891	0966	1167	端	端	端	upright	upright	edge
+0892	0967	1172	曲	曲	曲	bent	bent	bend
+0893	0968	1177	斗	斗	斗	big dipper	big dipper	Big Dipper
+0894	0969	1178	料	料	料	material	material	fee
+0895	0970	1179	科	科	科	academic discipline	academic discipline	department
+0896	0971	1181	用	用	用	utilize	utilize	utilize
+0897	0973	1184	昔	昔	昔	times past	times past	once upon a time
+0898	0974	1186	借	借	借	borrow	borrow	borrow
+0899	0975	1185	錯	错	錯	mistaken	mistaken	confused
+0900	0976	1189	散	散	散	scattered	scattered	scatter
+0901	0977	2271	撒	撒	撒	scatter	scatter	sprinkle
+0902	0317	1183	備	备	備	prepare	prepare	equip
+0903	0978	1190	廿	廿	廿	twenty	twenty	twenty
+0904	0979	1193	席	席	席	mat	mat	seat
+0905	0980	1194	度	度	度	degrees	degrees	degrees
+0906	0981	1195	渡	渡	渡	ferry	ferry	transit
+0907	0982	1202	半	半	半	half	half	half
+0908	0983	1203	伴	伴	伴	partner	partner	consort
+0909	0984		胖	胖	胖	fat	fat	
+0910	0985	1205	判	判	判	judge	judge	judgment
+0911	0986		眷	眷	眷	dependents	dependents	
+0912	0987	2917	拳	拳	拳	boxing	boxing	fist
+0913	1224	1209	勝	胜	勝	victory	victory	victory
+0914	0988	1212	片	片	片	slice	slice	one-sided
+0915	0989	1213	版	版	版	printing plate	printing plate	printing block
+0916	0243		妝	妆	妝	put on makeup	put on makeup	
+0917	0336	0321	壯	壮	壮	robust	robust	robust
+0918	0562	2238	莊	庄	庄	hamlet	hamlet	shire
+0919	0402	0398	裝	装	装	attire	attire	attire
+0920	0244	0731	將	将	将	General	General	leader
+0921	0990	1214	之	之	之	of	of	of
+0922	0991	1215	乏	乏	乏	weary	weary	destitution
+0923	0992		眨	眨	眨	blink	blink	
+0924	0993	1217	不	不	不	no	no	negative
+0925	0994	1218	否	否	否	negate	negate	negate
+0926	0997	1219	杯	杯	杯	cup	cup	cupfuls
+0927	1000	1220	矢	矢	矢	dart	dart	dart
+0928	1001	1222	族	族	族	tribe	tribe	tribe
+0929	1002	1223	知	知	知	know	know	know
+0930	1003	1224	智	智	智	wisdom	wisdom	wisdom
+0931	1004	1225	矛	矛	矛	spear	spear	halberd
+0932	1005	1226	柔	柔	柔	gentle	gentle	tender
+0933	1006		揉	揉	揉	knead	knead	
+0934	0752	1227	務	务	務	tasks	tasks	task
+0935	0753	1228	霧	雾	霧	fog	fog	fog
+0936	1007	1593	予	予	予	bestow	bestow	beforehand
+0937	1008	1594	序	序	序	preface	preface	preface
+0938	1009	1595	預	预	預	beforehand	beforehand	deposit
+0939	1010	1596	野	野	野	wild	wild	plains
+0940	1011	1229	班	班	班	class	class	squad
+0941	1015	1231	弓	弓	弓	bow	bow	bow
+0942	1016	1232	引	引	引	draw	draw	pull
+0943	1018	1235	強	强	強	strong	strong	strong
+0944	1019	1236	弱	弱	弱	weak	weak	weak
+0945	1021	1931	彈	弹	弾	bullet	bullet	bullet
+0946	1023	0964	佛	佛	仏	Buddha	Buddha	Buddha
+0947	1022	1238	費	费	費	expense	expense	expense
+0948	1024	1240	弟	弟	弟	younger brother	younger brother	younger brother
+0949	1025	1239	第	第	第	No.	No.	No.
+0950	1026	1241	巧	巧	巧	adroit	adroit	adroit
+0951	1028	1248	身	身	身	somebody	somebody	somebody
+0952	1029	1249	射	射	射	shoot	shoot	shoot
+0953	1030	1250	謝	谢	謝	thank	thank	apologize
+0954	1031	1251	老	老	老	old man	old man	old man
+0955	1032	1252	考	考	考	take an exam	take an exam	consider
+0956	1033		烤	烤	烤	roast	roast	
+0957	1037	1253	孝	孝	孝	filial piety	filial piety	filial piety
+0958	1038	1254	教	教	教	teach	teach	teach
+0959	1039	1256	者	者	者	someone	someone	someone
+0960	0536	0555	著	着	着	-ing	-ing	don
+0961	1041	1262	豬	猪	猪	pig	pig	boar
+0962	1042	1268	追	追	追	chase	chase	chase
+0963	0411	1270	帥	帅	帥	commander	commander	commander
+0964	0412	1269	師	师	師	teacher	teacher	expert
+0965	0413	2345	獅	狮	獅	lion	lion	lion
+0966	1043	1271	官	官	官	bureaucrat	bureaucrat	bureaucrat
+0967	1044	1273	管	管	管	pipe	pipe	pipe
+0968	1045	1274	父	父	父	father	father	father
+0969	1046	1275	交	交	交	mingle	mingle	mingle
+0970	1047	1276	效	效	効	effect	effect	merit
+0971	1048	1277	較	较	較	relatively	relatively	contrast
+0972	1049	1278	校	校	校	school	school	exam
+0973	1050	1279	足	足	足	lower leg	lower leg	leg
+0974	1051		跑	跑	跑	run	run	
+0975	1052	1284	跳	跳	跳	jump	jump	hop
+0976	1053	1282	路	路	路	path	path	path
+0977	1054	1283	露	露	露	dew	dew	dew
+0978	1055	1288	骨	骨	骨	skeleton	skeleton	skeleton
+0979	1056	1289	滑	滑	滑	slippery	slippery	slippery
+0980	0291	1293	過	过	過	cross	cross	overdo
+0981	1057	1295	阿	阿	阿	Apollo	Apollo	Africa
+0982	1058		啊	啊	啊	aah!	aah!	
+0983	1065	1296	際	际	際	occasion	occasion	occasion
+0984	1437	1672	險	险	険	perilous	perilous	precipitous
+0985	1059	1298	隨	随	随	as you wish	as you wish	follow
+0986	1060	1300	陽	阳	陽	Yang	Yang	sunshine
+0987	1252	1301	陳	陈	陳	exhibit	exhibit	line up
+0988	1063	1302	防	防	防	ward off	ward off	ward off
+0989	1064	1303	附	附	附	attach	attach	affixed
+0990	1067	1304	院	院	院	Inst.	Inst.	Inst.
+0991	1068	1305	陣	阵	陣	battle formation	battle formation	camp
+0992	1069	1306	隊	队	隊	team	team	regiment
+0993	1071	1308	降	降	降	descend	descend	descend
+0994	1066	1309	階	阶	階	stairs	stairs	story
+0995	1072	1316	穴	穴	穴	hole	hole	hole
+0996	1073	1320	究	究	究	research	research	research
+0997	1074	1319	突	突	突	abruptly	abruptly	stab
+0998	1075	1317	空	空	空	empty	empty	empty
+0999	1076	1318	控	控	控	control	control	withdraw
+1000	0733	0284	邊	边	辺	border	border	environs
+1001	1077	1328	深	深	深	deep	deep	deep
+1002	1078	1327	探	探	探	spy	spy	grope
+1003	1079	1329	丘	丘	丘	hill	hill	hill
+1004	1080	1331	兵	兵	兵	troops	troops	soldier
+1005	1081		絲	丝	絲	silk	silk	
+1006	1083	1339	線	线	線	line	line	line
+1007	1084	1341	維	维	維	maintain	maintain	fiber
+1008	0120	1342	羅	罗	羅	silk gauze	silk gauze	gauze
+1009	1098	1345	續	续	続	continue	continue	continue
+1010	1085	1347	統	统	統	continuum	continuum	overall
+1011	1086	1349	給	给	給	give	give	salary
+1012	1087	1351	結	结	結	tie	tie	tie
+1013	1088	1352	終	终	終	end	end	end
+1014	1089	1353	級	级	級	rank	rank	class
+1015	1090	1354	紀	纪	紀	epoch	epoch	chronicle
+1016	1091	1355	紅	红	紅	red	red	crimson
+1017	1092	1362	約	约	約	make an appointment	make an appointment	promise
+1018	1093	1363	細	细	細	fine	fine	dainty
+1019	1102	1374	緊	紧	緊	tight	tight	tense
+1020	1082	1334	織	织	織	weave	weave	weave
+1021	1174	1373	網	网	網	net	net	netting
+1022	1095	1371	綠	绿	緑	green	green	green
+1023	1492		彎	弯	彎	curved	curved	
+1024	1493	1749	灣	湾	湾	bay	bay	gulf
+1025	1494	1748	戀	恋	恋	be enamored of	be enamored of	romance
+1026	1495	1745	變	变	変	change	change	unusual
+1027	1096	1360	經	经	経	scripture	scripture	sutra
+1028	1097	0717	輕	轻	軽	lightweight	lightweight	lightly
+1029	0659	1379	後	后	後	behind	behind	behind
+1030	0057	1381	幾	几	幾	how many?	how many?	how many
+1031	0206	0210	機	机	机	machine	machine	desk
+1032	0931	1136	斷	断	断	sever	sever	severance
+1033	1099	1370	繼	继	継	carry on	carry on	inherit
+1034	1352	1789	顯	显	顕	obvious	obvious	appear
+1035	0662	1735	樂	乐	楽	music	music	music
+1036	1100	1736	藥	药	薬	medicine	medicine	medicine
+1037	1439	1947	雞	鸡	鶏	chicken	chicken	chicken
+1038	0670		麼	么	麼	(suffix)	(suffix)	
+1039	1101	1391	系	系	系	lineage	lineage	lineage
+1040	1101x	1392	係	系	係	relate to		person in charge
+1041	0112	1393	孫	孙	孫	grandchild	grandchild	grandchild
+1042	1103	1395	卻	却	却	withdraw	withdraw	instead
+1043	1104	1396	腳	脚	脚	foot	foot	shins
+1044	1105	1399	服	服	服	apparel	apparel	clothing
+1045	1107	1400	命	命	命	fate	fate	fate
+1046	1109	1423	留	留	留	stay	stay	detain
+1047	1110	2324	溜	溜	溜	slide	slide	cumulation
+1048	1111		聊	聊	聊	chat	chat	
+1049	1112	1421	柳	柳	柳	willow	willow	willow
+1050	1115	1401	令	令	令	orders	orders	orders
+1051	1116	1404	冷	冷	冷	cold	cold	cool
+1052	1117	1402	零	零	零	zero	zero	zero
+1053	1118	1405	領	领	領	collar	collar	jurisdiction
+1054	1119	1408	通	通	通	communicate	communicate	traffic
+1055	1120	1407	勇	勇	勇	courageous	courageous	courage
+1056	1124	1414	犯	犯	犯	criminal	criminal	crime
+1057	1125	1416	危	危	危	danger	danger	dangerous
+1058	1126	2462	脆	脆	脆	fragile	fragile	fragile
+1059	1127	1425	印	印	印	print	print	stamp
+1060	1433	1426	興	兴	興	excitement	excitement	entertain
+1061	1128	1428	酒	酒	酒	liquor	liquor	sake
+1062	1129	1436	配	配	配	distribute	distribute	distribute
+1063	1130	2906	酋	酋	酋	chieftain	chieftain	chieftain
+1064	1131	1439	尊	尊	尊	venerate	venerate	revered
+1065	1132	2031	遵	遵	遵	abide by	abide by	abide by
+1066	1133	1440	豆	豆	豆	beans	beans	beans
+1067	0856	1441	頭	头	頭	head	head	head
+1068	1134	1442	短	短	短	short	short	short
+1069	0902	1087	禮	礼	礼	ceremony	ceremony	salutation
+1070	0813	0957	體	体	体	body	body	body
+1071	1136	1444	鼓	鼓	鼓	drum	drum	drum
+1072	1137	1445	喜	喜	喜	joyful	joyful	rejoice
+1073	1135	2152	廚	厨	厨	kitchen	kitchen	kitchen
+1074	0643	1446	樹	树	樹	timber	timber	timber-trees
+1075	1138	1448	血	血	血	blood	blood	blood
+1076	0895		盡	尽	盡	exhausted	exhausted	
+1077	0895x	1071	儘	尽	尽	utmost		exhaust
+1078	1139	2388	蓋	盖	蓋	lid	lid	lid
+1079	1140	1452	溫	温	温	temperature	temperature	warm
+1080	1141	1453	監	监	監	supervise	supervise	oversee
+1081	1142		籃	篮	籃	basket	basket	
+1082	1143	2371	藍	蓝	藍	blue	blue	indigo
+1083	1144	1459	銀	银	銀	silver	silver	silver
+1084	1145		跟	跟	跟	heel	heel	
+1085	1146		很	很	很	very	very	
+1086	1147	1461	根	根	根	root	root	root
+1087	1148	1462	即	即	即	immediately	immediately	instant
+1088	1113	1464	節	节	節	holiday	holiday	node
+1089	1149	1465	退	退	退	retreat	retreat	retreat
+1090	1150		腿	腿	腿	leg	leg	
+1091	1151	1466	限	限	限	limit	limit	limit
+1092	1152	1467	眼	眼	眼	eyelet	eyelet	eyeball
+1093	1153	1468	良	良	良	high-quality	high-quality	good
+1094	1154	1470	浪	浪	浪	breakers	breakers	wandering
+1095	1155	1471	娘	娘	娘	mom	mom	daughter
+1096	1156	1472	食	食	食	food	food	eat
+1097	1157	1473	飯	饭	飯	meal	meal	meal
+1098	1158	2798	餐	餐	餐	dine	dine	repast
+1099	1159	1478	館	馆	館	Bldg.	Bldg.	Bldg.
+1100	0537	1479	養	养	養	raise	raise	foster
+1101	1160	1481	既	既	既	since	since	previously
+1102	1161	1482	概	概	概	approximate	approximate	outline
+1103	1162	1484	平	平	平	even	even	even
+1104	1163	1487	評	评	評	evaluate	evaluate	evaluate
+1105	1164	1486	坪	坪	坪	level ground	level ground	two-mat area
+1106	1165		乎	乎	乎	ooh!	ooh!	
+1107	1166	1485	呼	呼	呼	shout	shout	call
+1108	1167	1489	希	希	希	hope	hope	hope
+1109	1168	2611	稀	稀	稀	scarce	scarce	sparse
+1110	0337	0324	學	学	学	study	study	study
+1111	0338	0325	覺	觉	覚	senses	senses	memorize
+1112	0601	2257	攪	搅	撹	stir	stir	churn up
+1113	1176x	1490	凶	凶	凶	sinister		villain
+1114	1176	2853	兇	凶	兇	cruel	cruel	evil
+1115	1177	1491	胸	胸	胸	bosom	bosom	bosom
+1116	1180	1492	離	离	離	leave	leave	detach
+1117	1181	2049	禽	禽	禽	fowl	fowl	fowl
+1118	1185	1496	辛	辛	辛	peppery	peppery	spicy
+1119	0743		辦	办	辦	manage	manage	
+1120	1186		辯	辩	辯	dispute	dispute	
+1121	1188	1500	壁	壁	壁	partition	partition	wall
+1122	1189	1501	避	避	避	evade	evade	evade
+1123	1191	1502	新	新	新	new	new	new
+1124	1192	1503	薪	薪	薪	fuel	fuel	firewood
+1125	1190	1504	親	亲	親	relatives	relatives	parent
+1126	0407		襯	衬	襯	inner garments	inner garments	
+1127	1193	1505	幸	幸	幸	good fortune	good fortune	happiness
+1128	0602	1506	執	执	執	clench	clench	tenacious
+1129	1106	1507	報	报	報	newspaper	newspaper	report
+1130	1194	1508	叫	叫	叫	call	call	shout
+1131	1195	1510	收	收	収	receive	receive	income
+1132	1237	1513	陸	陆	陸	land	land	land
+1133	0734	1515	勢	势	勢	force	force	forces
+1134	0603	1516	熱	热	熱	heat	heat	heat
+1135	0228	2352	藝	艺	藝	technique	technique	technique [old]
+1136	1196	1519	亥	亥	亥	sign of the hog	sign of the hog	sign of the hog
+1137	1197	1520	核	核	核	nucleus	nucleus	nucleus
+1138	1198		孩	孩	孩	tot	tot	
+1139	1199	1521	刻	刻	刻	carve	carve	engrave
+1140	1200	1522	該	该	該	should	should	above-stated
+1141	1202	1524	述	述	述	narrate	narrate	mention
+1142	1201	1525	術	术	術	art	art	art
+1143	1169	1493	殺	杀	殺	kill	kill	kill
+1144	1203		襄	襄	襄	aid	aid	
+1145	0349	1528	讓	让	譲	yield	yield	defer
+1146	1204	1529	壤	壤	壌	territory	territory	lot
+1147	1205	1526	寒	寒	寒	frigid	frigid	cold
+1148	1206		賽	赛	賽	competition	competition	
+1149	1207	1531	毒	毒	毒	poison	poison	poison
+1150	1209	1532	素	素	素	vegetarian diet	vegetarian diet	elementary
+1151	1210	1534	青	青	青	blue or green	blue or green	blue
+1152	1211	1535	精	精	精	refined	refined	refined
+1153	1212	1536	請	请	請	invite	invite	solicit
+1154	1213	1537	情	情	情	feelings	feelings	feelings
+1155	1214		睛	睛	睛	eyeball	eyeball	
+1156	1215	1539	清	清	清	pure	pure	pure
+1157	1216	1540	靜	静	静	quiet	quiet	quiet
+1158	1217	1541	責	责	責	responsibility	responsibility	blame
+1159	1218	1542	績	绩	績	accomplishments	accomplishments	exploits
+1160	0765	1543	積	积	積	accumulate	accumulate	volume
+1161	1219	1546	表	表	表	surface	surface	surface
+1162	(c)		錶	錶	錶	watch	watch	
+1163	1220	1555	生	生	生	life	life	life
+1164	1221	1556	星	星	星	star	star	star
+1165	1222	1557	姓	姓	姓	surname	surname	surname
+1166	1223	1558	性	性	性	sex	sex	sex
+1167	1226	1551	害	害	害	harm	harm	harm
+1168	1227	1553	割	割	割	cut off	cut off	proportion
+1169	1228	2851	慧	慧	慧	intelligent	intelligent	astute
+1170	1225	1443	豐	丰	豊	plentiful	plentiful	bountiful
+1171	1232	1568	春	春	春	springtime	springtime	springtime
+1172	1233	1570	泰	泰	泰	tranquil	tranquil	peaceful
+1173	1234	1573	奉	奉	奉	proffer	proffer	dedicate
+1174	1235	1575	棒	棒	棒	cudgel	cudgel	rod
+1175	1241	1577	勤	勤	勤	diligent	diligent	diligence
+1176	1242	1576	謹	谨	謹	careful	careful	discreet
+1177	0811	2116	僅	仅	僅	merely	merely	trifle
+1178	0637	1578	漢	汉	漢	Han	Han	Sino-
+1179	0644	1580	難	难	難	difficult	difficult	difficult
+1180	0645		攤	摊	攤	vendors stand	vendors stand	
+1181	0831	1581	華	华	華	splendor	splendor	splendor
+1182	0832	2160	嘩	哗	嘩	clamor	clamor	quarrel
+1183	1243	1582	垂	垂	垂	droop	droop	droop
+1184	1244	1584	錘	锤	錘	hammer	hammer	spindle
+1185	1245	1583	睡	睡	睡	sleep	sleep	drowsy
+1186	1246	1587	今	今	今	now	now	now
+1187	1247	1588	含	含	含	harbor	harbor	include
+1188	1248	1590	念	念	念	miss	miss	wish
+1189	1061	1592	陰	阴	陰	Yin	Yin	shade
+1190	1062	2374	蔭	荫	蔭	shady	shady	behind the scenes
+1191	1255	1602	西	西	西	west	west	west
+1192	1256	1604	要	要	要	want	want	need
+1193	1257	1605	腰	腰	腰	waist	waist	loins
+1194	1258	1606	票	票	票	ticket	ticket	ballot
+1195	1259	1607	漂	漂	漂	drift	drift	drift
+1196	0905	1608	標	标	標	mark	mark	signpost
+1197	1260		賈	贾	賈	merchant	merchant	
+1198	0795	1603	價	价	価	price	price	value
+1199	0552	1612	煙	烟	煙	smoke	smoke	smoke
+1200	1261	1613	南	南	南	south	south	south
+1201	1262	1616	門	门	門	gate	gate	gates
+1202	1263		們	们	們	(plural)	(plural)	
+1203	1264		閒	闲		leisure	leisure	
+1204	1265	1617	問	问	問	ask	ask	question
+1205	1266	1620	間	间	間	interval	interval	interval
+1206	1267	1621	簡	简	簡	simple	simple	simplicity
+1207	0613	1622	開	开	開	open	open	open
+1208	1268	1626	聞	闻	聞	hear	hear	hear
+1209	1121	1630	倉	仓	倉	storehouse	storehouse	godown
+1210	1122	2516	槍	枪	槍	gun	gun	lance
+1211	1123	1631	創	创	創	initiate	initiate	genesis
+1212	1269	1632	非	非	非	non-	non-	un-
+1213	1270	1634	排	排	排	row	row	repudiate
+1214	1271	1636	罪	罪	罪	guilt	guilt	guilt
+1215	1272		靠	靠	靠	lean on	lean on	
+1216	1273	1639	侯	侯	侯	marquis	marquis	marquis
+1217	1274	1640	候	候	候	wait	wait	climate
+1218	1275	1641	決	决	決	decide	decide	decide
+1219	1276	1642	快	快	快	fast	fast	cheerful
+1220	1278		筷	筷	筷	chopsticks	chopsticks	
+1221	1229		韋	韦	韋	tanned hide	tanned hide	
+1222	1230	1807	圍	围	囲	surround	surround	surround
+1223	1231	1643	偉	伟	偉	great	great	admirable
+1224	1114	1646	衛	卫	衛	defend	defend	defense
+1225	1279x	1648	干	干	干	offend		dry
+1226	1280	1653	岸	岸	岸	shore	shore	beach
+1227	1279x	1654	幹	干	幹	trunk		tree trunk
+1228	1281	2441	旱	旱	旱	drought	drought	dry weather
+1229	1282		趕	赶	趕	hurry	hurry	
+1230	1283		于	于	于	Yu	Yu	
+1231	1284	1656	宇	宇	宇	eaves	eaves	eaves
+1232	1285x	1657x	余	余	余	moi		
+1233	1285	1657	餘	余	余	excess	excess	too much
+1234	1286	1658	除	除	除	eliminate	eliminate	exclude
+1235	1287	1661	途	途	途	route	route	route
+1236	1288	1664	束	束	束	bundle up	bundle up	bundle
+1237	1289	1669	速	速	速	quick	quick	quick
+1238	1290	3025	辣	辣	辣	spicy hot	spicy hot	bitter
+1239	1291	1670	整	整	整	entire	entire	organize
+1240	1253	1343	練	练	練	practice	practice	practice
+1241	1254		揀	拣	揀	opt for	opt for	
+1242	1292	1675	重	重	重	heavy	heavy	heavy
+1243	1293		懂	懂	懂	understand	understand	
+1244	0735	1676	動	动	動	move	move	move
+1245	0766	1679	種	种	種	species	species	species
+1246	0432	1680	衝	冲	衝	collide	collide	collide
+1247	1294	1682	病	病	病	illness	illness	ill
+1248	1295	1690	痛	痛	痛	ache	ache	pain
+1249	1296		瘋	疯	瘋	insane	insane	
+1250	(c)	1695	匹	匹	匹	match	match	equal
+1251	1297	1696	區	区	区	region	region	ward
+1252	1298	1697	樞	枢	枢	hub	hub	hinge
+1253	1299	1699	歐	欧	欧	Europe	Europe	Europe
+1254	1300	1694	醫	医	医	physician	physician	doctor
+1255	1301	1701	仰	仰	仰	look up to	look up to	faceup
+1256	1302	1702	迎	迎	迎	greet	greet	welcome
+1257	1303	1703	登	登	登	ascend	ascend	ascend
+1258	0176	0165	燈	灯	灯	lamp	lamp	lamp
+1259	0388		證	证	證	evidence	evidence	
+1260	1304	1705	發	发	発	send out	send out	discharge
+1261	1305	1706	廢	废	廃	discard	discard	abolish
+1262	1306	1711	形	形	形	shape	shape	shape
+1263	1307	1712	影	影	影	shadow	shadow	shadow
+1264	1308	1714	彩	彩	彩	hue	hue	coloring
+1265	1309	1718	須	须	須	have to	have to	ought
+1266	1313	1723	珍	珍	珍	rare	rare	rare
+1267	1310	1720	參	参	参	participate	participate	visit
+1268	1311	1721	慘	惨	惨	wretched	wretched	wretched
+1269	1312	1722	修	修	修	repair	repair	discipline
+1270	1317	1725	文	文	文	literature	literature	sentence
+1271	1318	1728	蚊	蚊	蚊	mosquito	mosquito	mosquito
+1272	1315	1716	彥	彦	彦	erudite	erudite	lad
+1273	1316	1717	顏	颜	顔	countenance	countenance	face
+1274	1314	1560	產	产	産	products	products	products
+1275	1322	1737	率	率	率	rate	rate	ratio
+1276	1323		摔	摔	摔	tumble	tumble	
+1277	1324	1740	央	央	央	center	center	center
+1278	1325	1741	英	英	英	England	England	England
+1279	1328	2096	巴	巴	巴	crust	crust	comma-design
+1280	1329	1752	把	把	把	grasp	grasp	grasp
+1281	1330		爸	爸	爸	papa	papa	
+1282	1331		吧	吧	吧	bar	bar	
+1283	1332	1753	色	色	色	color	color	color
+1284	1333	1754	絕	绝	絶	discontinue	discontinue	discontinue
+1285	1335	1757	甘	甘	甘	sweet	sweet	sweet
+1286	1336	1759	某	某	某	such and such	such and such	so-and-so
+1287	1337		其	其	其	his-hers-its-theirs	his-hers-its-theirs	
+1288	1338	1765	期	期	期	period of time	period of time	period
+1289	1339	1767	基	基	基	base	base	fundamentals
+1290	1341	2890	斯	斯	斯	Sphinx	Sphinx	this
+1291	1340	1768	甚	甚	甚	tremendously	tremendously	tremendously
+1292	1342	1771	貴	贵	貴	expensive	expensive	precious
+1293	1343	1772	遺	遗	遺	bequeath	bequeath	bequeath
+1294	1344	1774	舞	舞	舞	dance	dance	dance
+1295	0611	1775	無	无	無	nothing	nothing	nothingness
+1296	0612	2270	撫	抚	撫	comfort	comfort	petting
+1297	1345	2034	且	且	且	moreover	moreover	moreover
+1298	1346	2206	姐	姐	姐	older sister	older sister	young miss
+1299	1347	1776	組	组	組	group	group	association
+1300	1348	1779	祖	祖	祖	ancestor	ancestor	ancestor
+1301	1349	1782	助	助	助	assist	assist	help
+1302	0863x	1785	並	并	並	side by side		row
+1303	1350	1786	普	普	普	universal	universal	universal
+1304	1351	1792	業	业	業	profession	profession	profession
+1305	0642	1726	對	对	対	that's right	that's right	vis-a-vis
+1306	1356	1795	共	共	共	together	together	together
+1307	1357	1796	供	供	供	supply	supply	submit
+1308	0616	1797	異	异	異	different	different	uncommon
+1309	1358		巷	巷	巷	lane	lane	
+1310	1359	1800	港	港	港	port	port	harbor
+1311	0297	1804	選	选	選	choose	choose	elect
+1312	1360	1806	井	井	井	well	well	well
+1313	1353	1809	亞	亚	亜	Asia	Asia	Asia
+1314	1354	1810	惡	恶	悪	evil	evil	bad
+1315	1363	1812	角	角	角	angle	angle	angle
+1316	1364	1814	解	解	解	untie	untie	unravel
+1317	1365		嘴	嘴	嘴	orifice	orifice	
+1318	1366	1815	再	再	再	once more	once more	again
+1319	0801	0905	稱	称	称	weigh	weigh	appellation
+1320	1361	1816	講	讲	講	lecture	lecture	lecture
+1321	0687	1818	構	构	構	frame	frame	posture
+1322	1367		扁	扁	扁	flat	flat	
+1323	1368	2645	篇	篇	篇	piece of writing	piece of writing	livraison
+1324	1369	1825	編	编	編	compile	compile	compilation
+1325	0465	1820	論	论	論	theory	theory	argument
+1326	0466	1822	輪	轮	輪	wheel	wheel	wheel
+1327	1370	1827	典	典	典	canon	canon	code
+1328	1371	1828	氏	氏	氏	family name	family name	family name
+1329	1372	1829	紙	纸	紙	paper	paper	paper
+1330	1373	2451	昏	昏	昏	dusk	dusk	dusk
+1331	1374	1830	婚	婚	婚	marriage	marriage	marriage
+1332	1375	1831	低	低	低	low	low	lower
+1333	1376	1833	底	底	底	bottom	bottom	bottom
+1334	1377	1834	民	民	民	people	people	people
+1335	1378	1835	眠	眠	眠	slumber	slumber	sleep
+1336	1379	2097	甫	甫	甫	Fu	Fu	offspring
+1337	0406	1840	補	补	補	patch	patch	supplement
+1338	1381	0047	博	博	博	knowledgeable	knowledgeable	Dr.
+1339	1382		搏	搏	搏	wrestle	wrestle	
+1340	1383	1846	都	都	都	metropolis	metropolis	metropolis
+1341	1384	1845	部	部	部	department	department	section
+1342	1385	1851	郎	郎	郎	young man	young man	son
+1343	1387	1849	鄉	乡	郷	countryside	countryside	hometown
+1344	0189	1850	響	响	響	echo	echo	echo
+1345	1388	1859	段	段	段	section	section	grade
+1346	1389	1860	鍛	锻	鍛	forge	forge	forge
+1347	1390	1862	幻	幻	幻	unreal	unreal	phantasm
+1348	1391	1863	司	司	司	take charge of	take charge of	director
+1349	1392	1865	詞	词	詞	word	word	parts of speech
+1350	1394	1868	舟	舟	舟	boat	boat	boat
+1351	1395	1874	船	船	船	ship	ship	ship
+1352	1396	1871	般	般	般	sort	sort	carrier
+1353	1397	1872	盤	盘	盤	tray	tray	tray
+1354	1398	1873	搬	搬	搬	relocate	relocate	conveyor
+1355	1399	1877	瓜	瓜	瓜	melon	melon	melon
+1356	1400	1879	孤	孤	孤	orphan	orphan	orphan
+1357	1401	1881	益	益	益	benefit	benefit	benefit
+1358	1402	0966	假	假	仮	vacation	vacation	provisional
+1359	0510	2689	蝦	虾	蝦	shrimp	shrimp	shrimp
+1360	1404	1885	氣	气	気	air	air	spirit
+1361	1405	1886	汽	汽	汽	vapor	vapor	vapor
+1362	0096	1887	飛	飞	飛	fly	fly	fly
+1363	1406	1892	面	面	面	face-to-face	face-to-face	mask
+1364	1406x	2752	麵	面	麺	noodles		noodles
+1365	1407	1893	革	革	革	leather	leather	leather
+1366	1408		鞋	鞋	鞋	shoes	shoes	
+1367	1410	2925	馨	馨	馨	fragrant	fragrant	ambrosial
+1368	1411	1896	聲	声	声	voice	voice	voice
+1369	0437	1897	吳	吴	呉	Wu	Wu	give
+1370	0438	1898	娛	娱	娯	amusement	amusement	recreation
+1371	0439	1899	誤	误	誤	error	error	mistake
+1372	1412	1901	承	承	承	undertake	undertake	acquiesce
+1373	1413	1900	蒸	蒸	蒸	steam	steam	steam
+1374	1414	1904	牙	牙	牙	tooth	tooth	tusk
+1375	1415	2616	穿	穿	穿	pass through	pass through	drill
+1376	1416		呀	呀	呀	wow!	wow!	
+1377	1417	1908	釋	释	釈	explain	explain	explanation
+1378	1418	1909	番	番	番	try	try	turn
+1379	1419	1911	翻	翻	翻	turn over	turn over	flip
+1380	1420	2262	播	播	播	broadcast	broadcast	disseminate
+1381	1421	1913	毛	毛	毛	fur	fur	fur
+1382	1422	1915	尾	尾	尾	tail	tail	tail
+1383	1425	1916	宅	宅	宅	dwelling	dwelling	home
+1384	1424	1917	託	托	託	entrust	entrust	consign
+1385	0746	1918	為	为	為	act	act	do
+1386	0797	1919	偽	伪	偽	bogus	bogus	falsehood
+1387	1428	1920	長	长	長	long	long	long
+1388	1429	1921	張	张	張	stretch	stretch	lengthen
+1389	1430		漲	涨	漲	swell	swell	
+1390	1498	2901	套	套	套	cover	cover	hackneyed
+1391	1304x	1924	髮	发	髪	hair of the head		hair of the head
+1392	1426	1925	展	展	展	unfold	unfold	unfold
+1393	1427	1926	喪	丧	喪	funeral	funeral	miss
+1394	1431	2150	雁	雁	雁	wild goose	wild goose	wild goose
+1395	1432	0607	應	应	応	ought to	ought to	apply
+1396	1438	1941	鳥	鸟	鳥	bird	bird	bird
+1397	1440	2237	鷹	鹰	鷹	hawk	hawk	hawk
+1398	1441	2835	鴨	鸭	鴨	duck	duck	wild duck
+1399	1442	1948	島	岛	島	island	island	island
+1400	1443	1956	遇	遇	遇	encounter	encounter	interview
+1401	0065	2969	萬	万	萬	ten thousand	ten thousand	ten thousand [old]
+1402	0292	2970	邁	迈	邁	stride	stride	pass through
+1403	1172	1961	岡	冈	岡	ridge of a hill	ridge of a hill	Mount
+1404	1173	1964	剛	刚	剛	just now	just now	sturdy
+1405	1444		缺	缺	缺	deficient	deficient	
+1406	0267	0257	寶	宝	宝	treasure	treasure	treasure
+1407	1445	2418	遙	遥	遥	remote	remote	far off
+1408	1446	1967	搖	摇	揺	shake	shake	swing
+1409	1447	2093	兔	兔	兎	rabbit	rabbit	rabbit
+1410	1448	1973	逸	逸	逸	flee	flee	elude
+1411	1449	1972	免	免	免	avoid	avoid	excuse
+1412	1450	1974	晚	晚	晩	nightfall	nightfall	nightfall
+1413	1451	1976	象	象	象	elephant	elephant	elephant
+1414	1452	1977	像	像	像	likeness	likeness	statue
+1415	1453	1978	馬	马	馬	horse	horse	horse
+1416	1454		媽	妈	媽	mama	mama	
+1417	1456	2699	罵	骂	罵	scold	scold	insult
+1418	1455		嗎	吗	嗎	yes or no	yes or no	
+1419	1457	1980	驗	验	験	check	check	verification
+1420	1458	1981	騎	骑	騎	ride	ride	equestrian
+1421	0579	1987	驚	惊	驚	startled	startled	wonder
+1422	1459	1990	虎	虎	虎	tiger	tiger	tiger
+1423	1460	1996	慮	虑	慮	ponder	ponder	prudence
+1424	0308	0297	處	处	処	location	location	dispose
+1425	0638	1994	戲	戏	戯	frolic	frolic	frolic
+1426	0890	1997	劇	剧	劇	drama	drama	drama
+1427	0891	1064	據	据	据	certificate	certificate	set
+1428	1462	1999	鹿	鹿	鹿	deer	deer	deer
+1429	0161	2838	塵	尘	塵	dust	dust	dust
+1430	0187	2002	麗	丽	麗	lovely	lovely	lovely
+1431	1463	2003	熊	熊	熊	bear	bear	bear
+1432	1464	2004	能	能	能	ability	ability	ability
+1433	0567	2005	態	态	態	attitude	attitude	attitude
+1434	1465	2006	寅	寅	寅	sign of the tiger	sign of the tiger	sign of the tiger
+1435	1466	2007	演	演	演	perform	perform	performance
+1436	1467	2008	辰	辰	辰	sign of the dragon	sign of the dragon	sign of the dragon
+1437	1468	2443	晨	晨	晨	morning	morning	morrow
+1438	0408	2014	農	农	農	agriculture	agriculture	agriculture
+1439	0409	2015	濃	浓	濃	concentrated	concentrated	concentrated
+1440	1470	2016	送	送	送	deliver	deliver	send off
+1441	1472	2019	鬼	鬼	鬼	ghost	ghost	ghost
+1442	1473	2022	魔	魔	魔	demon	demon	witch
+1443	1277	2024	塊	块	塊	lump	lump	clod
+1444	1474	2981	龍	龙	龍	dragon	dragon	dragon [old]
+1445	1475	2025	襲	袭	襲	raid	raid	attack
+1446	0056	0058	兒	儿	児	youngster	youngster	newborn babe
+1447	0037	0035	舊	旧	旧	old	old	olden times
+1448	1035	1247	寫	写	写	write	write	copy
+1449	1036		瀉	泻	瀉	diarrhea	diarrhea	
+1450	1478	1168	兩	两	両	dos	dos	both
+1451	1479		倆	俩	倆	duo	duo	
+1452	1480	1169	滿	满	満	full	full	full
+1453	0798	2074	爾	尔	爾	you (literary)	you (literary)	let it be
+1454	1017	2241	彌	弥	弥	fill	fill	more and more
+1455	1461	1993	虛	虚	虚	false	false	void
+1456	1471	2676	聯	联	聯	unite	unite	strung together
+1457	1469	2017	關	关	関	shut	shut	connection
+1458	1476	2960	那	那	那	that	that	interrogative
+1459	1477		哪	哪	哪	which?	which?	
+1460	0850	2930	巫	巫	巫	witch	witch	sorceress
+1461	0942	1791	靈	灵	霊	spirit	spirit	spirits
+1462	1481	0513	縣	县	県	county	county	prefecture
+1463	1482	1394	懸	悬	懸	suspend	suspend	suspend
+1464	1034	1246	與	与	与	offer	offer	bestow
+1465	1434	1938	舉	举	挙	lift up	lift up	raise
+1466	1178	1934	腦	脑	脳	brain	brain	brain
+1467	1179	1935	惱	恼	悩	annoyed	annoyed	trouble
+1468	1238	0046	專	专	専	specialty	specialty	specialty
+1469	1239	0963	傳	传	伝	spread	spread	transmit
+1470	1240	0420	轉	转	転	rotate	rotate	revolve
+1471	0622	0582	團	团	団	troupe	troupe	group
+1472	1488	1750	黃	黄	黄	yellow	yellow	yellow
+1473	0556	0739	廣	广	広	extensive	extensive	wide
+1474	1489	1751	橫	横	横	horizontal	horizontal	sideways
+1475	1483	0749	窗	窗	窓	window	window	window
+1476	0566	1366	總	总	総	general	general	general
+1477			詹	詹	詹	verbose		
+1478	0596	0668	擔	担	担	assume	assume	shouldering
+1479	0784	0929	數	数	数	number	number	number
+1480	0785	0930	樓	楼	楼	multistory building	multistory building	watchtower
+1481	0511	0522	獨	独	独	alone	alone	single
+1482	1500	1953	屬	属	属	belong to	belong to	belong
+1483	0534		爛	烂	爛	spoiled	spoiled	
+1484	0533	2363	蘭	兰	蘭	orchid	orchid	orchid
+1485	0846	0877	從	从	従	follow	follow	accompany
+1486	1094	1338	縱	纵	縦	vertical	vertical	vertical
+1487	1320	1729	齊	齐	斉	identical	identical	adjusted
+1488	1321	1731	濟	济	済	relieve	relieve	finish
+1489	1486	2040	丑	丑	丑	clown	clown	sign of the cow
+1490	1487		扭	扭	扭	twist	twist	
+1491	1496	1511	卑	卑	卑	lowly	lowly	lowly
+1492	1497	2873	牌	牌	牌	brand	brand	mahjong tiles
+1493	1027	1242	號	号	号	appellation	appellation	nickname
+1494	0641	0716	怪	怪	怪	peculiar	peculiar	suspicious
+1495	1490	1743	赤	赤	赤	crimson	crimson	red
+1496	1491		亦	亦	亦	likewise	likewise	
+1497	0629	1903	極	极	極	extreme	extreme	poles
+1498	0225	0562	雜	杂	雑	miscellaneous	miscellaneous	miscellaneous
+1499	1499	0578	曰	曰	曰	sayeth	sayeth	sayeth
+1500	0100	0072	亂	乱	乱	chaos	chaos	riot
+1501	1501		叭	叭	叭	trumpet	trumpet	
+1502	1502		咕	咕	咕	mutter	mutter	
+1503	1504		咱	咱	咱	we (inclusive)	we (inclusive)	
+1504	1506	0603	串	串	串	string together	string together	shish kebab
+1505	1508		罩	罩	罩	overspread	overspread	
+1506	1510		囂	嚣	囂	hubbub	hubbub	
+1507	1512	2789	顛	颠	顛	invert	invert	overturn
+1508	1514		叨	叨	叨	talkative	talkative	
+1509	1515		刮	刮	刮	scrape	scrape	
+1510	1516		盯	盯		stare at	stare at	
+1511	1517		呵	呵	呵	rebuke	rebuke	
+1512	2640	2194	姦	奸	姦	adultery	adultery	violate
+1513	1519	2193	嬰	婴	嬰	baby	baby	suckling infant
+1514	1518	2205	姑	姑	姑	father's sister	father's sister	mother-in-law
+1515	1520		姆	姆	姆	nanny	nanny	
+1516	1521		兢	兢	兢	cautious	cautious	
+1517	1526	2593	碩	硕	碩	big	big	illustrious
+1518	1527		砌	砌	砌	lay brick	lay brick	
+1519	1528	2154	哨	哨	哨	whistle	whistle	scout
+1520	1529	2446	晃	晃	晃	sway	sway	limpid
+1521	1532	0147	泊	泊	泊	moor	moor	overnight
+1522	1535	2316	汰	汰	汰	get rid of	get rid of	cleanse
+1523	1533		沾	沾	沾	soak	soak	
+1524	1534		渺	渺	渺	insignificant	insignificant	
+1525	1537	2466	腺	腺	腺	gland	gland	gland
+1526	1539	2188	坦	坦	坦	level	level	flat
+1527	1542	2200	娃	娃	娃	newborn	newborn	fair
+1528	1541	0157	涯	涯	涯	bank	bank	horizon
+1529	(c)	2952	吋	吋	吋	inch	inch	inch
+1530	1543	2464	肘	肘	肘	elbow	elbow	elbow
+1531	1546	2544	灼	灼	灼	scorch	scorch	refulgent
+1532	1547		炒	炒	炒	stir-fry	stir-fry	
+1533	1668		澆	浇	澆	sprinkle	sprinkle	
+1534	1549	2950	哩	哩	哩	mile	mile	mile
+1535	1551	0176	鯉	鲤	鯉	carp	carp	carp
+1536	1552		嘿	嘿	嘿	Hey!	Hey!	
+1537	1554	2038	丹	丹	丹	cinnabar red	cinnabar red	cinnabar
+1538	1560	2163	喧	喧	喧	boisterous	boisterous	clamor
+1539	2369	0511	賓	宾	賓	visitor	visitor	V.I.P.
+1540	2370	1332	濱	滨	浜	water's edge	water's edge	seacoast
+1541	1559	0617	寡	寡	寡	widowed	widowed	widow
+1542	1561	0202	棚	棚	棚	shed	shed	shelf
+1543	1562	0199	柏	柏	柏	cypress	cypress	oak
+1544	1565		槓	杠	槓	thick stick	thick stick	
+1545	1564		朵	朵		flouds	flouds	
+1546	1569	2500	杜	杜	杜	prevent	prevent	temple grove
+1547	1573	0198	桂	桂	桂	cassia-bark tree	cassia-bark tree	Japanese Judas-tree
+1548	1566	2480	椅	椅	椅	chair	chair	chair
+1549	(c)		杰	杰	杰	hero	hero	
+1550	1567	1932	櫻	樱	桜	cherry	cherry	cherry tree
+1551	1568	0201	梢	梢	梢	treetops	treetops	treetops
+1552	1571	0204	桐	桐	桐	paulownia	paulownia	paulownia
+1553	1572	2215	宋	宋	宋	Song Dynasty	Song Dynasty	Sung dynasty
+1554	1574	2310	淋	淋	淋	drench	drench	solitude
+1555	1575	2537	焚	焚	焚	burn	burn	kindle
+1556	1577	2445	昧	昧	昧	obscure	obscure	obscure
+1557	1578	0221	朱	朱	朱	vermillion	vermillion	vermilion
+1558	1579	0222	株	株	株	tree trunk	tree trunk	stocks
+1559	2037	2299	樑	梁	梁	roof beam	roof beam	roofbeam
+1560	1658		碟	碟	碟	saucer	saucer	
+1561	1580	2377	萌	萌	萌	bud	bud	germinate
+1562	1582	2373	苛	苛	苛	exacting	exacting	bullying
+1563	1584	0233	膜	膜	膜	membrane	membrane	membrane
+1564	1586		寞	寞	寞	solitary	solitary	
+1565	1585	0232	暮	暮	暮	sunset	sunset	livelihood
+1566	1591	0510	燃	燃	燃	ignite	ignite	burn
+1567	1592	2169	咒	咒	呪	curse	curse	curse
+1568	1509	1933	獸	兽	獣	beast	beast	animal
+1569	1589	2338	狸	狸	狸	raccoon dog	raccoon dog	raccoon dog
+1570	1593	3008	嗅	嗅	嗅	sniff	sniff	sniff
+1571	1595	2552	牡	牡	牡	dude	dude	male animal
+1572	1594	2213	牢	牢	牢	jail	jail	jail
+1573	1597		贊	赞	贊	succor	succor	
+1574	1599	0316	舍	舍	舎	abode	abode	cottage
+1575	1600		啥	啥		wha?	wha?	
+1576	1601		洽	洽	洽	in agreement	in agreement	
+1577	1602	2450	旺	旺	旺	thriving	thriving	effulgent
+1578	1603	2588	碧	碧	碧	green jade	green jade	blue-green
+1579	1605		汪	汪	汪	tearful	tearful	
+1580	1606		枉	枉	枉	crooked	crooked	
+1581	1607	0258	珠	珠	珠	pearl	pearl	pearl
+1582	1608		噩	噩	噩	shocking	shocking	
+1583	2291	2824	鱷	鳄	鰐	crocodile	crocodile	alligator
+1584	0968x	1629	鬥	斗	闘	fight		fight
+1585	1609	0264	栓	栓	栓	plug	plug	plug
+1586	1610	0268	柱	柱	柱	pillar	pillar	pillar
+1587	1925		鉤	钩	鉤	hook	hook	
+1588	1613		鈔	钞	鈔	paper money	paper money	
+1589	1615		銷	销	銷	put up for sale	put up for sale	
+1590	1614	1937	鎖	锁	鎖	lock	lock	chain
+1591	1612		鑽	钻	鑽	drill	drill	
+1592	1617	0282	迫	迫	迫	compel	compel	urge
+1593	1619	2420	逼	逼	逼	press	press	pressing
+1594	0295	0283	逃	逃	逃	escape	escape	escape
+1595	1622	2971	逞	逞	逞	flaunt	flaunt	tough
+1596	1887	2729	轟	轰	轟	rumble	rumble	rumble
+1597	1623	0288	軌	轨	軌	rails	rails	rut
+1598	1624		軋	轧	軋	flatten	flatten	
+1599	1625	2731	輻	辐	輻	spokes	spokes	spoke
+1600	1627	2548	煎	煎	煎	saute	saute	roast
+1601	1628	3009	喻	喻	喩	figure of speech	figure of speech	metaphor
+1602	1629		榆	榆		elm	elm	
+1603	0311	0293	略	略	略	abbreviation	abbreviation	abbreviation
+1604	1634	2439	暈	晕	暈	dizzy	dizzy	halo
+1605	1633	2295	渾	浑	渾	muddled	muddled	gushing
+1606	1636	2923	膏	膏	膏	ointment	ointment	ointment
+1607	1638	3001	亨	亨	亨	go smoothly	go smoothly	go smoothly
+1608	1639		哼	哼	哼	hum	hum	
+1609	1637	2318	淳	淳	淳	honest	honest	immaculate
+1610	1640	0315	鯨	鲸	鯨	whale	whale	whale
+1611	2116		贖	赎	贖	redeem	redeem	
+1612	2151	1075	晝	昼	昼	daylight	daylight	daytime
+1613	1674	0328	津	津	津	Tianjin	Tianjin	haven
+1614	1550	0178	釐	厘	厘	smidgen	smidgen	rin
+1615	1643	0332	枚	枚	枚	small objects	small objects	sheet of
+1616	1644	0329	牧	牧	牧	herd	herd	breed
+1617	1645		玫	玫	玫	rose	rose	
+1618	1646	2931	敦	敦	敦	candid	candid	empathetic
+1619	1655	0351	諾	诺	諾	promise	promise	consent
+1620	1649	2725	謂	谓	謂	meaning	meaning	so-called
+1621	1650	2705	詢	询	詢	inquire	inquire	counsel
+1622	1652	0833	罰	罚	罰	penalize	penalize	penalty
+1623	1653	0339	訂	订	訂	place an order	place an order	revise
+1624	1536	0345	詠	咏	詠	chant	chant	recitation
+1625	1657	2726	諜	谍	諜	espionage	espionage	secret agent
+1626	0278x	2727	註	注	註	annotate		footnote
+1627	1654	2710	諒	谅	諒	forgive	forgive	verify
+1628	1597x	2711	讚	赞	讃	praise		compliment
+1629	1659	0355	貳	贰	弐	II	II	II (two)
+1630	1660		膩	腻	膩	sick and tired of	sick and tired of	
+1631	1531	2849	洩	泄	洩	discharge	discharge	dribble out
+1632	0363x		划	划	划	paddle		
+1633	1661		嘎	嘎	嘎	caw	caw	
+1634	1662	0356	域	域	域	domain	domain	range
+1635	1663	0358	栽	栽	栽	sow	sow	plantation
+1636	1664	2882	戚	戚	戚	kin	kin	relatives
+1637	1665	2390	蔑	蔑	蔑	despise	despise	revile
+1638	1666		喊	喊	喊	yell	yell	
+1639	1667		濺	溅	濺	splatter	splatter	
+1640	1670		址	址	址	address	address	
+1641	1669	1738	澀	涩	渋	astringent	astringent	astringent
+1642	2529		蘋	苹	蘋	apple	apple	
+1643	1671	0386	赴	赴	赴	go to	go to	proceed
+1644	1672		趟	趟	趟	trip	trip	
+1645	1673	0390	堤	堤	堤	dike	dike	dike
+1646	1675	2761	鍵	键	鍵	keyboard keys	keyboard keys	key
+1647	1676	0395	婿	婿	婿	son-in-law	son-in-law	bridegroom
+1648	0401	0397	裁	裁	裁	tailor	tailor	tailor
+1649	1677		襪	袜	襪	socks	socks	
+1650	1949		滾	滚	滾	trundle	trundle	
+1651	1678	1890	衰	衰	衰	decline	decline	decline
+1652	1679	1891	衷	衷	衷	innermost feelings	innermost feelings	inmost
+1653	2276	1930	禪	禅	禅	meditation	meditation	Zen
+1654	1680	0403	猿	猿	猿	ape	ape	monkey
+1655	1681	2171	吊	吊	吊	dangle	dangle	dangle
+1656	1683		帕	帕	帕	handkerchief	handkerchief	
+1657	1684	2231	帖	帖	帖	note	note	quire
+1658	1685	0406	帆	帆	帆	sail	sail	sail
+1659	1686	0407	幅	幅	幅	width of cloth	width of cloth	hanging scroll
+1660	1687	0411	錦	锦	錦	brocade	brocade	brocade
+1661	1688		沛	沛	沛	copious	copious	
+1662	1689	2481	柿	柿	柿	persimmon	persimmon	persimmon
+1663	2623		鬧	闹	鬧	stir up trouble	stir up trouble	
+1664	1690	2938	棘	棘	棘	thorn bushes	thorn bushes	thornbush
+1665	1694		棗	枣	棗	jujube	jujube	
+1666	1691		蕾	蕾	蕾	flower bud	flower bud	
+1667	1695	2080	吞	吞	呑	gulp down	gulp down	quaff
+1668	1696	2078	妖	妖	妖	bewitching	bewitching	bewitched
+1669	1697	2079	沃	沃	沃	fertile	fertile	irrigate
+1670	1699		轎	轿	轎	sedan chair	sedan chair	
+1671	1700		垃	垃	垃	garbage	garbage	
+1672	1701		啼	啼	啼	weep aloud	weep aloud	
+1673	1702		蒂	蒂	蒂	fruit stem	fruit stem	
+1674	0452	0442	滴	滴	滴	drip	drip	drip
+1675	1703	2791	頃	顷	頃	100 Chinese acres	100 Chinese acres	about that time
+1676	1704	2891	匙	匙	匙	spoon	spoon	wooden spoon
+1677	1705		乖	乖	乖	well-behaved	well-behaved	
+1678	1706	1585	乘	乘	乗	hitch a ride	hitch a ride	ride
+1679	1707	1586	剩	剩	剰	leftover	leftover	surplus
+1680	1709		棍	棍	棍	club	club	
+1681	1710	3012	諧	谐	諧	in accord	in accord	orderliness
+1682	1711	2044	柴	柴	柴	firewood	firewood	brushwood
+1683	1713	0459	敏	敏	敏	quick-witted	quick-witted	cleverness
+1684	1714		霉	霉	霉	mildew	mildew	
+1685	1715	2421	迄	迄	迄	so far	so far	until
+1686	1716		砍	砍	砍	chop	chop	
+1687	1717		坎	坎	坎	hump	hump	
+1688	1718	0468	炊	炊	炊	cook	cook	cook
+1689	1719	3004	欽	钦	欽	think highly of	think highly of	circumspect
+1690	1720	0478	剖	剖	剖	cut open	cut open	divide
+1691	1721	2957	菩	菩	菩	bodhisattva	bodhisattva	bo tree
+1692	1724		芒	芒	芒	mango	mango	
+1693	1725	0488	荒	荒	荒	wasteland	wasteland	laid waste
+1694	1726		謊	谎	謊	lie	lie	
+1695	1727		茫	茫	茫	boundless	boundless	
+1696	1723		贏	赢	贏	win	win	
+1697	1656	2713	訊	讯	訊	interrogate	interrogate	query
+1698	1728	0492	坊	坊	坊	workshop	workshop	boy
+1699	1729	0493	芳	芳	芳	aromatic	aromatic	perfumed
+1700	1730	0495	訪	访	訪	call on	call on	call on
+1701	1732		熬	熬	熬	stew	stew	
+1702	(c)		菸	菸	菸	tobacco	tobacco	
+1703	1735		榜	榜	榜	roster	roster	
+1704	1734		磅	磅	磅	pound	pound	
+1705	1733		膀	膀	膀	upper arm	upper arm	
+1706	1736	0500	銳	锐	鋭	sharp	sharp	pointed
+1707	1737	0520	虹	虹	虹	rainbow	rainbow	rainbow
+1708	1738		蝠	蝠	蝠	bat	bat	
+1709	1741	2693	蛙	蛙	蛙	frog	frog	frog
+1710	1740		蝗	蝗	蝗	locust	locust	
+1711	2275	2692	蟬	蝉	蝉	cicada	cicada	cicada
+1712	2538	2471	楓	枫	楓	maple	maple	maple tree
+1713	1745	0531	胞	胞	胞	placenta	placenta	placenta
+1714	1746x		炮	炮	炮	fireworks		
+1715	1747		袍	袍	袍	robe	robe	
+1716	1748		雹	雹	雹	hail	hail	
+1717	0524	0539	逐	逐	逐	pursue	pursue	pursue
+1718	1752	0540	遂	遂	遂	satisfy	satisfy	consummate
+1719	2125	2384	蒙	蒙	蒙	Mongolia	Mongolia	darken
+1720	2126		朦	朦	朦	dim	dim	
+1721	1749	0543	豪	豪	豪	unrestrained	unrestrained	overpowering
+1722	1750	2168	啄	啄	啄	peck	peck	peck at
+1723	1751	2560	琢	琢	琢	chisel	chisel	hone
+1724	1753	0542	嫁	嫁	嫁	marry	marry	marry into
+1725	1754	0544	腸	肠	腸	intestines	intestines	intestines
+1726	1755	2473	楊	杨	楊	poplar	poplar	purple willow
+1727	1756		燙	烫	燙	scald	scald	
+1728	1757	2357	蕩	荡	蕩	licentious	licentious	prodigal
+1729	1759	0550	詳	详	詳	detailed	detailed	detailed
+1730	1760	0553	羨	羡	羨	envy	envy	envious
+1731	1763	0556	唯	唯	唯	solely	solely	solely
+1732	1765	2185	堆	堆	堆	pile	pile	piled high
+1733	1770	0557	焦	焦	焦	apprehensive	apprehensive	char
+1734	1771		瞧	瞧	瞧	lay eyes on	lay eyes on	
+1735	1772	0558	礁	礁	礁	reef	reef	reef
+1736	1773	2367	蕉	蕉	蕉	banana	banana	banana
+1737	1766		雕	雕	雕	sculpture	sculpture	
+1738	1767	2703	截	截	截	lop off	lop off	incision
+1739	0539x	0560	准	准	准	allow		quasi-
+1740	1764	2878	雀	雀	雀	sparrow	sparrow	sparrow
+1741	1768		霍	霍	霍	all at once	all at once	
+1742	1522	0565	奮	奋	奮	exert oneself	exert oneself	stirred up
+1743	1545	0566	奪	夺	奪	take by force	take by force	rob
+1744	1774		翹	翘	翹	turn upward	turn upward	
+1745	1775		塌	塌	塌	fall down	fall down	
+1746	1776	2780	翰	翰	翰	writing brush	writing brush	quill
+1747	1779	2159	咽	咽	咽	throat	throat	windpipe
+1748	1780	0584	姻	姻	姻	in-law	in-law	matrimony
+1749	2171	2239	廟	庙	廟	temple	temple	tomb sanctuary
+1750	1576		廂	厢	廂	side room	side room	
+1751	1785		嘛	嘛	嘛	(pause marker)	(pause marker)	
+1752	1786	0594	磨	磨	磨	grind	grind	grind
+1753	1631		廈	厦	廈	skyscraper	skyscraper	
+1754	1525		廁	厕	廁	toilet	toilet	
+1755	1799	0622	悟	悟	悟	realize	realize	enlightenment
+1756	1790	0602	忠	忠	忠	loyal	loyal	loyalty
+1757	1800	0621	悼	悼	悼	mourn	mourn	lament
+1758	1802	0630	慎	慎	慎	prudent	prudent	humility
+1759	1791	2434	恕	恕	恕	pardon	pardon	sensitive
+1760	1807		悄	悄	悄	noiseless	noiseless	
+1761	1808		恍	恍	恍	all of a sudden	all of a sudden	
+1762	1803	0629	惰	惰	惰	indolent	indolent	lazy
+1763	1804	2282	恢	恢	恢	immense	immense	enlarge
+1764	1798	0620	恆	恒	恒	permanent	permanent	constancy
+1765	1819	0633	慕	慕	慕	admire	admire	pining
+1766	1809	2281	恰	恰	恰	just right	just right	as if
+1767	1805		惶	惶	惶	fearful	fearful	
+1768	1810	0628	愉	愉	愉	overjoyed	overjoyed	pleasure
+1769	1793	2433	愈	愈	愈	more and more	more and more	in the nick of time
+1770	1792	0614	惑	惑	惑	be bewildered	be bewildered	beguile
+1771	1811		怔	怔	怔	terror-stricken	terror-stricken	
+1772	1812	0623	怖	怖	怖	be scared of	be scared of	dreadful
+1773	1820	0634	添	添	添	augment	augment	annexed
+1774	1818	0625	悔	悔	悔	be sorry about	be sorry about	repent
+1775	1813	0624	慌	慌	慌	nervous	nervous	disconcerted
+1776	1815	0619	悅	悦	悦	delighted	delighted	ecstasy
+1777	1816	0626	憎	憎	憎	loathe	loathe	hate
+1778	1795	0599	忌	忌	忌	shun	shun	mourning
+1779	1817	2276	惟	惟	惟	thinking	thinking	ponder
+1780	1801	3015	懼	惧	惧	be frightened	be frightened	disquieting
+1781	1796	0604	患	患	患	troubles	troubles	afflicted
+1782	1797	2429	惹	惹	惹	provoke	provoke	attract
+1783	0570	0606	恩	恩	恩	kindness	kindness	grace
+1784	1806	0632	憶	忆	憶	recall	recall	recollection
+1785	1821		媳	媳	媳	daughter-in-law	daughter-in-law	
+1786	1822		熄	熄	熄	put out	put out	
+1787	1824		瑟	瑟	瑟	Chinese harp	Chinese harp	
+1788	1823	0636	泌	泌	泌	secrete	secrete	ooze
+1789	1825	0776	蜜	蜜	蜜	honey	honey	honey
+1790	0586	0639	摩	摩	摩	rub	rub	chafe
+1791	1826	2694	蛾	蛾	蛾	moth	moth	moth
+1792	1827		扒	扒	扒	pick pockets	pick pockets	
+1793	1828		扣	扣	扣	button	button	
+1794	2399		捐	捐	捐	contribute	contribute	
+1795	1829	0652	拍	拍	拍	racquet	racquet	clap
+1796	1830		啪	啪		clapping sound	clapping sound	
+1797	1833	0666	損	损	損	damage	damage	damage
+1798	1835		扛	扛	扛	carry over the shoulder	carry over the shoulder	
+1799	1836		扎	扎	扎	prick	prick	
+1800	1837		拇	拇	拇	thumb	thumb	
+1801	1832	0654	拘	拘	拘	detain	detain	arrest
+1802	1839	0647	抄	抄	抄	copy	copy	extract
+1803	1834	0651	拓	拓	拓	pioneer	pioneer	clear the land
+1804	1842		捏	捏	捏	pinch	pinch	
+1805	1855		撓	挠	撓	chafe	chafe	
+1806	1844	0644	抹	抹	抹	smear on	smear on	rub
+1807	1846	0670	描	描	描	describe	describe	sketch
+1808	1845		摸	摸	摸	grope	grope	
+1809	1847	0658	挑	挑	挑	foment	foment	challenge
+1810	1850		拴	拴	拴	tether	tether	
+1811	1851	0667	拾	拾	拾	tidy up	tidy up	pick up
+1812	1852	0646	搭	搭	搭	put up	put up	board
+1813	1853	2247	掠	掠	掠	pillage	pillage	pillage
+1814	1599x	0655	捨	舍	捨	abandon		discard
+1815	1854	2254	拭	拭	拭	wipe away	wipe away	wipe
+1816	1856		扯	扯	扯	yank	yank	
+1817	1859		拖	拖	拖	drag	drag	
+1818	1860	0664	揚	扬	揚	publicize	publicize	hoist
+1819	1849		搞	搞	搞	engage in	engage in	
+1820	1857	2245	撞	撞	撞	bump into	bump into	bump into
+1821	1858	0657	摘	摘	摘	handpick	handpick	pinch
+1822	1862		捆	捆	捆	lash together	lash together	
+1823	1864		撼	撼	撼	joggle	joggle	
+1824	1848	2268	擾	扰	擾	harass	harass	commotion
+1825	1866		擅	擅	擅	act without authority	act without authority	
+1826	1693	0587	壇	坛	壇	altar	altar	podium
+1827	1867		顫	颤	顫	tremble	tremble	
+1828	1871		莽	莽	莽	rude	rude	
+1829	1868	0676	戒	戒	戒	take precautions against	take precautions against	commandment
+1830	1869	0677	械	械	械	weapon	weapon	contraption
+1831	1870		誡	诫	誡	warn	warn	
+1832	1872	1196	奔	奔	奔	dash	dash	bustle
+1833	1873	1197	噴	喷	噴	spurt	spurt	erupt
+1834	2713	1198	墳	坟	墳	tomb	tomb	tomb
+1835	1874	1199	憤	愤	憤	indignation	indignation	aroused
+1836	1875	0683	材	材	材	stuff	stuff	lumber
+1837	1877	2208	孕	孕	孕	pregnant	pregnant	expecting
+1838	1878		扔	扔	扔	throw away	throw away	
+1839	1880		圾	圾	圾	trash	trash	
+1840	1883	2914	叉	叉	叉	fork	fork	forked
+1841	2751	0698	桑	桑	桑	mulberry tree	mulberry tree	mulberry
+1842	2752		嗓	嗓	嗓	voicebox	voicebox	
+1843	1885		寇	寇	寇	outlaw	outlaw	
+1844	1886		敲	敲	敲	knock	knock	
+1845	2882	2314	灌	灌	潅	pour into	pour into	souse
+1846	1884	0571	權	权	権	authority	authority	authority
+1847	1889	2889	毅	毅	毅	resolute	resolute	stalwart
+1848	1890	0714	肢	肢	肢	limb	limb	limb
+1849	1891	2199	妓	妓	妓	prostitute	prostitute	courtesan
+1850	1892		歧	歧	歧	fork in the road	fork in the road	
+1851	1893		翅	翅	翅	fins	fins	
+1852	1894	0721	淑	淑	淑	graceful	graceful	graceful
+1853	1895		椒	椒	椒	spice plant	spice plant	
+1854	0659x	1861	后	后	后	queen		empress
+1855	1896	1853	盾	盾	盾	shield	shield	shield
+1856	1897	0726	販	贩	販	peddler	peddler	marketing
+1857	1898		扳	扳	扳	tug	tug	
+1858	1900		覓	觅	覓	try to find	try to find	
+1859	1901	0728	妥	妥	妥	appropriate	appropriate	gentle
+1860	1904		睬	睬	睬	notice	notice	
+1861	1905	0765	允	允	允	consent	consent	license
+1862	1923	2148	勾	勾	勾	cross out	cross out	flexed
+1863	2761	2436	晉	晋	晋	promote	promote	progress
+1864	1906	2212	宏	宏	宏	magnificent	magnificent	extensive
+1865	1908	0748	胎	胎	胎	fetus	fetus	womb
+1866	1911	2137	冶	冶	冶	smelt	smelt	metallurgy
+1867	0672x		颱	台	颱	typhoon		
+1868	1909	0745	怠	怠	怠	negligent	negligent	neglect
+1869	1912		抬	抬	抬	elevate	elevate	
+1870	1915		丟	丢	丟	mislay	mislay	
+1871	0672x		臺	台	臺	Taiwan		
+1872	1916	0756	致	致	致	bring about	bring about	doth
+1873	1918	0760	撤	撤	撤	remove	remove	remove
+1874	1919	0763	硫	硫	硫	sulfur	sulfur	sulfur
+1875	1920	2557	琉	琉	琉	glaze	glaze	lapis lazuli
+1876	1921	2922	疏	疏	疏	sparse	sparse	transcription
+1877	1922		蔬	蔬	蔬	veggies	veggies	
+1878	1926	0774	崩	崩	崩	crumble	crumble	crumble
+1879	1927	0770	岩	岩	岩	rock	rock	boulder
+1880	1929	0778	崎	崎	崎	rugged	rugged	promontory
+1881	1930	2227	崖	崖	崖	cliff	cliff	bluffs
+1882	1932	0771	炭	炭	炭	charcoal	charcoal	charcoal
+1883	1933		碳	碳	碳	carbon	carbon	
+1884	1942		盼	盼	盼	await hopefully	await hopefully	
+1885	1943	0783	頒	颁	頒	promulgate	promulgate	partition
+1886	1944		芬	芬	芬	essence	essence	
+1887	1945	2246	扮	扮	扮	play the part of	play the part of	disguise
+1888	1946		岔	岔	岔	diverge	diverge	
+1889	1947	2794	頌	颂	頌	extol	extol	accolade
+1890	1948	0787	訟	讼	訟	litigate	litigate	sue
+1891	1950	0786	翁	翁	翁	elderly man	elderly man	venerable old man
+1892	1952	0793	裕	裕	裕	abundant	abundant	abundant
+1893	1953		榕	榕	榕	ficus	ficus	
+1894	0703	0796	賞	赏	賞	prize	prize	prize
+1895	1692x	2870	嘗	尝	嘗	attempt		lick
+1896	1692		嚐	尝		taste	taste	
+1897	1956	0801	掌	掌	掌	palm of the hand	palm of the hand	manipulate
+1898	2206		擋	挡	擋	fend off	fend off	
+1899	1958		膛	膛	膛	chest	chest	
+1900	1959	2793	頗	颇	頗	quite	quite	exceedingly
+1901	1960		坡	坡	坡	slope	slope	
+1902	1961	0805	披	披	披	drape over the shoulders	drape over the shoulders	expose
+1903	1999	0883	彼	彼	彼	the other	the other	he
+1904	2197		皺	皱	皺	wrinkles	wrinkles	
+1905	2200	2085	雛	雏	雛	chick	chick	chick
+1906	2199	2086	趨	趋	趨	hasten	hasten	scurry
+1907	1962		菠	菠	菠	spinach	spinach	
+1908	1964	0811	殖	殖	殖	breed	breed	augment
+1909	1965	0810	殊	殊	殊	dissimilar	dissimilar	particularly
+1910	1966	0808	殘	残	残	incomplete	incomplete	remainder
+1911	1967		咧	咧	咧	grin	grin	
+1912	1968	0813	裂	裂	裂	crack	crack	split
+1913	1970		耿	耿	耿	dedicated	dedicated	
+1914	1972	0823	恥	耻	恥	shame	shame	shame
+1915	1971	2732	輯	辑	輯	edit	edit	assemble
+1916	1973	1739	攝	摄	摂	take a photo	take a photo	vicarious
+1917	1975		娶	娶	娶	take a wife	take a wife	
+1918	1978	0839	扶	扶	扶	lend a hand	lend a hand	aid
+1919	1982	3005	熙	熙	煕	splendid	splendid	cheer
+1920	2267	2453	腎	肾	腎	kidneys	kidneys	kidney
+1921	1985	0861	募	募	募	recruit	recruit	recruit
+1922	1989	0871	脅	胁	脅	threaten	threaten	threaten
+1923	1984	0862	劣	劣	劣	inferior	inferior	inferiority
+1924	1983	1677	勳	勋	勲	merit	merit	meritorious deed
+1925	1986	0864	勸	劝	勧	advise	advise	persuade
+1926	1987	2857	劫	劫	劫	plunder	plunder	kalpa
+1927	1990	0703	怒	怒	怒	anger	anger	angry
+1928	1991	2372	茄	茄	茄	eggplant	eggplant	eggplant
+1929	(c)		彷	彷	彷	seemingly	seemingly	
+1930	1993x	0881	征	征	征	go on an expedition		subjugate
+1931	1995	0878	徒	徒	徒	follower	follower	junior
+1932	1996		徊	徊	徊	undecided	undecided	
+1933	1993	0887	徵	征	徴	solicit	solicit	indications
+1934	1994	0888	懲	惩	懲	chasten	chasten	penal
+1935	1998	1854	循	循	循	comply with	comply with	sequential
+1936	1992	0886	徹	彻	徹	thorough	thorough	penetrate
+1937	1997	0884	役	役	役	service	service	duty
+1938	2000		衍	衍	衍	develop	develop	
+1939	2001	0891	衡	衡	衡	weight	weight	equilibrium
+1940	2002		銜	衔	銜	title	title	
+1941	2003	2606	禿	秃	禿	bald	bald	bald
+1942	2004		頹	颓		decrepit	decrepit	
+1943	2005	0899	秒	秒	秒	seconds	seconds	second
+1944	2006		稍	稍	稍	a little	a little	
+1945	2007		穌	稣	穌	rise again	rise again	
+1946	0745	2380	蘇	苏	蘇	revive	revive	resurrect
+1947	2022	2355	萎	萎	萎	wilt	wilt	numb
+1948	2023		黏	黏	黏	sticky	sticky	
+1949	2024	2935	黎	黎	黎	host	host	tenebrous
+1950	2026	0932	漆	漆	漆	wall paint	wall paint	lacquer
+1951	2025	2461	膝	膝	膝	knees	knees	knee
+1952	2009		稠	稠	稠	dense	dense	
+1953	2008	0892	稿	稿	稿	draft	draft	draft
+1954	2010	2790	穎	颖	穎	clever	clever	brush tip
+1955	2012	0895	稅	税	税	tax	tax	tax
+1956	2011	0893	稼	稼	稼	crops	crops	earnings
+1957	2014	0918	菌	菌	菌	fungus	fungus	germ
+1958	2013	0896	稚	稚	稚	immature	immature	immature
+1959	0245x	0908	穫	获	穫	harvest		harvest
+1960	2017	0902	私	私	私	private	private	private
+1961	2018	0903	秩	秩	秩	order	order	regularity
+1962	1641		殼	壳	殼	shell	shell	
+1963	0698x	0917	穀	谷	穀	cereal		cereals
+1964	2019	2762	鍬	锹	鍬	shovel	shovel	hoe
+1965	0770		揪	揪	揪	hold tight	hold tight	
+1966	2020	0907	梨	梨	梨	pear	pear	pear tree
+1967	2021		犁	犁	犁	plow	plow	
+1968	0737x	0213	曆	历	暦	calendar		calendar
+1969	2040		糕	糕	糕	cake	cake	
+1970	2029	2650	糊	糊	糊	batter	batter	paste
+1971	2030	0921	粘	粘	粘	glue	glue	sticky
+1972	2515	0926	糧	粮	糧	provisions	provisions	provisions
+1973	2034	0927	菊	菊	菊	chrysanthemum	chrysanthemum	chrysanthemum
+1974	2038		糙	糙	糙	rough	rough	
+1975	2039	0922	粒	粒	粒	grain	grain	grains
+1976	1931	2543	燦	灿	燦	brilliant	brilliant	dazzling
+1977	0779	0920	粉	粉	粉	powder	powder	flour
+1978	2028		瞇	眯		squint	squint	
+1979	1682	1040	幣	币	幣	currency	currency	cash
+1980	1969		斃	毙	斃	die a violent death	die a violent death	
+1981	2041	2358	蔽	蔽	蔽	shelter	shelter	cover over
+1982	2043		撇	撇	撇	cast aside	cast aside	
+1983	2044	1041	弊	弊	弊	fraud	fraud	abuse
+1984	2230		筍	笋	筍	bamboo shoot	bamboo shoot	
+1985	2050	0944	筒	筒	筒	tube	tube	cylinder
+1986	2047	0950	築	筑	築	construct	construct	fabricate
+1987	2049		笨	笨	笨	stupid	stupid	
+1988	2051	2636	箭	箭	箭	arrow	arrow	arrow shaft
+1989	2053	0941	筋	筋	筋	tendon	tendon	muscle
+1990	2054	2967	伍	伍	伍	V	V	V
+1991	2055	2114	仇	仇	仇	animosity	animosity	foe
+1992	2056		倡	倡	倡	start	start	
+1993	2057	0967	伯	伯	伯	father's older brother	father's older brother	chief
+1994	2058	0956	仲	仲	仲	mid-	mid-	go-between
+1995	2060		估	估	估	estimate	estimate	
+1996	2061	0981	偵	侦	偵	detect	detect	spy
+1997	2062	2124	俱	俱	倶	altogether	altogether	mate
+1998	2065	0975	側	侧	側	lateral	lateral	side
+1999	2063	2126	佑	佑	佑	bless	bless	adjutant
+2000	2064	0952	佐	佐	佐	assistant	assistant	assistant
+2001	2067	2113	仔	仔	仔	meticulous	meticulous	animal offspring
+2002	2069		俏	俏	俏	comely	comely	
+2003	2073		倘	倘	倘	if	if	
+2004	2068		倚	倚	倚	count on	count on	
+2005	2070	0970	佳	佳	佳	superb	superb	excellent
+2006	2071	0976	侍	侍	侍	serve	serve	waiter
+2007	2072		伙	伙	伙	mate	mate	
+2008	2074	0995	宿	宿	宿	stay overnight	stay overnight	inn
+2009	2075	0962	伏	伏	伏	bend over	bend over	prostrated
+2010	2076		袱	袱	袱	wrapping cloth	wrapping cloth	
+2011	2077		偷	偷		steal	steal	
+2012	2079	0994	伐	伐	伐	fell	fell	fell
+2013	2080		佩	佩	佩	wear at the waist	wear at the waist	
+2014	0414x	0405x	佈	布	布	announce		
+2015	2081	2120	僑	侨	僑	live abroad	live abroad	emigrant
+2016	2066	0983	億	亿	億	one hundred million	one hundred million	hundred million
+2017	2082	1011	傾	倾	傾	incline	incline	lean
+2018	2084	0989	侮	侮	侮	insult	insult	scorn
+2019	2085	0992	倍	倍	倍	times	times	double
+2020	2086		仿	仿	仿	mimic	mimic	
+2021	2087	3018	傲	傲	傲	haughty	haughty	arrogance
+2022	2088	0982	僧	僧	僧	Buddhist monk	Buddhist monk	Buddhist priest
+2023	2090	0958	悠	悠	悠	without haste	without haste	remote
+2024	2097	2110	俄	俄	俄	Russia	Russia	abrupt
+2025	2550	0984	儀	仪	儀	rite	rite	ceremony
+2026	2091		侄	侄	侄	nephew	nephew	
+2027	2092	0986	仙	仙	仙	immortal	immortal	hermit
+2028	2095	0968	俗	俗	俗	custom	custom	vulgar
+2029	2078	0985	償	偿	償	repay	repay	reparation
+2030	1980	2909	臥	卧	臥	for sleeping	for sleeping	supinate
+2031	2093	1015	傍	傍	傍	close to	close to	bystander
+2032	2945	2058	俺	俺	俺	we (exclusive)	we (exclusive)	myself
+2033	2944		淹	淹	淹	inundate	inundate	
+2034	1485	2057	掩	掩	掩	conceal	conceal	shrouded
+2035	2094	0987	催	催	催	prod	prod	sponsor
+2036	1938		摧	摧	摧	wreck	wreck	
+2037	1879	0687	攜	携	携	take along	take along	portable
+2038	2099	1001	符	符	符	symbol	symbol	token
+2039	2100	1007	貸	贷	貸	loan	loan	lend
+2040	2101	1013	荷	荷	荷	Holland	Holland	baggage
+2041	2103		仗	仗	仗	battle	battle	
+2042	2102	2504	杖	杖	杖	cane	cane	cane
+2043	1523		夾	夹	夾	press from both sides	press from both sides	
+2044	2096	2107	俠	侠	侠	chivalrous person	chivalrous person	chivalry
+2045	1524	2792	頰	颊	頬	cheek	cheek	cheek
+2046	1588	1266	狹	狭	狭	narrow	narrow	cramped
+2047	1865	1267	挾	挟	挟	coerce	coerce	sandwiched
+2048	1936	1265	峽	峡	峡	gorge	gorge	gorge
+2049	1598	1026	傘	伞	傘	umbrella	umbrella	umbrella
+2050	2098	2939	聚	聚	聚	assemble	assemble	crowd
+2051	2106	2845	挫	挫	挫	frustrate	frustrate	sprain
+2052	2858	1671	劍	剑	剣	saber	saber	saber
+2053	2859		斂	敛	斂	restrain	restrain	
+2054	2860		撿	捡	撿	pick up	pick up	
+2055	2862		簽	签	簽	sign	sign	
+2056	2861	1674	儉	俭	倹	thrifty	thrifty	frugal
+2057	2045		萊	莱	萊	lambsquarters	lambsquarters	
+2058	2108	2398	葛	葛	葛	kudzu	kudzu	kudzu
+2059	2109	0453	褐	褐	褐	brown	brown	brown
+2060	2110		竭	竭	竭	use up	use up	
+2061	2111		歇	歇	歇	take a rest	take a rest	
+2062	2112	0673	揭	揭	掲	reveal	reveal	put up a notice
+2063	2113	2298	淫	淫	淫	promiscuous	promiscuous	lewd
+2064	2115	2267	挺	挺	挺	erect	erect	counter for tools
+2065	2117	1031	瓦	瓦	瓦	tile	tile	tile
+2066	2118		瓷	瓷	瓷	porcelain	porcelain	
+2067	2120	1032	瓶	瓶	瓶	bottle	bottle	flower pot
+2068	2122		鋁	铝	鋁	aluminum	aluminum	
+2069	2121	1033	宮	宫	宮	palace	palace	Shinto shrine
+2070	2124		瑩	莹	瑩	lustrous	lustrous	
+2071	2123	0518	螢	萤	蛍	firefly	firefly	lightning bug
+2072	2127		撈	捞	撈	scoop up	scoop up	
+2073	2725		煥	焕	煥	glowing	glowing	
+2074	2128	1046	旋	旋	旋	whirl	whirl	rotation
+2075	2129	2174	吻	吻	吻	kiss	kiss	sides of the mouth
+2076	2130		匆	匆	匆	hurriedly	hurriedly	
+2077	2132	2764	錫	锡	錫	tin	tin	tin
+2078	2133		惕	惕	惕	watchful	watchful	
+2079	2136	2219	屑	屑	屑	bits	bits	rubbish
+2080	2137	1053	尿	尿	尿	urine	urine	urine
+2081	2140	1069	刷	刷	刷	brush	brush	printing
+2082	2138	2069	犀	犀	犀	rhinoceros	rhinoceros	rhinoceros
+2083	2139	1067	遲	迟	遅	tardy	tardy	slow
+2084	2141	1068	漏	漏	漏	leak	leak	leak
+2085	2142	2218	屁	屁	屁	fart	fart	fart
+2086	2145	1057	履	履	履	footwear	footwear	footgear
+2087	2146		屎	屎	屎	excrement	excrement	
+2088	2148	2223	屏	屏	屏	folding screen	folding screen	folding screen
+2089	2143	1060	屈	屈	屈	knuckle under	knuckle under	yield
+2090	2144	1061	掘	掘	掘	excavate	excavate	dig
+2091	0894	1070	尺	尺	尺	ruler	ruler	shaku
+2092	2149	2583	眉	眉	眉	eyebrows	eyebrows	eyebrow
+2093	2150		媚	媚	媚	flatter	flatter	
+2094	2153	1077	肩	肩	肩	shoulder	shoulder	shoulder
+2095	2154	2195	妒	妒	妬	jealous of	jealous of	jealous
+2096	1530	1082	淚	泪	涙	tears	tears	tears
+2097	2152	1085	啓	启	啓	enlighten	enlighten	disclose
+2098	2157	1079	扇	扇	扇	fan	fan	fan
+2099	2158	1094	奈	奈	奈	can't help but	can't help but	Nara
+2100	2159	1097	款	款	款	funds	funds	goodwill
+2101	2161	2945	祟	祟	祟	evil spirit	evil spirit	cast a spell
+2102	2162	1089	祝	祝	祝	wish well	wish well	celebrate
+2103	2163	1088	祥	祥	祥	propitious	propitious	auspicious
+2104	2016	0904	祕	秘	秘	confidential	confidential	secret
+2105	2165	1096	慰	慰	慰	console	console	consolation
+2106	2164	2406	蔚	蔚	蔚	luxuriant	luxuriant	grow plentiful
+2107	2166	2404	蒜	蒜	蒜	garlic	garlic	garlic
+2108	2167		棕	棕	棕	palm tree	palm tree	
+2109	2168	1109	宙	宙	宙	universe	universe	mid-air
+2110	2169	1112	軸	轴	軸	axle	axle	axis
+2111	2170	1108	袖	袖	袖	sleeve	sleeve	sleeve
+2112	2172	1111	笛	笛	笛	flute	flute	flute
+2113	2175	2184	坤	坤	坤	female	female	autochthonous
+2114	2174		呻	呻	呻	groan	groan	
+2115	2178	2885	暢	畅	暢	smooth	smooth	carefree
+2116	(c)	2943	夥	夥	夥	partnership	partnership	plentiful
+2117	2179	1927	巢	巢	巣	nest	nest	nest
+2118	2180		棵	棵	棵	flora	flora	
+2119	2181	1124	裸	裸	裸	naked	naked	naked
+2120	2182		裹	裹	裹	envelop	envelop	
+2121	2183	1126	析	析	析	analyze	analyze	chop
+2122	2184		晰	晰	晰	distinct	distinct	
+2123	2185	2396	芹	芹	芹	celery	celery	parsley
+2124	0932	1130	折	折	折	discount	discount	fold
+2125	0933	1131	哲	哲	哲	philosopher	philosopher	philosophy
+2126	0934	1132	逝	逝	逝	pass away	pass away	departed
+2127	2192	1133	誓	誓	誓	vow	vow	vow
+2128	2187	2888	欣	欣	欣	elated	elated	elation
+2129	2188		掀	掀	掀	uncover	uncover	
+2130	2186	1128	祈	祈	祈	supplicate	supplicate	pray
+2131	2189		慚	惭	慚	conscience-stricken	conscience-stricken	
+2132	2190		嶄	崭	嶄	towering	towering	
+2133	2193		拆	拆	拆	take apart	take apart	
+2134	2194		炸	炸	炸	blow up	blow up	
+2135	2195	1141	詐	诈	詐	swindle	swindle	lie
+2136	2209	1889	妻	妻	妻	wife	wife	wife
+2137	2210	2133	淒	凄	凄	miserable	miserable	nifty
+2138	2612	2496	棲	栖	棲	perch	perch	roost
+2139	2198		煞	煞	煞	goblin	goblin	
+2140	2211	2273	捷	捷	捷	nimble	nimble	spoils
+2141	2208		秉	秉	秉	wield	wield	
+2142	2207	2145	剝	剥	剥	peel off	peel off	peel off
+2143	2673x	2997	彙	汇	彙	collection		glossary
+2144	2215	1597	兼	兼	兼	double	double	concurrently
+2145	2216		賺	赚	賺	earn	earn	
+2146	2217	1598	嫌	嫌	嫌	dislike	dislike	dislike
+2147	2218	1600	謙	谦	謙	unassuming	unassuming	self-effacing
+2148	2219		歉	歉	歉	apology	apology	
+2149	2220	1601	廉	廉	廉	inexpensive	inexpensive	bargain
+2150	2221	1599	鐮	镰	鎌	sickle	sickle	sickle
+2151	2355	2630	簾	帘	簾	drapes	drapes	bamboo blinds
+2152	2222		睜	睁	睜	unshut	unshut	
+2153	2223		掙	挣	掙	struggle	struggle	
+2154	2224		箏	筝	箏	Chinese zither	Chinese zither	
+2155	2225		塘	塘	塘	pool	pool	
+2156	2227	1160	逮	逮	逮	arrest	arrest	apprehend
+2157	2226	2036	隸	隶	隷	bondservant	bondservant	slave
+2158	2228		慷	慷	慷	generous	generous	
+2159	2229	2652	糠	糠	糠	chaff	chaff	rice bran
+2160	2231		耍	耍	耍	mess around	mess around	
+2161	2232	1164	耐	耐	耐	-proof	-proof	-proof
+2162	2233		喘	喘	喘	wheeze	wheeze	
+2163	2234		揣	揣	揣	conjecture	conjecture	
+2164	2237	2649	糟	糟	糟	messed up	messed up	lees
+2165	2236	1174	遭	遭	遭	meet with	meet with	encounter
+2166	2235	1176	槽	槽	槽	trough	trough	vat
+2167	2238		抖	抖	抖	quiver	quiver	
+2168	2778	1182	庸	庸	庸	mediocre	mediocre	comfortable
+2169	2776	2128	傭	佣	傭	put to work	put to work	hire
+2170	2777		甩	甩	甩	fling	fling	
+2171	2239	1187	惜	惜	惜	rue	rue	pity
+2172	2240	1188	措	措	措	arrange	arrange	set aside
+2173	1917	0758	棄	弃	棄	forsake	forsake	abandon
+2174	2244	2869	燕	燕	燕	swallow	swallow	swallow
+2175	2245	1192	遮	遮	遮	screen	screen	intercept
+2176	2246	1204	畔	畔	畔	littoral	littoral	paddy ridge
+2177	2247		拌	拌	拌	blend	blend	
+2178	2248	2902	叛	叛	叛	betray	betray	rebellion
+2179	2249	1206	券	券	券	voucher	voucher	ticket
+2180	2250	1210	藤	藤	藤	rattan	rattan	wisteria
+2181	0242	0239	狀	状	状	state of affairs	state of affairs	status quo
+2182	1781		牆	墙	牆	wall	wall	
+2183	2251	2865	鼎	鼎	鼎	old cooking pot	old cooking pot	tripod
+2184	2202	1150	寢	寝	寝	get some shuteye	get some shuteye	lie down
+2185	2203	1148	侵	侵	侵	invade	invade	encroach
+2186	2201	1149	浸	浸	浸	immerse	immerse	immersed
+2187	1788		贓	赃	贓	stolen goods	stolen goods	
+2188	1981	0850	藏	藏	蔵	hide	hide	storehouse
+2189	1787	0851	臟	脏	臓	guts	dirty	entrails
+2190	2466	0732	獎	奖	奨	award	award	exhort
+2191	2467		漿	浆	漿	thick liquid	thick liquid	
+2192	2468		槳	桨	槳	oar	oar	
+2193	2469		蔣	蒋	蔣	Jiang	Jiang	
+2194	2035	2966	淵	渊	淵	abyss	abyss	abyss [old]
+2195	2212	1733	肅	肃	粛	solemn	solemn	solemn
+2196	2213		嘯	啸	嘯	howl	howl	
+2197	2214		蕭	萧	蕭	desolate	desolate	
+2198	2027		鏽	锈	鏽	rust	rust	
+2199	2252	1216	芝	芝	芝	sesame	sesame	turf
+2200	2253		貶	贬	貶	devalue	devalue	
+2201	2254		泛	泛	泛	nonspecific	nonspecific	
+2202	2255	2862	歪	歪	歪	askew	askew	warped
+2203	2256	1221	矯	矫	矯	rectify	rectify	rectify
+2204	2257		矮	矮	矮	short of stature	short of stature	
+2205	2258		唉	唉	唉	sigh--ay-ay	sigh--ay-ay	
+2206	2259		埃	埃	埃	fine dust	fine dust	
+2207	2260	2248	挨	挨	挨	suffer	suffer	shove
+2208	2261		簇	簇	簇	cluster	cluster	
+2209	2262	2385	茅	茅	茅	thatch	thatch	grassy reed
+2210	2263	2494	橘	橘	橘	tangerine	tangerine	mandarin orange
+2211	2264		舒	舒	舒	relax	relax	
+2212	2269	1234	弘	弘	弘	noble	noble	vast
+2213	2270	2881	夷	夷	夷	barbarian	barbarian	ebisu
+2214	2271		姨	姨	姨	maternal aunt	maternal aunt	
+2215	2272		疆	疆	疆	dividing line	dividing line	
+2216	2273		僵	僵	僵	stiff	stiff	
+2217	1758		薑	姜	薑	ginger	ginger	
+2218	2274	2243	粥	粥	粥	porridge	porridge	rice gruel
+2219	2277	1237	沸	沸	沸	bring to a boil	bring to a boil	seethe
+2220	2278	0738	拂	拂	払	caress	caress	pay
+2221	2279	2146	剃	剃	剃	shave	shave	shave
+2222	2282		涕	涕	涕	snot	snot	
+2223	2281	2479	梯	梯	梯	ladder	ladder	ladder
+2224	2283	1243	朽	朽	朽	decayed	decayed	decay
+2225	2284	2678	聘	聘	聘	employ	employ	summons
+2226	2614	0643	犧	牺	犠	sacrifice	sacrifice	sacrifice
+2227	2285		姊	姊	姊	elder sister	elder sister	
+2228	2293		躺	躺	躺	lie down	lie down	
+2229	2294		躲	躲		dodge	dodge	
+2230	2295		躬	躬	躬	stoop	stoop	
+2231	2296		嗜	嗜	嗜	hanker	hanker	
+2232	2298	1255	拷	拷	拷	flog	flog	torture
+2233	2300	1260	暑	暑	暑	summer heat	summer heat	sultry
+2234	2301		睹	睹	睹	behold	behold	
+2235	2304	1264	賭	赌	賭	gamble	gamble	gamble
+2236	2305		奢	奢	奢	extravagant	extravagant	
+2237	2306	2192	堵	堵	堵	stop up	stop up	railing
+2238	2307	1257	煮	煮	煮	boil	boil	boil
+2239	2308	1261	諸	诸	諸	various	various	various
+2240	2309	2118	儲	储	儲	put in storage	put in storage	make a profit
+2241	2310	2217	屠	屠	屠	slaughter	slaughter	butchering
+2242	2302	1259	署	署	署	add your John Hancock	add your John Hancock	signature
+2243	2303	2365	薯	薯	薯	yam	yam	yam
+2244	2196	1230	歸	归	帰	come back	come back	homecoming
+2245	2052		篩	筛	篩	sift	sift	
+2246	2311	1272	棺	棺	棺	coffin	coffin	coffin
+2247	2312		爹	爹	爹	dad	dad	
+2248	2313	2333	斧	斧	斧	axe	axe	hatchet
+2249	2314		咬	咬	咬	bite	bite	
+2250	2316	2337	狡	狡	狡	sly	sly	cunning
+2251	2319		趴	趴		prostrate oneself	prostrate oneself	
+2252	2320	1287	踏	踏	踏	trample	trample	step
+2253	2321	1286	踐	践	践	tread on	tread on	tread
+2254	2323	2741	蹄	蹄	蹄	hoof	hoof	hoof
+2255	2317	2260	捉	捉	捉	catch	catch	nab
+2256	2324		踩	踩		step on	step on	
+2257	2325		蹦	蹦		hop	hop	
+2258	2326		跌	跌	跌	slump	slump	
+2259	2318	1280	促	促	促	urge	urge	stimulate
+2260	2327		踢	踢	踢	kick	kick	
+2261	2330		躁	躁	躁	impetuous	impetuous	
+2262	2331		噪	噪	噪	chirping	chirping	
+2263	2332		澡	澡	澡	bath	bath	
+2264	2333	2035	藻	藻	藻	algae	algae	seaweed
+2265	2335	0671	操	操	操	exercise	exercise	maneuver
+2266	2334	0215	燥	燥	燥	parched	parched	parch
+2267	2322	1285	躍	跃	躍	leap	leap	leap
+2268	1778		戳	戳	戳	jab	jab	
+2269	1777	2880	耀	耀	耀	show off	show off	shimmering
+2270	2336	2335	猾	猾	猾	cunning	cunning	sly
+2271	2337	1290	髓	髓	髄	marrow	marrow	marrow
+2272	1787x		髒	脏	髒	dirty		
+2273	2365	1292	渦	涡	渦	whirlpool	whirlpool	whirlpool
+2274	2366	2757	鍋	锅	鍋	pot	pot	pot
+2275	2368		蝸	蜗	蝸	snail	snail	
+2276	2367	1291	禍	祸	禍	misfortune	misfortune	calamity
+2277	2338		陌	陌	陌	footpath	footpath	
+2278	2339	2426	隙	隙	隙	rift	rift	chink
+2279	2340		陡	陡	陡	steep	steep	
+2280	2342	1297	障	障	障	barrier	barrier	hinder
+2281	2341	1299	陪	陪	陪	accompany	accompany	auxiliary
+2282	2343		隧	隧	隧	tunnel	tunnel	
+2283	1070	1307	墜	坠	墜	plunge	plunge	crash
+2284	2344		陋	陋	陋	undesirable	undesirable	
+2285	2354		挖	挖	挖	dig	dig	
+2286	2880	1325	窯	窑	窯	kiln	kiln	kiln
+2287	2356	2613	窺	窥	窺	peep	peep	peep
+2288	2360	2615	窟	窟	窟	den	den	cavern
+2289	2358	2614	窄	窄	窄	strait	strait	tight
+2290	2359		榨	榨	榨	extract	extract	
+2291	2361		窘	窘	窘	poverty-stricken	poverty-stricken	
+2292	2357	1326	窮	穷	窮	poor	poor	hard up
+2293	2364		窩	窝	窩	hollow	hollow	
+2294	2363	2465	腔	腔	腔	body cavity	body cavity	body cavity
+2295	2418	1364	累	累	累	tired	tired	accumulate
+2296	2419	2691	螺	螺	螺	spiral shell	spiral shell	screw
+2297	2375	2673	紗	纱	紗	yarn	yarn	gossamer
+2298	2373		綽	绰	綽	ample	ample	
+2299	2374	1359	紹	绍	紹	acquaint	acquaint	introduce
+2300	2422		絮	絮	絮	long-winded	long-winded	
+2301	2379		繞	绕	繞	go around	go around	
+2302	1836x		紮	扎	紮	bind		
+2303	2381	1367	綿	绵	綿	continuous	continuous	cotton
+2304	2385	1346	繪	绘	絵	paint	paint	picture
+2305	2376	1350	絡	络	絡	web	web	entwine
+2306	2377		綢	绸	綢	silk fabric	silk fabric	
+2307	2378	2657	絨	绒	絨	down	down	carpet yarn
+2308	2382	1340	締	缔	締	conclude	conclude	tighten
+2309	2420	1375	紫	紫	紫	purple	purple	purple
+2310	2421	1337	繁	繁	繁	numerous	numerous	luxuriant
+2311	2383	1357	紡	纺	紡	spin	spin	spinning
+2312	1743	1880	繭	茧	繭	cocoon	cocoon	cocoon
+2313	2384	2663	纏	缠	纏	wind around	wind around	summarize
+2314	1916x	3020	緻	致	緻	delicate		fine
+2315	1101x	2655	繫	系	繋	fasten		link up
+2316	2390	1356	納	纳	納	let in	let in	settlement
+2317	2386	1358	紛	纷	紛	disorderly	disorderly	distract
+2318	2389	1336	縮	缩	縮	shrink	shrink	shrink
+2319	2391	2660	綜	综	綜	sum up	sum up	synthesis
+2320	2392	1361	紳	绅	紳	gentry	gentry	sire
+2321	2204	1372	緣	缘	縁	reason	reason	affinity
+2322	2393	1344	緒	绪	緒	inception	inception	thong
+2323	2394	1348	絞	绞	絞	wring	wring	strangle
+2324	2395	1952	緩	缓	緩	unhurried	unhurried	slacken
+2325	2396	1949	暖	暖	暖	warm	warm	warmth
+2326	2397	1951	援	援	援	provide assistance	provide assistance	abet
+2327	2423	1365	索	索	索	large rope	large rope	cord
+2328	2425	2858	勃	勃	勃	vibrant	vibrant	erection
+2329	2424		脖	脖	脖	head-hinge	head-hinge	
+2330	2400		繳	缴	繳	shell out	shell out	
+2331	2401		邀	邀	邀	request the presence of	request the presence of	
+2332	2387	2665	繡	绣	繍	embroidery	embroidery	embroidery
+2333	1583		蘿	萝	蘿	edible root	edible root	
+2334	1616		鑼	锣	鑼	gong	gong	
+2335	1621		邏	逻	邏	make the rounds	make the rounds	
+2336	2048		籮	箩	籮	bamboo basket	bamboo basket	
+2337	2952	1747	蠻	蛮	蛮	barbaric	barbaric	barbarian
+2338	2404	2796	頸	颈	頚	neck	neck	neck and throat
+2339	2405	0715	莖	茎	茎	plant stem	plant stem	stalk
+2340	2407	2990	勁	劲	勁	powerful	powerful	formidable
+2341	2406	0882	徑	径	径	trail	trail	diameter
+2342	2409	0840	溪	溪	渓	creek	creek	mountain stream
+2343	2408	1378	幼	幼	幼	young	young	infancy
+2344	2410	1380	幽	幽	幽	secluded	secluded	faint
+2345	2759	1788	濕	湿	湿	wet	wet	damp
+2346	2411	1383	玄	玄	玄	mysterious	mysterious	mysterious
+2347	2413	1384	畜	畜	畜	livestock	livestock	livestock
+2348	2414	1385	蓄	蓄	蓄	save up	save up	amass
+2349	1632	2550	牽	牵	牽	lead along	lead along	tug
+2350	2412	1386	弦	弦	弦	bowstring	bowstring	bowstring
+2351	2415	1390	磁	磁	磁	magnetism	magnetism	magnet
+2352	2416	1388	滋	滋	滋	nourish	nourish	nourishing
+2353	2417	1389	慈	慈	慈	kindhearted	kindhearted	mercy
+2354	1651		譏	讥	譏	deride	deride	
+2355	1899		爍	烁	爍	luminous	luminous	
+2356	0298	2422	遜	逊	遜	modest	modest	modest
+2357	2426	1397	卸	卸	卸	unload	unload	wholesale
+2358	2427x	1398	御	御	御	imperial		honorable
+2359	2427	2597	禦	御	禦	withstand	withstand	fend off
+2360	2428	1422	卵	卵	卵	nest eggs	nest eggs	egg
+2361	2429		孵	孵	孵	hatch	hatch	
+2362	2430	0729	乳	乳	乳	breast	breast	milk
+2363	2431	0730	浮	浮	浮	float	float	floating
+2364	2432		俘	俘	俘	captive	captive	
+2365	2511	2898	卿	卿	卿	minister	minister	magistrate
+2366	1108	1424	貿	贸	貿	trade	trade	trade
+2367	2433		榴	榴	榴	pomegranate	pomegranate	
+2368	2435	1410	疑	疑	疑	doubt	doubt	doubt
+2369	1544	2592	礙	碍	碍	obstruct	obstruct	obstacle
+2370	2436	1412	凝	凝	凝	congeal	congeal	congeal
+2371	2119	1411	擬	拟	擬	simulate	simulate	mimic
+2372	2437	2568	玲	玲	玲	exquisite	exquisite	tinkling
+2373	2438	1406	鈴	铃	鈴	small bell	small bell	small bell
+2374	2441	2112	伶	伶	伶	actor	actor	minstrel
+2375	2440	2228	嶺	岭	嶺	mountain range	mountain range	mountaintop
+2376	2443	2530	桶	桶	桶	bucket	bucket	bucket
+2377	2444		誦	诵	誦	read aloud	read aloud	
+2378	2442	2284	湧	涌	湧	gush	gush	bubble up
+2379	(c)	1409	踴	踊	踊	eagerly	eagerly	jump
+2380	2447	1207	卷	卷	巻	exam paper	exam paper	scroll
+2381	2449	1208	圈	圈	圏	circle	circle	sphere
+2382	2447x		捲	卷	捲	roll up		
+2383	2448	2108	倦	倦	倦	worn out	worn out	fed up
+2384	2445	1413	範	范	範	model	model	pattern
+2385	2450	1420	怨	怨	怨	resentment	resentment	grudge
+2386	2451	1417	宛	宛	宛	winding	winding	address
+2387	2452	1418	腕	腕	腕	wrist	wrist	arm
+2388	2453	2197	婉	婉	婉	tactful	tactful	well finished
+2389	2454	2591	碗	碗	碗	bowl	bowl	teacup
+2390	2457		詭	诡	詭	deceitful	deceitful	
+2391	2458	2745	跪	跪	跪	kneel	kneel	kneel
+2392	2459	2860	輿	舆	輿	popular	popular	palanquin
+2393	2461	1432	酬	酬	酬	reward	reward	repay
+2394	2460	1429	酌	酌	酌	pour wine	pour wine	bartending
+2395	2462	1431	酷	酷	酷	brutal	brutal	cruel
+2396	2463	2751	醇	醇	醇	mellow wine	mellow wine	strong saké
+2397	2464	1434	醋	醋	酢	vinegar	vinegar	vinegar
+2398	2470	1435	醉	醉	酔	drunk	drunk	drunk
+2399	2473	0925	粹	粹	粋	unmixed	unmixed	chic
+2400	2472	2863	翠	翠	翠	emerald green	emerald green	jade green
+2401	2471		碎	碎	碎	shattered	shattered	
+2402	2474	1437	酸	酸	酸	sour	sour	acid
+2403	2475		梭	梭	梭	shuttle	shuttle	
+2404	2476	2061	峻	峻	峻	lofty	lofty	steep
+2405	2477x		俊	俊	俊	pretty		
+2406	2504		釁	衅	釁	quarrel	quarrel	
+2407	2465	2746	醬	酱	醤	thick sauce	thick sauce	soy sauce
+2408	1590	1438	猶	犹	猶	just like	just like	waver
+2409	2478		奠	奠	奠	found	found	
+2410	2479		蹲	蹲	蹲	squat	squat	
+2411	2480	2423	逗	逗	逗	tease	tease	standstill
+2412	1934		豈	岂	豈	(rhetorical question)	(rhetorical question)	
+2413	1935	2077	凱	凯	凱	triumphant	triumphant	triumph
+2414	2268	2618	豎	竖	竪	perpendicular	perpendicular	longness
+2415	2483	2852	嘉	嘉	嘉	commend	commend	applaud
+2416	2482		嘻	嘻	嘻	giggling	giggling	
+2417	2484	1450	盟	盟	盟	alliance	alliance	alliance
+2418	2485	2872	孟	孟	孟	Mencius	Mencius	start
+2419	2486	1456	猛	猛	猛	fierce	fierce	fierce
+2420	2490	1457	盛	盛	盛	flourishing	flourishing	boom
+2421	2491		盞	盏	盞	small cup	small cup	
+2422	2489		盒	盒	盒	small box	small box	
+2423	2492	1451	盜	盗	盗	master thief	master thief	steal
+2424	1757x		盪	荡	盪	swing		
+2425	1558	0834	寧	宁	寧	calm	calm	rather
+2426	2494		盈	盈	盈	replete	replete	
+2427	2495	1449	盆	盆	盆	basin	basin	basin
+2428	0997x		盃	杯	盃	trophy		
+2429	2496		蘊	蕴	蘊	amass	amass	
+2430	2498	1454	濫	滥	濫	indiscriminate	indiscriminate	overflow
+2431	2497	1455	鑑	鉴	鑑	probe	probe	specimen
+2432	2499		尷	尴		abashed	abashed	
+2433	2500		尬	尬	尬	embarrassed	embarrassed	
+2434	1988		拋	抛		toss	toss	
+2435	2503	2679	耽	耽	耽	indulge in	indulge in	addiction
+2436	2502	2472	枕	枕	枕	pillow	pillow	pillow
+2437	2265	0855	覽	览	覧	view	view	perusal
+2438	2266		攬	揽	攬	take on	take on	
+2439	2402		纜	缆	纜	cable	cable	
+2440	2506		狠	狠	狠	ruthless	ruthless	
+2441	2512	1460	恨	恨	恨	hate	hate	resentment
+2442	2509	1463	爵	爵	爵	upper crust	upper crust	baron
+2443	2510		嚼	嚼	嚼	chew	chew	
+2444	2507	1970	懇	恳	懇	wholeheartedly	wholeheartedly	sociable
+2445	2505	1971	墾	垦	墾	reclaim	reclaim	groundbreaking
+2446	1902	2734	豹	豹	豹	leopard	leopard	panther
+2447	1587	0244	貓	猫	猫	cat	cat	cat
+2448	1903	2733	貌	貌	貌	mien	mien	countenance
+2449	2513	1469	朗	朗	朗	lucent	lucent	melodious
+2450	2514	2339	狼	狼	狼	wolf	wolf	wolf
+2451	2517	1475	飢	饥	飢	starving	starving	hungry
+2452	2518		饒	饶	饒	spare	spare	
+2453	2519	1477	飾	饰	飾	ornaments	ornaments	decorate
+2454	2520	1474	飲	饮	飲	beverage	beverage	drink
+2455	2521	2800	蝕	蚀	蝕	eat away	eat away	eclipse
+2456	2522	1480	飽	饱	飽	sated	sated	sated
+2457	2523	2998	饅	馒	饅	bread	bread	bean jam
+2458	2524	2802	餅	饼	餅	cookie	cookie	mochi
+2459	2525		餃	饺	餃	dumpling	dumpling	
+2460	2526	1476	餓	饿	餓	hungry	hungry	starve
+2461	1979	0844	潛	潜	潜	submerge	submerge	submerge
+2462	1744	0523	蠶	蚕	蚕	silkworm	silkworm	silkworm
+2463	2527		溉	溉		irrigate	irrigate	
+2464	2528	1483	慨	慨	慨	incensed	incensed	rue
+2465	2530		萍	萍	萍	duckweed	duckweed	
+2466	2531	2604	秤	秤	秤	scale	scale	balancing scales
+2467	2532		淆	淆	淆	confuse	confuse	
+2468	2533		艾	艾	艾	Chinese mugwort	Chinese mugwort	
+2469	2534		哎	哎	哎	Good grief!	Good grief!	
+2470	2699	0705	拔	拔	抜	pull out	pull out	slip out
+2471	2536		攀	攀	攀	climb	climb	
+2472	2542	2033	屯	屯	屯	stockpile	stockpile	barracks
+2473	2544	2788	頓	顿	頓	pause	pause	immediate
+2474	2543	2949	噸	吨	噸	ton	ton	ton
+2475	2545	1494	純	纯	純	unadulterated	unadulterated	genuine
+2476	2173	1110	屆	届	届	fall due	fall due	deliver
+2477	2546	1171	齒	齿	歯	teeth	teeth	tooth
+2478	0689x		齣	出	齣	shows		
+2479	2547	1403	齡	龄	齢	length of service	length of service	age
+2480	2548		洶	汹	洶	turbulent	turbulent	
+2481	2549		籬	篱	籬	fence	fence	
+2482	2551		辜	辜	辜	crime	crime	
+2483	2553	1499	宰	宰	宰	butcher	butcher	superintend
+2484	2554		辨	辨	辨	differentiate	differentiate	
+2485	2555		辮	辫	辮	braid	braid	
+2486	2556		臂	臂	臂	arm	arm	
+2487	2557		劈	劈	劈	split	split	
+2488	2558	2728	譬	譬	譬	analogy	analogy	parable
+2489	2559	2117	僻	僻	僻	out-of-the-way	out-of-the-way	biased
+2490	2601		譯	译	譯	translate	translate	
+2491	2602	1074	擇	择	択	select	select	choose
+2492	2600	1072	澤	泽	沢	swamp	swamp	swamp
+2493	1840		墊	垫	墊	pad	pad	
+2494	1841	3022	摯	挚	摯	earnest	earnest	clasp
+2495	2560	1509	糾	纠	糾	entangle	entangle	twist
+2496	2350	2136	凌	凌	凌	bully	bully	pull through
+2497	2349	1517	菱	菱	菱	water caltrop	water caltrop	diamond
+2498	2347	1518	陵	陵	陵	mausoleum	mausoleum	mausoleum
+2499	2561	2162	咳	咳	咳	cough	cough	cough
+2500	2537	2144	剎	刹	刹	brake	brake	moment
+2501	2562		嚷	嚷	嚷	cry out	cry out	
+2502	2516	1527	釀	酿	醸	brew	brew	brew
+2503	2564	2214	塞	塞	塞	stronghold	stronghold	block up
+2504	2565		寨	寨	寨	stockade	stockade	
+2505	1596	1554	憲	宪	憲	constitution	constitution	constitution
+2506	2566	1538	晴	晴	晴	sunny	sunny	clear up
+2507	2567		猜	猜	猜	guess	guess	
+2508	2568	2621	靖	靖	靖	pacify	pacify	repose
+2509	2569	1544	債	债	債	debt	debt	bond
+2510	2951x	2743	蹟	迹	蹟	remains		vestiges
+2511	2570	1559	牲	牲	牲	domestic animal	domestic animal	animal sacrifice
+2512	2571	1561	隆	隆	隆	impressive	impressive	hump
+2513	2572		腥	腥	腥	fishy smell	fishy smell	
+2514	2573		猩	猩	猩	orangutan	orangutan	
+2515	2574	2750	醒	醒	醒	awaken	awaken	awakening
+2516	2590		瞎	瞎	瞎	visionless	visionless	
+2517	2591	1552	轄	辖	轄	administer	administer	control
+2518	2581	1549	契	契	契	contract	contract	pledge
+2519	2582	1564	拜	拜	拝	adore	adore	worship
+2520	1642	1548	潔	洁	潔	spotless	spotless	undefiled
+2521	2588	2687	蜂	蜂	蜂	bee	bee	bee
+2522	2589	1562	峰	峰	峰	peak	peak	summit
+2523	2583	2768	鋒	锋	鋒	cutting edge	cutting edge	sword's point
+2524	2584	2417	逢	逢	逢	chance upon	chance upon	tryst
+2525	2586	2375	蓬	蓬	蓬	disheveled	disheveled	wormwood
+2526	2585	1563	縫	缝	縫	sew	sew	sew
+2527	2596	1571	奏	奏	奏	play an instrument	play an instrument	play music
+2528	2597	2309	湊	凑	湊	gather together	gather together	port
+2529	2598	2877	秦	秦	秦	Qin	Qin	Manchu dynasty
+2530	2599		蠢	蠢	蠢	foolish	foolish	
+2531	2603	2265	捧	捧	捧	carry in both hands	carry in both hands	devote
+2532	1882	1579	嘆	叹	嘆	sigh	sigh	sigh
+2533	2508		艱	艰	艱	arduous	arduous	
+2534	1888	2321	灘	滩	灘	beach	beach	rough seas
+2535	1708	2570	畢	毕	畢	complete	complete	lastly
+2536	2605	2165	唾	唾	唾	saliva	saliva	saliva
+2537	2606	1589	吟	吟	吟	recite	recite	versify
+2538	2607	3023	貪	贪	貪	greedy	greedy	covet
+2539	2608	1591	琴	琴	琴	stringed instrument	stringed instrument	harp
+2540	2613	1609	栗	栗	栗	chestnut	chestnut	chestnut
+2541	2615		潭	潭	潭	deep pool	deep pool	
+2542	1618	1610	遷	迁	遷	resituate	resituate	transition
+2543	2616	1611	覆	覆	覆	overturn	overturn	capsize
+2544	2617		飄	飘	飄	flutter	flutter	
+2545	0657x		闆	板	闆	boss		
+2546	2619		闊	阔	闊	broad	broad	
+2547	2626	1623	閉	闭	閉	close	close	closed
+2548	2620	1627	潤	润	潤	moisten	moisten	wet
+2549	2621	1624	閣	阁	閣	cabinet	cabinet	tower
+2550	2622		擱	搁	擱	put aside	put aside	
+2551	2630		闡	阐	闡	explicate	explicate	
+2552	2624	1618	閱	阅	閲	peruse	peruse	review
+2553	2625	2775	悶	闷	悶	stuffy	stuffy	agony
+2554	2627	2774	閃	闪	閃	flash	flash	flash
+2555	2628	1619	閥	阀	閥	valve	valve	clique
+2556	2629		閘	闸	閘	floodgate	floodgate	
+2557	1187		闢	辟	闢	repudiate	repudiate	
+2558	2455	2399	蒼	苍	蒼	ash-colored	ash-colored	pale blue
+2559	2456		搶	抢	搶	rob	rob	
+2560	2632		菲	菲	菲	humble	humble	
+2561	2633	1637	輩	辈	輩	lifetime	lifetime	comrade
+2562	2634	1635	悲	悲	悲	sad	sad	sad
+2563	2635		徘	徘	徘	irresolute	irresolute	
+2564	1963		殲	歼	殲	annihilate	annihilate	
+2565	2862x	2082	籤	签	籤	bamboo slip		lottery
+2566	2372	1790	纖	纤	繊	fiber	fiber	slender
+2567	2636	2164	喉	喉	喉	gullet	gullet	throat
+2568	2637		猴	猴	猴	monkey	monkey	
+2569	2593	1647	韓	韩	韓	Korea	Korea	Korea
+2570	2594	1644	違	违	違	disobey	disobey	difference
+2571	2595	1645	緯	纬	緯	latitude	latitude	horizontal
+2572	2645	2632	竿	竿	竿	pole	pole	pole
+2573	2644		罕	罕	罕	rarely	rarely	
+2574	2643	1652	軒	轩	軒	veranda	veranda	flats
+2575	2638	1649	肝	肝	肝	liver	liver	liver
+2576	2639	1650	刊	刊	刊	publication	publication	publish
+2577	2641	1651	汗	汗	汗	sweat	sweat	sweat
+2578	2642		桿	杆	桿	shaft	shaft	
+2579	2646		悍	悍	悍	bold	bold	
+2580	2650	1659	徐	徐	徐	slowly	slowly	gradually
+2581	2649	1660	敘	叙	叙	recount	recount	confer
+2582	2648	1663	塗	涂	塗	smear	smear	paint
+2583	2651	1662	斜	斜	斜	slanting	slanting	diagonal
+2584	2652		喇	喇	喇	flared horn	flared horn	
+2585	2653		嗽	嗽	嗽	hack	hack	
+2586	2654	1665	賴	赖	頼	rely on	rely on	trust
+2587	2655		懶	懒	懶	lazy	lazy	
+2588	2656		嫩	嫩	嫩	tender	tender	
+2589	2609	2542	煉	炼	煉	refine	refine	firing
+2590	1626		鍊	链		chain	chain	
+2591	1505	2467	腫	肿	腫	swollen	swollen	tumor
+2592	2657		董	董	董	director	director	
+2593	(c)	2772	鍾	锺	鍾	draw together	draw together	cluster
+2594	2659	2573	痰	痰	痰	phlegm	phlegm	phlegm
+2595	2660	1685	症	症	症	disease	disease	symptoms
+2596	2661		疼	疼	疼	hurt	hurt	
+2597	1793x	2037	癒	愈	癒	get well		healing
+2598	2664	1689	疫	疫	疫	epidemic	epidemic	epidemic
+2599	2665	2576	癌	癌	癌	cancer	cancer	cancer
+2600	2666	1688	疲	疲	疲	fatigued	fatigued	tired
+2601	2670	1686	疾	疾	疾	rapid	rapid	rapidly
+2602	2667	1683	痴	痴	痴	idiotic	idiotic	stupid
+2603	2668		瘤	瘤	瘤	tumor	tumor	
+2604	2672	2578	痕	痕	痕	trace	trace	scar
+2605	2662	2572	癢	痒	痒	itch	itch	itch
+2606	2663		癱	瘫	癱	paralysis	paralysis	
+2607	2669		瘡	疮	瘡	sore	sore	
+2608	2205	1147	穩	稳	穏	stable	stable	calm
+2609	2345	1313	隱	隐	隠	hidden	hidden	conceal
+2610	2671		癮	瘾	癮	addiction	addiction	
+2611	2681	0856	巨	巨	巨	gigantic	gigantic	gigantic
+2612	2683		渠	渠	渠	canal	canal	
+2613	2684	0857	拒	拒	拒	refuse	refuse	repel
+2614	2685	2585	矩	矩	矩	square	square	carpenter's square
+2615	2686	1281	距	距	距	distance	distance	long-distance
+2616	2674		框	框	框	rectangular frame	rectangular frame	
+2617	2675		筐	筐	筐	rectangular basket	rectangular basket	
+2618	2676		砸	砸		smash	smash	
+2619	2673		匯	汇	匯	converge	converge	
+2620	2677	1693	匠	匠	匠	artisan	artisan	artisan
+2621	2678		匪	匪	匪	bandit	bandit	
+2622	2679	1692	匿	匿	匿	keep out of sight	keep out of sight	hide
+2623	2680	2854	兜	兜	兜	pocket	pocket	helmet
+2624	2688	2999	嘔	呕	嘔	vomit	vomit	retch
+2625	2687	1698	毆	殴	殴	hit	hit	assault
+2626	2689	2986	軀	躯	躯	human body	human body	body [old]
+2627	2690	2449	昂	昂	昂	hold one's head high	hold one's head high	elevate
+2628	2691	1700	抑	抑	抑	curb	curb	repress
+2629	2692	2391	葵	葵	葵	large-flowered plants	large-flowered plants	hollyhock
+2630	2696	1707	僚	僚	僚	coworker	coworker	colleague
+2631	1620	2419	遼	辽	遼	far away	far away	faraway
+2632	0101x	2582	瞭	了	瞭	comprehend		obvious
+2633	2658	1709	療	疗	療	cure	cure	heal
+2634	2693		瞪	瞪	瞪	glare	glare	
+2635	2694		凳	凳	凳	bench	bench	
+2636	2695	1704	澄	澄	澄	transparent	transparent	lucidity
+2637	2698	2307	潑	泼	溌	splash	splash	spray
+2638	2697		撥	拨	撥	allocate	allocate	
+2639	2700	1713	杉	杉	杉	fir tree	fir tree	cedar
+2640	2701	2529	彬	彬	彬	well-mannered	well-mannered	copious
+2641	2702		衫	衫	衫	shirt	shirt	
+2642	2703	1715	彰	彰	彰	manifest	manifest	patent
+2643	2704	1719	膨	膨	膨	puffy	puffy	swell
+2644	2707		趁	趁	趁	take advantage of	take advantage of	
+2645	2706	1724	診	诊	診	diagnose	diagnose	checkup
+2646	2705	2291	滲	渗	滲	seep	seep	seep
+2647	2315		膠	胶	膠	gum	gum	
+2648	2709	2720	謬	谬	謬	wrong	wrong	fallible
+2649	2708		寥	寥	寥	deserted	deserted	
+2650	2716	2556	斑	斑	斑	speck	speck	speckled
+2651	2714	1727	紋	纹	紋	design	design	family crest
+2652	2710		鏟	铲	鏟	small shovel	small shovel	
+2653	2711	2956	薩	萨	薩	Samoa	Samoa	bodhisattva
+2654	2719	2071	脊	脊	脊	backbone	backbone	spinal column
+2655	2720	1902	函	函	函	letter	letter	bin
+2656	2721		涵	涵	涵	culvert	culvert	
+2657	2722	1742	映	映	映	reflect	reflect	reflect
+2658	2723		殃	殃	殃	calamity	calamity	
+2659	2726	1756	肥	肥	肥	plump	plump	fertilizer
+2660	2727		爬	爬	爬	crawl	crawl	
+2661	2728		疤	疤	疤	scar	scar	
+2662	1334	1755	艷	艳	艶	gorgeous	gorgeous	glossy
+2663	2729		甜	甜	甜	sugary	sugary	
+2664	2731		鉗	钳	鉗	pliers	pliers	
+2665	2732	1761	媒	媒	媒	matchmaker	matchmaker	mediator
+2666	2733	2541	煤	煤	煤	coal	coal	soot
+2667	2734	1760	謀	谋	謀	scheme	scheme	conspire
+2668	2735	1763	棋	棋	棋	chess	chess	chess piece
+2669	2736	1762	欺	欺	欺	dupe	dupe	deceit
+2670	2737	1764	旗	旗	旗	flag	flag	national flag
+2671	2738		嘶	嘶	嘶	hoarse	hoarse	
+2672	2739		撕	撕	撕	rip	rip	
+2673	2740	1770	堪	堪	堪	tolerate	tolerate	withstand
+2674	2741	1769	勘	勘	勘	survey	survey	intuition
+2675	2742	1773	遣	遣	遣	dispatch	dispatch	dispatch
+2676	2743		譴	谴	譴	censure	censure	
+2677	2744	2883	囊	囊	嚢	sack	sack	cyst
+2678	2745	2319	潰	溃	潰	burst	burst	defile
+2679	2682		櫃	柜	櫃	cupboard	cupboard	
+2680	2746	1783	宜	宜	宜	fitting	fitting	best regards
+2681	2747	2719	誼	谊	誼	friendship	friendship	familiarity
+2682	2748	1778	租	租	租	rent	rent	tariff
+2683	2749	1777	粗	粗	粗	coarse	coarse	coarse
+2684	2750	1780	阻	阻	阻	block	block	thwart
+2685	2753	1784	疊	叠	畳	heap	heap	tatami mat
+2686	1907	1734	壘	垒	塁	baseball base	baseball base	bases
+2687	2754	2756	鋤	锄	鋤	hoe	hoe	plow
+2688	2104	2895	叢	丛	叢	thicket	thicket	conglomerate
+2689	1563	0207	樸	朴	朴	plain	plain	crude
+2690	1831	1793	撲	扑	撲	pounce on	pounce on	slap
+2691	2059	1794	僕	仆	僕	servant	servant	me
+2692	2756	1787	譜	谱	譜	musical score	musical score	musical score
+2693	2762		哄	哄	哄	fool	fool	
+2694	2763	1799	洪	洪	洪	deluge	deluge	deluge
+2695	2764		烘	烘	烘	warm by a fire	warm by a fire	
+2696	2767	1803	恭	恭	恭	respectful	respectful	respect
+2697	2768		拱	拱	拱	arch	arch	
+2698	2772	1801	暴	暴	暴	violent	violent	outburst
+2699	2773		瀑	瀑	瀑	waterfall	waterfall	
+2700	2774	1802	爆	爆	爆	explode	explode	bomb
+2701	2771	1805	殿	殿	殿	ceremonial hall	ceremonial hall	Mr.
+2702	2765	2702	戴	戴	戴	have on	have on	accept humbly
+2703	2766	1798	翼	翼	翼	wings	wings	wing
+2704	2770	2653	糞	粪	糞	dung	dung	excrement
+2705	2769	2253	撰	撰	撰	compose	compose	assortment
+2706	2760	2958	啞	哑	唖	mute	mute	babble
+2707	2757	2904	壺	壶	壷	kettle	kettle	crock
+2708	2780	2682	蟹	蟹	蟹	crab	crab	crab
+2709	2781		懈	懈	懈	lax	lax	
+2710	0686	1817	購	购	購	purchase	purchase	subscription
+2711	1924	1819	溝	沟	溝	ditch	ditch	gutter
+2712	1611		鑰	钥	鑰	key	key	
+2713	2647		籲	吁	籲	plead	plead	
+2714	2782	1826	冊	册	冊	Vol.	Vol.	tome
+2715	2783		刪	删	刪	delete	delete	
+2716	2784	2507	柵	栅	柵	palisade	palisade	palisade
+2717	2785	2561	珊	珊	珊	coral	coral	coral
+2718	2786	1824	遍	遍	遍	everywhere	everywhere	everywhere
+2719	2787	1823	偏	偏	偏	partial	partial	partial
+2720	1712		淪	沦	淪	sink	sink	
+2721	2083	1821	倫	伦	倫	human relationships	human relationships	ethics
+2722	2788	1832	抵	抵	抵	resist	resist	resist
+2723	2789		氓	氓	氓	hoodlum	hoodlum	
+2724	2790	3027	哺	哺	哺	breastfeed	breastfeed	suckle
+2725	2794	2975	鋪	铺	鋪	shop	shop	shop [alternate]
+2726	1380	2730	輔	辅	輔	supplement	supplement	reinforce
+2727	2795	1836	捕	捕	捕	capture	capture	catch
+2728	2796	1883	敷	敷	敷	apply	apply	spread
+2729	2791	1837	浦	浦	浦	river mouth	river mouth	bay
+2730	2792	1838	蒲	蒲	蒲	cattail	cattail	bullrush
+2731	2793	0227	薄	薄	薄	slight	slight	dilute
+2732	2800	0949	簿	簿	簿	register	register	register
+2733	2798		傅	傅	傅	mentor	mentor	
+2734	2799	1376	縛	缚	縛	bind fast	bind fast	truss
+2735	2802	1842	郭	郭	郭	outer walls	outer walls	enclosure
+2736	2803	2235	廓	廓	廓	limitless	limitless	licensed quarters
+2737	2805		鄙	鄙	鄙	despicable	despicable	
+2738	2806	2680	耶	耶	耶	Jerusalem	Jerusalem	exclamation
+2739	2434	2334	爺	爷	爺	grandfather	grandfather	grandpa
+2740	2810	1844	郊	郊	郊	outskirts	outskirts	outskirts
+2741	2808	1848	邦	邦	邦	nation	nation	home country
+2742	2809		綁	绑	綁	truss	truss	
+2743	2807	1847	郵	邮	郵	post	post	mail
+2744	2804		鄧	邓	鄧	Deng	Deng	
+2745	2923		擲	掷	擲	hurl	hurl	
+2746	2812	1852	廊	廊	廊	hallway	hallway	corridor
+2747	2775	1387	擁	拥	擁	hug	hug	hug
+2748	2813		緞	缎	緞	satin	satin	
+2749	2814		刁	刁	刁	wily	wily	
+2750	2815		叼	叼		hold in the mouth	hold in the mouth	
+2751	2817		殷	殷	殷	ardent	ardent	
+2752	2575	2995	壽	寿	壽	longevity	longevity	longevity [old]
+2753	2577		濤	涛	濤	large waves	large waves	
+2754	2578	1566	鑄	铸	鋳	cast	cast	casting
+2755	2579	2598	禱	祷	祷	pray	pray	beseech
+2756	2580		籌	筹	籌	make arrangements	make arrangements	
+2757	2818	1864	伺	伺	伺	attend to	attend to	pay respects
+2758	2819	1866	飼	饲	飼	rear	rear	domesticate
+2759	2820	1869	舶	舶	舶	liner	liner	liner
+2760	2822	1870	航	航	航	navigate	navigate	navigate
+2761	2825	1876	艇	艇	艇	light boat	light boat	rowboat
+2762	2821	1875	艦	舰	艦	warship	warship	warship
+2763	2824		艙	舱	艙	ship's cabin	ship's cabin	
+2764	2826	0795	沿	沿	沿	along	along	run alongside
+2765	2827	0794	鉛	铅	鉛	lead	lead	lead (metal)
+2766	2828	2342	狐	狐	狐	fox	fox	fox
+2767	2829		瓣	瓣	瓣	petal	petal	
+2768	2830	2315	溢	溢	溢	brim over	brim over	brimming
+2769	1403	1882	暇	暇	暇	spare time	spare time	spare time
+2770	2832	2779	霞	霞	霞	red sky	red sky	haze
+2771	2834		氧	氧	氧	oxygen	oxygen	
+2772	2835		氛	氛	氛	atmosphere	atmosphere	
+2773	2837		氯	氯		chlorine	chlorine	
+2774	2836		氫	氢		hydrogen	hydrogen	
+2775	1513		鞏	巩	鞏	strengthen	strengthen	
+2776	2838	1895	霸	霸	覇	tyrant	tyrant	hegemony
+2777	1540		壩	坝	壩	dam	dam	
+2778	1409		勒	勒	勒	tighten	tighten	
+2779	2841	2787	鞠	鞠	鞠	bow respectfully	bow respectfully	terminate
+2780	2839	1894	靴	靴	靴	boots	boots	shoes
+2781	2840	2783	鞭	鞭	鞭	whip	whip	whip
+2782	2842	1905	芽	芽	芽	sprout	sprout	bud
+2783	2843		訝	讶	訝	surprised	surprised	
+2784	1957		撐	撑	撐	prop up	prop up	
+2785	2844	1907	雅	雅	雅	polished	polished	gracious
+2786	2845	1906	邪	邪	邪	wicked	wicked	wicked
+2787	2031	0928	奧	奥	奥	of great depth	of great depth	core
+2788	2032		澳	澳	澳	deep inlet	deep inlet	
+2789	2033		懊	懊	懊	remorseful	remorseful	
+2790	2846	2430	悉	悉	悉	be informed	be informed	without exception
+2791	2353	1322	竊	窃	窃	pilfer	pilfer	stealth
+2792	2176	1910	審	审	審	painstaking	painstaking	hearing
+2793	2177		嬸	婶	嬸	auntie	auntie	
+2794	2847		毯	毯	毯	blanket	blanket	
+2795	2848		毫	毫	毫	milli-	milli-	
+2796	2849	1914	耗	耗	耗	consume	consume	decrease
+2797	2850	1808	耕	耕	耕	till	till	till
+2798	2851	1567	籍	籍	籍	records	records	enroll
+2799	2852x		藉	藉	藉	excuse		
+2800	1424x	2264	托	托	托	hold up		receptacle
+2801	2853	2569	畏	畏	畏	be afraid of	be afraid of	apprehensive
+2802	2854		喂	喂	喂	Hello...	Hello...	
+2803	2855	1923	脹	胀	脹	bloated	bloated	dilate
+2804	2856	1922	帳	帐	帳	tent	tent	notebook
+2805	2957		肆	肆	肆	IV	IV	
+2806	0017x		鬍	胡	鬍	beard		
+2807	0697x		鬆	松	鬆	loose		
+2808	2863	2829	鵬	鹏	鵬	roc	roc	roc
+2809	2864	1942	鳴	鸣	鳴	twitter	twitter	chirp
+2810	2865	2313	鴻	鸿	鴻	swan	swan	large goose
+2811	2867		鴿	鸽	鴿	pigeon	pigeon	
+2812	2868	1943	鶴	鹤	鶴	crane	crane	crane
+2813	2866	2907	鶯	莺	鴬	oriole	oriole	nightingale
+2814	2869		鵲	鹊	鵲	magpie	magpie	
+2815	2870	2828	鷗	鸥	鴎	gull	gull	seagull
+2816	2872		鴉	鸦	鴉	raven	raven	
+2817	2871		鵝	鹅	鵝	goose	goose	
+2818	2873	1944	烏	乌	烏	crow	crow	crow
+2819	2874		嗚	呜	嗚	zoom-zoom	zoom-zoom	
+2820	2875		搗	捣	搗	pound with a pestle	pound with a pestle	
+2821	2876	2211	寓	寓	寓	residence	residence	imply
+2822	2877	1957	愚	愚	愚	pea-brained	pea-brained	foolish
+2823	2878	1955	偶	偶	偶	by chance	by chance	accidentally
+2824	0123		厲	厉	厲	stern	stern	
+2825	0736	0866	勵	励	励	encourage	encourage	encourage
+2826	2539	1962	鋼	钢	鋼	steel	steel	steel
+2827	2540		崗	岗	崗	hillock	hillock	
+2828	2541	1963	綱	纲	綱	guidelines	guidelines	hawser
+2829	1939	1959	逆	逆	逆	go against	go against	inverted
+2830	1940	2847	溯	溯	遡	go upstream	go upstream	go upstream
+2831	1941	1960	塑	塑	塑	plastic	plastic	model
+2832	2879		缸	缸	缸	vat	vat	
+2833	2881		罐	罐	罐	jar	jar	
+2834	2801	3030	鬱	郁	鬱	depressed	depressed	gloom
+2835	2487	1458	鹽	盐	塩	salt	salt	salt
+2836	0372		鹹	咸	鹹	salty	salty	
+2837	2885		掏	掏	掏	draw out	draw out	
+2838	2884		淘	淘	淘	wash in a container	wash in a container	
+2839	2883	1966	陶	陶	陶	pottery	pottery	pottery
+2840	2886	1968	謠	谣	謡	rumor	rumor	Noh chanting
+2841	2887		冤	冤	冤	injustice	injustice	
+2842	2890		饞	馋	饞	gluttonous	gluttonous	
+2843	2888	2244	挽	挽	挽	tow	tow	lathe
+2844	2889	1975	勉	勉	勉	strive	strive	exertion
+2845	2891		橡	橡	橡	rubber tree	rubber tree	
+2846	2892		豫	豫	豫	pleased	pleased	
+2847	2904	1989	騰	腾	騰	take flight	take flight	inflation
+2848	2893		碼	码	碼	numeral	numeral	
+2849	2894	2807	馴	驯	馴	tame	tame	tame
+2850	2895		瑪	玛	瑪	Mary	Matteo	
+2851	2896	1982	駐	驻	駐	be stationed	be stationed	parking
+2852	2897		驕	骄	驕	arrogant	arrogant	
+2853	2898	2805	馳	驰	馳	gallop	gallop	rush
+2854	2899		螞	蚂	螞	leech-hopper	leech-hopper	
+2855	2114	2428	憑	凭	憑	proof	proof	possessed
+2856	2900		駛	驶	駛	maneuver	maneuver	
+2857	2901	1985	騷	骚	騒	disturb	disturb	boisterous
+2858	2902	2803	駕	驾	駕	drive	drive	stretcher
+2859	2905		騾	骡	騾	mule	mule	
+2860	2909	2808	駁	驳	駁	refute	refute	rebuttal
+2861	2907		闖	闯	闖	rush	rush	
+2862	2908	1983	驅	驱	駆	drive away	drive away	drive
+2863	2910	2806	騙	骗	騙	cheat	cheat	cheat
+2864	2906		驟	骤	驟	trot	trot	
+2865	2280	1858	遞	递	逓	hand over	hand over	parcel post
+2866	2912	1991	虜	虏	虜	take captive	take captive	captive
+2867	2913	1998	虐	虐	虐	despotic	despotic	tyrannize
+2868	1977	1992	膚	肤	膚	skin	skin	skin
+2869	2134		盧	卢	盧	Louvre	Louvre	
+2870	2155	1080	爐	炉	炉	stove	stove	hearth
+2871	2156	2364	蘆	芦	芦	reeds	reeds	hollow reed
+2872	2903	2810	驢	驴	驢	donkey	donkey	donkey
+2873	2286		虧	亏	虧	loss	loss	
+2874	2287	1245	污	污	汚	filthy	filthy	dirty
+2875	2292		愕	愕	愕	stunned	stunned	
+2876	2288	1244	誇	夸	誇	brag	brag	boast
+2877	2289		垮	垮		collapse	collapse	
+2878	2329	2744	跨	跨	跨	straddle	straddle	straddle
+2879	2618	1615	獻	献	献	donate	donate	offering
+2880	2351	1044	融	融	融	melt	melt	dissolve
+2881	2352	1312	隔	隔	隔	separate	separate	isolate
+2882	2914	2328	濾	滤	濾	filter	filter	strainer
+2883	1784	2001	慶	庆	慶	celebrate	celebrate	jubilation
+2884	1876	2000	薦	荐	薦	recommend	recommend	recommend
+2885	1570	0999	傑	杰	傑	outstanding	outstanding	greatness
+2886	2915	0817	瞬	瞬	瞬	instant	instant	wink
+2887	2916	2053	麟	麟	麟	Chinese unicorn	Chinese unicorn	camelopard
+2888	2439	2051	憐	怜	憐	pity	pity	sympathize with
+2889	2811	1311	鄰	邻	隣	neighbor	neighbor	neighboring
+2890	2610	2444	曬	晒	晒	bask	bask	bleaching
+2891	2611	2292	灑	洒	洒	spill	spill	rinse
+2892	1913	2032	罷	罢	罷	cease	cease	quit
+2893	1914		擺	摆	擺	put in order	put in order	
+2894	2918	2013	唇	唇	唇	lips	lips	lips
+2895	2919	2009	辱	辱	辱	disgrace	disgrace	embarrass
+2896	2920	2010	震	震	震	quake	quake	quake
+2897	2921	2011	振	振	振	vibrate	vibrate	shake
+2898	2924		魄	魄	魄	vigor	vigor	
+2899	2925		槐	槐	槐	scholar tree	scholar tree	
+2900	2926	2023	魅	魅	魅	enchant	enchant	fascination
+2901	2927		瑰	瑰	瑰	marvelous	marvelous	
+2902	2928	2021	魂	魂	魂	soul	soul	soul
+2903	2929		愧	愧	愧	ashamed	ashamed	
+2904	2930	2924	魁	魁	魁	leader	leader	pioneer
+2905	1486x	2020	醜	丑	醜	ugly		ugly
+2906	2932		壟	垄	壟	raised path between fields	raised path between fields	
+2907	2933	2982	寵	宠	寵	dote on	dote on	patronage
+2908	2934	2089	龐	庞	厖	huge	huge	immense
+2909	2935		攏	拢	攏	draw near	draw near	
+2910	2936	2983	聾	聋	聾	deaf	deaf	deafness
+2911	2937	3028	籠	笼	籠	cage	cage	cage [old]
+2912	2958	1116	插	插	挿	insert	insert	insert
+2913	2959	2067	毀	毁	毀	ruin	ruin	break
+2914	2961	2064	舅	舅	舅	mother's brother	mother's brother	father-in-law
+2915	1789		樁	桩	樁	stake	stake	
+2916	2758	2066	鑿	凿	鑿	bore a hole	bore a hole	bore
+2917	2960	2065	鼠	鼠	鼠	mouse	mouse	mouse
+2918	2362		竄	窜	竄	scurry	scurry	
+2919	2241		臘	腊	臘	dried meat	dried meat	
+2920	2242	2688	蠟	蜡	蝋	wax	wax	wax
+2921	2243	1940	獵	猎	猟	hunt	hunt	game hunting
+2922	2968	2068	艘	艘	艘	vessels	vessels	small craft
+2923	2965		嫂	嫂	嫂	elder brother's wife	elder brother's wife	
+2924	2967	2577	瘦	瘦	痩	emaciated	emaciated	lose weight
+2925	2966	1120	搜	搜	捜	search	search	search
+2926	2963	0910	稻	稻	稲	unhulled rice	unhulled rice	rice plant
+2927	2964		蹈	蹈	蹈	tread	tread	
+2928	2962		滔	滔	滔	surging	surging	
+2929	2971	1315	陷	陷	陥	get stuck	get stuck	collapse
+2930	2969	2546	焰	焰	焔	flame	flame	flames
+2931	2970		餡	馅	餡	filling	filling	
+2932	2939		輛	辆	輛	vehicles	vehicles	
+2933	2940		瞞	瞒	瞞	dissemble	dissemble	
+2934	2972	2855	爽	爽	爽	frank	frank	bracing
+2935	2973	2073	綴	缀	綴	embellish	embellish	mend
+2936	2755		碰	碰	碰	bump	bump	
+2937	2938		挪	挪	挪	transfer	transfer	
+2938	2107		誣	诬	誣	charge falsely	charge falsely	
+2939	2857	1939	譽	誉	誉	reputation	reputation	reputation
+2940	2299		嶼	屿	嶼	islet	islet	
+2941	2974		傻	傻		thick-headed	thick-headed	
+2942	2604		磚	砖	磚	brick	brick	
+2943	1794	0612	惠	惠	恵	favor	favor	favor
+2944	2015	0909	穗	穗	穂	ear of grain	ear of grain	ear of a plant
+2945	1782		曠	旷	曠	expansive	expansive	
+2946	1783	0741	礦	矿	鉱	mine	mine	mineral
+2947	1863	0740	擴	扩	拡	enlarge	enlarge	broaden
+2948	1974	2677	聰	聪	聡	smart	smart	attentive
+2949	2131	2389	蔥	葱	葱	onion	onion	onion
+2950	1503	0031	膽	胆	胆	gall bladder	gall bladder	gall bladder
+2951	1648		瞻	瞻	瞻	look upward	look upward	
+2952	2046		摟	搂	摟	cuddle	cuddle	
+2953	2147	2221	屢	屡	屡	time and again	time and again	frequently
+2954	1739	0835	濁	浊	濁	turbid	turbid	voiced
+2955	1742	2539	燭	烛	燭	candle	candle	candlelight
+2956	2779	1813	觸	触	触	touch	touch	contact
+2957	2956	1954	囑	嘱	嘱	admonish	admonish	entrust
+2958	1761	1628	欄	栏	欄	railing	railing	column
+2959	1762		攔	拦	攔	impede	impede	
+2960	2328	3019	蹤	踪	踪	tracks	tracks	trail
+2961	2105		聳	耸	聳	shrug	shrug	
+2962	2717	1730	劑	剂	剤	pharmaceutical	pharmaceutical	dose
+2963	2715	1732	齋	斋	斎	abstain from food	abstain from food	purification
+2964	2718		擠	挤	擠	squeeze	squeeze	
+2965	2946		鈕	钮	鈕	push button	push button	
+2966	2947	3029	羞	羞	羞	shy	shy	humiliate
+2967	2948	2661	紐	纽	紐	New York	New York	string
+2968	2954		脾	脾	脾	spleen	spleen	
+2969	2953		啤	啤	啤	beer	beer	
+2970	2955	1512	碑	碑	碑	stele	stele	tombstone
+2971	2949	2908	赫	赫	赫	illustrious	illustrious	incandescent
+2972	1507	2026	嚇	吓	嚇	terrify	terrify	upbraid
+2973	2950		奕	奕	奕	radiating vitality	radiating vitality	
+2974	2951	1746	跡	迹	跡	indication	indication	tracks
+2975	2552	1497	辭	辞	辞	phraseology	phraseology	resign
+2976	2941	0534	龜	龟	亀	tortoise	tortoise	tortoise
+2977	2943	1377	繩	绳	縄	rope	rope	straw rope
+2978	2942	2685	蠅	蝇	蝿	flies	flies	housefly
+2979	2975		蝴	蝴	蝴	butterfly (front end)	butterfly (front end)	
+2980	2976	0521	蝶	蝶	蝶	butterfly (back end)	butterfly (back end)	butterfly
+2981	2977		蜘	蜘	蜘	spider (front end)	spider (front end)	
+2982	2978		蛛	蛛	蛛	spider (back end)	spider (back end)	
+2983	2979		駱	骆	駱	camel (front end)	camel (front end)	
+2984	2980		駝	驼	駝	camel (back end)	camel (back end)	
+2985	2981		蜻	蜻	蜻	dragonfly (front end)	dragonfly (front end)	
+2986	2982		蜓	蜓	蜓	dragonfly (back end)	dragonfly (back end)	
+2987	2983	2142	鳳	凤	鳳	male phoenix	male phoenix	phoenix
+2988	2984		凰	凰	凰	female phoenix	female phoenix	
+2989	2987		橄	橄	橄	olive (A)	olive (A)	
+2990	2988		欖	榄	欖	olive (B)	olive (B)	
+2991	2985		玻	玻	玻	glass (front side)	glass (front side)	
+2992	2986	2048	璃	璃	璃	glass (back side)	glass (back side)	crystal
+2993	2991		咖	咖	咖	coffee (first drop)	coffee (first drop)	
+2994	2992		啡	啡	啡	coffee (last drop)	coffee (last drop)	
+2995	2993	2378	葡	葡	葡	grapes (A)	grapes (A)	grape
+2996	2994	2379	萄	萄	萄	grapes (B)	grapes (B)	grape vine
+2997	2997		吩	吩	吩	in-	in-	
+2998	2998		咐	咐	咐	-struct	-struct	
+2999	2999		乒	乒		ping	ping	
+3000	3000		乓	乓		pong	pong	
+3001	1937		崔	崔	崔	Cui	Cui	
+3002	3001	1173	曹	曹	曹	Cao	Cao	cadet
+3003	2712	2143	劉	刘	劉	Liu	Liu	slaughter
+3004	3002		潘	潘	潘	Pan	Pan	
+3005	2037x	2299x	梁	梁	梁	Liang		
+3006	2501	1888	沈	沈	沈	Shen	Shen	sink
+3007	2922	2425	鄭	郑	鄭	Zheng	Zheng	courtesy
+3008	3003		譚	谭	譚	Tan	Tan	
+3009	2535		趙	赵	趙	Zhao	Zhao	
+3010	3004		姚	姚	姚	Yao-2	Yao-2	
+3011	1538		魯	鲁	魯	Lu	Lu	
+3012	1758x		姜	姜	姜	Jiang-2		
+3013	2445x		范	范	范	Fan		
+3014	3005		薛	薛	薛	Xue	Xue	
+3015	2648x		涂	涂	涂	Tu		
+3016	3006		彭	彭	彭	Peng	Peng	
+3017	2801x	2424	郁	郁	郁	Yu-2		cultured
+3018	3007		馮	冯	馮	Feng	Feng	
+3019	3008		魏	魏	魏	Wei	Wei	
+3020	3009	1330	岳	岳	岳	Yue	Yue	Point
+3021	1023x		彿	佛	彿	as though		
+3022	3010	2349	莉	莉	莉	jasmine	jasmine	hawthorn
+3023	3011		湘	湘	湘	Hunan Province	Hunan Province	
+3024	3012		甸	甸	甸	outlying areas	outlying areas	
+3025	3013		滄	沧	滄	dark blue	dark blue	
+3026	3014	2612	穆	穆	穆	reverent	reverent	obeisant
+3027	3015		娜	娜	娜	na	na	
+3028	3016		瓊	琼	瓊	fine jade	fine jade	
+3029	3017	2554	琳	琳	琳	gem	gem	chime
+3030	3018		鈞	钧	鈞	30 catties	30 catties	
+3031	2403		喲	哟	喲	Oh!	Oh!	
+3032	1746	0532	砲	炮	砲	cannon	cannon	cannon
+3033	2966x	2409	蒐	搜	蒐	search for		collector
+3034	2989	2361	芙	芙	芙	hibiscus (A)	hibiscus (A)	lotus flower
+3035	2990	2362	蓉	蓉	蓉	cottonrose hibiscus (B)	cottonrose hibiscus (B)	lotus blossom
+(c)	(c)	1025	卒	卒	卒	foot soldier	foot soldier	graduate
+(c)	(c)	2099	堇	堇	菫	violet	violet	violet
+(c)	(c)	2435	昴	昴	昴	The Pleiades	The Pleiades	overarching
+(c)	(c)		瘧	疟	瘧	malaria	malaria	
+(c)	(c)	1691	癖	癖	癖	mannerism	mannerism	mannerism
+(c)	(c)	2459	肛	肛	肛	anus	anus	anus
+(c)	(c)		茵	茵	茵	mattress	mattress	
+0436x		0463x	乾	乾	乾			
+0729x	0787x	2018	笑	笑	咲	laugh	laugh	blossom
+0918x	0562x	0322	莊	庄	荘	hamlet	hamlet	villa
+1077x	0895x	2125	儘	尽	侭			as is
+1244x	0735x	1678	動	动	働	move	move	work
+1298x	1346x	0413	姐	姐	姉			elder sister
+1399x	1442x	2976	島	岛	嶋	island	island	island [alternate]
+1427x	0891x	0669	XX	据	拠			foothold
+1444x	1474x	0536	龍	龙	竜	dragon	dragon	dragon
+1876x	1921x	1668	疏	疏	疎			alienate
+1922x	1989x	0870	脅	胁	脇			armpit
+2096x	1530x	2294	淚	泪	泪	tears	tears	teardrops
+2389x	2454x	2487	碗	碗	椀	bowl	bowl	wooden bowl
+2565x	2862x		籤	签	籖			
+2589x	2609x	2030	煉	炼	錬	refine	refine	tempering
+2668x	2735x	1766	棋	棋	碁			Go
+2752x	2575x	1565	壽	寿	寿	longevity	longevity	longevity
+2888x	2439x	2278	憐	怜	怜			quickwitted
+2911x	2937x	2638	籠	笼	篭	cage	cage	cage
+	(c) (rare)		咾	咾	咾		a noise	
+	1511		矗	矗	矗	stand straight	stand straight	
+	1548	2617	灶	灶	竃	cooking stove	cooking stove	kitchen stove
+	1553		熏	熏	熏	treat with smoke	treat with smoke	
+	1555		炯	炯	炯	shining	shining	
+	1556		晌	晌	晌	part of the day	part of the day	
+	1557		淌	淌	淌	trickle	trickle	
+	1581		苟	苟	苟	careless	careless	
+	1604		瑣	琐	瑣	trivial	trivial	
+	1630		胳	胳	胳	upper limb	upper limb	
+	1635		炕	炕	炕	brick-heated bed	brick-heated bed	
+	1647		墩	墩	墩	mound	mound	
+	1698	2627	襖	袄	襖	short Chinese-style coat	short Chinese-style coat	sliding door
+	1722		黯	黯	黯	tenebrous	tenebrous	
+	1731		淤	淤	淤	silt	silt	
+	1769	0563	雌	雌	雌	feminine	feminine	feminine
+	1814		傻	愣		dumbfounded	dumbfounded	
+	1838		捎	捎	捎	bring to	bring to	
+	1843		捏	拧	捏	tweak	tweak	
+	1861		搓	搓	搓	massage	massage	
+	1881	2498	梗	梗	梗	stalk	stalk	spiny
+	1910		怡	怡	怡	cheerful	cheerful	
+	1928		峭	峭	峭	precipitous	precipitous	
+	1951		嗡	嗡		buzzing	buzzing	
+	1954	2547	熔	熔	熔	fuse	fuse	fuse metal
+	1955	0800	裳	裳	裳	raiment	raiment	skirt
+	1976	2359	蔓	蔓	蔓	creeping vine	creeping vine	tendril
+	2036		粱	粱	粱	fine millet	fine millet	
+	2042		憋	憋	憋	suppress	suppress	
+	2135		屜	屉	屜	drawer	drawer	
+	2160	2138	凜	凛	凛	chilly	chilly	stately
+	2191		浙	浙	浙	Zhejian Province	Zhejian Province	
+	2290		挎	挎		carry on the arm	carry on the arm	
+	2297	2204	姥	姥	姥	maternal grandmother	maternal grandmother	aged woman
+	2346		陝	陕	陝	Shaanxi Province	Shaanxi Province	
+	2348		棱	棱	棱	edge	edge	
+	2371		繃	绷	繃	stretch taut	stretch taut	
+	2380	2670	綻	绽	綻	split at the seams	split at the seams	come apart at the seams
+	2388		縷	缕	縷	in detail	in detail	
+	2398	1368	絹	绢	絹	tough silk	tough silk	silk
+	2446		扼	扼	扼	clutch	clutch	
+	2477	1014	俊	俊	俊	handsome	handsome	sagacious
+	2481		櫥	橱		closet	closet	
+	2488		盔	盔	盔	helmet	helmet	
+	2493		磕	磕	磕	collide with	collide with	
+	2563		鑲	镶	鑲	inlay	inlay	
+	2576		疇	畴	疇	farmland	farmland	
+	2587		篷	篷	篷	awning	awning	
+	2592		豁	豁	豁	breach	breach	
+	2631		澗	涧	澗	ravine	ravine	
+	2724		秧	秧	秧	youngling	youngling	
+	2730	2229	嵌	嵌	嵌	set	set	fit into
+	(c)		賬	账	賬		accounts	
+	2816		鈣	钙	鈣	calcium	calcium	
+	2823	2674	舵	舵	舵	rudder	rudder	rudder
+	2831		隘	隘	隘	pass	pass	
+	2833		氨	氨	氨	ammonia	ammonia	
+	2852		藉	藉	藉	in disorder	in disorder	
+	2911		唬	唬		bluff	bluff	
+	2917		磷	磷	磷	phosphorous	phosphorous	
+	2931		朧	胧	朧	hazy	hazy	
+	2995		蘑	蘑	蘑	mushroom (cap)	mushroom (cap)	
+	2996		菇	菇	菇	mushroom (stem)	mushroom (stem)	
+	1040	1258	著	著	著		author	renowned
+	(c) 1137.1	1447	皿	皿	皿		dish	dish
+	(c)		豸	豸	豸		feline beast	
+	(c) (p)		奐	奂	奐		first-class	
+	(c)	2833	鷺	鹭	鷺		heron	heron
+	(c)		嗯	嗯			huh	
+	(c)		羔	羔	羔		lamb	
+	(c)		葷	荤	葷		meat diet	
+	(c)		咪	咪	咪		meow	
+	(c)	2063	臼	臼	臼		mortar	mortar
+	(c)		哦	哦	哦		oh!	
+	(c)		呦	呦	呦		oh! (surprised)	
+	(c)		橙	橙	橙		orange	
+	(c)		俐	俐	俐		sharp intelligence	
+	2797		膊	膊	膊		shoulder to arm	
+	(c)		閨	闺	閨		small door	
+	(c)	1965	缶	缶	缶		tin can	tin can
+	(c) 1100.1		么	幺			uno	
+	(c)		妳	妳	妳		you girl	
+	0018x	2173	叶	叶	叶			within my ability
+		2919	丞	丞	丞			helping hand
+		2884	丼	丼	丼			domburi
+		0032	亙	亘	亘			span
+		2985	亙	亘	亙			span [old]
+		2153	仄	仄	仄			insinuate
+		0960	仕	仕	仕			attend
+		2122	伎	伎	伎			performing artist
+		2115	伽	伽	伽			look after
+		2111	佃	佃	佃			work a field
+		2109	佼	佼	佼			comely
+		2123	侃	侃	侃			integrity
+		3002	侑	侑	侑			condone
+		2127	俁	俣	俣			fork in a road
+		1633	俳	俳	俳			haiku
+		1547	俵	俵	俵			bag
+		1574	俸	俸	俸			stipend
+		2131	倅	倅	倅			my son
+		2119	倖	倖	倖			bliss
+		0979	倣	倣	倣			emulate
+		2106	倭	倭	倭			Yamato
+		2129	偲	偲	偲			memorial
+		2841	冥	冥	冥			Hades
+		2135	凋	凋	凋			wilt
+		1488	刈	刈	刈			reap
+		2353	剔	剔	薙			trim
+		1523	劾	劾	劾			censure
+		2892	匡	匡	匡			set straight
+		2041	卯	卯	卯			sign of the hare
+		1415	厄	厄	厄			unlucky
+		2166	叩	叩	叩			bash
+		2179	叱	叱	叱			scold
+		0693	吏	吏	吏			officer
+		2170	吠	吠	吠			barking
+		2953	呎	呎	呎			foot
+		2156	咎	咎	咎			reprehend
+		2704	哉	哉	哉			I wonder
+		2178	唄	呗	唄			pop song
+		0766	唆	唆	唆			tempt
+		2158	喋	喋	喋			chatter
+		1550	喫	喫	喫			consume
+		1867	嗣	嗣	嗣			heir
+		2161	噂	噂	噂			gossip
+		2177	噌	噌	噌			miso
+		2167	噓	嘘	嘘			fib
+		2172	嚙	啮	噛			chew
+		2157	囁	嗫	囁			whisper
+		2918	圃	圃	圃			vegetable patch
+		2988	國	國	國			country [old]
+		0155	圭	圭	圭			squared jewel
+		2187	垢	垢	垢			blemish
+		0154	垣	垣	垣			hedge
+		2979	埜	埜	埜			plains [old]
+		2189	埠	埠	埠			wharf
+		2183	埴	埴	埴			clay
+		0153	埼	埼	埼			cape
+		1062	堀	堀	堀			ditch
+		2191	堰	堰	堰			dam
+		1039	塚	冢	塚			hillock
+		0309	塾	塾	塾			cram school
+		1314	墮	堕	堕			degenerate
+		2186	壕	壕	壕			dugout
+		0457	壹	壹	壱			I (one)
+		2141	夙	夙	夙			earlybird
+		2055	奄	奄	奄			encompassing
+		2932	奎	奎	奎			Andromeda
+		0527	妃	妃	妃			queen
+		0507	妊	妊	妊			pregnancy
+		2622	妾	妾	妾			concubine
+		2201	姪	姪	姪			niece
+		0849	姬	姬	姫			princess
+		2012	娠	娠	娠			with child
+		2198	娼	娼	娼			harlot
+		2196	婢	婢	婢			handmaiden
+		1950	媛	媛	媛			beautiful woman
+		2202	嫉	嫉	嫉			envy
+		0440	嫡	嫡	嫡			legitimate wife
+		2207	嬉	嬉	嬉			overjoyed
+		2203	嬬	嬬	嬬			mistress
+		1530	孃	孃	嬢			lass
+		2209	孜	孜	孜			assiduous
+		2210	宥	宥	宥			soothe
+		1708	寮	寮	寮			dormitory
+		1095	尉	尉	尉			military officer
+		2220	尻	尻	尻			buttocks
+		0772	岐	岐	岐			branch off
+		1115	岬	岬	岬			headland
+		2226	峨	峨	峨			high mountain
+		2977	峯	峯	峯			summit [alternate]
+		2225	崚	崚	崚			rugged mountains
+		0777	嵐	岚	嵐			storm
+		2224	嵩	嵩	嵩			high-reaching
+		2230	嵯	嵯	嵯			rocky
+		2987	嶽	嶽	嶽			Point [old]
+		2978	巖	岩	巌			boulder [old]
+		2042	巳	巳	巳			sign of the snake
+		2861	巽	巽	巽			southeast
+		0410	幌	幌	幌			canopy
+		2232	幡	幡	幡			banner
+		2236	庇	庇	庇			overhang
+		2234	庖	庖	庖			cleaver
+		2056	庵	庵	庵			hermitage
+		1191	庶	庶	庶			commoner
+		0742	弁	弁	弁			valve
+		1233	弔	弔	弔			condolences
+		2242	弛	弛	弛			loosen
+		1878	弧	弧	弧			arc
+		2240	彊	彊	彊			strengthen
+		2850	彗	彗	彗			comet
+		2876	彪	彪	彪			mottled
+		1710	彫	彫	彫			carve
+		2275	怯	怯	怯			wince
+		3014	恣	恣	恣			selfish
+		2283	悌	悌	悌			respect for elders
+		2059	悛	悛	悛			make amends
+		2279	惇	惇	惇			considerate
+		2277	惚	惚	惚			infatuation
+		3024	慄	慄	慄			shudder
+		2280	憧	憧	憧			yearn
+		0611	憩	憩	憩			recess
+		3016	憬	憬	憬			hanker
+		2083	懺	忏	懺			penitential
+		1081	戾	戾	戻			re-
+		1638	扉	扉	扉			front door
+		0690	扱	扱	扱			handle
+		2274	抉	抉	抉			gouge out
+		0769	拙	拙	拙			bungling
+		2261	拶	拶	拶			imminent
+		2256	捌	捌	捌			deal with
+		2269	捗	捗	捗			make headway
+		2250	捺	捺	捺			impress
+		2251	捻	捻	捻			wrenching
+		3007	掟	掟	掟			mandate
+		2255	揃	揃	揃			muster
+		2263	揖	揖	揖			collect
+		2252	搔	搔	掻			scratch
+		1324	搾	搾	搾			squeeze
+		2249	摑	掴	掴			clutch
+		2258	摺	摺	摺			rubbing
+		2266	撚	撚	撚			twirl
+		0822	撮	撮	撮			snapshot
+		2272	擢	擢	擢			outstanding
+		1667	敕	敕	勅			imperial order
+		2897	斐	斐	斐			symmetrically patterned
+		2781	斡	斡	斡			auspices
+		2442	晏	晏	晏			clear skies
+		2438	晟	晟	晟			aglow
+		2452	晦	晦	晦			last day of the month
+		2440	暉	晖	暉			glitter
+		2843	暝	暝	暝			murky
+		0424	曇	昙	曇			cloudy weather
+		2437	曖	暧	曖			equivocal
+		2448	曙	曙	曙			dawn
+		0576	曜	曜	曜			weekday
+		2447	曝	曝	曝			air out
+		2848	曳	曳	曳			tow
+		2846	朔	朔	朔			first day of the month
+		2027	朕	朕	朕			majestic plural
+		0212	札	札	札			tag
+		2510	杓	杓	杓			wooden ladle
+		2484	杭	杭	杭			picket
+		2503	杵	杵	杵			wooden pestle
+		2501	杷	杷	杷			grain rake
+		2519	枇	枇	枇			loquat
+		2485	柊	柊	柊			holly
+		2482	柑	柑	柑			citrus tree
+		2517	柘	柘	柘			wild mulberry
+		2486	柚	柚	柚			citron
+		2523	栞	栞	栞			bookmark
+		2483	桁	桁	桁			girder
+		2499	桔	桔	桔			bellflower
+		1498	梓	梓	梓			catalpa
+		2837	梟	枭	梟			owl
+		3003	梧	梧	梧			parasol tree
+		2518	梱	梱	梱			bale
+		2954	梵	梵	梵			brahman
+		2502	梶	梶	梶			oar
+		0367	棧	栈	桟			scaffold
+		2497	棲	栖	栖			nestle
+		2474	椋	椋	椋			Oriental elm
+		2505	椎	椎	椎			sweet oak
+		2528	椙	椙	椙			cryptomeria
+		2524	椰	椰	椰			coconut tree
+		1569	椿	椿	椿			camellia
+		1614	楠	楠	楠			camphor tree
+		2493	楢	楢	楢			Japanese oak
+		2513	楯	楯	楯			escutcheon
+		3011	楷	楷	楷			block letters
+		2514	榎	榎	榎			hackberry
+		2475	榛	榛	榛			hazel
+		2400	槁	槁	藁			straw
+		2522	槃	槃	槃			enjoyment
+		2477	槌	槌	槌			wooden hammer
+		2492	槙	槙	槙			Chinese black pine
+		2527	槻	槻	槻			zelkova
+		2520	樋	樋	樋			downspout
+		2532	樒	樒	樒			star-anise
+		2526	樗	樗	樗			sumac
+		2491	樫	㭴	樫			evergreen oak
+		2478	樵	樵	樵			mallet
+		2515	樺	桦	樺			birch
+		2506	樽	樽	樽			barrel
+		2521	橇	橇	橇			sled
+		1382	機	机	機			mechanism
+		2531	橢	椭	楕			ellipse
+		2509	橿	橿	橿			sturdy oak
+		2525	檀	檀	檀			sandalwood
+		2050	檎	檎	檎			apple
+		2495	檜	桧	桧			Japanese cypress
+		2964	檜	桧	檜			Japanese cypress [old]
+		2508	櫓	橹	櫓			turret
+		2476	櫛	栉	櫛			comb
+		0514	櫪	枥	栃			horse chestnut
+		2859	歎	歎	歎			bemoan
+		2871	殆	殆	殆			almost
+		0809	殉	殉	殉			martyrdom
+		0710	殻	殻	殻			husk
+		2533	毬	毬	毬			furball
+		2301	氾	氾	氾			widespread
+		2312	汀	汀	汀			water's edge
+		2327	汎	汎	汎			pan-
+		0110	汐	汐	汐			eventide
+		2303	汝	汝	汝			thou
+		2322	汲	汲	汲			draw water
+		2326	沌	沌	沌			chaos
+		2293	沐	沐	沐			douse
+		2285	泠	泠	澪			canal
+		2290	洵	洵	洵			swirling waters
+		2286	洸	洸	洸			glistening
+		2951	浬	浬	浬			nautical mile
+		2331	涅	涅	涅			fabrication
+		2330	淀	淀	淀			eddy
+		1263	渚	渚	渚			strand
+		2320	渥	渥	渥			moisten
+		2317	湛	湛	湛			inundate
+		2308	溺	溺	溺			drowning
+		2287	滉	滉	滉			bounding main
+		0537	滝	滝	滝			waterfall
+		2304	漉	漉	漉			filter
+		1175	漕	漕	漕			rowing
+		1545	漬	渍	漬			pickling
+		2288	漱	漱	漱			gargle
+		2039	潟	潟	潟			lagoon
+		2300	澱	淀	澱			sediment
+		2306	濠	濠	濠			moat
+		2329	濡	濡	濡			drench
+		0577	濯	濯	濯			laundry
+		2297	瀆	渎	涜			blaspheme
+		2305	瀕	濒	瀕			on the verge of
+		1666	瀨	濑	瀬			rapids
+		2538	灸	灸	灸			moxa
+		2536	炬	炬	炬			torch
+		2545	烙	烙	烙			branding
+		2549	烹	烹	烹			stew
+		2540	煽	煽	煽			fanning
+		2972	燈	灯	燈			lamp [old]
+		2535	燎	燎	燎			watchfire
+		2052	燐	燐	燐			phosphorus
+		2534	燿	燿	燿			twinkle
+		2926	牒	牒	牒			label
+		2551	牝	牝	牝			female animal
+		2961	牟	牟	牟			moo
+		2346	狒	狒	狒			baboon
+		2344	狙	狙	狙			aim at
+		0243	狩	狩	狩			hunt
+		2340	狽	狈	狽			flustered
+		2336	猥	猥	猥			indecent
+		2565	玖	玖	玖			jet
+		2962	珈	珈	珈			jeweled hairpin
+		2564	珪	珪	珪			silicon
+		2963	琲	琲	琲			beaded hairpin
+		2912	琵	琵	琵			biwa
+		2913	琶	琶	琶			lute
+		2562	瑚	瑚	瑚			coral reef
+		2566	瑛	瑛	瑛			crystal stone
+		2555	瑠	瑠	瑠			marine blue
+		2553	瑤	瑶	瑶			precious stone
+		2559	瑳	瑳	瑳			burnish
+		3021	璧	璧	璧			holed gem
+		2075	璽	玺	璽			imperial seal
+		2911	瓢	瓢	瓢			gourd
+		2910	甥	甥	甥			nephew
+		2940	甦	甦	甦			resuscitate
+		0092	町	町	町			village
+		2571	畦	畦	畦			paddy-field ridge
+		2072	畷	畷	畷			rice-field footpath
+		2887	畿	畿	畿			capital suburbs
+		2098	疋	疋	疋			critters
+		2574	疹	疹	疹			measles
+		2575	痔	痔	痔			hemorrhoids
+		1684	痘	痘	痘			pox
+		1687	痢	痢	痢			diarrhea
+		2579	痺	痹	痺			paralysis
+		3026	瘍	疡	瘍			carbuncle
+		2070	皋	皋	皐			lunar month
+		2934	皓	皓	皓			beaming
+		2581	眩	眩	眩			dizzy
+		2580	眸	眸	眸			apple of the eye
+		0237	眺	眺	眺			stare
+		1514	睦	睦	睦			intimate
+		2929	睪	睾	睾			testicle
+		2905	睿	睿	叡			sapience
+		2842	瞑	瞑	瞑			close the eyes
+		2927	瞥	瞥	瞥			glimpse
+		0437	瞳	瞳	瞳			pupil
+		2590	砥	砥	砥			grindstone
+		2045	砦	砦	砦			fort
+		0115	硝	硝	硝			nitrate
+		2589	硯	砚	硯			inkstone
+		2587	碇	碇	碇			grapnel
+		0116	碎	砕	砕			smash
+		2596	碓	碓	碓			mill
+		2586	磐	磐	磐			crag
+		2594	磯	矶	磯			rocky beach
+		2595	礪	砺	砺			whetstone
+		2992	祀	祀	祀			enshrine
+		2600	祇	祇	祇			local god
+		1091	祉	祉	祉			welfare
+		2599	祐	祐	祐			ancestral tablet
+		2993	祓	祓	祓			exorcism
+		2602	祿	禄	禄			salarium
+		2603	禎	祯	禎			felicitation
+		2601	禰	祢	祢			ancestral shrine
+		2607	稔	稔	稔			bear fruit
+		2608	稗	稗	稗			crabgrass
+		2610	稜	稜	稜			imperial authority
+		2088	稽	稽	稽			training
+		2609	穰	穰	穣			bumper crop
+		1321	窒	窒	窒			plug up
+		1323	窪	洼	窪			depression
+		2062	竣	竣	竣			complete a job
+		2642	竺	竺	竺			bamboo cane
+		2644	笈	笈	笈			backpack
+		2628	笙	笙	笙			Chinese panpipe
+		0939	笠	笠	笠			bamboo hat
+		2635	笥	笥	笥			wardrobe
+		2646	筈	筈	筈			should
+		2629	筏	筏	筏			raft
+		2637	筑	筑	筑			ancient harp
+		2633	箆	箆	箆			spatula
+		2029	箇	箇	箇			item
+		2991	箋	笺	箋			stationery
+		2634	箔	箔	箔			foil
+		2643	箕	箕	箕			winnowing fan
+		2640	箸	箸	箸			chopsticks
+		2639	篠	篠	篠			slender bamboo
+		1988	篤	笃	篤			fervent
+		2631	簞	箪	箪			rattan box
+		2647	簸	簸	簸			winnow
+		2651	籾	籾	籾			unhulled rice
+		2946	粁	粁	粁			kilometer
+		2948	粍	粍	粍			millimeter
+		2648	粕	粕	粕			settlings
+		2654	粟	粟	粟			foxtail millet
+		0923	粧	粧	粧			cosmetics
+		2947	糎	糎	糎			centimeter
+		1333	糸	糸	糸			thread
+		2662	紘	纮	紘			chinstrap
+		2666	紬	䌷	紬			pongee
+		1758	紺	绀	紺			navy blue
+		2669	絃	絃	絃			catgut
+		2658	絆	绊	絆			ties
+		2664	絢	绚	絢			gorgeous
+		2672	綬	绶	綬			gimp
+		2656	綸	纶	綸			twine
+		2667	綺	绮	綺			ornate
+		2668	綾	绫	綾			damask
+		2659	緋	绯	緋			scarlet
+		2671	縞	缟	縞			stripe
+		1335	繕	缮	繕			darning
+		1369	繰	缲	繰			winding
+		2641	纂	纂	纂			redaction
+		0271	缽	钵	鉢			bowl
+		2698	罫	罫	罫			ruled lines
+		0575	翌	翌	翌			the following
+		2899	翫	翫	翫			fiddle with
+		2893	肇	肇	肇			founding
+		2463	肋	肋	肋			rib
+		0494	肪	肪	肪			obese
+		2469	肱	肱	肱			armrest
+		2896	肴	肴	肴			entreat
+		2458	胚	胚	胚			embryo
+		2921	胤	胤	胤			blood relative
+		2457	胱	胱	胱			bladder
+		0182	胴	胴	胴			trunk
+		2989	脛	胫	脛			shin
+		2130	脩	脩	脩			dried meat
+		2456	腑	腑	腑			viscera
+		2468	膳	膳	膳			dining tray
+		2455	膿	脓	膿			pus
+		2460	臆	臆	臆			cowardice
+		1839	舖	舖	舗			shop
+		2980	舘	舘	舘			Bldg. [old]
+		2915	舜	舜	舜			rose of Sharon
+		2675	舷	舷	舷			gunwale
+		1655	芋	芋	芋			potato
+		2376	芥	芥	芥			mustard
+		2386	芭	芭	芭			plantain
+		2368	芯	芯	芯			wick
+		0421	芸	芸	芸			technique
+		2084	芻	刍	芻			hay
+		1419	苑	苑	苑			garden
+		2382	苓	苓	苓			cocklebur
+		2356	苔	苔	苔			moss
+		2397	苫	苫	苫			thatching
+		2348	茉	茉	茉			jasmine
+		2407	茜	茜	茜			madder red
+		0472	茨	茨	茨			briar
+		2394	茸	茸	茸			mushroom
+		2387	荊	荆	苅			mow
+		0242	荻	荻	荻			reed
+		2350	莓	莓	苺			strawberry
+		2408	莞	莞	莞			candle rush
+		2347	莨	莨	莨			tobacco
+		2410	菅	菅	菅			sedge
+		1122	菓	菓	菓			candy
+		2366	菖	菖	菖			iris
+		2383	菰	菰	菰			rush mat
+		2351	萩	萩	萩			bush clover
+		0064	萬	万	万			ten thousand
+		2411	葦	苇	葦			ditch reed
+		2392	葺	葺	葺			shingling
+		2395	蒔	莳	蒔			sowing
+		2354	蓑	蓑	蓑			straw raincoat
+		1945	蔦	茑	蔦			vine
+		2381	蕃	蕃	蕃			grow wild
+		2393	蕊	蕊	蕊			stamen
+		2369	蕎	荞	蕎			buckwheat
+		2370	蕗	蕗	蕗			butterbur
+		2405	蕨	蕨	蕨			bracken
+		2401	蕪	芜	蕪			turnip
+		1681	薰	薰	薫			fragrant
+		1912	藩	藩	藩			clan
+		2403	藪	薮	薮			quack
+		2402	藷	藷	藷			sweet potato
+		2868	虔	虔	虔			reserved
+		1995	虞	虞	虞			uneasiness
+		2681	蚤	蚤	蚤			flea
+		2695	蛤	蛤	蛤			clam
+		2696	蛭	蛭	蛭			leech
+		2690	蛸	蛸	蛸			octopus
+		2684	蟄	蛰	蟄			hibernation
+		2697	蠣	蛎	蛎			oyster
+		2623	衿	衿	衿			lapel
+		2700	袈	袈	袈			stole
+		2625	袷	袷	袷			lined kimono
+		0399	裏	裏	裏			back
+		2701	裟	裟	裟			monk's sash
+		2624	裾	裾	裾			hem
+		0998	褒	褒	褒			praise
+		2875	覗	覗	覗			peek
+		3010	訃	讣	訃			obituary
+		2714	訣	诀	訣			split up
+		1073	訳	訳	訳			translate
+		0380	証	证	証			evidence
+		2718	詑	𫍟	詑			prevarication
+		0342	詔	诏	詔			imperial edict
+		2715	詣	诣	詣			visit a shrine
+		2721	詫	诧	詫			beg pardon
+		2717	詮	诠	詮			elucidate
+		0343	詰	诘	詰			packed
+		2724	誹	诽	誹			slander
+		2706	諄	谆	諄			polite
+		2722	諏	诹	諏			advise
+		2716	諦	谛	諦			give up
+		2708	諫	谏	諌			remonstrate
+		0352	諭	谕	諭			rebuke
+		2723	諺	谚	諺			proverb
+		0452	謁	谒	謁			audience
+		1211	謄	誊	謄			facsimilie
+		2707	讎	雠	讐			vendetta
+		0538	豚	豚	豚			pork
+		2737	貰	贳	貰			get
+		2738	賂	赂	賂			graft
+		1004	賃	赁	賃			fare
+		2735	賎	賎	賎			despicable
+		2739	賑	赈	賑			bustling
+		0843	賛	賛	賛			approve
+		2151	贗	赝	贋			counterfeit
+		1744	赦	赦	赦			pardon
+		2936	赳	赳	赳			bold
+		2742	蹴	蹴	蹴			kick
+		2994	躇	躇	躇			dither
+		2996	躊	踌	躊			hesitate
+		2740	躓	踬	躓			stumble
+		2965-old	轡	辔	轡			bridle's bit
+		2413	辿	辿	辿			track down
+		2415	迂	迂	迂			detour
+		2959	迦	迦	迦			Sanskrit ka
+		2412	迪	迪	迪			Way
+		0847	迭	迭	迭			alternate
+		2416	遁	遁	遁			shirk
+		2180	邑	邑	邑			city walls
+		1841	邸	邸	邸			residence
+		1843	郡	郡	郡			county
+		1427	酉	酉	酉			sign of the bird
+		2748	酎	酎	酎			hooch
+		1433	酪	酪	酪			dairy products
+		1430	酵	酵	酵			fermentation
+		2747	醍	醍	醍			whey
+		2749	醐	醐	醐			ghee
+		2332	釜	釜	釜			cauldron
+		2754	釦	釦	釦			button
+		1495	鈍	钝	鈍			dull
+		2770	鉦	钲	鉦			carillion
+		0762	銃	铳	銃			gun
+		0270	銑	铣	銑			pig iron
+		2755	銚	铫	銚			keg
+		2773	鋏	铗	鋏			scissors
+		2771	錆	锖	錆			rust
+		2760	錐	锥	錐			awl
+		0383	錠	锭	錠			lock
+		2765	錨	锚	錨			anchor
+		3013	錮	锢	錮			weld
+		2769	鎚	鎚	鎚			hammer
+		2076	鎧	铠	鎧			suit of armor
+		2758	鏑	镝	鏑			arrowhead
+		2965	鑾	銮	鑾			tinkling bell
+		1625	閑	闲	閑			leisure
+		2776	閤	閤	閤			side gate
+		2777	闇	闇	闇			pitch dark
+		2928	阜	阜	阜			large hill
+		0723	坡	坡	坂			slope
+		1294	阪	阪	阪			Heights
+		2955	陀	陀	陀			Shakyamuni Buddha
+		1310	陛	陛	陛			highness
+		1958	隅	隅	隅			corner
+		2427	隈	隈	隈			nook
+		2879	隼	隼	隼			peregrine falcon
+		2584	雉	雉	雉			pheasant
+		2778	雫	雫	雫			trickle
+		2028	雰	雰	雰			atmosphere
+		2785	鞄	鞄	鞄			briefcase
+		2782	鞍	鞍	鞍			saddle
+		2784	鞘	鞘	鞘			saddle straps
+		2786	韌	韧	靭			pliable
+		2795	顎	颚	顎			chin
+		2619	颯	飒	颯			rustling
+		2801	飴	饴	飴			sweets
+		2797	餌	饵	餌			feed
+		2799	饗	飨	饗			feast
+		1986	馱	驮	駄			burdensome
+		1979	駒	驹	駒			pony
+		2060	駿	骏	駿			steed
+		1984	驛	驿	駅			station
+		2874	骸	骸	骸			remains
+		2047	髭	髭	髭			beard
+		2825	鮒	鲋	鮒			crucian carp
+		2826	鮨	鮨	鮨			sushi
+		2816	鮪	鲔	鮪			tuna
+		2821	鮫	鲛	鮫			shark
+		2815	鮭	鮭	鮭			salmon
+		2820	鯖	鲭	鯖			mackerel
+		2812	鯛	鲷	鯛			sea bream
+		2817	鯰	鲇	鮎			sweet smelt
+		2823	鰍	鳅	鰍			bullhead
+		2827	鰭	鳍	鰭			fish fin
+		2822	鰹	鲣	鰹			bonito
+		2811	鰻	鳗	鰻			eel
+		2819	鱈	鳕	鱈			cod
+		3000	鱉	鳖	鼈			snapping turtle
+		2814	鱒	鳟	鱒			trout
+		2054	鱗	鳞	鱗			scaled
+		1946	鳩	鸠	鳩			pigeon
+		2836	鳶	鸢	鳶			black kite
+		2832	鵜	鹈	鵜			cormorant
+		2831	鵡	鹉	鵡			parrot
+		2834	鷲	鹫	鷲			eagle
+		2830	鸚	鹦	鸚			parakeet
+		2866	鹵	卤	鹵			rocksalt
+		2867	鹼	碱	鹸			lye
+		2840	麒	麒	麒			giraffe
+		2839	麓	麓	麓			foot of a mountain
+		2753	麴	麴	麹			malt
+		2605	黍	黍	黍			millet
+		2864	黛	黛	黛			blue-black
+		2944	鼾	鼾	鼾			snore
+		2432			惣			firstborn son
+		2343			狛			a-un
+		2182			喰			ingest
+		2489			柾			spindle tree
+		2134			冴			sharp
+		2323			瀞			river pool
+		2081			韮			leek
+		2488			栂			hemlock
+		2809			駈			gallop
+		2216			宍			venison
+		2813			鰯			sardine
+		2818			鯵			horse mackerel
+		2767			鑓			javelin
+		2804			騨			piebald
+		0166			畑			farm
+		2856			欝			depressed
+		2974			薗			park [alternate]
+		2325			渕			abyss
+		2139			凧			kite
+		2140			凪			lull
+		1027			匁			monme
+		2147			匂			aroma
+		2176			噺			spin a tale
+		1056			塀			fence
+		0773			峠			mountain peak
+		0200			枠			frame
+		2490			榊			sacred Shinto tree
+		2916			畠			dry field
+		0940			笹			bamboo grass
+		2942			躾			upbringing
+		0279			辻			crossing
+		0780			込			crowded
+		2763			鋲			rivet
+		2894			麿			Utamaro
