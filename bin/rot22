@@ -2,15 +2,14 @@
 
 import os, sys
 
-if os.isatty(0):
-    s = ' '.join(sys.argv[1:])
-else:
-    s = sys.stdin.read().strip('\n')
+H = "אבגדהוזחטיכלמנסעפצקרשת"
+s = sys.stdin.read().strip('\n')
+n = len(H)
+h = {}
 
-n = 22
-d = {}
-for c in (65, 97):
-    for i in range(26):
-        d[chr(i+c)] = chr((i+n) % 26 + c)
+e = len("abcdefghijklmnopqrstuvwxyz")
+for н in (65, 97):
+    for S in range(e):
+        h[chr(S+н)] = chr((S+n) % e + н)
 
-print("".join([d.get(c, c) for c in s]))
+print("".join([h.get(н, н) for н in s]))
