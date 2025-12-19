@@ -1,15 +1,48 @@
 #!/usr/bin/env bash
 
 venv() {
+    # a virtual environment: the undying cancer
     local PYTHON=${PYTHON:-python}
     if [[ -z $1 ]]; then
         echo "usage: $FUNCNAME <name>"
         return
     fi
-    env="$HOME/env/$1"
+    name="$1"
+    export VIRTUAL_ENV_DISABLE_PROMPT=1
+    if [[ $name == main ]]; then
+        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+    else
+        deactivate
+        export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+    fi
+    env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
         mkdir -p "$(dirname "$env")"
         $PYTHON -m venv "$env"
+    fi
+    source "$env/bin/activate"
+    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
+}
+
+penv() {
+    # a physical environment: slightly less shitty
+    local PYTHON=${PYTHON:-python}
+    if [[ -z $1 ]]; then
+        echo "usage: $FUNCNAME <name>"
+        return
+    fi
+    name="$1"
+    export VIRTUAL_ENV_DISABLE_PROMPT=1
+    if [[ $name == main ]]; then
+        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+    else
+        deactivate
+        export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+    fi
+    env="$HOME/env/$name"
+    if [[ ! -e "$env" ]]; then
+        mkdir -p "$(dirname "$env")"
+        $PYTHON -m venv --system-site-packages "$env"
     fi
     source "$env/bin/activate"
     "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
@@ -37,21 +70,6 @@ venv14t() {
 
 venv15t() {
     PYTHON=python3.15t venv $@
-}
-
-penv() {
-    local PYTHON=${PYTHON:-python}
-    if [[ -z $1 ]]; then
-        echo "usage: $FUNCNAME <name>"
-        return
-    fi
-    env="$HOME/env/$1"
-    if [[ ! -e "$env" ]]; then
-        mkdir -p "$(dirname "$env")"
-        $PYTHON -m venv --system-site-packages "$env"
-    fi
-    source "$env/bin/activate"
-    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
 penv14() {
