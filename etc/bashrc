@@ -265,6 +265,12 @@ alias rn='ranger'
 alias e="$EDITOR"
 alias b='popd'
 
+# download highest quality
+## bv* = best video (any codec, any container)
+## ba  = best audio
+## /b  = fallback to best single-file format if merging isn't possible
+alias Y='ytdl -f "bv*+ba/b"'
+
 # python
 _IPYTHON_ARGS=(
     --colors=Linux
