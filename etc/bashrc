@@ -379,6 +379,7 @@ alias feh="feh -. -B black"
 alias entropy='binwalk -EJ'
 alias H='heisig'
 alias P='pinyin'
+alias ct='column -t'
 
 # tmux
 alias tm='tmux'
