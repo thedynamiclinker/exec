@@ -594,7 +594,7 @@ nixos_delete_generations() { sudo nix-env -p /nix/var/nix/profiles/system --dele
 alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
 alias nw="nix_which"
-alias ns="nix search nixpkgs"
+alias ns="nix --quiet --quiet search nixpkgs"
 alias npl="nix profile list"
 alias npr="nix profile remove"
 alias nrcp="sudo $EDITOR /etc/nixos/python.nix"
