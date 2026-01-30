@@ -543,7 +543,7 @@ cpdt() {
 }
 
 ff() {
-    find ! -path "*/.git*" | grep -P $@
+    find ! -path "*/.git*" | grep -Pi $@
 }
 
 eff() {
