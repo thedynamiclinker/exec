@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+xc << EOF
+<span style="color: red">$(xclip -o)</span>
+EOF
+
+xdotool key ctrl+v
