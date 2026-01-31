@@ -1,6 +1,9 @@
 # exec/etc/bashrc
 # LD's custom ~/.bashrc. Woot!
 
+#PS4='+$EPOCHREALTIME '
+#set -x
+
 export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
