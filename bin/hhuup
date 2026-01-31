@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+usage() {
+    [[ -n "$1" ]] && echo "${1}"
+    cat << EOF
+USAGE
+    $(basename $0) [OPTIONS]
+
+OPTIONS
+    --help, -h      Show this help
+
+EOF
+    exit 1
+}
+
+[[ -z "$1" ]] && usage
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+        -h|--help)          usage;;
+        *)                  usage "Unrecognized option: ${1}";;
+    esac
+    shift
+done
+
+cat << EOF
+
+        Human
+        History's
+        Universal     ™ 
+        University  ®
+            Press ©
+
+    In association with
+
+            LD
+
+ 兔                      兔
+   毚                 毚
+        ©
+       C ɔ m e + 十
+                ®
+     欃             欃
+ 木        &&          木
+            
+   н Η 𓆓  נ ח ש𓆓  N η
+    𐤇             𐤇  
+           曰
+
+     And sponsored by.
+     Aka the Nameless.
+
+         Presents
+EOF
