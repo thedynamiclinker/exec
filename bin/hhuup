@@ -13,12 +13,11 @@ EOF
     exit 1
 }
 
-[[ -z "$1" ]] && usage
-
+args=()
 while [[ -n "$1" ]]; do
     case "$1" in
         -h|--help)          usage;;
-        *)                  usage "Unrecognized option: ${1}";;
+        *)                  args+=("$1")
     esac
     shift
 done
@@ -51,4 +50,5 @@ cat << EOF
      Aka the Nameless.
 
          Presents
+
 EOF
