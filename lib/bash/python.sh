@@ -15,7 +15,7 @@ venv() {
         if [[ $(type -t deactivate) == function ]]; then
             deactivate
         fi
-        #export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+        export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
@@ -41,7 +41,7 @@ penv() {
         if [[ $(type -t deactivate) == function ]]; then
             deactivate
         fi
-        export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
