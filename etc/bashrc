@@ -100,7 +100,7 @@ is_bash && {
         export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
     fi
 
-    if which emerge &>/dev/null; then
+    if type -P emerge &>/dev/null; then
         if [[ ${EUID} == 0 ]]; then
             PS1=(
                 "${_red}${USER:0:1}"
@@ -177,7 +177,7 @@ is_linux && {
     # hidpi thing changed
     export QT_SCALE_FACTOR=1
 
-    if which ibus &>/dev/null; then
+    if type -P ibus &>/dev/null; then
         export GTK_IM_MODULE=ibus
         export XMODIFIERS=@im=ibus
         export QT_IM_MODULE=ibus
@@ -656,7 +656,7 @@ export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
 # but don't interfere with tab completion on git commit,
 # so exclude completion for the plumbing commands
 # git commit-graph and git commit-tree
-git_completions_file="$(dirname "$(dirname "$(realpath "$(which git)")")")"/share/git/contrib/completion/git-completion.bash
+git_completions_file="$(dirname "$(dirname "$(realpath "$(type -P git)")")")"/share/git/contrib/completion/git-completion.bash
 source <(cat "$git_completions_file" | sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | grep -v commit-)@g')
 
 # complete our `gits` command the same as `git` itself,
