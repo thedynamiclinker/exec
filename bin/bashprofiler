@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+import argparse
+import tempfile
+import textwrap
+import subprocess
+
+regex = re.compile(r'^\+{1,}([0-9.]+)\s+(.*)$')
+
+def main():
+    p = argparse.ArgumentParser(
+        description="Line-profile a shell script using bash xtrace timestamps"
+    )
+    p.add_argument("script")
+    p.add_argument("args", nargs = argparse.REMAINDER)
+    p.add_argument("-s", "--source", action="store_true")
+    args = p.parse_args()
+
+    fd, trace = tempfile.mkstemp(prefix="xtrace.", text=True)
+    os.close(fd)
+
+    cmd = subprocess.list2cmdline([args.script] + args.args)
+
+    run = f"exec bash -x -c 'source {cmd}'" if args.source else f"exec bash -x {cmd}"
+
+    wrapper = textwrap.dedent(f"""
+        exec 3>{trace}
+        export BASH_XTRACEFD=3
+        export PS4='+$EPOCHREALTIME '
+        set -x
+        {run}
+    """.strip("\n"))
+
+    ret = subprocess.run(["bash", "-lc", wrapper]).returncode
+
+    events = []
+
+    for line in open(trace):
+        m = regex.match(line)
+        if m:
+            t = float(m.group(1))
+            rest = m.group(2)
+            events.append((t, rest))
+
+    os.unlink(trace)
+
+    if len(events) < 2:
+        print("no trace lines matched", file=sys.stderr)
+        sys.exit(ret)
+
+    deltas = sorted([
+        (events[i+1][0] - events[i][0], events[i][1])
+        for i in range(len(events) - 1)
+    ])
+
+    for dt, rest in deltas:
+        print(f"{dt:9.6f}\t{rest}")
+
+    sys.exit(ret)
+
+
+if __name__ == "__main__":
+    main()
+
