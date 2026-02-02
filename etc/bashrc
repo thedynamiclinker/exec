@@ -5,7 +5,7 @@
 #set -x
 #exec > >(tee profile) 2>&1
 
-export EXEC="$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)"
+export EXEC="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
 source os.sh
