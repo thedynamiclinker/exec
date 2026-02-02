@@ -21,9 +21,9 @@ venv() {
     if [[ ! -e "$env" ]]; then
         mkdir -p "$(dirname "$env")"
         $PYTHON -m venv "$env"
+        "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
     fi
     source "$env/bin/activate"
-    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
 penv() {
@@ -47,9 +47,9 @@ penv() {
     if [[ ! -e "$env" ]]; then
         mkdir -p "$(dirname "$env")"
         $PYTHON -m venv --system-site-packages "$env"
+        "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
     fi
     source "$env/bin/activate"
-    "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
 }
 
 venv11() {
