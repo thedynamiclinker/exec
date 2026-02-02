@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 
 # which os are we using?
+UNAME=$(uname)
+
 is_mac() {
-    [[ $(uname) == 'Darwin' ]] && return 0
+    [[ $UNAME == 'Darwin' ]] && return 0
     return 1
 }
 
 is_linux() {
-    [[ $(uname) == 'Linux' ]] && return 0
+    [[ $UNAME == 'Linux' ]] && return 0
     return 1
 }
 
 is_windows() {
-    [[ $(uname) =~ 'MINGW' ]] && return 0
+    [[ $UNAME =~ 'MINGW' ]] && return 0
     return 1
 }
 
