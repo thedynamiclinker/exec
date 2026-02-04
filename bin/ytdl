@@ -17,4 +17,4 @@ else
 fi
 filename="$(yt-dlp -print filename -o "${output}" "${args[@]}")"
 finalname="$(fixnames -s "$filename")"
-yt-dlp --cookies-from-browser chrome --o "$finalname" "${args[@]}"
+yt-dlp --cookies-from-browser chrome -o "$finalname" "${args[@]}"
