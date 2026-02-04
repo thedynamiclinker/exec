@@ -15,6 +15,6 @@ if [[ -n $prefix ]]; then
 else
     output="%(title)s.%(ext)s" 
 fi
-filename="$(yt-dlp -print filename -o "${output}" "${args[@]}")"
+filename="$(yt-dlp --print filename -o "${output}" "${args[@]}")"
 finalname="$(fixnames -s "$filename")"
 yt-dlp --cookies-from-browser chrome -o "$finalname" "${args[@]}"
