@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sed -E 's/.*/\L&/; s/(^|\s)(.)/\1\u\2/g'
