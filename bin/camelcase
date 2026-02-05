@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+capitalize | sed -E 's/\s//g'
