@@ -162,42 +162,55 @@ cat << "EOF"
 EOF
 }
 
-get_ipa_en() {
+get_ipa() {
 cat << "EOF"
-p        pʰ, p          pen, spin, tip
-b        b, b̥           but, web
-t        tʰ, t, ɾ,      two, sting, bet
-d        d, d̥, ɾ        do, daddy, odd
-t͡ʃ       t͡ʃʰ, t͡ʃ        chair, nature, teach
-d͡ʒ       d͡ʒ, d͜ʒ̊         gin, joy, edge
-k        kʰ, k          cat, kill, skin, queen, unique, thick
-ɡ        ɡ, ɡ̊           go, get, beg
-f        f              fool, enough, leaf, off, photo
-v        v, v̥           voice, have, of
-θ        θ, t̪           thing, teeth
-ð        ð, ð̥, d̪        this, breathe, father
-s        s              see, city, pass
-z        z, z̥           zoo, rose
-ʃ        ʃ              she, sure, session, emotion, leash
-ʒ        ʒ, ʒ̊           genre, pleasure, beige, equation, seizure
-h        h, ɦ, ç        ham, hue
-m        m, ɱ           man, ham
-n        n              no, tin
-ŋ        ŋ              ringer, sing, finger, drink
-l        l,  ɫ, l̥, ...  left, bell, sable, please
-r        ɹʷ, ɹ, ɾ, ...  run, very, probably
-w        w, w̥           we, queen
-j        j              yes, nyala
-hw       ʍ, w           what
+INTERNATIONAL PHONETIC ALPHABET (IPA)
 
-Marginal consonants
-x        x, χ, k, kʰ    loch (Scottish), ugh
-ʔ        ʔ              uh-oh
+# VOWELS
+Height          FrontUnr   FrontRnd   CentralUnr   CentralRnd   BackUnr   BackRnd
+Close             i          y          ɨ           ʉ            ɯ         u
+NearClose         ɪ          ʏ          ɪ̈           ʊ̈            -         ʊ
+CloseMid          e          ø          ɘ           ɵ            ɤ         o
+Mid               -          -          ə           -            -         -
+OpenMid           ɛ          œ          ɜ           ɞ            ʌ         ɔ
+NearOpen          æ          -          ɐ           -            -         -
+Open              a          ɶ          ɑ̈           ɒ̈            ɑ         ɒ
+
+# 1 CONSONANTS (PULMONIC)
+# Manner          Bilabial    Labiodental    Dental    Alveolar    PostAlv    Retroflex    Palatal    Velar    Uvular    Pharyngeal    Glottal
+Plosive           p b         -              -         t d         -          ʈ ɖ          c ɟ        k ɡ      q ɢ       -             ʔ
+Nasal             m           ɱ              -         n           -          ɳ            ɲ          ŋ        ɴ         -             -
+Trill             ʙ           -              -         r           -          -            -          -        ʀ         -             -
+TapFlap           -           -              -         ɾ           -          ɽ            -          -        -         -             -
+Fricative         ɸ β         f v            θ ð       s z         ʃ ʒ        ʂ ʐ          ç ʝ        x ɣ      χ ʁ       ħ ʕ           h ɦ
+LatFricative      -           -              -         ɬ ɮ         -          -            -          -        -         -             -
+Approximant       -           ʋ              -         ɹ           -          ɻ            j          ɰ        -         -             -
+LatApproximant    -           -              -         l           -          ɭ            ʎ          ʟ        -         -             -
+
+# 2 CONSONANTS (NON-PULMONIC)
+Clicks:        ʘ   ǀ   ǃ   ǂ   ǁ
+Implosives:    ɓ   ɗ   ʄ   ɠ   ʛ
+Ejectives:     pʼ  tʼ  kʼ  sʼ  (and others by adding ʼ to a consonant)
+
+# 3 CONSONANTS (OTHER) (IPA CHART "OTHER SYMBOLS")
+ʍ   voiceless labial-velar fricative/approximant
+w   voiced labial-velar approximant
+ɥ   voiced labial-palatal approximant
+ʜ   voiceless epiglottal fricative
+ʢ   voiced epiglottal fricative
+ʡ   epiglottal plosive
+ɕ   voiceless alveolo-palatal fricative
+ʑ   voiced alveolo-palatal fricative
+ɺ   alveolar lateral flap
+ɧ   “simultaneous” ʃ and x (Swedish “sj” sound)
+ɫ   velarized (dark) l
+ɮ   voiced alveolar lateral fricative
 
 # Holy hell, lol
 # https://en.wikipedia.org/wiki/International_Phonetic_Alphabet_chart_for_English_dialects
 EOF
 }
+
 
 [[ -z "$1" ]] && usage
 
@@ -206,7 +219,7 @@ while [[ -n "$1" ]]; do
         -h|--help)          usage;;
         -l|--list)          shift; list_all_things "$1";;
 
-        i|ipa)              get_ipa_en;;
+        i|ipa)              get_ipa;;
         r|root)             get_root;;
         g|greek)            get_greek;;
         c|cyrillic)         get_cyrillic;;
