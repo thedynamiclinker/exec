@@ -279,6 +279,7 @@ alias Y='ytdl -f "bv*+ba/b"'
 _IPYTHON_ARGS=(
     --colors=Linux
     --nosep
+    --no-banner
     --TerminalInteractiveShell.prompts_class=IPython.terminal.prompts.ClassicPrompts
     --TerminalInteractiveShell.highlight_matching_brackets=False
     --TerminalInteractiveShell.autoformatter=None
