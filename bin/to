@@ -2,21 +2,35 @@
 
 usage() {
     [[ -n "$1" ]] && echo "${1}"
-    cat << EOF
-USAGE
-    $(basename $0) [OPTIONS] <fmt> <files>
+    cat <<- EOF
 
-OPTIONS
-    --help, -h      Show this help
+	NAME
 
-EOF
+	    $(basename $0) - convert any file to another format
+
+	USAGE
+
+	    $(basename $0) [OPTIONS] <fmt> <files>
+
+	OPTIONS
+
+	    --help,     -h          Show this help
+	    --fmt,      -f          Specify output format (e.g., jpg, png)
+	    --delete,   -d          Delete source files after conversion
+
+	EXAMPLES
+
+	    to png file.jpg
+	    to jpg file.pdf
+	
+	EOF
     exit 1
 }
 
 orig_args=("$@")
 
 fmt=
-rmsrc=
+delete=
 args=()
 
 [[ -z "$1" ]] && usage
@@ -31,7 +45,7 @@ while [[ -n "$1" ]]; do
 
         -h|--help)          usage;;
 
-        -i|--inplace)       rmsrc=1;;
+        -d|--delete)        delete=1;;
 
         -f|--fmt)
                             shift
@@ -55,8 +69,8 @@ if [[ ${#args} = 0 ]]; then
 fi
 
 for f in "${args[@]}"; do
-    echo magick "$f" "${f%.*}.${fmt}"
-    if [[ -n "$rmsrc" ]]; then
-        echo rm -v "$f";
+    magick "$f" "${f%.*}.${fmt}"
+    if [[ $? == 0 ]] && [[ -n "$delete" ]]; then
+        rm -v "$f";
     fi
 done
