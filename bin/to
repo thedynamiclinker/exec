@@ -68,9 +68,11 @@ if [[ ${#args} = 0 ]]; then
     exit 1
 fi
 
-for f in "${args[@]}"; do
-    magick "$f" "${f%.*}.${fmt}"
+for old in "${args[@]}"; do
+    new="${old%.*}.${fmt}"
+    magick "$old" "$new"
     if [[ $? == 0 ]] && [[ -n "$delete" ]]; then
-        rm -v "$f";
+        rm -v "$old";
     fi
+    echo "converted: $old to $new"
 done
