@@ -3,6 +3,7 @@
 import os
 import sys
 
+import cv2
 from ultralytics import YOLO
 
 cache_dir = os.path.expanduser("~/.cache/yolo")
