@@ -7,10 +7,21 @@ from ultralytics import YOLO
 
 cache_dir = os.path.expanduser("~/.cache/yolo")
 os.makedirs(cache_dir, exist_ok=True)
-model = YOLO(f"{cache_dir}/yolo26n.pt") # nano = fastest; try yolo26s.pt for more accuracy
+
+# nano = fastest; try yolo26s.pt for more accuracy
+model = YOLO(f"{cache_dir}/yolo26n.pt")
+
+#def has_person(path):
+#    r = model(path, conf=0.25, verbose=False)[0]
+#    has_person = any(r.names[int(c)] == "person" for c in r.boxes.cls)
+#    return has_person
 
 def has_person(path):
-    r = model(path, conf=0.25, verbose=False)[0]
+    if not os.path.exists(path):
+        raise FileNotFoundError(path)
+    img = cv2.imread(path, cv2.IMREAD_COLOR)    # BGR uint8
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # necessary? check this.
+    r = model(img, conf=0.25, verbose=False)[0]
     has_person = any(r.names[int(c)] == "person" for c in r.boxes.cls)
     return has_person
 
