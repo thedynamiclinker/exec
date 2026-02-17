@@ -9,21 +9,21 @@ venv() {
     fi
     name="$1"
     export VIRTUAL_ENV_DISABLE_PROMPT=1
+    if [[ $(type -t deactivate) == function ]]; then
+        deactivate
+    fi
     if [[ $name == main ]]; then
         export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
-    else
-        if [[ $(type -t deactivate) == function ]]; then
-            deactivate
-        fi
-        export PS1="${_whi}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
         mkdir -p "$(dirname "$env")"
-        $PYTHON -m venv "$env"
+        $PYTHON -m venv --system-site-packages "$env"
+        source "$env/bin/activate"
         "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
+    else
+        source "$env/bin/activate"
     fi
-    source "$env/bin/activate"
 }
 
 penv() {
@@ -35,21 +35,21 @@ penv() {
     fi
     name="$1"
     export VIRTUAL_ENV_DISABLE_PROMPT=1
+    if [[ $(type -t deactivate) == function ]]; then
+        deactivate
+    fi
     if [[ $name == main ]]; then
-        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
-    else
-        if [[ $(type -t deactivate) == function ]]; then
-            deactivate
-        fi
         export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
         mkdir -p "$(dirname "$env")"
         $PYTHON -m venv --system-site-packages "$env"
+        source "$env/bin/activate"
         "$PYTHON" -m pip install --upgrade pip ipython > /dev/null
+    else
+        source "$env/bin/activate"
     fi
-    source "$env/bin/activate"
 }
 
 venv11() {
