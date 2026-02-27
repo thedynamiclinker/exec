@@ -458,7 +458,7 @@ alias grhh='git reset --hard HEAD'
 alias gsm='git switch master 2> /dev/null || git switch main'
 
 alias g+='git add . && git commit --amend --no-edit && git pull'
-alias gg='git add . && git commit && git pull && git push'
+alias gg='git add . && git commit && git remote show origin &>/dev/null && git pull && git push'
 
 # gits
 alias ggs='gits status'
