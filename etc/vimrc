@@ -111,7 +111,7 @@ nnoremap <C-x> "+dd
 set linebreak
 
 " highlight all
-" nnoremap <C-a> ggVG
+nnoremap <C-a> ggVG
 
 " transparent background if terminal has one
 highlight Normal ctermbg=none
