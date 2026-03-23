@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-source ~/.bashrc
-$TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
+if command ghostty &>/dev/null; then
+    ghostty
+else
+    source ~/.bashrc
+    $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
+fi
