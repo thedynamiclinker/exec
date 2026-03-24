@@ -2,6 +2,7 @@
 
 if command ghostty &>/dev/null; then
     ghostty
+    exit 0
 else
     source ~/.bashrc
     $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
