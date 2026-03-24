@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if command ghostty &>/dev/null; then
+if command -v ghostty &>/dev/null; then
     ghostty
     exit 0
 else
