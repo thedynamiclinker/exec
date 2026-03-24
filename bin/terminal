@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 if command -v ghostty > /dev/null; then
-    ghostty
+    ghostty "$@"
 else
     source ~/.bashrc
     $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
 fi
+

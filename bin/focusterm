@@ -17,6 +17,7 @@ echo "$window_cwd"
 # Can't figure out the cwd? Default to Desktop
 [[ -z "${window_cwd}" ]] && window_cwd="${HOME}/Desktop"
 
+echo terminal --working-directory="${window_cwd}"
 terminal --working-directory="${window_cwd}"
 
 exit 0
