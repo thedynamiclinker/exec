@@ -503,6 +503,7 @@ reset_IFS() {
 }
 
 reterm() {
+    source ~/.bashrc # remove if it's now tomorrow lol
     exec $TERMINAL --working-directory="$PWD" --maximize
 }
 
