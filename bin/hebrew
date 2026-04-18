@@ -1,0 +1,297 @@
+#!/usr/bin/env python
+
+import sys
+import re
+import argparse
+import unicodedata
+from dataclasses import dataclass
+
+
+ALPHABET = "אבגדהוזחטיכלמנסעפצקרשת"
+KEYBOARD_HEB = "אבצדאפגהייכלמנספקרשתוווחעז"
+KEYBOARD_LATIN = "abcdefghijklmnopqrstuvwxyz"
+
+HEBREW_MARK_MIN = 0x0591
+HEBREW_MARK_MAX = 0x05C7
+
+VOWEL_IPA = {
+    "\u05B0": ("ə", "e", "∅"),
+    "\u05B1": ("ɛ̆", "e"),
+    "\u05B2": ("ă", "a"),
+    "\u05B3": ("ɔ̆", "o"),
+    "\u05B4": ("i",),
+    "\u05B5": ("e",),
+    "\u05B6": ("e", "ɛ"),
+    "\u05B7": ("a",),
+    "\u05B8": ("a", "ɔ", "o"),
+    "\u05B9": ("o",),
+    "\u05BB": ("u",),
+}
+
+DAGESH = "\u05BC"
+SHIN_DOT = "\u05C1"
+SIN_DOT = "\u05C2"
+
+
+@dataclass(frozen=True)
+class Char:
+    old: str
+    heb: str
+    which: tuple[str, ...]
+    ascii: str
+    ipa: tuple[str, ...]
+    pos: int
+    final: str | None = None
+
+
+CHARS = [
+    Char("𐤀","א",  ("A","Α","А"),          "A",   ("ʔ","∅"),          1),
+    Char("𐤁","ב",  ("B","Β","Б"),          "B",   ("b","v"),          2),
+    Char("𐤂","ג",  ("G","Γ","Г"),          "G",   ("ɡ",),             3),
+    Char("𐤃","ד",  ("D","Δ","Д"),          "D",   ("d",),             4),
+    Char("𐤄","ה",  ("E","Ε","Е","Э"),      "H",   ("h",),             5),
+    Char("𐤅","ו",  ("W","F","Ϝ","Υ","У"),  "W",   ("w","v","u","o"),  6),
+    Char("𐤆","ז",  ("Z","Ζ","З"),          "Z",   ("z",),             7),
+    Char("𐤇","ח",  ("H","Η","Х"),          "Hh",  ("h","χ"),          8),
+    Char("𐤈","ט",  ("Θ","Ѳ"),              "Th",  ("t","θ"),          9),
+    Char("𐤉","י",  ("I","Ι","Й","И","Ы"),  "Y",   ("j","i"),          10),
+    Char("𐤊","כ",  ("K","Κ","К"),          "K",   ("k","χ"),          11,"ך"),
+    Char("𐤋","ל",  ("L","Λ","Л"),          "L",   ("l",),             12),
+    Char("𐤌","מ",  ("M","Μ","М"),          "M",   ("m",),             13,"ם"),
+    Char("𐤍","נ",  ("N","Ν","Н"),          "N",   ("n",),             14,"ן"),
+    Char("𐤎","ס",  ("S","Σ","С","C"),      "S",   ("s",),             15),
+    Char("𐤏","ע",  ("O","Ο","О","Ω","ω"),  "E",   ("ʕ","a","e","o"),  16),
+    Char("𐤐","פ",  ("P","Π","П"),          "P",   ("p","f"),          17,"ף"),
+    Char("𐤑","צ",  ("Ϻ","Ц","Ч"),          "Ts",  ("ts","sˁ"),        18,"ץ"),
+    Char("𐤒","ק",  ("Q","Ϙ","Ϟ","Қ"),      "Q",   ("q","k"),          19),
+    Char("𐤓","ר",  ("R","Ρ","Р"),          "R",   ("r",),             20),
+    Char("𐤔","ש",  ("Ш","Ϻ","Σ","Щ"),      "Sh",  ("ʃ","s"),          21),
+    Char("𐤕","ת",  ("T","Τ","Т","Θ"),      "T",   ("t","θ"),          22),
+]
+
+
+def fmt(xs):
+    xs = tuple(dict.fromkeys(xs))
+    if len(xs) == 0:
+        return ""
+    if len(xs) == 1:
+        return xs[0]
+    if all(len(x) == 1 for x in xs):
+        return "[" + "".join(xs) + "]"
+    return "(" + "|".join(xs) + ")"
+
+
+def select_first(s):
+    s = re.sub(r"\[([^\]]+)\]", lambda m: m.group(1)[0] if m.group(1) else "", s)
+    s = re.sub(r"\(([^()]+)\)", lambda m: m.group(1).split("|")[0], s)
+    return s
+
+
+def is_mark(ch):
+    return unicodedata.category(ch) == "Mn" and HEBREW_MARK_MIN <= ord(ch) <= HEBREW_MARK_MAX
+
+
+def strip_marks(s):
+    return unicodedata.normalize(
+        "NFC",
+        "".join(ch for ch in unicodedata.normalize("NFD", s) if not is_mark(ch)),
+    )
+
+
+HEB_TO_CHAR = {}
+OLD_TO_HEB = {}
+ASCII_TO_HEB = {}
+
+for c in CHARS:
+    HEB_TO_CHAR[c.heb] = c
+    OLD_TO_HEB.setdefault(c.old, c.heb)
+    ASCII_TO_HEB.setdefault(c.ascii, c.heb)
+    if c.final:
+        HEB_TO_CHAR[c.final] = c
+
+ASCII_TOKENS = sorted(ASCII_TO_HEB, key=len, reverse=True)
+FINALS = {c.final for c in CHARS if c.final}
+
+HEB_TO_OLD = {h: c.old for h, c in HEB_TO_CHAR.items()}
+HEB_TO_ASCII = {h: c.ascii for h, c in HEB_TO_CHAR.items()}
+HEB_TO_WHICH = {h: fmt(c.which) for h, c in HEB_TO_CHAR.items()}
+
+key_classes = {}
+for h, k in zip(KEYBOARD_HEB, KEYBOARD_LATIN):
+    key_classes.setdefault(h, []).append(k)
+
+HEB_TO_KEY = {h: fmt(tuple(keys)) for h, keys in key_classes.items()}
+for c in CHARS:
+    if c.final and c.heb in HEB_TO_KEY:
+        HEB_TO_KEY[c.final] = HEB_TO_KEY[c.heb]
+
+HEBREW_BASES = set(HEB_TO_CHAR)
+
+
+def map_chars(s, d):
+    return "".join(d.get(ch, ch) for ch in s)
+
+
+def from_ascii(s):
+    out = []
+    i = 0
+    while i < len(s):
+        for tok in ASCII_TOKENS:
+            if s.startswith(tok, i):
+                out.append(ASCII_TO_HEB[tok])
+                i += len(tok)
+                break
+        else:
+            out.append(s[i])
+            i += 1
+    return "".join(out)
+
+
+def atbash_char(ch):
+    c = HEB_TO_CHAR.get(ch)
+    if not c:
+        return ch
+    j = len(ALPHABET) - c.pos
+    target = HEB_TO_CHAR[ALPHABET[j]]
+    return target.final if ch in FINALS and target.final else target.heb
+
+
+def encode_atbash(s):
+    return "".join(atbash_char(ch) for ch in strip_marks(s))
+
+
+def clusters(s):
+    nfd = unicodedata.normalize("NFD", s)
+    out = []
+    cur = None
+
+    for ch in nfd:
+        if ch in HEBREW_BASES:
+            if cur:
+                out.append(cur)
+            cur = [ch, []]
+        elif cur and is_mark(ch):
+            cur[1].append(ch)
+        else:
+            if cur:
+                out.append(cur)
+                cur = None
+            out.append(ch)
+
+    if cur:
+        out.append(cur)
+
+    return out
+
+
+def cluster_to_ipa(base, marks):
+    c = HEB_TO_CHAR[base]
+    letter = c.ipa
+    m = set(marks)
+
+    if base == "ש":
+        if SIN_DOT in m:
+            letter = ("s",)
+        elif SHIN_DOT in m:
+            letter = ("ʃ",)
+
+    if DAGESH in m:
+        if base == "ב":
+            letter = ("b",)
+        elif base in {"כ", "ך"}:
+            letter = ("k",)
+        elif base in {"פ", "ף"}:
+            letter = ("p",)
+
+    vowels = []
+    for mark in marks:
+        if mark in VOWEL_IPA:
+            vowels.append(fmt(VOWEL_IPA[mark]))
+
+    return fmt(letter) + "".join(vowels)
+
+
+def to_ipa(s):
+    out = []
+    for x in clusters(s):
+        if isinstance(x, str):
+            out.append(x)
+        else:
+            base, marks = x
+            out.append(cluster_to_ipa(base, marks))
+    return "".join(out)
+
+
+def list_chars():
+    lines = []
+    for c in CHARS:
+        lines.append(
+            f"{c.pos:2d}  {c.old}  {c.heb}  {c.final or '-'}  "
+            f"{fmt(c.which):<12}  {c.ascii:<2}  {fmt(c.ipa):<10}  "
+            f"{HEB_TO_KEY.get(c.heb, '')}"
+        )
+    return "\n".join(lines)
+
+
+def read_input(args):
+    return args.text if args.text is not None else sys.stdin.read()
+
+
+def main():
+    p = argparse.ArgumentParser(add_help=False)
+    p.add_argument(
+        "-h", "--help",
+        action="help",
+        help=argparse.SUPPRESS
+    )
+
+    p.add_argument("text", nargs="?")
+    p.add_argument("-j", "--jew", action="store_true")
+    p.add_argument("-a", "--ascii", action="store_true")
+    p.add_argument("-s", "--strip", action="store_true")
+    p.add_argument("-o", "--old", action="store_true")
+    p.add_argument("-n", "--new", action="store_true")
+    p.add_argument("-w", "--which", action="store_true")
+    p.add_argument("-i", "--ipa", action="store_true")
+    p.add_argument("-l", "--list", action="store_true")
+    p.add_argument("-k", "--keyboard", action="store_true")
+    p.add_argument("-e", "--encode", action="store_true")
+    p.add_argument("-S", "--select", action="store_true")
+
+    a = p.parse_args()
+
+    if a.list:
+        print(list_chars())
+        return
+
+    if not any(vars(a).values()):
+        p.error("choose at least one operation")
+
+    s = read_input(a)
+
+    if a.jew:
+        s = from_ascii(s)
+    if a.new:
+        s = map_chars(s, OLD_TO_HEB)
+    if a.strip:
+        s = strip_marks(s)
+    if a.encode:
+        s = encode_atbash(s)
+    if a.old:
+        s = map_chars(s, HEB_TO_OLD)
+    if a.which:
+        s = map_chars(s, HEB_TO_WHICH)
+    if a.ascii:
+        s = map_chars(s, HEB_TO_ASCII)
+    if a.keyboard:
+        s = map_chars(s, HEB_TO_KEY)
+    if a.ipa:
+        s = to_ipa(s)
+    if a.select:
+        s = select_first(s)
+
+    sys.stdout.write(s)
+
+
+if __name__ == "__main__":
+    main()
