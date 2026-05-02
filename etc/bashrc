@@ -253,6 +253,7 @@ alias str='suspend-to-ram'
 
 # fundamentals
 alias v='vim -p'
+alias vr='vim -p README.md'
 alias vim='vim -p'
 alias x='exit'
 alias d='sudo dmesg --color=always'
