@@ -29,11 +29,12 @@ export DESKTOP="$HOME/Desktop"
 export VISUAL='vim'
 export EDITOR='vim'
 export GEDITOR='gedit'
-if command -v ghostty > /dev/null; then
-    export TERMINAL='ghostty'
-else
-    export TERMINAL='gnome-terminal'
-fi
+#if command -v ghostty > /dev/null; then
+#    export TERMINAL='ghostty'
+#else
+#    export TERMINAL='gnome-terminal'
+#fi
+export TERMINAL='gnome-terminal'
 
 ######################
 ### the dirs array ###
