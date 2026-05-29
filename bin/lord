@@ -2,8 +2,37 @@
 
 source ~/.bashrc
 
+verbose=0
+
+case "${1-}" in
+    -v|--verbose)
+        verbose=1
+        shift
+        ;;
+esac
+
 prompt="$*"
 
 pushd "$EXEC/etc/lord" >/dev/null
-codex exec "$prompt" 2>/dev/null
+
+if (( verbose )); then
+    codex exec "$prompt"
+else
+    err="$(mktemp)"
+
+    if codex exec "$prompt" 2>"$err"; then
+        rm -f "$err"
+    else
+        cat "$err" >&2
+        rm -f "$err"
+        exit 1
+    fi
+fi
+
 popd >/dev/null
+
+#source ~/.bashrc
+#prompt="$*"
+#pushd "$EXEC/etc/lord" >/dev/null
+#codex exec "$prompt" 2>/dev/null
+#popd >/dev/null
