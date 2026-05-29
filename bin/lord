@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source ~/.bashrc
 pushd "$EXEC/etc/lord" >/dev/null
-codex exec $@
+codex exec "$@" 2>/dev/null
 popd >/dev/null
