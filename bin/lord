@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 source ~/.bashrc
+
+prompt="$*"
+
 pushd "$EXEC/etc/lord" >/dev/null
-codex exec "$@" 2>/dev/null
+codex exec "$prompt" 2>/dev/null
 popd >/dev/null
