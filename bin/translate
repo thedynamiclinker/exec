@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+lord translate this to $(basename $0)
