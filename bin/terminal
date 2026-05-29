@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-#if command -v ghostty > /dev/null; then
-#    ghostty "$@"
-#else
-#    source ~/.bashrc
-#    $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
-#fi
+if command -v ghostty > /dev/null; then
+    ghostty "$@"
+else
+    source ~/.bashrc
+    $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
+fi
 
-source ~/.bashrc
-$TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
+#source ~/.bashrc
+#$TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
