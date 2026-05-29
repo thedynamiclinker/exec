@@ -239,6 +239,8 @@ alias grep="grep -P --color=auto --exclude-dir=.git --exclude='*.html' --exclude
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
 alias diff='diff -u'
+alias lord='codex'
+alias dl='codex' # 'dear lord'
 
 # sudos
 alias reboot='sudo reboot'
