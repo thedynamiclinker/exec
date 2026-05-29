@@ -355,6 +355,9 @@ py15t()     { python3.15t -m IPython ${_IPYTHON_ARGS[*]} $@; }
 #alias Pdb="$hack python${PV} -m pdb"
 #alias Py="$hack python${PV} -m IPython ${_IPYTHON_ARGS[*]}"
 
+# religious aliases
+alias dl='lord' # dear lord
+
 # fundamentals: lower priority
 alias po='acpi'
 alias ds='date +%Y%m%d'
