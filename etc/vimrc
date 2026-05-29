@@ -126,6 +126,11 @@ augroup nix_indent
   autocmd FileType nix setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
+augroup json_indent
+  autocmd!
+  autocmd FileType json setlocal tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
 " Toggle between expandtab (spaces) and noexpandtab (tabs) with <Leader><Tab>
 " <Leader> is usually '\' by default
 function! ToggleTabs()

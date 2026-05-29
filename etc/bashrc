@@ -382,6 +382,7 @@ alias src="source ${HOME}/.bashrc"
 alias brc="$EDITOR ${HOME}/.bashrc && source ${HOME}/.bashrc"
 alias brce="c exec && $EDITOR ${EXEC}/etc/bashrc && source ${HOME}/.bashrc"
 alias vrc="$EDITOR ~/.vimrc"
+alias vscrc="$EDITOR ~/.config/Code/User/keybindings.json"
 
 # general
 alias xa='xargs'
