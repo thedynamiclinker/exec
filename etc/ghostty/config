@@ -53,7 +53,7 @@ background = #222222
 theme = Tomorrow Night Eighties
 font-size = 14
 font-family = "DejaVu Sans Mono"
-working-directory = $HOME/Desktop
+working-directory = ~/Desktop
 maximize = true
 keybind = alt+9=goto_tab:9
 keybind = alt+0=last_tab
