@@ -382,8 +382,9 @@ alias caa='clean -a'
 alias src="source ${HOME}/.bashrc"
 alias brc="$EDITOR ${HOME}/.bashrc && source ${HOME}/.bashrc"
 alias brce="c exec && $EDITOR ${EXEC}/etc/bashrc && source ${HOME}/.bashrc"
+alias vsrcrc="$EDITOR ~/.config/Code/User/keybindings.json"
 alias vrc="$EDITOR ~/.vimrc"
-alias vscrc="$EDITOR ~/.config/Code/User/keybindings.json"
+alias grc="$EDITOR ~/.config/ghostty/config"
 
 # general
 alias xa='xargs'
