@@ -51,6 +51,8 @@
 bold-color = bright
 background = #222222
 theme = Tomorrow Night Eighties
+#theme = Everforest Dark Hard
+#theme = Everforest Light Med
 font-size = 14
 font-family = "DejaVu Sans Mono"
 working-directory = ~/Desktop
