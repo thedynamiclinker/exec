@@ -37,6 +37,12 @@ exit 0
 ### EXAMPLE USAGE OF THE LORD ###
 #################################
 
-printf 'explain why chicken is religious\nhow do i save 15% on car insurance\nwho wrote caravan of dreams\nwho wrote the tale of melon city\n' | xargs -I{} echo {} --json-list key-for-question-key-for-answer --sed 's/150n/15%/' | lord | jq
+# printf 'explain why chicken is religious\nhow do i save 15% on car insurance\nwho wrote caravan of dreams\nwho wrote the tale of melon city\n' | xargs -I{} echo {} --json-list key-for-question-key-for-answer --sed 's/150n/15%/' | lord | jq
+
+# lord set theoretic intersection of head of porn magazine company initials and neonazi slogans
+HH
+
+# lord snake in hebrew but write it in latin alphabet only conson --upper --heth-is-H --ipa-for-digraphs
+NHʃ
 
 
