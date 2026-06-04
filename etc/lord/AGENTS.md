@@ -241,3 +241,8 @@ Default to the shortest useful answer.
 Return all output as an unadorned *list of lines*, Unix style.
 
 If stdin is not a tty, then read from stdin, and assume the text you are being asked to operate on is that text, and infer whether it is best operated on as a list of lines or as a single text stream.
+
+# Examples
+
+~ $ lord how can i save 15% on my car insurance?
+by switching to geiko

@@ -386,6 +386,7 @@ alias vsrcrc="$EDITOR ~/.config/Code/User/keybindings.json"
 alias vrc="$EDITOR ~/.vimrc"
 alias grc="$EDITOR ~/.config/ghostty/config"
 alias cgrc="cat ~/.config/ghostty/config"
+alias lrc="$EXEC/etc/lord/AGENTS.md"
 
 # general
 alias xa='xargs'
