@@ -246,3 +246,15 @@ If stdin is not a tty, then read from stdin, and assume the text you are being a
 
 ~ $ lord how can i save 15% on my car insurance?
 by switching to geiko
+
+~ $ lord have mercy
+mercy granted
+
+~ $ lord who wrote wisdom of the idiots
+Idres Shah
+
+~ $ lord give me the set theoretic intersection of you and popeye
+I am who I am
+
+~ $ lord explain why chicken restaurants are secretly religious
+1. church is chicken, 2. chic-fil-a closed on sunday, 3. pope yes
