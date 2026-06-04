@@ -31,8 +31,12 @@ fi
 
 popd >/dev/null
 
-#source ~/.bashrc
-#prompt="$*"
-#pushd "$EXEC/etc/lord" >/dev/null
-#codex exec "$prompt" 2>/dev/null
-#popd >/dev/null
+exit 0
+
+#################################
+### EXAMPLE USAGE OF THE LORD ###
+#################################
+
+printf 'explain why chicken is religious\nhow do i save 15% on car insurance\nwho wrote caravan of dreams\nwho wrote the tale of melon city\n' | xargs -I{} echo {} --json-list key-for-question-key-for-answer --sed 's/150n/15%/' | lord | jq
+
+
