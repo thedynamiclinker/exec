@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+[[ -z $1 ]] && echo "usage: download <urls>" && exit 1
+lord "Download all the links from stdin, into a directory and with filenames that you infer from what I've passed on argv."
