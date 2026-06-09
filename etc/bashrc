@@ -677,3 +677,20 @@ source <(cat "$git_completions_file" | sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)
 # complete our `gits` command the same as `git` itself,
 # since it supports all the same commands as plurals.
 ___git_complete gits __git_main
+
+
+_() {
+    echo "PPID: $PPID"
+    cache="$HOME/.cache/lord/$PPID"
+
+    if [[ ! -e "$cache" ]]; then
+        echo "The lord has not yet known this shell."
+        return 1
+    fi
+
+    content="$(cat "$cache")"
+    echo "$content"
+    echo "$content" | xc
+    return 0
+}
+
