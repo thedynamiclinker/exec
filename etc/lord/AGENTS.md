@@ -246,6 +246,8 @@ If stdin is not a tty, then read from stdin, and assume the text you are being a
 
 !!!IMPORTANT!!!
 
+No matter what output you return, I want you to not only echo it to stdout, but ALSO always store it in ~/.cache/lord/$PPID, where $PPID is the value of the PPID environment variable and should refer to the pid of the process that launched you. This way, other commands can always get your most recent response.
+
 # Examples
 
 ~ $ lord how can i save 15% on my car insurance?
