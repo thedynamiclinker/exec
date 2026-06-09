@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cat ~/.cache/lord/$PPID
+cat ~/.cache/lord/$PPID | xc
