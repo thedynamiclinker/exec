@@ -31,7 +31,8 @@ else
     rm -f "$err"
 fi
 
-echo "$output" | tee ~/.cache/lord/$PPID
+latest="$(date +%Y%m%d-%H%M%S.%3N)"
+echo "$output" | tee "$HOME/.cache/lord/$latest"
 
 popd >/dev/null
 
