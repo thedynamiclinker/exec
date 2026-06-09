@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
 [ ! -t 0 ] && {
-    latest="$(date +%Y%m%d-%H%M%S.%3N)"
-    cat > "$HOME/.cache/lord/$latest"
+    now="$(date +%Y%m%d-%H%M%S.%3N)"
+    cache="$HOME/.cache/lord/$now"
+    cat > "$cache"
     exit 0
 }
 
-cache="$(find $HOME/.cache/lord/ -type f | sort | tail -1)"
+n=1
+if [[ -n "$1" ]]; then
+    n="$1"
+fi
+n=${n/-/}
+
+cache="$(find $HOME/.cache/lord/ -type f | sort | tail -$n | head -1)"
 
 if [[ ! -e "$cache" ]]; then
     echo "The lord has not yet known this shell."
