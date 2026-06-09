@@ -681,7 +681,8 @@ ___git_complete gits __git_main
 
 _() {
     echo "PPID: $PPID"
-    cache="$HOME/.cache/lord/$PPID"
+    echo "PID: $$"
+    cache="$HOME/.cache/lord/$$"
 
     if [[ ! -e "$cache" ]]; then
         echo "The lord has not yet known this shell."
