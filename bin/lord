@@ -16,18 +16,22 @@ prompt="$*"
 pushd "$EXEC/etc/lord" >/dev/null
 
 if (( verbose )); then
-    codex exec "$prompt"
+    output="$(codex exec "$prompt")"
 else
     err="$(mktemp)"
+    output="$(codex exec "$prompt" 2>"$err")"
+    status=$?
 
-    if codex exec "$prompt" 2>"$err"; then
-        rm -f "$err"
-    else
+    if (( status != 0 )); then
         cat "$err" >&2
         rm -f "$err"
-        exit 1
+        exit "$status"
     fi
+
+    rm -f "$err"
 fi
+
+echo "$output" | tee ~/.cache/lord/$PPID
 
 popd >/dev/null
 
