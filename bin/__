@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-rm -v ~/.cache/lord/*
+mkdir -pv ~/.cache/lord
+rm -v ~/.cache/lord/* 2>/dev/null
