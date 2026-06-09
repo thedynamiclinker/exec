@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-[[ -z $1 ]] || [[ -z $2 ]] && echo "usage: scrape <what> <url>" && exit 1
+[[ -z $1 ]] && echo "usage: scrape <what> <url>" && exit 1
 wget -q -O - "$2" | lord "Get me all the $1 from the webpage in stdin."
