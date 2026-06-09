@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-cat ~/.cache/lord/$PPID
-cat ~/.cache/lord/$PPID | xc
+content="$(cat ~/.cache/lord/$PPID)"
+echo "$content"
+echo "$content" | xc
