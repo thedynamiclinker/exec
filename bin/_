@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+[ ! -t 0 ] && {
+    latest="$(date +%Y%m%d-%H%M%S.%3N)"
+    cat > "$HOME/.cache/lord/$latest"
+    exit 0
+}
+
 cache="$(find $HOME/.cache/lord/ -type f | sort | tail -1)"
 
 if [[ ! -e "$cache" ]]; then
