@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+[[ -z $1 ]] || [[ -z $2 ]] && echo "usage: scrape <what> <url>" && exit 1
+lord "Get me all the $1 from this website: $2"
