@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
-content="$(cat ~/.cache/lord/$PPID)"
+cache="$HOME/.cache/lord/$PPID"
+
+if [[ ! -e "$cache" ]]; then
+    echo "The lord has not yet known this shell."
+    exit 1
+fi
+
+content="$(cat "$cache")"
 echo "$content"
 echo "$content" | xc
