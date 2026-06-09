@@ -4,10 +4,9 @@ cache="$(find $HOME/.cache/lord/ | sort | tail -1)"
 
 if [[ ! -e "$cache" ]]; then
     echo "The lord has not yet known this shell."
-    return 1
+    exit 1
 fi
 
 content="$(cat "$cache")"
 echo "$content"
 echo "$content" | xc
-return 0
