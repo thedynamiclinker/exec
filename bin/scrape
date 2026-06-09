@@ -2,7 +2,18 @@
 
 [[ -z $1 ]] && echo "usage: scrape <what> <url>" && exit 1
 
-lord "$@" << "EOF"
-Perform the following scraping task, inferring what I want you to do from a combination of reading stdin and examining argv. You never need to download any files directly, but I may ask you to extract parts of webpages, generate urls, or generate curl or wget commands, and so on. Be willing to wait if stdin is not a tty, since you may be consuming the output of another slow command.
+lord "$@" << EOF
+Perform the following task related to scraping and web page entity extraction.
+Task type: $(basename $0)
+
+Details: Infer what I want you to do from a combination of:
+1. reading stdin
+2. examining argv.
+
+You never need to download any files directly, but I may ask you to extract parts of webpages, generate urls, or generate curl or wget commands, and so on.
+
+Be willing to wait if stdin is not a tty, since you may be consuming the output of another slow command.
+
+Determine whether you should be operating on a single webpage or a list of links etc by examining stdin and argv.
 EOF
 

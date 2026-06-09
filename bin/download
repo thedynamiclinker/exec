@@ -1,4 +1,1 @@
-#!/usr/bin/env bash
-
-[[ -z $1 ]] && echo "usage: download <urls>" && exit 1
-lord "Turn all the links from stdin into curl commands. Infer output directory and filename prefixes from what I've passed on argv."
+scrape
