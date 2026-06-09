@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cache="$(find $HOME/.cache/lord/ | sort | tail -1)"
+cache="$(find $HOME/.cache/lord/ -type f | sort | tail -1)"
 
 if [[ ! -e "$cache" ]]; then
     echo "The lord has not yet known this shell."
