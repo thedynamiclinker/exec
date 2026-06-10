@@ -22,4 +22,7 @@ fi
 
 content="$(cat "$cache")"
 echo "$content"
-echo "$content" | xc
+
+[ -t 1 ] && {
+    echo "$content" | xc
+}
