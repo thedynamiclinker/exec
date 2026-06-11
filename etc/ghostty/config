@@ -57,12 +57,12 @@ font-size = 14
 font-family = "DejaVu Sans Mono"
 working-directory = ~/Desktop
 maximize = true
-keybind = ctrl+shift+\=new_split:right
-keybind = ctrl+shift+-=new_split:down
+keybind = ctrl+\=new_split:right
+keybind = ctrl+-=new_split:down
 keybind = alt+\=new_split:right
 keybind = alt+-=new_split:down
-keybind = ctrl+-=decrease_font_size:1
-keybind = ctrl++=increase_font_size:1
+keybind = ctrl+shift+-=decrease_font_size:1
+keybind = ctrl+shift++=increase_font_size:1
 
 keybind = alt+h=goto_split:left
 keybind = alt+j=goto_split:bottom
