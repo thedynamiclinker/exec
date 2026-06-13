@@ -238,25 +238,87 @@ def read_input(args):
 
 
 def main():
-    p = argparse.ArgumentParser(add_help=False)
+    p = argparse.ArgumentParser(
+        prog="hebrew",
+        description=(
+            "Convert between Hebrew, Paleo-Hebrew, transliterations, "
+            "IPA, keyboard layouts, and related representations."
+        ),
+        add_help=False,
+    )
     p.add_argument(
         "-h", "--help",
         action="help",
         help=argparse.SUPPRESS
     )
 
-    p.add_argument("text", nargs="?")
-    p.add_argument("-j", "--jew", action="store_true")
-    p.add_argument("-a", "--ascii", action="store_true")
-    p.add_argument("-s", "--strip", action="store_true")
-    p.add_argument("-o", "--old", action="store_true")
-    p.add_argument("-n", "--new", action="store_true")
-    p.add_argument("-w", "--which", action="store_true")
-    p.add_argument("-i", "--ipa", action="store_true")
-    p.add_argument("-l", "--list", action="store_true")
-    p.add_argument("-k", "--keyboard", action="store_true")
-    p.add_argument("-e", "--encode", action="store_true")
-    p.add_argument("-S", "--select", action="store_true")
+    p.add_argument("text", nargs="?", help="Input text. Reads stdin if omitted.")
+
+    p.add_argument(
+        "-j", "--jew",
+        action="store_true",
+        help="Convert ASCII transliteration to Hebrew (A→א, Sh→ש, Ts→צ, etc.).",
+    )
+
+    p.add_argument(
+        "-a", "--ascii",
+        action="store_true",
+        help="Convert Hebrew letters to ASCII transliteration.",
+    )
+
+    p.add_argument(
+        "-s", "--strip",
+        action="store_true",
+        help="Strip Hebrew niqqud and cantillation marks.",
+    )
+
+    p.add_argument(
+        "-o", "--old",
+        action="store_true",
+        help="Convert Hebrew script to Paleo-Hebrew.",
+    )
+
+    p.add_argument(
+        "-n", "--new",
+        action="store_true",
+        help="Convert Paleo-Hebrew to Hebrew script.",
+    )
+
+    p.add_argument(
+        "-w", "--which",
+        action="store_true",
+        help="Show cognate letters in Greek, Cyrillic, and related alphabets.",
+    )
+
+    p.add_argument(
+        "-i", "--ipa",
+        action="store_true",
+        help="Convert Hebrew text to approximate IPA pronunciation.",
+    )
+
+    p.add_argument(
+        "-l", "--list",
+        action="store_true",
+        help="List all supported letters and their mappings.",
+    )
+
+    p.add_argument(
+        "-k", "--keyboard",
+        action="store_true",
+        help="Show QWERTY keyboard keys corresponding to Hebrew letters.",
+    )
+
+    p.add_argument(
+        "-e", "--encode",
+        action="store_true",
+        help="Apply the Atbash cipher.",
+    )
+
+    p.add_argument(
+        "-S", "--select",
+        action="store_true",
+        help="Replace alternatives with their first listed value.",
+    )
 
     a = p.parse_args()
 
