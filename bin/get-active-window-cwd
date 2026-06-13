@@ -11,7 +11,8 @@ log   () { printf "${blu}[${whi}*${blu}]${whi} ${1}${end}\n"; }
 define_variables() {
     window_title="$(xdotool getactivewindow getwindowname)"
     window_pid="$(xdotool getactivewindow getwindowpid)"
-    window_prog="$(cat /proc/${window_pid}/cmdline)"
+    #window_prog="$(cat /proc/${window_pid}/cmdline)"
+    window_prog="$(tr '\0' ' ' < "/proc/$window_pid/cmdline")"
 }
 
 # complains about null byte in command substitution when we cat
@@ -47,17 +48,24 @@ if [[ "$window_prog" =~ nemo ]]; then
         before="$(echo "$window_cwd" | sed -r 's@(.*)[.][.][.](.*)@\1@g')"
         after="$(echo "$window_cwd" | sed -r 's@(.*)[.][.][.](.*)@\2@g')"
         candidates="$(find "${before}"* | grep -- "${after}" | while read f; do dirname "$f"; done | sort | uniq)"
+
         window_cwd="$(python3 <<- EOF
 		lines = """${candidates}"""
 		longest_line = sorted((len(line), line) for line in lines.split('\n'))[-1][1]
 		print(longest_line)
-EOF
-)"
+		EOF
+        )"
+
 		#echo "$window_cwd" > ~/Desktop/test-for-get-active-window-cwd
         xcowsay -r 150 "Just guessing here" --config <(echo "min_display_time=0")
     fi
 
     #[[ ! -d "$window_cwd" ]] && xcowsay "Window title isn't a directory. Fix your regex, loser." && exit 1
+
+elif [[ "$window_prog" =~ texmaker ]]; then
+
+    file="$(echo "$window_prog" | awk '{ print $2 }')"
+    window_cwd="$(git -C "$(dirname "$file")" rev-parse --show-toplevel)"
 
 elif [[ "$window_prog" =~ gedit ]]; then
     $LOG "We've got a gedit window"
