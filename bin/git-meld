@@ -1,13 +1,28 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT
+die() {
+    echo "git-meld: $*" >&2
+    exit 1
+}
 
-git diff --name-only "$@" | while read -r file; do
-    mkdir -p "$tmp/$(dirname "$file")"
-    git show "HEAD:$file" > "$tmp/$file" 2>/dev/null || true
-done
+command -v git >/dev/null || die "git not found"
+command -v meld >/dev/null || die "meld not found"
 
-meld "$tmp"
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+    || die "not inside a git repo"
+
+# Set only if unset.
+if ! git config --global --get diff.tool >/dev/null; then
+    git config --global diff.tool meld
+fi
+
+if ! git config --global --get difftool.prompt >/dev/null; then
+    git config --global difftool.prompt false
+fi
+
+if ! git config --global --get difftool.meld.cmd >/dev/null; then
+    git config --global difftool.meld.cmd 'meld "$LOCAL" "$REMOTE"'
+fi
+
+git difftool "$@"
