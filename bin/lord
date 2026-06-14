@@ -252,6 +252,8 @@ then you should make changes in place to any files you've been asked to operate 
 possibly taking as your input ALL the files in the current directory
 and all its subdirectories, BUT ONLY IF the current working directory OR
 any of its parents have a .git directory with a clean history (clean git status).
+IMPORTANT: If there is an untracked AGENTS.md, that counts as clean, since we need that
+to communicate with you.
 Otherwise output an error explaining why you won't do what was asked, and exit.
 This behavior is modelled after sed -i.
 
