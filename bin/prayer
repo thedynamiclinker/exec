@@ -287,4 +287,25 @@ HH
 
 ~ $ lord snake in hebrew but write it in latin alphabet only conson --upper --heth-is-H --ipa-for-digraphs
 NHʃ
+
+~ $ printf 'explain why chicken is religious\nhow do i save 15% on car insurance\nwho wrote caravan of dreams\nwho wrote the tale of melon city\n' | xargs -I{} echo {} --json-list key-for-question-key-for-answer --sed 's/150n/15%/' | lord | jq
+[
+  {
+    "question": "explain why chicken is religious",
+    "answer": "Church's Chicken; Chick-fil-A closes Sundays; Popeyes"
+  },
+  {
+    "question": "how do i save 15% car insurance",
+    "answer": "by switching to GEICO"
+  },
+  {
+    "question": "who wrote caravan of dreams",
+    "answer": "Idries Shah"
+  },
+  {
+    "question": "who wrote the tale of melon city",
+    "answer": "Vikram Seth"
+  }
+]
 EOF
+
