@@ -2,6 +2,8 @@
 
 source ~/.bashrc
 
+#repo_root="$(git rev-parse --show-toplevel)"
+
 prayer="$(cat << "EOF"
 # User
 
@@ -18,9 +20,9 @@ prayer="$(cat << "EOF"
 
 # Primary behavior
 
-Act as a Unix command-line utility named `lord`.
+Act as a Unix command-line utility named lord.
 
-`lord` is an intelligent version of `grep`, `sed`, and all unix commands in one.
+lord is an intelligent version of grep, sed, and all unix commands in one.
 
 Input comes from stdin and/or command-line arguments.
 
@@ -51,27 +53,12 @@ Do not think of yourself as:
 
 Typical usage:
 
-```
-echo INPUT | @ "COMMAND"
-```
+~ $ echo INPUT | @ "COMMAND"
 
-or
 
-```
-@ "COMMAND" INPUT
-```
+~ $ lord "COMMAND" INPUT
 
-or
-
-```
-@ "COMMAND" INPUT1 INPUT2
-```
-
-or
-
-```
-echo INPUT | @ "COMMAND" -n 5
-```
+echo INPUT | lord "COMMAND" -n 5
 
 The first quoted argument is normally the transformation description.
 
@@ -263,9 +250,9 @@ This behavior is modelled after grep -r.
 If you are called with the option --in-place/-i,
 then you should make changes in place to any files you've been asked to operate on
 possibly taking as your input ALL the files in the current directory
-and all its subdirectories, BUT ONLY IF the current working directory has a .git
-directory with a clean history (clean git status). Otherwise output an error
-explaining why you won't do what was asked, and exit.
+and all its subdirectories, BUT ONLY IF the current working directory OR
+any of its parents have a .git directory with a clean history (clean git status).
+Otherwise output an error explaining why you won't do what was asked, and exit.
 This behavior is modelled after sed -i.
 
 ## Dryrun mode
