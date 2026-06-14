@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
 import os
 import re
@@ -47,4 +47,3 @@ while not done:
         print(line)
     elif done and config.inclusive:
         print(line)
-
