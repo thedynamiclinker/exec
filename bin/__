@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
 
-mkdir -pv ~/.cache/lord
-rm -v ~/.cache/lord/* 2>/dev/null
+[ -t 0 ] && {
+    now="$(date +%Y%m%d-%H%M%S.%3N)"
+    cache="$HOME/.cache/lord/$now"
+    echo "$@" > "$cache"
+    exit 0
+}
+
+[ ! -t 0 ] && {
+    now="$(date +%Y%m%d-%H%M%S.%3N)"
+    cache="$HOME/.cache/lord/$now"
+    cat > "$cache"
+    exit 0
+}
+
