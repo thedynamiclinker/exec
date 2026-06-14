@@ -473,8 +473,9 @@ alias gaita='git add --intent-to-add .'
 alias grhh='git reset --hard HEAD'
 alias gsm='git switch master 2> /dev/null || git switch main'
 
-alias gg='git add . && git commit && git remote show origin &>/dev/null && git pull'
-alias ggg='git add . && git commit && git remote show origin &>/dev/null && git pull && git push'
+alias gg='git add . && git commit && git remote show origin &>/dev/null && git pull && git push'
+#alias gg='git add . && git commit && git remote show origin &>/dev/null && git pull'
+#alias ggg='git add . && git commit && git remote show origin &>/dev/null && git pull && git push'
 
 # gits
 alias ggs='gits status'
