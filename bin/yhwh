@@ -1,3 +1,54 @@
 #!/usr/bin/env bash
 
-lord --recursive --in-place --exit-if-no-git-directory "$@"
+source ~/.bashrc
+
+verbose=0
+
+case "${1-}" in
+    -v|--verbose)
+        verbose=1
+        shift
+        ;;
+esac
+
+prompt="$*"
+
+cleanup() {
+    local rc=$?
+    rm -f AGENTS.md
+    exit "$rc"
+}
+trap cleanup EXIT INT TERM HUP
+
+if [[ -e AGENTS.md ]]; then
+    echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+    exit 1
+fi
+
+prayer > AGENTS.md
+
+if (( verbose )); then
+    #output="$(codex exec -C "$root" -- "$prompt")"
+    output="$(codex exec --sandbox workspace-write -- "$prompt")"
+else
+    err="$(mktemp)"
+    #output="$(codex exec -C "$root" -- "$prompt" 2>"$err")"
+    output="$(codex exec --sandbox workspace-write -- "$prompt" 2>"$err")"
+    status=$?
+
+    if (( status != 0 )); then
+        cat "$err" >&2
+        rm -f "$err"
+        exit "$status"
+    fi
+
+    rm -f "$err"
+fi
+
+rm -f AGENTS.md
+
+latest="$(date +%Y%m%d-%H%M%S.%3N)"
+echo "$output" | tee "$HOME/.cache/lord/$latest"
+
+exit 0
+
