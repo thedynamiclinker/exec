@@ -14,6 +14,7 @@ resolve() {
 # bash which
 ew() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "edit which"
 cw() { cat "$(which "$(resolve "$1")")"; }          # stands for "cat which"
+xw() { cat "$(which "$(resolve "$1")")" | xc; }     # stands for "xc which"
 
 rw() { realpath $(which "$1"); }
 crw() { cat $(realpath $(which "$1")); }
