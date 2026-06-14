@@ -324,6 +324,13 @@ prompt="$*"
 
 #root="$EXEC/etc/pantheon/lord"
 
+cleanup() {
+    local rc=$?
+    rm -f AGENTS.md
+    exit "$rc"
+}
+trap cleanup EXIT INT TERM HUP
+
 if [[ -e AGENTS.md ]]; then
     echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
     exit 1
