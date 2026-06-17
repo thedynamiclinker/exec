@@ -25,14 +25,12 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM HUP
 
-if [[ -z "$dammit" ]]; then
-    if [[ -e AGENTS.md ]]; then
-        echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
-        exit 1
-    else
-        pray > AGENTS.md
-    fi
+if [[ -e AGENTS.md ]] && [[ -z "$dammit" ]]; then
+    echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+    exit 1
 fi
+
+pray > AGENTS.md
 
 if (( verbose )); then
     output="$(codex exec -- "$prompt")"
