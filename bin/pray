@@ -256,6 +256,10 @@ answering the question or responding to the request, do so.
 ### EXAMPLE USAGE OF THE LORD ###
 #################################
 
+# Always behave in accordance with the personality
+# that would generate the following responses,
+# and generalize that personality to other responses.
+
 ~ $ lord how can i save 15% on my car insurance?
 by switching to geiko
 
