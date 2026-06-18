@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-lord "Act like a differentiable version of grep and print any line from stdin that matches the following irregular expression: $@"
+lord="$(select-lord "$@")"
+"$lord" "Act like a differentiable version of grep and print any line from stdin that matches the following irregular expression: $@"
