@@ -10,7 +10,6 @@ while (($#)); do
     case "$1" in
         -v|--verbose) verbose=1; shift ;;
         -d|--dammit)  dammit=1;  shift ;;
-        @echo)         echo_only=1; shift ;;
         *) break ;;
     esac
 done
@@ -24,9 +23,21 @@ for x; do
 done
 
 flags=()
-mapfile -t flags < <(@ y "${args[@]}")
+for x in "${args[@]}"; do
+    case "$x" in
+        @*) flags+=( "--${x#@}" ) ;;
+    esac
+done
 
-prompt="$(@ n "${args[@]}")"
+prompt_args=()
+for x in "${args[@]}"; do
+    case "$x" in
+        @*) ;;
+        *)  prompt_args+=( "$x" ) ;;
+    esac
+done
+
+prompt="${prompt_args[*]}"
 
 cleanup() {
     local rc=$?
@@ -38,30 +49,32 @@ run_codex() {
     cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if (( echo_only )); then
-        printf '%q ' "${cmd[@]}"
-        printf '\n'
+        printf 'codex exec'
+        printf ' %s' "${flags[@]}"
+        printf ' -- "%s"\n' "$prompt"
         return
     fi
 
     if (( verbose )); then
         "${cmd[@]}"
-    else
-        err="$(mktemp)"
-        output="$("${cmd[@]}" 2>"$err")"
-        status=$?
-
-        if (( status != 0 )); then
-            cat "$err" >&2
-            rm -f "$err"
-            exit "$status"
-        fi
-
-        rm -f "$err"
-
-        latest="$(date +%Y%m%d-%H%M%S.%3N)"
-        mkdir -p "$HOME/.cache/lord"
-        echo "$output" | tee "$HOME/.cache/lord/$latest"
+        return
     fi
+
+    err="$(mktemp)"
+    output="$("${cmd[@]}" 2>"$err")"
+    status=$?
+
+    if (( status != 0 )); then
+        cat "$err" >&2
+        rm -f "$err"
+        exit "$status"
+    fi
+
+    rm -f "$err"
+
+    latest="$(date +%Y%m%d-%H%M%S.%3N)"
+    mkdir -p "$HOME/.cache/lord"
+    echo "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
 if [[ -d .git ]]; then
@@ -70,23 +83,10 @@ if [[ -d .git ]]; then
         exit 1
     fi
 
-    if (( echo_only )); then
-        echo "pray > AGENTS.md"
-        run_codex
-        echo "rm -f AGENTS.md"
-        exit 0
-    fi
-
     pray > AGENTS.md
     trap cleanup EXIT INT TERM HUP
     run_codex
 else
-    if (( echo_only )); then
-        echo "c lord"
-        run_codex
-        exit 0
-    fi
-
     c lord || exit
     run_codex
 fi

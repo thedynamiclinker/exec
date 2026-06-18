@@ -34,7 +34,7 @@ for x in "${args[@]}"; do
 done
 
 case $mode in
-    y) printf '%s\n' "${ats[@]}" ;;
-    n) printf '%s\n' "${rest[@]}" ;;
+    y) printf '%s\n' "${ats[*]}";;
+    n) printf '%s\n' "${rest[*]}";;
     *) printf 'usage: %s y|n [args...]\n' "$0" >&2; exit 2 ;;
 esac
