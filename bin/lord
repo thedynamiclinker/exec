@@ -3,56 +3,43 @@
 source ~/.bashrc
 
 verbose=0
-dammit=0
 echo_only=0
+use_tempdir=1
+flags=()
 
 while (($#)); do
     case "$1" in
-        -v|--verbose) verbose=1; shift ;;
-        -d|--dammit)  dammit=1;  shift ;;
-        *) break ;;
+        -v|--verbose)
+            verbose=1
+            shift
+            ;;
+        @echo)
+            echo_only=1
+            shift
+            ;;
+        @yhwh)
+            flags+=( --skip-git-repo-check )
+            use_tempdir=0
+            shift
+            ;;
+        *)
+            break
+            ;;
     esac
 done
 
-args=()
-for x; do
-    case "$x" in
-        @echo) echo_only=1 ;;
-        *)     args+=( "$x" ) ;;
-    esac
-done
-
-flags=()
-for x in "${args[@]}"; do
-    case "$x" in
-        @yhwh) flags+=( "--skip-git-repo-check" ) ;;
-        @*)    flags+=( "--${x#@}" ) ;;
-    esac
-done
-
-prompt_args=()
-for x in "${args[@]}"; do
-    case "$x" in
-        @*) ;;
-        *)  prompt_args+=( "$x" ) ;;
-    esac
-done
-
-prompt="${prompt_args[*]}"
+prompt="$*"
 
 cleanup() {
-    local rc=$?
     rm -f AGENTS.md
-    exit "$rc"
 }
 
 run_codex() {
-    cmd=( codex exec "${flags[@]}" -- "$prompt" )
+    local err output status
+    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if (( echo_only )); then
-        printf 'codex exec'
-        printf ' %q' "${flags[@]}"
-        printf ' -- %q\n' "$prompt"
+        echo "${cmd[@]}"
         return
     fi
 
@@ -68,7 +55,7 @@ run_codex() {
     if (( status != 0 )); then
         cat "$err" >&2
         rm -f "$err"
-        exit "$status"
+        return "$status"
     fi
 
     rm -f "$err"
@@ -78,17 +65,24 @@ run_codex() {
     echo "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
-if [[ -d .git ]]; then
-    if [[ -e AGENTS.md ]] && (( ! dammit )); then
+main() {
+    if [[ -d .git ]]; then
+        use_tempdir=0
+    fi
+
+    if (( use_tempdir )); then
+        cd "$(mktemp -d)" || exit
+    fi
+
+    if [[ -e AGENTS.md ]]; then
         echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
         exit 1
     fi
 
     pray > AGENTS.md
     trap cleanup EXIT INT TERM HUP
+
     run_codex
-else
-    pushd "$(mktemp -d)" &>/dev/null
-    pray > AGENTS.md
-    run_codex
-fi
+}
+
+main "$@"
