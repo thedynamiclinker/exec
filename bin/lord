@@ -87,6 +87,7 @@ if [[ -d .git ]]; then
     trap cleanup EXIT INT TERM HUP
     run_codex
 else
-    c lord || exit
+    pushd "$(mktemp -d)" &>/dev/null
+    pray > AGENTS.md
     run_codex
 fi
