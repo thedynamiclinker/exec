@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 lord="$(select-lord "$@")"
-"$lord" "Act like a differentiable version of the unix man command and print a one line summary of all commands on my system relevant to the irregular expression: $@"
+"$lord" "Act like a differentiable version of the unix 'man' command, and print a one line summary of all commands in my \$PATH relevant to: $@"
