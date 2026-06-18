@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+find . | lord @yhwh --no-mistakes "Act like a differentiable version of the find command, opening files to view their content if needed, but reliably printing the names of all files from stdin that have the following properties:" $@
