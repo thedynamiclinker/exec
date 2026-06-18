@@ -57,6 +57,7 @@ dirs+=(
     [exec/bin]="${EXEC}/bin"
     [exec/lib]="${EXEC}/lib"
     [exec/etc]="${EXEC}/etc"
+    [lord]="${EXEC}/etc/lord"
 )
 
 # EXPERIMENTAL: Can we define slashed tab-completable array keys
@@ -388,8 +389,7 @@ alias vsrcrc="$EDITOR ~/.config/Code/User/keybindings.json"
 alias vrc="$EDITOR ~/.vimrc"
 alias grc="$EDITOR ~/.config/ghostty/config"
 alias cgrc="cat ~/.config/ghostty/config"
-
-# alias lrc="c exec && $EDITOR etc/lord/AGENTS.md"
+alias lrc="c exec && $EDITOR etc/lord/AGENTS.md"
 
 # general
 alias xa='xargs'

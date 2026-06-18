@@ -30,7 +30,12 @@ if [[ -e AGENTS.md ]] && [[ -z "$dammit" ]]; then
     exit 1
 fi
 
-pray > AGENTS.md
+if [[ -d .git ]]; then
+    pray > AGENTS.md
+else
+    source ~/.bashrc
+    c lord
+fi
 
 if (( verbose )); then
     output="$(codex exec -- "$prompt")"
