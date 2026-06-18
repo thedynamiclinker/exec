@@ -4,58 +4,89 @@ source ~/.bashrc
 
 verbose=0
 dammit=0
+echo_only=0
 
-case "${1-}" in
-    -v|--verbose)
-        verbose=1
-        shift
-        ;;
-    -d|--dammit)
-        dammit=1
-        shift
-        ;;
-esac
+while (($#)); do
+    case "$1" in
+        -v|--verbose) verbose=1; shift ;;
+        -d|--dammit)  dammit=1;  shift ;;
+        @echo)         echo_only=1; shift ;;
+        *) break ;;
+    esac
+done
 
-prompt="$*"
+args=()
+for x; do
+    case "$x" in
+        @echo) echo_only=1 ;;
+        *)     args+=( "$x" ) ;;
+    esac
+done
+
+flags=()
+mapfile -t flags < <(@ y "${args[@]}")
+
+prompt="$(@ n "${args[@]}")"
 
 cleanup() {
     local rc=$?
     rm -f AGENTS.md
     exit "$rc"
 }
-trap cleanup EXIT INT TERM HUP
 
-if [[ -e AGENTS.md ]] && [[ -z "$dammit" ]]; then
-    echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
-    exit 1
-fi
+run_codex() {
+    cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
-if [[ -d .git ]]; then
-    pray > AGENTS.md
-else
-    source ~/.bashrc
-    c lord
-fi
-
-if (( verbose )); then
-    output="$(codex exec -- "$prompt")"
-else
-    err="$(mktemp)"
-    output="$(codex exec -- "$prompt" 2>"$err")"
-    status=$?
-
-    if (( status != 0 )); then
-        cat "$err" >&2
-        rm -f "$err"
-        exit "$status"
+    if (( echo_only )); then
+        printf '%q ' "${cmd[@]}"
+        printf '\n'
+        return
     fi
 
-    rm -f "$err"
+    if (( verbose )); then
+        "${cmd[@]}"
+    else
+        err="$(mktemp)"
+        output="$("${cmd[@]}" 2>"$err")"
+        status=$?
+
+        if (( status != 0 )); then
+            cat "$err" >&2
+            rm -f "$err"
+            exit "$status"
+        fi
+
+        rm -f "$err"
+
+        latest="$(date +%Y%m%d-%H%M%S.%3N)"
+        mkdir -p "$HOME/.cache/lord"
+        echo "$output" | tee "$HOME/.cache/lord/$latest"
+    fi
+}
+
+if [[ -d .git ]]; then
+    if [[ -e AGENTS.md ]] && (( ! dammit )); then
+        echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+        exit 1
+    fi
+
+    if (( echo_only )); then
+        echo "pray > AGENTS.md"
+        run_codex
+        echo "rm -f AGENTS.md"
+        exit 0
+    fi
+
+    pray > AGENTS.md
+    trap cleanup EXIT INT TERM HUP
+    run_codex
+else
+    if (( echo_only )); then
+        echo "c lord"
+        run_codex
+        exit 0
+    fi
+
+    c lord || exit
+    run_codex
 fi
-
-rm -f AGENTS.md
-
-latest="$(date +%Y%m%d-%H%M%S.%3N)"
-echo "$output" | tee "$HOME/.cache/lord/$latest"
-
-exit 0

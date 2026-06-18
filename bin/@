@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# ~ $ echo hey there --baby --cakes @you @looking @good | @ y
+# --you
+# --looking
+# --good
+#
+# ~ $ echo hey there --baby --cakes @you @looking @good | @ n
+# hey
+# there
+# --baby
+# --cakes
+
+mode=$1
+shift
+
+args=()
+
+if [[ -t 0 ]]; then
+    args=( "$@" )
+else
+    read -ra args
+    args+=( "$@" )
+fi
+
+ats=()
+rest=()
+
+for x in "${args[@]}"; do
+    case $x in
+        @*) ats+=( "--${x#@}" ) ;;
+        *)  rest+=( "$x" ) ;;
+    esac
+done
+
+case $mode in
+    y) printf '%s\n' "${ats[@]}" ;;
+    n) printf '%s\n' "${rest[@]}" ;;
+    *) printf 'usage: %s y|n [args...]\n' "$0" >&2; exit 2 ;;
+esac
