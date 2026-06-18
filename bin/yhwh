@@ -3,10 +3,15 @@
 source ~/.bashrc
 
 verbose=0
+dammit=0
 
 case "${1-}" in
     -v|--verbose)
         verbose=1
+        shift
+        ;;
+    -d|--dammit)
+        dammit=1
         shift
         ;;
 esac
@@ -20,7 +25,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM HUP
 
-if [[ -e AGENTS.md ]]; then
+if [[ -e AGENTS.md ]] && [[ -z "$dammit" ]]; then
     echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
     exit 1
 fi
@@ -28,12 +33,10 @@ fi
 pray > AGENTS.md
 
 if (( verbose )); then
-    #output="$(codex exec -C "$root" -- "$prompt")"
-    output="$(codex exec --sandbox workspace-write -- "$prompt")"
+    output="$(codex exec --skip-git-repo-check -- "$prompt")"
 else
     err="$(mktemp)"
-    #output="$(codex exec -C "$root" -- "$prompt" 2>"$err")"
-    output="$(codex exec --sandbox workspace-write -- "$prompt" 2>"$err")"
+    output="$(codex exec --skip-git-repo-check -- "$prompt" 2>"$err")"
     status=$?
 
     if (( status != 0 )); then
