@@ -6,35 +6,36 @@ verbose=0
 echo_only=0
 use_tempdir=1
 flags=()
+prompt_args=()
 
-while (($#)); do
-    case "$1" in
+for x; do
+    case "$x" in
         -v|--verbose)
             verbose=1
-            shift
             ;;
         @echo)
             echo_only=1
-            shift
             ;;
         @yhwh)
             flags+=( --skip-git-repo-check )
             use_tempdir=0
-            shift
+            ;;
+        @*)
+            flags+=( "--${x#@}" )
             ;;
         *)
-            break
+            prompt_args+=( "$x" )
             ;;
     esac
 done
 
-prompt="$*"
+prompt="${prompt_args[*]}"
 
 cleanup() {
     rm -f AGENTS.md
 }
 
-run_codex() {
+run() {
     local err output status
     local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
@@ -81,8 +82,7 @@ main() {
 
     pray > AGENTS.md
     trap cleanup EXIT INT TERM HUP
-
-    run_codex
+    run
 }
 
-main "$@"
+main
