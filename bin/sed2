@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-lord="$(select-lord "$@")"
-"$lord" "Act like a differentiable version of sed and print any line from stdin after transforming it with the following irregular expression: $@"
+lord "Act like a differentiable version of sed and print any line from stdin after transforming it with the following irregular expression:" $@

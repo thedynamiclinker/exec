@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-lord="$(select-lord "$@")"
-"$lord" "Act like a differentiable version of the sort command, and sort input lines by the following criteria: $@"
+lord "Act like a differentiable version of the sort command, and sort input lines by the following criteria:" $@
