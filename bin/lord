@@ -25,7 +25,8 @@ done
 flags=()
 for x in "${args[@]}"; do
     case "$x" in
-        @*) flags+=( "--${x#@}" ) ;;
+        @yhwh) flags+=( "--skip-git-repo-check" ) ;;
+        @*)    flags+=( "--${x#@}" ) ;;
     esac
 done
 
@@ -50,8 +51,8 @@ run_codex() {
 
     if (( echo_only )); then
         printf 'codex exec'
-        printf ' %s' "${flags[@]}"
-        printf ' -- "%s"\n' "$prompt"
+        printf ' %q' "${flags[@]}"
+        printf ' -- %q\n' "$prompt"
         return
     fi
 
