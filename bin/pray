@@ -184,7 +184,7 @@ If stdin is not a tty, then read from stdin, and assume the text you are being a
 
 # Verbose Mode
 
-If --verbose is found in argv, then print logging messages to stderr, but never to stdout.
+If -v/--verbose is found in argv, then print logging messages to stderr, but never to stdout.
 
 
 # Dry run mode

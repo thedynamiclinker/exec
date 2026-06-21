@@ -31,10 +31,6 @@ done
 
 prompt="${prompt_args[*]}"
 
-cleanup() {
-    rm -f AGENTS.md
-}
-
 run() {
     local err output status
     local cmd=( codex exec "${flags[@]}" -- "$prompt" )
@@ -76,13 +72,20 @@ main() {
     fi
 
     if [[ -e AGENTS.md ]]; then
-        echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
-        exit 1
+        echo "AGENTS.md already exists, leaving it as is."
+        #echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+        #exit 1
+    else
+        pray > AGENTS.md
     fi
 
-    pray > AGENTS.md
-    trap cleanup EXIT INT TERM HUP
+    # trap cleanup EXIT INT TERM HUP
+
     run
+}
+
+cleanup() {
+    rm -f AGENTS.md
 }
 
 main
