@@ -275,7 +275,6 @@ alias rmv='rm -v'
 alias sm='synergy-share'
 alias ud='updatedb'
 alias rn='ranger'
-alias e="$EDITOR"
 alias b='popd'
 
 # download highest quality
