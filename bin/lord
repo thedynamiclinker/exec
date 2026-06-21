@@ -5,6 +5,7 @@ source ~/.bashrc
 verbose=0
 echo_only=0
 use_tempdir=1
+force=0
 flags=()
 prompt_args=()
 
@@ -12,6 +13,9 @@ for x; do
     case "$x" in
         -v|--verbose)
             verbose=1
+            ;;
+        -f|--force)
+            force=1
             ;;
         @echo)
             echo_only=1
@@ -72,14 +76,14 @@ main() {
     fi
 
     if [[ -e AGENTS.md ]]; then
-        echo "AGENTS.md already exists, leaving it as is."
-        #echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
-        #exit 1
+        if ! (( force )); then
+            echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+            exit 1
+        fi
     else
         pray > AGENTS.md
+        trap cleanup EXIT INT TERM HUP
     fi
-
-    # trap cleanup EXIT INT TERM HUP
 
     run
 }
