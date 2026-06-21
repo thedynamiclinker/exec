@@ -14,7 +14,7 @@ for x; do
         -v|--verbose)
             verbose=1
             ;;
-        -f|--force)
+        -f|--force|--dont-panic)
             force=1
             ;;
         @echo)
