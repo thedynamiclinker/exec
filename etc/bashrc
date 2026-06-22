@@ -237,7 +237,6 @@ alias l="ls -1"
 alias ll="ls -al"
 alias duh="du -hd0"
 alias grep="grep -P --color=auto --exclude-dir=.git --exclude='*.html' --exclude='*.ps' --exclude='*.pdf' --exclude-dir='__pycache__' --exclude='*.pyc'"
-alias s="grep -P --color=auto --exclude-dir=.git --exclude='*.html' --exclude='*.ps' --exclude='*.pdf' --exclude-dir='__pycache__' --exclude='*.pyc'"
 alias less="less -R"
 alias lsof='lsof +c 15'  # show as many characters of process name as we can
 alias diff='diff -u'
@@ -613,7 +612,6 @@ nixos_rebuild_boot() { nixos-rebuild boot --flake ".#$(hostname)"; }
 nixos_list_generations() { nix-env --list-generations --profile /nix/var/nix/profiles/system; }
 nixos_delete_generations() { sudo nix-env -p /nix/var/nix/profiles/system --delete-generations +${1:-2}; }
 
-alias n="echo /etc/nixos/configuration.nix"
 alias nn="cat /etc/nixos/configuration.nix"
 alias nw="nix_which"
 alias ns="nix --quiet --quiet search nixpkgs"
