@@ -2,27 +2,71 @@
 
 source ~/.bashrc
 
+set -euo pipefail
+
+exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
 verbose=0
 echo_only=0
-use_tempdir=1
-force=1  # rename the arg later
+profile="${LORD_PROFILE:-unix-command}"
+use_agents=1
+created_agents=0
 flags=()
 prompt_args=()
 
-for x; do
-    case "$x" in
+log() {
+    if ((verbose)); then
+        printf 'lord: %s\n' "$*" >&2
+    fi
+}
+
+cleanup() {
+    if ((created_agents)); then
+        rm -f AGENTS.md
+    fi
+}
+
+while (($#)); do
+    case "$1" in
         -v|--verbose)
             verbose=1
+            shift
             ;;
         -f|--force|--dont-panic)
-            force=1
+            flags+=( --dangerously-bypass-approvals-and-sandbox )
+            shift
             ;;
+        --)
+            shift
+            prompt_args+=( "$@" )
+            break
+            ;;
+        -*)
+            prompt_args+=( "$1" )
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+for x; do
+    case "$x" in
         @echo)
             echo_only=1
             ;;
         @yhwh)
             flags+=( --skip-git-repo-check )
-            use_tempdir=0
+            use_agents=0
+            ;;
+        @pray=*)
+            profile="${x#@pray=}"
+            ;;
+        @profile=*)
+            profile="${x#@profile=}"
+            ;;
+        @no-agents)
+            use_agents=0
             ;;
         @*)
             flags+=( "--${x#@}" )
@@ -33,27 +77,72 @@ for x; do
     esac
 done
 
+if [[ ! -d .git ]]; then
+    flags+=( --skip-git-repo-check -s workspace-write )
+fi
+
 prompt="${prompt_args[*]}"
 
-run() {
-    local err output status
-    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
+install_agents() {
+    local file name target
+    local matches=()
 
-    if (( echo_only )); then
-        echo "${cmd[@]}"
+    if ! ((use_agents)); then
+        return 0
+    fi
+
+    if [[ -e AGENTS.md ]]; then
+        log "using existing AGENTS.md"
         return
     fi
 
-    if (( verbose )); then
+    shopt -s nullglob
+    for file in "$exec_root"/etc/lord/*.md; do
+        name="$(basename -- "$file")"
+        if [[ "$name" =~ $profile || "$file" =~ $profile ]]; then
+            matches+=( "$file" )
+        fi
+    done
+
+    if ((${#matches[@]} != 1)); then
+        {
+            echo "The lord cannot hear your prayer:"
+            printf '%s\n' "${matches[@]}"
+        } >&2
+        exit 1
+    fi
+
+    target="${matches[0]}"
+    ln -s -- "$target" AGENTS.md
+    created_agents=1
+    trap cleanup EXIT INT TERM HUP
+    log "linked AGENTS.md -> $target"
+}
+
+run() {
+    local err output status latest
+    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
+
+    if ((echo_only)); then
+        printf '%q ' "${cmd[@]}"
+        printf '\n'
+        return
+    fi
+
+    log "running: ${cmd[*]}"
+
+    if ((verbose)); then
         "${cmd[@]}"
         return
     fi
 
     err="$(mktemp)"
+    set +e
     output="$("${cmd[@]}" 2>"$err")"
     status=$?
+    set -e
 
-    if (( status != 0 )); then
+    if ((status != 0)); then
         cat "$err" >&2
         rm -f "$err"
         return "$status"
@@ -63,33 +152,8 @@ run() {
 
     latest="$(date +%Y%m%d-%H%M%S.%3N)"
     mkdir -p "$HOME/.cache/lord"
-    echo "$output" | tee "$HOME/.cache/lord/$latest"
+    printf '%s\n' "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
-main() {
-    if [[ -d .git ]]; then
-        use_tempdir=0
-    fi
-
-    if (( use_tempdir )); then
-        cd "$(mktemp -d)" || exit
-    fi
-
-    if [[ -e AGENTS.md ]]; then
-        if ! (( force )); then
-            echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
-            exit 1
-        fi
-    else
-        pray > AGENTS.md
-        trap cleanup EXIT INT TERM HUP
-    fi
-
-    run
-}
-
-cleanup() {
-    rm -f AGENTS.md
-}
-
-main
+install_agents
+run
