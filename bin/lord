@@ -228,7 +228,7 @@ parse_args() {
             @unix|@command) mode=unix ;;
             @repo|@git) mode=repo ;;
             @non-git|@directory) mode=non-git ;;
-            @bible|@nameless|@we-the-nameless) profile=bible ;;
+            @book|@bible|@nameless|@we|@we-the-nameless) profile=bible ;;
             @agents=*) profile="${x#@agents=}" ;;
             @*) codex_flags+=("--${x#@}") ;;
             *) prompt_args+=("$x") ;;
