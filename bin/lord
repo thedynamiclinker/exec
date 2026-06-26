@@ -7,11 +7,60 @@ set -euo pipefail
 exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
 verbose=0
 echo_only=0
-profile="${LORD_PROFILE:-unix-command}"
+profile="${LORD_PROFILE:-}"
 use_agents=1
 created_agents=0
 flags=()
 prompt_args=()
+
+usage() {
+    cat <<'EOF'
+usage: lord [options] [@options] [prompt ...]
+
+Run codex exec with a temporary AGENTS.md profile unless ./AGENTS.md exists.
+
+Options:
+  -h, --help                  show this help
+  -v, --verbose               show wrapper behavior and stream codex output
+  -f, --force, --dont-panic   pass --dangerously-bypass-approvals-and-sandbox
+      --fast, --quick         set reasoning effort to low
+      --accurate, --careful   set reasoning effort to high
+      --very-careful, --xhigh set reasoning effort to xhigh
+      --effort LEVEL          set effort: low, medium, high, xhigh
+      --thinking LEVEL        same as --effort
+      --                      stop option parsing
+
+@options:
+  @echo                       print the codex exec command instead of running it
+  @yhwh                       pass --skip-git-repo-check and do not use AGENTS.md
+  @no-agents                  do not use AGENTS.md
+  @profile=NAME              select a profile
+  @agents=NAME               same as @profile
+  @pray=NAME                 same as @profile
+  @effort=LEVEL              set effort: low, medium, high, xhigh
+  @thinking=LEVEL            same as @effort
+  @fast, @quick              set reasoning effort to low
+  @accurate, @careful        set reasoning effort to high
+  @very-careful, @xhigh      set reasoning effort to xhigh
+  @FLAG                      pass --FLAG to codex exec
+
+Default profile:
+  ./AGENTS.md if it exists; otherwise repo inside a Git worktree; otherwise unix-command.
+EOF
+}
+
+in_git_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
+profile_pattern() {
+    case "$1" in
+        repo|git|code) printf '%s\n' 'code' ;;
+        unix|command|unix-command) printf '%s\n' 'unix-command' ;;
+        bible|nameless|we-the-nameless) printf '%s\n' 'bible' ;;
+        *) printf '%s\n' "$1" ;;
+    esac
+}
 
 set_effort() {
     local effort="$1"
@@ -42,6 +91,10 @@ cleanup() {
 
 while (($#)); do
     case "$1" in
+        -h|--help)
+            usage
+            exit
+            ;;
         -v|--verbose)
             verbose=1
             shift
@@ -91,6 +144,10 @@ done
 
 while (($#)); do
     case "$1" in
+        -h|--help)
+            usage
+            exit
+            ;;
         @echo)
             echo_only=1
             shift
@@ -168,14 +225,24 @@ while (($#)); do
     esac
 done
 
-if [[ ! -d .git ]]; then
+if [[ -z "$profile" ]]; then
+    if [[ -e AGENTS.md ]]; then
+        profile=
+    elif in_git_repo; then
+        profile=repo
+    else
+        profile=unix-command
+    fi
+fi
+
+if ! in_git_repo; then
     flags+=( --skip-git-repo-check -s workspace-write )
 fi
 
 prompt="${prompt_args[*]}"
 
 install_agents() {
-    local file name target
+    local file name target pattern
     local matches=()
 
     if ! ((use_agents)); then
@@ -187,10 +254,12 @@ install_agents() {
         return
     fi
 
+    pattern="$(profile_pattern "$profile")"
+
     shopt -s nullglob
     for file in "$exec_root"/etc/lord/*.md; do
         name="$(basename -- "$file")"
-        if [[ "$name" =~ $profile || "$file" =~ $profile ]]; then
+        if [[ "$name" =~ $pattern || "$file" =~ $pattern ]]; then
             matches+=( "$file" )
         fi
     done
