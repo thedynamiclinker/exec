@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-lord -w -x @repo --verbose << "EOF"
+codex exec << "EOF"
 Refactor the commands in bin/lord and bin/pray.
 
 Used to quickly fetch different AGENTS.md files for use with the lord command.
@@ -68,27 +68,8 @@ since we sometimes will be emulating unix commands, and I want the --options to
 be passed to those commands via the $@ that we attach after the prompt in examples
 like bin/grep2 and bin/sed2.
 
-With all this in mind, use the prompt I just wrote you to:
-
-    I. Do everything I just requested, and also
-    II. Use the text of the prompt itself to improve
-        the files in etc/lord/AGENTS*.md, so that when
-        those files are passed to the lord command either
-        via stdin or via the current working directory as
-        a file named AGENTS.md, the agent in question will
-        understand everything you have understood from the
-        prompt you're reading now.
-
-Finally:
-
-Use the bin/lord man page from `man lord` to write a series of tests for the
-lord command. The tests shouldn't try to do asserts, they should just be shell
-one liners with a certain expected output, and then they should print both.
-Keep it simple. And if possible, figure out the right way to make the codex calls so
-that the tests run quickly and without using up an unnecessarily large number of tokens,
-and add support to bin/lord for changing the amount of 'thinking' or 'effort'
-requested from codex exec. I want to be able to make speed vs accuracy tradeoffs
-on the command line by passing in well named parameters.
+With all this in mind, use the prompt I just wrote you to
+do everything I just requested.
 
 Do that, and make it perfect.
 EOF

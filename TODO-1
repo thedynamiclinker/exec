@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+lord --verbose << "EOF"
+Use the bin/lord man page from `man lord` to write a series of tests for the
+lord command. The tests shouldn't try to do asserts, they should just be shell
+one liners with a certain expected output, and then they should print both.
+Keep it simple. And if possible, figure out the right way to make the codex calls so
+that the tests run quickly and without using up an unnecessarily large number of tokens,
+and add support to bin/lord for changing the amount of 'thinking' or 'effort'
+requested from codex exec. I want to be able to make speed vs accuracy tradeoffs
+on the command line by passing in well named parameters.
+EOF
