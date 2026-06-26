@@ -1,6 +1,109 @@
 #!/usr/bin/env bash
 
 lord -w -x @repo --verbose << "EOF"
+Refactor the commands in bin/lord and bin/pray.
+
+Used to quickly fetch different AGENTS.md files for use with the lord command.
+
+Note: This is currently a HERE document, but I want to delete the current
+implementation and replace it with a very short script that will take a
+regex on argv and match it against $EXEC/etc/lord/*.md, catting the file
+in cases of a unique match, or saying "The lord cannot hear your prayer:"
+followed by the multiple files matched in the case where the match is
+empty or non-unique. (Note: $EXEC refers to the repo root.)
+
+I want a clearer separation of the following use cases:
+
+    1.  Unix Command:
+        Sometimes we want the agent to act like a unix command with software 2.0 like capabilities,
+        for instance in the files bin/grep2, bin/sed2, bin/sort2, and so on.
+
+        In the "act like a unix command" use cases, the agent should somehow be given the AGENTS.md
+        file stored in etc/lord/AGENTS-unix-command.md.
+
+    2.  Git Repo:
+        Sometimes I want to run the lord command from inside a git repo, have the agent operate on
+        all the files in that directory and its subdirectories, and return its results as a series
+        of uncommitted changes that I'll inspect with git diff. This is the typical mode of operation
+        of most agents, and thus doesn't require much tweaking of the default behavior.
+
+        In the "modify this git repo" use cases, the agent should somehow be given the AGENTS.md
+        file stored in etc/lord/AGENTS-unix-command.md.
+
+        We the Nameless:
+        This is a LuaLaTeX project I've been working on, involving some pretty intensive LaTeX and
+        formatting requirements that are different from a typical software project. This is an
+        instance of item 2, except the AGENTS.md file in this case is about 2000 lines long.
+
+        In these cases, the default should be:
+
+        A. READs allowed on any file in that directory or its subdirectories,
+           unless we pass -R/--no-read on the lord command's argv.
+
+        B. WRITESs allowed on any file in that directory or its subdirectories,
+           unless we pass -W/--no-write on the lord command's argv.
+
+        C. EXECs allowed on any file in that directory or its subdirectories,
+           or any program in $PATH (though see Exception 1)
+           unless we pass -X/--no-exec on the lord command's argv.
+
+    3.  Non Git Repo:
+
+        Sometimes we want to operate on a directory that is not a git repo.
+
+        In these cases, the default should be:
+
+        A. READs allowed on any file in that directory or its subdirectories.
+
+        B. WRITEs not allowed unless we pass a flag like -w/--write via the
+           lord command's argv.
+
+        C. EXECs not allowed unless we pass a flag like -x/--exec via the
+           lord command's argv.
+
+       [1] Exception 1: with the exception of commands whose pathname
+       (a) is installed in the user's home directory or any of its subdirectories
+           and not installed system wide, and which also
+       (b) contains a word like private or secret as one of its parent directories.
+
+There's an issue with how we pass the AGENTS.md file. Ideally we'd do this by passing a
+command line flag that says "here's the path to the AGENTS.md file to use," but that
+appears not to be possible with codex or codex exec, so the best approach may be to
+write a symlink into the current directory that will be deleted when the process finishes.
+
+However, I would also like to be able to run the lord command in places that aren't
+git repos, primarily for information gathering (e.g., grep -r like behavior) and
+I don't want to have to write an AGENTS.md to the current working directory if
+we don't have to.
+
+If there's an AGENTS.md file already, don't overwrite it unless -f/--force is passed
+on the lord command's argv.
+
+The lord command should never print logging messages unless -v/--verbose is passed,
+and in those cases it should print them to stderr.
+
+Whenever possible, information usually passed via AGENTS.md should be passed via stdin,
+if that can be done without changing the lord command's behavior.
+
+You should retain or improve upon the existing system for separating --options from
+@options when passed to the lord command, and allow @options to control the behavior
+of codex itself, while --options are passed on the lord command's command line,
+since we sometimes will be emulating unix commands, and I want the --options to
+be passed to those commands via the $@ that we attach after the prompt in examples
+like bin/grep2 and bin/sed2.
+
+With all this in mind, use the prompt I just wrote you to:
+
+    I. Do everything I just requested, and also
+    II. Use the text of the prompt itself to improve
+        the files in etc/lord/AGENTS*.md, so that when
+        those files are passed to the lord command either
+        via stdin or via the current working directory as
+        a file named AGENTS.md, the agent in question will
+        understand everything you have understood from the
+        prompt you're reading now.
+
+Do that, and make it perfect.
 Use the bin/lord man page from `man lord` to write a series of tests for the
 lord command. The tests shouldn't try to do asserts, they should just be shell
 one liners with a certain expected output, and then they should print both.

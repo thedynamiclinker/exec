@@ -1,313 +1,95 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
-exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
+source ~/.bashrc
 
 verbose=0
 echo_only=0
-force=0
-mode=
-profile=
-read_allowed=1
-write_allowed=
-exec_allowed=
-codex_flags=()
+use_tempdir=1
+force=1  # rename the arg later
+flags=()
 prompt_args=()
-stdin=
-had_stdin=0
-agents_moved=
-agents_linked=0
 
-log() {
-    if ((verbose)); then
-        printf 'lord: %s\n' "$*" >&2
-    fi
-    return 0
-}
-
-die() {
-    printf '%s\n' "$*" >&2
-    exit 1
-}
-
-quote_cmd() {
-    printf '%q ' "$@"
-    printf '\n'
-}
-
-is_git_repo() {
-    git rev-parse --is-inside-work-tree >/dev/null 2>&1
-}
-
-profile_path() {
-    case "$1" in
-        unix|command|unix-command) printf '%s\n' "$exec_root/etc/lord/AGENTS-unix.md" ;;
-        code|repo|git) printf '%s\n' "$exec_root/etc/lord/AGENTS-code.md" ;;
-        bible|nameless|we-the-nameless) printf '%s\n' "$exec_root/etc/lord/AGENTS-bible.md" ;;
-        */*) printf '%s\n' "$1" ;;
-        *) "$exec_root/bin/pray" "$1" >/dev/null; find "$exec_root/etc/lord" -maxdepth 1 -type f -name '*.md' -printf '%p\n' | sort | grep -E -- "$1" ;;
+for x; do
+    case "$x" in
+        -v|--verbose)
+            verbose=1
+            ;;
+        -f|--force|--dont-panic)
+            force=1
+            ;;
+        @echo)
+            echo_only=1
+            ;;
+        @yhwh)
+            flags+=( --skip-git-repo-check )
+            use_tempdir=0
+            ;;
+        @*)
+            flags+=( "--${x#@}" )
+            ;;
+        *)
+            prompt_args+=( "$x" )
+            ;;
     esac
-}
+done
 
-private_path() {
-    local path="${1/#\~/$HOME}"
-    [[ "$path" == "$HOME"/* ]] || return 1
-    [[ "/${path#$HOME/}/" =~ /([^/]*private[^/]*|[^/]*secret[^/]*)/ ]]
-}
+prompt="${prompt_args[*]}"
 
-safe_path() {
-    local oldifs=$IFS part out=()
-    IFS=:
-    for part in $PATH; do
-        if private_path "$part"; then
-            log "removing private PATH entry: $part"
-            continue
-        fi
-        out+=( "$part" )
-    done
-    IFS=$oldifs
-    (IFS=:; printf '%s\n' "${out[*]}")
-}
-
-cleanup() {
-    local status=$?
-    if ((agents_linked)); then
-        rm -f AGENTS.md
-    fi
-    if [[ -n "$agents_moved" ]]; then
-        mv -- "$agents_moved" AGENTS.md
-    fi
-    exit "$status"
-}
-
-install_agents_link() {
-    local agents=$1
-
-    if [[ -e AGENTS.md || -L AGENTS.md ]]; then
-        if ((!force)); then
-            log "using existing AGENTS.md"
-            return
-        fi
-        agents_moved=".AGENTS.md.lord.$$"
-        mv -- AGENTS.md "$agents_moved"
-        log "temporarily moved AGENTS.md to $agents_moved"
-    fi
-
-    ln -s -- "$agents" AGENTS.md
-    agents_linked=1
-    trap cleanup EXIT INT TERM HUP
-    log "linked AGENTS.md -> $agents"
-}
-
-read_stdin() {
-    if [[ ! -t 0 ]]; then
-        had_stdin=1
-        stdin="$(cat)"
-    fi
-}
-
-runtime_rules() {
-    cat <<EOF
-
-# lord runtime
-
-Invocation mode: $mode
-Working directory: $PWD
-
-Read permission: $read_allowed
-Write permission: $write_allowed
-Exec permission: $exec_allowed
-
-If Read permission is 0, do not inspect files unless their content was supplied by the user.
-If Write permission is 0, do not create, modify, rename, or delete files.
-If Exec permission is 0, do not run shell commands.
-If Exec permission is 1, do not run a command from a pathname under the user's home directory when one of its parent directories contains "private" or "secret" unless a system-wide command of the same name is used instead.
-EOF
-}
-
-prompt_with_agents() {
-    local agents=$1
-    {
-        cat "$agents"
-        runtime_rules
-        printf '\n# user prompt\n\n%s\n' "$prompt"
-    }
-}
-
-stdin_with_agents() {
-    local agents=$1
-    {
-        cat "$agents"
-        runtime_rules
-        if [[ -n "$stdin" ]]; then
-            printf '\n# stdin\n\n%s' "$stdin"
-            [[ "$stdin" == *$'\n' ]] || printf '\n'
-        fi
-    }
-}
-
-run_codex() {
+run() {
     local err output status
-    local cmd=(codex exec "${codex_flags[@]}" -- "$prompt")
+    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
-    if ((echo_only)); then
-        quote_cmd "${cmd[@]}"
+    if (( echo_only )); then
+        echo "${cmd[@]}"
         return
     fi
 
-    if ((verbose)); then
+    if (( verbose )); then
         "${cmd[@]}"
         return
     fi
 
     err="$(mktemp)"
-    output="$("${cmd[@]}" 2>"$err")" || status=$?
-    status=${status:-0}
+    output="$("${cmd[@]}" 2>"$err")"
+    status=$?
 
-    if ((status != 0)); then
+    if (( status != 0 )); then
         cat "$err" >&2
         rm -f "$err"
         return "$status"
     fi
 
     rm -f "$err"
+
+    latest="$(date +%Y%m%d-%H%M%S.%3N)"
     mkdir -p "$HOME/.cache/lord"
-    printf '%s\n' "$output" | tee "$HOME/.cache/lord/$(date +%Y%m%d-%H%M%S.%3N)"
-}
-
-run_codex_with_stdin() {
-    local err output status input
-    local cmd=(codex exec "${codex_flags[@]}" -- "$prompt")
-    input=$1
-
-    if ((echo_only)); then
-        printf '%s | ' "$input"
-        quote_cmd "${cmd[@]}"
-        return
-    fi
-
-    if ((verbose)); then
-        printf '%s' "$input" | "${cmd[@]}"
-        return
-    fi
-
-    err="$(mktemp)"
-    output="$(printf '%s' "$input" | "${cmd[@]}" 2>"$err")" || status=$?
-    status=${status:-0}
-
-    if ((status != 0)); then
-        cat "$err" >&2
-        rm -f "$err"
-        return "$status"
-    fi
-
-    rm -f "$err"
-    mkdir -p "$HOME/.cache/lord"
-    printf '%s\n' "$output" | tee "$HOME/.cache/lord/$(date +%Y%m%d-%H%M%S.%3N)"
-}
-
-parse_args() {
-    local x
-
-    for x; do
-        case "$x" in
-            -v|--verbose) verbose=1 ;;
-            -f|--force|--dont-panic) force=1 ;;
-            -R|--no-read) read_allowed=0 ;;
-            -W|--no-write) write_allowed=0 ;;
-            -w|--write) write_allowed=1 ;;
-            -X|--no-exec) exec_allowed=0 ;;
-            -x|--exec) exec_allowed=1 ;;
-            --unix|--command) mode=unix ;;
-            --repo|--git) mode=repo ;;
-            --non-git|--directory) mode=non-git ;;
-            --agents=*) profile="${x#--agents=}" ;;
-            @echo) echo_only=1 ;;
-            @yhwh) mode=non-git; codex_flags+=(--skip-git-repo-check) ;;
-            @unix|@command) mode=unix ;;
-            @repo|@git) mode=repo ;;
-            @non-git|@directory) mode=non-git ;;
-            @book|@bible|@nameless|@we|@we-the-nameless) profile=bible ;;
-            @agents=*) profile="${x#@agents=}" ;;
-            @*) codex_flags+=("--${x#@}") ;;
-            *) prompt_args+=("$x") ;;
-        esac
-    done
+    echo "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
 main() {
-    local agents sandbox input
+    if [[ -d .git ]]; then
+        use_tempdir=0
+    fi
 
-    parse_args "$@"
-    read_stdin
-    prompt="${prompt_args[*]}"
+    if (( use_tempdir )); then
+        cd "$(mktemp -d)" || exit
+    fi
 
-    if [[ -z "$mode" ]]; then
-        if ((had_stdin)); then
-            mode=unix
-        elif is_git_repo; then
-            mode=repo
-        else
-            mode=non-git
+    if [[ -e AGENTS.md ]]; then
+        if ! (( force )); then
+            echo "AGENTS.md already exists, but we need to overwrite it before the lord can work."
+            exit 1
         fi
-    fi
-
-    case "$mode" in
-        unix)
-            profile="${profile:-unix}"
-            write_allowed=${write_allowed:-0}
-            exec_allowed=${exec_allowed:-0}
-            codex_flags+=(--skip-git-repo-check -s read-only)
-            ;;
-        repo)
-            profile="${profile:-code}"
-            write_allowed=${write_allowed:-1}
-            exec_allowed=${exec_allowed:-1}
-            sandbox=workspace-write
-            if ((!write_allowed)); then
-                sandbox=read-only
-            fi
-            codex_flags+=(-s "$sandbox")
-            ;;
-        non-git)
-            profile="${profile:-code}"
-            write_allowed=${write_allowed:-0}
-            exec_allowed=${exec_allowed:-0}
-            sandbox=read-only
-            if ((write_allowed)); then
-                sandbox=workspace-write
-            fi
-            codex_flags+=(--skip-git-repo-check -s "$sandbox")
-            ;;
-        *) die "unknown lord mode: $mode" ;;
-    esac
-
-    agents="$(profile_path "$profile")"
-    [[ -f "$agents" ]] || die "no AGENTS profile: $profile"
-
-    if ((!read_allowed)); then
-        codex_flags+=(-s read-only)
-    fi
-
-    if ((exec_allowed)); then
-        export PATH
-        PATH="$(safe_path)"
-    fi
-
-    log "mode=$mode"
-    log "profile=$agents"
-
-    if [[ "$mode" == repo ]]; then
-        install_agents_link "$agents"
-        run_codex
-    elif ((had_stdin)); then
-        input="$(stdin_with_agents "$agents")"
-        run_codex_with_stdin "$input"
     else
-        prompt="$(prompt_with_agents "$agents")"
-        run_codex
+        pray > AGENTS.md
+        trap cleanup EXIT INT TERM HUP
     fi
+
+    run
 }
 
-main "$@"
+cleanup() {
+    rm -f AGENTS.md
+}
+
+main

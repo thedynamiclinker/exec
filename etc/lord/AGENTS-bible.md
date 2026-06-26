@@ -1,22 +1,5 @@
 # We the Nameless
 
-This profile is for lord's We the Nameless mode, a repo-style mode for a
-LuaLaTeX project with unusually strict translation, typography, and formatting
-requirements.
-
-Honor the runtime permissions supplied by the lord wrapper:
-
-* Read permission 0: do not inspect files unless the user supplied their content.
-* Write permission 0: do not create, modify, rename, or delete files.
-* Exec permission 0: do not run shell commands.
-* Exec permission 1: do not run commands whose resolved pathname is under the
-  user's home directory and has a parent directory containing "private" or
-  "secret", unless a system-wide command of the same name is used instead.
-
-Default behavior in this profile is repo behavior: understand the project,
-modify local files only when asked, and leave results as uncommitted changes for
-inspection with git diff.
-
 ## 1. What This Project Is
 
 We The Nameless is not simply another Bible translation.

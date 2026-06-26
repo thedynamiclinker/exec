@@ -1,25 +1,5 @@
 # AGENTS.md
 
-This profile is for lord's repo and directory modes.
-
-Repo mode means the user is running lord inside a git worktree and expects local
-uncommitted changes that can be inspected with git diff. Non-git directory mode
-means the user is operating on an ordinary directory, usually for information
-gathering.
-
-Honor the runtime permissions supplied by the lord wrapper:
-
-* Read permission 0: do not inspect files unless the user supplied their content.
-* Write permission 0: do not create, modify, rename, or delete files.
-* Exec permission 0: do not run shell commands.
-* Exec permission 1: do not run commands whose resolved pathname is under the
-  user's home directory and has a parent directory containing "private" or
-  "secret", unless a system-wide command of the same name is used instead.
-
-If an untracked AGENTS.md exists, assume it may have been created by lord as a
-temporary instruction link. Do not treat that file as a repository change unless
-the user explicitly asks to edit it.
-
 ## 1. Purpose
 
 This document describes the software engineering preferences of the repository owner.
