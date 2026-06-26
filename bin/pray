@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Note: This is currently a HERE document, but I want to delete the current
+# implementation and replace it with a very short script that will take a
+# regex on argv and match it against $EXEC/etc/lord/*.md, catting the file
+# in cases of a unique match, or saying "The lord cannot hear your prayer:"
+# followed by the multiple files matched in the case where the match is
+# empty or non-unique. (Note: $EXEC refers to the repo root.)
+
 cat << "EOF"
 # User
 
