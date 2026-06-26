@@ -84,6 +84,10 @@ paths=(
     "${EXEC}/lib/bash"
 )
 
+man_paths=(
+    "${EXEC}/share/man"
+)
+
 python_paths=(
     "${EXEC}/lib/python"
 )
@@ -154,6 +158,26 @@ for d in ${paths[@]}; do
     [[ -d "$d" ]] && add_to_path "$d"
 done
 
+# MANPATH
+add_to_man_path () {
+    case ":${MANPATH:-}:" in
+        *:"$1":*) ;;
+        *)
+            if [[ -z ${MANPATH:-} ]]; then
+                MANPATH="$1:"
+            elif [[ $MANPATH == *: ]]; then
+                MANPATH="${MANPATH}$1:"
+            else
+                MANPATH="${MANPATH}:$1:"
+            fi
+            ;;
+    esac
+}
+
+for d in ${man_paths[@]}; do
+    [[ -d "$d" ]] && add_to_man_path "$d"
+done
+
 # PYTHONPATH
 for d in ${python_paths[@]}; do
     [[ -d "$d" ]] && add_to_python_path "$d"
@@ -175,6 +199,7 @@ fi
 
 # export the variables for subprocesses
 export PATH="$PATH"
+export MANPATH="${MANPATH:-}"
 export PYTHONPATH="$PYTHONPATH"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
 

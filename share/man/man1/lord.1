@@ -1,0 +1,333 @@
+.TH LORD 1 "June 2026" "exec" "User Commands"
+.SH NAME
+lord \- run Codex as a Unix command, repository agent, or directory agent
+.SH SYNOPSIS
+.SY lord
+.RI [ option | @option ]...
+.RI [ prompt ...]
+.YS
+.SY lord
+.RI [ option | @option ]...
+.RI [ prompt ...]
+<
+.I input
+.YS
+.SY pray
+.RI [ pattern ]
+.YS
+.SH DESCRIPTION
+.B lord
+is a wrapper around
+.BR "codex exec" .
+It chooses an AGENTS profile, adds runtime permission rules, chooses a Codex
+sandbox, and runs the prompt through Codex.
+.PP
+The command has three modes:
+.TP
+.B unix
+Command-filter mode.  Standard input and command-line arguments are treated as
+the input to a text transformation, like
+.BR grep ,
+.BR sed ,
+.BR awk ,
+.BR sort ,
+or
+.BR jq
+with intelligence added.  Output should be only the answer.
+.TP
+.B repo
+Git worktree mode.  The current directory is treated as a repository that may
+be inspected and edited.  Results are left as local changes for inspection with
+.BR "git diff" .
+.TP
+.B non-git
+Directory mode.  The current directory is treated as an ordinary directory,
+usually for information gathering.  It is read-only by default.
+.PP
+If no mode is supplied,
+.B lord
+uses
+.B unix
+mode when stdin is present,
+.B repo
+mode inside a Git worktree, and
+.B non-git
+mode otherwise.
+.SH OPTIONS
+.TP
+.BR -v ", " --verbose
+Print verbose wrapper behavior and run Codex without capturing output.
+.TP
+.BR -f ", " --force ", " --dont-panic
+In repo mode, temporarily move an existing
+.I AGENTS.md
+aside and install the selected profile as
+.IR AGENTS.md .
+Without this option an existing
+.I AGENTS.md
+is left in place.
+.TP
+.BR -R ", " --no-read
+Tell the agent not to inspect files unless their contents were supplied by the
+user.  Also forces a read-only Codex sandbox.
+.TP
+.BR -W ", " --no-write
+Tell the agent not to create, modify, rename, or delete files.
+.TP
+.BR -w ", " --write
+Permit writes when the selected mode would otherwise default to read-only.
+.TP
+.BR -X ", " --no-exec
+Tell the agent not to run shell commands.
+.TP
+.BR -x ", " --exec
+Permit command execution.  Before running Codex,
+.B lord
+removes PATH entries under
+.I $HOME
+whose parent directories contain
+.I private
+or
+.IR secret .
+.TP
+.BR --unix ", " --command ", " @unix ", " @command
+Select
+.B unix
+mode.
+.TP
+.BR --repo ", " --git ", " @repo ", " @git
+Select
+.B repo
+mode.
+.TP
+.BR --non-git ", " --directory ", " @non-git ", " @directory
+Select
+.B non-git
+mode.
+.TP
+.BR --agents= PROFILE ", " @agents= PROFILE
+Select an AGENTS profile.  Known aliases include
+.BR unix ,
+.BR command ,
+.BR unix-command ,
+.BR code ,
+.BR repo ,
+.BR git ,
+.BR bible ,
+.BR nameless ,
+and
+.BR we-the-nameless .
+Values containing a slash are interpreted as file paths.  Other values are
+matched against Markdown files in
+.IR $EXEC/etc/lord .
+.TP
+.B @bible
+.TQ
+.B @nameless
+.TQ
+.B @we-the-nameless
+Select the Bible profile.
+.TP
+.B @yhwh
+Select
+.B non-git
+mode and pass
+.B --skip-git-repo-check
+to Codex.
+.TP
+.B @echo
+Print the
+.B codex exec
+command that would be run instead of running it.
+.TP
+.BI @ flag
+Pass
+.BI -- flag
+through to
+.BR "codex exec" .
+.SH MODES AND PERMISSIONS
+.SS unix mode
+The default profile is
+.IR AGENTS-unix.md .
+Writes and command execution default to disabled.
+.B lord
+passes
+.B --skip-git-repo-check
+and
+.B "-s read-only"
+to Codex.
+.PP
+This mode is for software-2.0 command-line tools: prompts describe
+transformations, stdin and argv are the input, and stdout is the product.
+The profile asks the agent to avoid greetings, summaries, markdown, commentary,
+and explanations unless explicitly requested.
+.PP
+The Unix profile also defines agent-level conventions for recursive,
+in-place, and dry-run requests:
+.B --recursive
+or
+.B -r
+means to consider files below the current directory;
+.B --in-place
+or
+.B -i
+means to edit matching files only in a clean Git tree, treating an untracked
+.I AGENTS.md
+as clean; and
+.B --dry-run
+or
+.B -n
+means to print a Git-style patch instead of editing.
+These are instructions to the agent, not options parsed by the
+.B lord
+shell wrapper.
+.SS repo mode
+The default profile is
+.IR AGENTS-code.md .
+Writes and command execution default to enabled.
+The Codex sandbox is
+.B workspace-write
+unless writes are disabled, in which case it is
+.BR read-only .
+.PP
+In repo mode,
+.B lord
+installs the selected profile as
+.I AGENTS.md
+in the working directory for the duration of the Codex run.  If
+.B --force
+is used and an
+.I AGENTS.md
+already exists, it is moved to a temporary file and restored on exit.
+.PP
+The code profile describes repository and directory engineering preferences:
+reduce fundamental concepts, prefer correctness and readability over brevity,
+separate data, algorithms, presentation, persistence, interfaces, and
+configuration, favor declarative data, avoid unnecessary abstractions, preserve
+stable APIs, and keep Git history coherent.
+.SS non-git mode
+The default profile is
+.IR AGENTS-code.md .
+Writes and command execution default to disabled.
+.B lord
+passes
+.B --skip-git-repo-check
+to Codex and uses a
+.B read-only
+sandbox unless writes are enabled with
+.BR --write .
+.PP
+Non-git mode is repo-style behavior without assuming there is a Git repository:
+understand the directory, inspect files when allowed, and modify local files
+only when explicitly permitted.
+.SH PROFILES
+.TP
+.I AGENTS-unix.md
+The Unix command profile.  It makes
+.B lord
+act like a terse command-line filter: transform input, preserve formatting when
+reasonable, prefer shell/POSIX/Python-stdlib tools, and print only the requested
+output.
+.TP
+.I AGENTS-code.md
+The general code profile for Git repositories and ordinary directories.  It
+documents the author's engineering taste: conceptual simplicity, bottom-up
+mechanisms, strong naming, orthogonal APIs, automation, Unix composability,
+and explanations that identify the responsible layer and invariant.
+.TP
+.I AGENTS-bible.md
+The We the Nameless profile.  It is repo-style mode for a LuaLaTeX Bible
+translation, source-critical edition, commentary, typography project, and
+software project.  It emphasizes semantic markup over presentation, data and
+generation over repetition, historical nuance, typography as commentary,
+Hebrew and source-critical structure, and conservative refactoring.
+.PP
+.B pray
+prints exactly one matching profile from
+.I $EXEC/etc/lord
+or reports all ambiguous matches.  Its default pattern is
+.BR unix .
+.SH INPUT HANDLING
+If stdin is not a terminal,
+.B lord
+reads it completely.  In
+.B unix
+and
+.B non-git
+mode that stdin is sent to Codex after the selected profile and runtime rules.
+In
+.B repo
+mode the prompt is passed as a normal
+.B codex exec
+prompt after the temporary
+.I AGENTS.md
+link is installed.
+.PP
+When stdin is absent outside repo mode,
+.B lord
+constructs a prompt containing the selected AGENTS profile, runtime rules, and
+the user prompt.
+.SH OUTPUT AND CACHE
+Without
+.B --verbose
+or
+.BR @echo ,
+.B lord
+captures Codex stdout, prints it, and writes a copy to
+.I $HOME/.cache/lord
+using a timestamped filename.
+.PP
+If Codex exits non-zero,
+.B lord
+prints Codex stderr and returns the failing status.
+.SH ENVIRONMENT
+.TP
+.B EXEC
+Root of the exec checkout.  If unset,
+.B lord
+derives it from the location of the
+.B lord
+script.
+.TP
+.B PATH
+Used to find
+.BR codex ,
+.BR git ,
+and other commands.  With
+.BR --exec ,
+private or secret home-directory entries are removed before Codex is invoked.
+.TP
+.B HOME
+Used for the output cache and private-path detection.
+.SH FILES
+.TP
+.I $EXEC/bin/lord
+The main wrapper.
+.TP
+.I $EXEC/bin/pray
+Profile lookup helper.
+.TP
+.I $EXEC/etc/lord/AGENTS-*.md
+Profiles consumed by
+.B lord
+and
+.BR pray .
+.TP
+.I $EXEC/share/man/man1/lord.1
+This manual page.
+.TP
+.I $HOME/.cache/lord
+Timestamped captured outputs.
+.SH EXAMPLES
+.EX
+echo INPUT | lord "uppercase it"
+lord --repo "fix the failing test"
+lord --non-git --write "rename these files consistently"
+lord @agents=bible "explain the semantic layer before editing"
+lord @echo --repo "show me the codex command"
+pray unix
+.EE
+.SH SEE ALSO
+.BR codex (1),
+.BR git (1),
+.BR man (1)
