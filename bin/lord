@@ -13,6 +13,21 @@ created_agents=0
 flags=()
 prompt_args=()
 
+set_effort() {
+    local effort="$1"
+
+    case "$effort" in
+        low|medium|high|xhigh) ;;
+        *)
+            printf 'lord: unknown effort: %s\n' "$effort" >&2
+            printf 'lord: expected one of: low medium high xhigh\n' >&2
+            exit 2
+            ;;
+    esac
+
+    flags+=( -c "model_reasoning_effort=\"$effort\"" )
+}
+
 log() {
     if ((verbose)); then
         printf 'lord: %s\n' "$*" >&2
@@ -35,6 +50,30 @@ while (($#)); do
             flags+=( --dangerously-bypass-approvals-and-sandbox )
             shift
             ;;
+        --fast|--quick)
+            set_effort low
+            shift
+            ;;
+        --accurate|--careful)
+            set_effort high
+            shift
+            ;;
+        --very-careful|--xhigh)
+            set_effort xhigh
+            shift
+            ;;
+        --effort|--thinking)
+            if (($# < 2)); then
+                printf 'lord: %s needs an argument\n' "$1" >&2
+                exit 2
+            fi
+            set_effort "$2"
+            shift 2
+            ;;
+        --effort=*|--thinking=*)
+            set_effort "${1#*=}"
+            shift
+            ;;
         --)
             shift
             prompt_args+=( "$@" )
@@ -50,29 +89,81 @@ while (($#)); do
     esac
 done
 
-for x; do
-    case "$x" in
+while (($#)); do
+    case "$1" in
         @echo)
             echo_only=1
+            shift
             ;;
         @yhwh)
             flags+=( --skip-git-repo-check )
             use_agents=0
+            shift
             ;;
         @pray=*)
-            profile="${x#@pray=}"
+            profile="${1#@pray=}"
+            shift
             ;;
-        @profile=*)
-            profile="${x#@profile=}"
+        @profile=*|@agents=*)
+            profile="${1#*=}"
+            shift
+            ;;
+        @effort=*|@thinking=*)
+            set_effort "${1#*=}"
+            shift
+            ;;
+        @fast|@quick)
+            set_effort low
+            shift
+            ;;
+        @accurate|@careful)
+            set_effort high
+            shift
+            ;;
+        @very-careful|@xhigh)
+            set_effort xhigh
+            shift
+            ;;
+        --fast|--quick)
+            set_effort low
+            shift
+            ;;
+        --accurate|--careful)
+            set_effort high
+            shift
+            ;;
+        --very-careful|--xhigh)
+            set_effort xhigh
+            shift
+            ;;
+        --effort|--thinking)
+            if (($# < 2)); then
+                printf 'lord: %s needs an argument\n' "$1" >&2
+                exit 2
+            fi
+            set_effort "$2"
+            shift 2
+            ;;
+        --effort=*|--thinking=*)
+            set_effort "${1#*=}"
+            shift
             ;;
         @no-agents)
             use_agents=0
+            shift
+            ;;
+        --)
+            shift
+            prompt_args+=( "$@" )
+            break
             ;;
         @*)
-            flags+=( "--${x#@}" )
+            flags+=( "--${1#@}" )
+            shift
             ;;
         *)
-            prompt_args+=( "$x" )
+            prompt_args+=( "$1" )
+            shift
             ;;
     esac
 done
@@ -124,7 +215,8 @@ run() {
     local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if ((echo_only)); then
-        printf '%q ' "${cmd[@]}"
+        printf '%q' "${cmd[0]}"
+        printf ' %q' "${cmd[@]:1}"
         printf '\n'
         return
     fi

@@ -67,6 +67,27 @@ Without this option an existing
 .I AGENTS.md
 is left in place.
 .TP
+.BR --fast ", " --quick ", " @fast ", " @quick
+Request low Codex reasoning effort.  This is the speed-biased setting.
+.TP
+.BR --accurate ", " --careful ", " @accurate ", " @careful
+Request high Codex reasoning effort.
+.TP
+.BR --very-careful ", " --xhigh ", " @very-careful ", " @xhigh
+Request extra-high Codex reasoning effort.
+.TP
+.BR --effort " " LEVEL ", " --thinking " " LEVEL ", " --effort= LEVEL ", " --thinking= LEVEL
+.TQ
+.BR @effort= LEVEL ", " @thinking= LEVEL
+Set Codex reasoning effort explicitly.
+.I LEVEL
+must be
+.BR low ,
+.BR medium ,
+.BR high ,
+or
+.BR xhigh .
+.TP
 .BR -R ", " --no-read
 Tell the agent not to inspect files unless their contents were supplied by the
 user.  Also forces a read-only Codex sandbox.
