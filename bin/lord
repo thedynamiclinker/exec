@@ -45,7 +45,9 @@ Options:
   @FLAG                      pass --FLAG to codex exec
 
 Default profile:
-  ./AGENTS.md if it exists; otherwise repo inside a Git worktree; otherwise unix-command.
+    Use ./AGENTS.md if it exists;
+    Otherwise use repo profile if we're inside a git repo;
+    Otherwise use unix-command profile.
 EOF
 }
 
@@ -235,7 +237,7 @@ if [[ -z "$profile" ]]; then
     fi
 fi
 
-if ! in_git_repo; then
+if in_git_repo; then
     flags+=( --skip-git-repo-check -s workspace-write )
 fi
 
