@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# French version of git push.
+# Pronounced "Get poosayy"
+
+git push $*
