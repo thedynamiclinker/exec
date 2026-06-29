@@ -3,24 +3,23 @@
 set -euo pipefail
 
 exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
-pattern="${*:-}"
+profile="${*:-repo}"
 
-matches=()
-shopt -s nullglob
-for file in "$exec_root"/etc/lord/*.md; do
-    name="$(basename -- "$file")"
-    if [[ "$name" =~ $pattern || "$file" =~ $pattern ]]; then
-        matches+=( "$file" )
-    fi
-done
+case "$profile" in
+    repo|git|code) profile=repo ;;
+    unix|command|unix-command|filter) profile=unix ;;
+    book|bible|nameless|we-the-nameless) profile=book ;;
+    *)
+        printf 'pray: unknown profile: %s\n' "$profile" >&2
+        printf 'pray: expected one of: repo unix book\n' >&2
+        exit 2
+        ;;
+esac
 
-if ((${#matches[@]} == 1)); then
-    cat -- "${matches[0]}"
-    exit
+file="$exec_root/etc/lord/AGENTS-$profile.md"
+if [[ ! -f "$file" ]]; then
+    printf 'pray: missing profile file: %s\n' "$file" >&2
+    exit 1
 fi
 
-{
-    echo "The lord cannot hear your prayer:"
-    printf '%s\n' "${matches[@]}"
-} >&2
-exit 1
+cat -- "$file"

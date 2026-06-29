@@ -5,49 +5,54 @@ source ~/.bashrc
 set -euo pipefail
 
 exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
+
 verbose=0
 echo_only=0
-profile="${LORD_PROFILE:-}"
 use_agents=1
 created_agents=0
+profile="${LORD_PROFILE:-}"
 flags=()
 prompt_args=()
+lock_dir=
 
 usage() {
     cat <<'EOF'
-usage: lord [options] [@options] [prompt ...]
+usage: lord [options] [@mode] [prompt ...]
 
-Run codex exec with a temporary AGENTS.md profile unless ./AGENTS.md exists.
+Run codex exec with one of three AGENTS.md modes:
+
+  @repo    code/repository work. Default inside a Git worktree.
+  @unix    Unix-filter work. Default outside a Git worktree.
+  @book    long-form explanation, exegesis, and careful reading.
+
+If ./AGENTS.md is a real local file, lord leaves it alone and Codex reads it.
+If ./AGENTS.md is one of lord's own profile links, lord may replace it.
 
 Options:
-  -h, --help                  show this help
-  -v, --verbose               show wrapper behavior and stream codex output
-  -f, --force, --dont-panic   pass --dangerously-bypass-approvals-and-sandbox
-      --fast, --quick         set reasoning effort to low
-      --accurate, --careful   set reasoning effort to high
-      --very-careful, --xhigh set reasoning effort to xhigh
-      --effort LEVEL          set effort: low, medium, high, xhigh
-      --thinking LEVEL        same as --effort
-      --                      stop option parsing
+  -h, --help            show this help
+  -v, --verbose         show wrapper behavior and stream codex output
+  -f, --force           pass --dangerously-bypass-approvals-and-sandbox
+      --effort LEVEL    set reasoning effort: low, medium, high, xhigh
+      --fast            same as --effort low
+      --careful         same as --effort high
+      --xhigh           same as --effort xhigh
+      --no-agents       do not install an AGENTS.md profile
+      --profile NAME    select profile by name: repo, unix, book
+      --                stop option parsing
 
 @options:
-  @echo                       print the codex exec command instead of running it
-  @yhwh                       pass --skip-git-repo-check and do not use AGENTS.md
-  @no-agents                  do not use AGENTS.md
-  @profile=NAME              select a profile
-  @agents=NAME               same as @profile
-  @pray=NAME                 same as @profile
-  @effort=LEVEL              set effort: low, medium, high, xhigh
-  @thinking=LEVEL            same as @effort
-  @fast, @quick              set reasoning effort to low
-  @accurate, @careful        set reasoning effort to high
-  @very-careful, @xhigh      set reasoning effort to xhigh
-  @FLAG                      pass --FLAG to codex exec
+  @repo, @unix, @book   select mode
+  @profile=NAME        select profile by name
+  @no-agents           do not install an AGENTS.md profile
+  @echo                print the codex exec command instead of running it
+  @effort=LEVEL        set reasoning effort
+  @fast, @careful,
+  @xhigh               effort shorthands
+  @FLAG                pass --FLAG to codex exec
 
-Default profile:
-    Use ./AGENTS.md if it exists;
-    Otherwise use repo profile if we're inside a git repo;
-    Otherwise use unix-command profile.
+Sandbox:
+  In a Git worktree, lord always adds -s workspace-write.
+  Unix mode also gets workspace-write, even outside Git.
 EOF
 }
 
@@ -55,13 +60,19 @@ in_git_repo() {
     git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
-profile_pattern() {
-    case "$1" in
-        repo|git|code) printf '%s\n' 'code' ;;
-        unix|command|unix-command) printf '%s\n' 'unix-command' ;;
-        bible|nameless|we-the-nameless) printf '%s\n' 'bible' ;;
-        *) printf '%s\n' "$1" ;;
-    esac
+log() {
+    if ((verbose)); then
+        printf 'lord: %s\n' "$*" >&2
+    fi
+}
+
+cleanup() {
+    if ((created_agents)); then
+        rm -f AGENTS.md
+    fi
+    if [[ -n "$lock_dir" ]]; then
+        rmdir -- "$lock_dir" 2>/dev/null || true
+    fi
 }
 
 set_effort() {
@@ -79,19 +90,51 @@ set_effort() {
     flags+=( -c "model_reasoning_effort=\"$effort\"" )
 }
 
-log() {
-    if ((verbose)); then
-        printf 'lord: %s\n' "$*" >&2
-    fi
+canonical_profile() {
+    case "$1" in
+        repo|git|code) printf '%s\n' repo ;;
+        unix|command|unix-command|filter) printf '%s\n' unix ;;
+        book|bible|nameless|we-the-nameless) printf '%s\n' book ;;
+        "")
+            printf 'lord: empty profile name\n' >&2
+            exit 2
+            ;;
+        *)
+            printf 'lord: unknown profile: %s\n' "$1" >&2
+            printf 'lord: expected one of: repo unix book\n' >&2
+            exit 2
+            ;;
+    esac
 }
 
-cleanup() {
-    if ((created_agents)); then
-        rm -f AGENTS.md
-    fi
+select_profile() {
+    profile="$(canonical_profile "$1")"
 }
 
-while (($#)); do
+profile_file() {
+    printf '%s/etc/lord/AGENTS-%s.md\n' "$exec_root" "$profile"
+}
+
+agents_link_is_ours() {
+    local link target abs_target
+
+    [[ -L AGENTS.md ]] || return 1
+
+    link="$(readlink -- AGENTS.md)" || return 1
+    case "$link" in
+        /*) target="$link" ;;
+        *) target="$PWD/$link" ;;
+    esac
+
+    abs_target="$(realpath -m -- "$target")"
+    [[ "$abs_target" == "$exec_root"/etc/lord/AGENTS-*.md ]]
+}
+
+real_local_agents_exists() {
+    [[ -e AGENTS.md || -L AGENTS.md ]] && ! agents_link_is_ours
+}
+
+parse_option() {
     case "$1" in
         -h|--help)
             usage
@@ -99,101 +142,53 @@ while (($#)); do
             ;;
         -v|--verbose)
             verbose=1
-            shift
             ;;
         -f|--force|--dont-panic)
             flags+=( --dangerously-bypass-approvals-and-sandbox )
-            shift
             ;;
-        --fast|--quick)
-            set_effort low
-            shift
-            ;;
-        --accurate|--careful)
-            set_effort high
-            shift
-            ;;
-        --very-careful|--xhigh)
-            set_effort xhigh
-            shift
-            ;;
-        --effort|--thinking)
-            if (($# < 2)); then
-                printf 'lord: %s needs an argument\n' "$1" >&2
-                exit 2
-            fi
-            set_effort "$2"
-            shift 2
-            ;;
-        --effort=*|--thinking=*)
-            set_effort "${1#*=}"
-            shift
-            ;;
-        --)
-            shift
-            prompt_args+=( "$@" )
-            break
-            ;;
-        -*)
-            prompt_args+=( "$1" )
-            shift
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-
-while (($#)); do
-    case "$1" in
-        -h|--help)
-            usage
-            exit
+        --no-agents|@no-agents)
+            use_agents=0
             ;;
         @echo)
             echo_only=1
-            shift
             ;;
         @yhwh)
-            flags+=( --skip-git-repo-check )
             use_agents=0
-            shift
+            flags+=( --skip-git-repo-check )
             ;;
-        @pray=*)
-            profile="${1#@pray=}"
-            shift
+        --fast|@fast|--quick|@quick)
+            set_effort low
             ;;
-        @profile=*|@agents=*)
-            profile="${1#*=}"
-            shift
+        --careful|@careful|--accurate|@accurate)
+            set_effort high
+            ;;
+        --xhigh|@xhigh|--very-careful|@very-careful)
+            set_effort xhigh
+            ;;
+        @repo|@unix|@book)
+            select_profile "${1#@}"
+            ;;
+        @profile=*|@agents=*|@pray=*)
+            select_profile "${1#*=}"
             ;;
         @effort=*|@thinking=*)
             set_effort "${1#*=}"
-            shift
             ;;
-        @fast|@quick)
-            set_effort low
-            shift
+        @*)
+            flags+=( "--${1#@}" )
             ;;
-        @accurate|@careful)
-            set_effort high
-            shift
+        *)
+            return 1
             ;;
-        @very-careful|@xhigh)
-            set_effort xhigh
+    esac
+}
+
+while (($#)); do
+    case "$1" in
+        --)
             shift
-            ;;
-        --fast|--quick)
-            set_effort low
-            shift
-            ;;
-        --accurate|--careful)
-            set_effort high
-            shift
-            ;;
-        --very-careful|--xhigh)
-            set_effort xhigh
-            shift
+            prompt_args+=( "$@" )
+            break
             ;;
         --effort|--thinking)
             if (($# < 2)); then
@@ -202,87 +197,112 @@ while (($#)); do
             fi
             set_effort "$2"
             shift 2
+            continue
             ;;
         --effort=*|--thinking=*)
             set_effort "${1#*=}"
             shift
+            continue
             ;;
-        @no-agents)
-            use_agents=0
-            shift
+        --profile|--agents)
+            if (($# < 2)); then
+                printf 'lord: %s needs an argument\n' "$1" >&2
+                exit 2
+            fi
+            select_profile "$2"
+            shift 2
+            continue
             ;;
-        --)
+        --profile=*|--agents=*)
+            select_profile "${1#*=}"
             shift
-            prompt_args+=( "$@" )
-            break
-            ;;
-        @*)
-            flags+=( "--${1#@}" )
-            shift
-            ;;
-        *)
-            prompt_args+=( "$1" )
-            shift
+            continue
             ;;
     esac
+
+    if parse_option "$1"; then
+        shift
+    else
+        prompt_args+=( "$1" )
+        shift
+    fi
 done
 
-if [[ -z "$profile" ]]; then
-    if [[ -e AGENTS.md ]]; then
-        profile=
-    elif in_git_repo; then
-        profile=repo
-    else
-        profile=unix-command
-    fi
-fi
-
+git_repo=0
 if in_git_repo; then
-    flags+=( --skip-git-repo-check -s workspace-write )
+    git_repo=1
 fi
 
-prompt="${prompt_args[*]}"
+if [[ -n "$profile" ]]; then
+    profile="$(canonical_profile "$profile")"
+elif real_local_agents_exists; then
+    profile=
+elif ((git_repo)); then
+    profile=repo
+else
+    profile=unix
+fi
+
+if ((git_repo)); then
+    flags+=( --skip-git-repo-check -s workspace-write )
+elif [[ "$profile" == unix ]]; then
+    flags+=( --skip-git-repo-check -s workspace-write )
+else
+    flags+=( --skip-git-repo-check )
+fi
 
 install_agents() {
-    local file name target pattern
-    local matches=()
+    local target
 
     if ! ((use_agents)); then
+        if agents_link_is_ours; then
+            rm -f AGENTS.md
+        fi
         return 0
     fi
 
-    if [[ -e AGENTS.md ]]; then
-        log "using existing AGENTS.md"
-        return
+    [[ -n "$profile" ]] || return 0
+
+    if real_local_agents_exists; then
+        log "using real local AGENTS.md"
+        return 0
     fi
 
-    pattern="$(profile_pattern "$profile")"
-
-    shopt -s nullglob
-    for file in "$exec_root"/etc/lord/*.md; do
-        name="$(basename -- "$file")"
-        if [[ "$name" =~ $pattern || "$file" =~ $pattern ]]; then
-            matches+=( "$file" )
-        fi
-    done
-
-    if ((${#matches[@]} != 1)); then
-        {
-            echo "The lord cannot hear your prayer:"
-            printf '%s\n' "${matches[@]}"
-        } >&2
+    target="$(profile_file)"
+    if [[ ! -f "$target" ]]; then
+        printf 'lord: missing profile file: %s\n' "$target" >&2
         exit 1
     fi
 
-    target="${matches[0]}"
+    if agents_link_is_ours; then
+        rm -f AGENTS.md
+    fi
+
     ln -s -- "$target" AGENTS.md
     created_agents=1
     trap cleanup EXIT INT TERM HUP
     log "linked AGENTS.md -> $target"
 }
 
+lock_worktree_agents() {
+    local i
+    lock_dir=".lord-agents.lock"
+
+    for i in {1..100}; do
+        if mkdir -- "$lock_dir" 2>/dev/null; then
+            trap cleanup EXIT INT TERM HUP
+            return 0
+        fi
+        sleep 0.1
+    done
+
+    printf 'lord: timed out waiting for %s\n' "$lock_dir" >&2
+    exit 1
+}
+
 run() {
-    local err output status latest
+    local err output status latest prompt
+    prompt="${prompt_args[*]}"
     local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if ((echo_only)); then
@@ -318,5 +338,6 @@ run() {
     printf '%s\n' "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
+lock_worktree_agents
 install_agents
 run

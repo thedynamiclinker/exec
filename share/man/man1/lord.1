@@ -1,46 +1,45 @@
 .TH LORD 1 "June 2026" "exec" "User Commands"
 .SH NAME
-lord \- run Codex with local AGENTS instructions
+lord \- run Codex with a clear AGENTS profile
 .SH SYNOPSIS
 .SY lord
-.RI [ option | @option ]...
+.RI [ option | @mode | @option ]...
 .RI [ prompt ...]
-.YS
-.SY lord
-.RI [ option | @option ]...
-.RI [ prompt ...]
-<
-.I input
 .YS
 .SY pray
-.RI [ pattern ]
+.RI [ repo | unix | book ]
 .YS
 .SH DESCRIPTION
 .B lord
 is a small wrapper around
 .BR "codex exec" .
-It chooses an AGENTS profile when needed, adds a few Codex flags, runs the
-prompt through Codex, and caches captured stdout.
+It chooses an AGENTS profile, applies a few Codex flags, runs the prompt
+through Codex, and caches captured stdout.
+.PP
+There are three modes:
+.TP
+.B @repo
+Repository and code work.  This is the default inside a Git worktree.
+.TP
+.B @unix
+Unix-filter work: read stdin, transform it, and print only the requested
+output.  This is the default outside a Git worktree.
+.TP
+.B @book
+Long-form explanation, exegesis, and careful reading.
 .PP
 If
 .I ./AGENTS.md
-exists,
+is a real local file or an unrelated local symlink,
 .B lord
-uses it as-is.  In that case no internal profile is installed and the file is
-not overwritten.
-.PP
-If
+leaves it alone.  If
 .I ./AGENTS.md
-does not exist,
+is one of
+.BR lord 's
+own profile links,
 .B lord
-temporarily links one internal profile into the current directory for the
-Codex run, then removes that link on exit.
-.PP
-The default profile is
-.B repo
-inside a Git worktree or any of its subdirectories.  Outside a Git worktree the
-default profile is
-.BR unix-command .
+may replace it with the selected profile and removes the link when the run
+finishes.
 .SH OPTIONS
 .TP
 .BR -h ", " --help
@@ -50,25 +49,14 @@ Print help and exit.
 Print verbose wrapper behavior to stderr and run Codex without capturing
 stdout.
 .TP
-.BR -f ", " --force ", " --dont-panic
+.BR -f ", " --force
 Pass
 .B --dangerously-bypass-approvals-and-sandbox
 through to
 .BR "codex exec" .
 .TP
-.BR --fast ", " --quick ", " @fast ", " @quick
-Request low Codex reasoning effort.
-.TP
-.BR --accurate ", " --careful ", " @accurate ", " @careful
-Request high Codex reasoning effort.
-.TP
-.BR --very-careful ", " --xhigh ", " @very-careful ", " @xhigh
-Request extra-high Codex reasoning effort.
-.TP
-.BR --effort " " LEVEL ", " --thinking " " LEVEL ", " --effort= LEVEL ", " --thinking= LEVEL
-.TQ
-.BR @effort= LEVEL ", " @thinking= LEVEL
-Set Codex reasoning effort explicitly.
+.BR --effort " " LEVEL ", " --effort= LEVEL ", " @effort= LEVEL
+Set Codex reasoning effort.
 .I LEVEL
 must be
 .BR low ,
@@ -76,6 +64,38 @@ must be
 .BR high ,
 or
 .BR xhigh .
+.TP
+.BR --fast ", " @fast
+Request low Codex reasoning effort.
+.TP
+.BR --careful ", " @careful
+Request high Codex reasoning effort.
+.TP
+.BR --xhigh ", " @xhigh
+Request extra-high Codex reasoning effort.
+.TP
+.BR --profile " " NAME ", " --profile= NAME ", " @profile= NAME
+Select a profile by name.
+.I NAME
+must be
+.BR repo ,
+.BR unix ,
+or
+.BR book .
+Legacy aliases
+.BR git ,
+.BR code ,
+.BR command ,
+.BR unix-command ,
+.BR filter ,
+.BR bible ,
+.BR nameless ,
+and
+.B we-the-nameless
+are accepted.
+.TP
+.BR --no-agents ", " @no-agents
+Do not install an AGENTS.md profile.
 .TP
 .B @echo
 Print the
@@ -85,26 +105,9 @@ command that would be run instead of running it.
 .B @yhwh
 Pass
 .B --skip-git-repo-check
-to Codex and do not use an AGENTS file.
-.TP
-.B @no-agents
-Do not use an AGENTS file.
-.TP
-.BR @profile= PROFILE ", " @agents= PROFILE ", " @pray= PROFILE
-Select an internal AGENTS profile.
-Known aliases include
-.BR unix ,
-.BR command ,
-.BR unix-command ,
-.BR repo ,
-.BR git ,
-.BR code ,
-.BR bible ,
-.BR nameless ,
-and
-.BR we-the-nameless .
-Aliases are matched against Markdown files in
-.IR $EXEC/etc/lord .
+to Codex and do not use an AGENTS file.  This legacy option remains for the
+.BR yhwh (1)
+wrapper.
 .TP
 .BI @ flag
 Pass
@@ -114,71 +117,36 @@ through to
 .TP
 .B --
 Stop wrapper option parsing.  Remaining arguments become part of the prompt.
-.SH PROFILE SELECTION
-.TP
-.B unix-command
-Uses
-.IR $EXEC/etc/lord/AGENTS-unix-command.md .
-This profile makes
-.B lord
-act like a terse Unix filter: transform input and print only the requested
-output.
-.TP
-.B repo
-Uses
-.IR $EXEC/etc/lord/AGENTS-code.md .
-The aliases
-.BR git
-and
-.B code
-select the same profile.
-.TP
-.B bible
-Uses
-.IR $EXEC/etc/lord/AGENTS-bible.md .
-The aliases
-.BR nameless
-and
-.B we-the-nameless
-select the same profile.
-.PP
-Profile matching is implemented by matching the selected profile string against
-the basename or full path of files under
-.IR $EXEC/etc/lord .
-The match must select exactly one file.
-.SH GIT HANDLING
+.SH SANDBOX
 Inside a Git worktree,
 .B lord
-runs
-.B codex exec
-normally.
+always passes
+.B "-s workspace-write"
+to Codex.  It never leaves a Git checkout in read-only mode.
 .PP
 Outside a Git worktree,
 .B lord
 passes
-.B --skip-git-repo-check
-and
-.B "-s workspace-write"
-to Codex.
-.SH INPUT HANDLING
-.B lord
-does not pre-process stdin.  Stdin is inherited by
-.BR "codex exec" .
-Command-line arguments that are not wrapper options are joined with spaces to
-form the Codex prompt.
-.SH OUTPUT AND CACHE
-Without
-.B --verbose
-or
-.BR @echo ,
-.B lord
-captures Codex stdout, prints it, and writes a copy to
+.B --skip-git-repo-check .
+Unix mode also gets
+.BR "-s workspace-write" .
+.SH FILES
+.TP
+.I $EXEC/etc/lord/AGENTS-repo.md
+The repository profile.
+.TP
+.I $EXEC/etc/lord/AGENTS-unix.md
+The Unix-filter profile.
+.TP
+.I $EXEC/etc/lord/AGENTS-book.md
+The book profile.
+.TP
+.I ./AGENTS.md
+Local instructions.  Real local files are preserved; internal profile links may
+be replaced for the current run.
+.TP
 .I $HOME/.cache/lord
-using a timestamped filename.
-.PP
-If Codex exits non-zero,
-.B lord
-prints Codex stderr and returns the failing status.
+Timestamped captured outputs.
 .SH ENVIRONMENT
 .TP
 .B EXEC
@@ -188,34 +156,12 @@ derives it from the location of the script.
 .TP
 .B LORD_PROFILE
 Default profile name.  Command-line profile selectors override it.
-.TP
-.B HOME
-Used for the output cache.
-.SH FILES
-.TP
-.I ./AGENTS.md
-Existing local instructions.  If present, this file is used as-is.
-.TP
-.I $EXEC/bin/lord
-The main wrapper.
-.TP
-.I $EXEC/bin/pray
-Profile lookup helper.
-.TP
-.I $EXEC/etc/lord/AGENTS-*.md
-Internal profiles consumed by
-.B lord
-and
-.BR pray .
-.TP
-.I $HOME/.cache/lord
-Timestamped captured outputs.
 .SH EXAMPLES
 .EX
-echo INPUT | lord "uppercase it"
-lord "fix the failing test"
-lord @agents=bible "explain the semantic layer before editing"
-lord @echo "show me the codex command"
+echo INPUT | lord @unix "uppercase it"
+lord @repo "fix the failing test"
+lord @book "explain the semantic layer before editing"
+lord @echo @repo "show me the codex command"
 pray unix
 .EE
 .SH SEE ALSO
