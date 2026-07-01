@@ -9,9 +9,10 @@ case "$profile" in
     repo|git|code) profile=repo ;;
     unix|command|unix-command|filter) profile=unix ;;
     book|bible|nameless|we-the-nameless) profile=book ;;
+    chat|ask|question|qa) profile=chat ;;
     *)
         printf 'pray: unknown profile: %s\n' "$profile" >&2
-        printf 'pray: expected one of: repo unix book\n' >&2
+        printf 'pray: expected one of: repo unix book chat\n' >&2
         exit 2
         ;;
 esac

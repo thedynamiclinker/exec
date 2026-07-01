@@ -14,16 +14,18 @@ profile="${LORD_PROFILE:-}"
 flags=()
 prompt_args=()
 lock_dir=
+chat_dir=
 
 usage() {
     cat <<'EOF'
 usage: lord [options] [@mode] [prompt ...]
 
-Run codex exec with one of three AGENTS.md modes:
+Run codex exec with one of four profiles:
 
   @repo    code/repository work. Default inside a Git worktree.
   @unix    Unix-filter work. Default outside a Git worktree.
   @book    long-form explanation, exegesis, and careful reading.
+  @chat    answer a question without touching the current worktree.
 
 If ./AGENTS.md is a real local file, lord leaves it alone and Codex reads it.
 If ./AGENTS.md is one of lord's own profile links, lord may replace it.
@@ -37,11 +39,12 @@ Options:
       --careful         same as --effort high
       --xhigh           same as --effort xhigh
       --no-agents       do not install an AGENTS.md profile
-      --profile NAME    select profile by name: repo, unix, book
+      --profile NAME    select profile by name: repo, unix, book, chat
       --                stop option parsing
 
 @options:
-  @repo, @unix, @book   select mode
+  @repo, @unix, @book,
+  @chat                select mode
   @profile=NAME        select profile by name
   @no-agents           do not install an AGENTS.md profile
   @echo                print the codex exec command instead of running it
@@ -51,8 +54,9 @@ Options:
   @FLAG                pass --FLAG to codex exec
 
 Sandbox:
-  In a Git worktree, lord always adds -s workspace-write.
+  In a Git worktree, lord adds -s workspace-write, except for @chat.
   Unix mode also gets workspace-write, even outside Git.
+  Chat mode uses read-only, ephemeral Codex execution in a temporary directory.
 EOF
 }
 
@@ -72,6 +76,9 @@ cleanup() {
     fi
     if [[ -n "$lock_dir" ]]; then
         rmdir -- "$lock_dir" 2>/dev/null || true
+    fi
+    if [[ -n "$chat_dir" ]]; then
+        rm -rf -- "$chat_dir"
     fi
 }
 
@@ -95,13 +102,14 @@ canonical_profile() {
         repo|git|code) printf '%s\n' repo ;;
         unix|command|unix-command|filter) printf '%s\n' unix ;;
         book|bible|nameless|we-the-nameless) printf '%s\n' book ;;
+        chat|ask|question|qa) printf '%s\n' chat ;;
         "")
             printf 'lord: empty profile name\n' >&2
             exit 2
             ;;
         *)
             printf 'lord: unknown profile: %s\n' "$1" >&2
-            printf 'lord: expected one of: repo unix book\n' >&2
+            printf 'lord: expected one of: repo unix book chat\n' >&2
             exit 2
             ;;
     esac
@@ -113,6 +121,10 @@ select_profile() {
 
 profile_file() {
     printf '%s/etc/lord/AGENTS-%s.md\n' "$exec_root" "$profile"
+}
+
+profile_uses_agents() {
+    [[ "$profile" != chat ]]
 }
 
 agents_link_is_ours() {
@@ -165,7 +177,7 @@ parse_option() {
         --xhigh|@xhigh|--very-careful|@very-careful)
             set_effort xhigh
             ;;
-        @repo|@unix|@book)
+        @repo|@unix|@book|@chat)
             select_profile "${1#@}"
             ;;
         @profile=*|@agents=*|@pray=*)
@@ -243,7 +255,9 @@ else
     profile=unix
 fi
 
-if ((git_repo)); then
+if [[ "$profile" == chat ]]; then
+    flags+=( --skip-git-repo-check --ephemeral -s read-only )
+elif ((git_repo)); then
     flags+=( --skip-git-repo-check -s workspace-write )
 elif [[ "$profile" == unix ]]; then
     flags+=( --skip-git-repo-check -s workspace-write )
@@ -253,6 +267,10 @@ fi
 
 install_agents() {
     local target
+
+    if ! profile_uses_agents; then
+        return 0
+    fi
 
     if ! ((use_agents)); then
         if agents_link_is_ours; then
@@ -286,6 +304,10 @@ install_agents() {
 
 lock_worktree_agents() {
     local i
+    if [[ -z "$profile" ]] || ! profile_uses_agents; then
+        return 0
+    fi
+
     lock_dir=".lord-agents.lock"
 
     for i in {1..100}; do
@@ -303,6 +325,14 @@ lock_worktree_agents() {
 run() {
     local err output status latest prompt
     prompt="${prompt_args[*]}"
+
+    if [[ "$profile" == chat ]]; then
+        chat_dir="$(mktemp -d "${TMPDIR:-/tmp}/lord-chat.XXXXXX")"
+        flags+=( -C "$chat_dir" )
+        prompt="$(cat -- "$(profile_file)")"$'\n\n'"$prompt"
+        trap cleanup EXIT INT TERM HUP
+    fi
+
     local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if ((echo_only)); then

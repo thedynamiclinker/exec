@@ -7,7 +7,7 @@ lord \- run Codex with a clear AGENTS profile
 .RI [ prompt ...]
 .YS
 .SY pray
-.RI [ repo | unix | book ]
+.RI [ repo | unix | book | chat ]
 .YS
 .SH DESCRIPTION
 .B lord
@@ -16,7 +16,7 @@ is a small wrapper around
 It chooses an AGENTS profile, applies a few Codex flags, runs the prompt
 through Codex, and caches captured stdout.
 .PP
-There are three modes:
+There are four profiles:
 .TP
 .B @repo
 Repository and code work.  This is the default inside a Git worktree.
@@ -27,6 +27,10 @@ output.  This is the default outside a Git worktree.
 .TP
 .B @book
 Long-form explanation, exegesis, and careful reading.
+.TP
+.B @chat
+Question-answering mode.  It answers the prompt directly and avoids touching
+the current worktree.
 .PP
 If
 .I ./AGENTS.md
@@ -80,8 +84,9 @@ Select a profile by name.
 must be
 .BR repo ,
 .BR unix ,
+.BR book ,
 or
-.BR book .
+.BR chat .
 Legacy aliases
 .BR git ,
 .BR code ,
@@ -90,8 +95,11 @@ Legacy aliases
 .BR filter ,
 .BR bible ,
 .BR nameless ,
+.BR we-the-nameless ,
+.BR ask ,
+.BR question ,
 and
-.B we-the-nameless
+.B qa
 are accepted.
 .TP
 .BR --no-agents ", " @no-agents
@@ -122,7 +130,8 @@ Inside a Git worktree,
 .B lord
 always passes
 .B "-s workspace-write"
-to Codex.  It never leaves a Git checkout in read-only mode.
+to Codex, except in chat mode.  It never leaves a Git checkout in read-only
+mode for repository-oriented work.
 .PP
 Outside a Git worktree,
 .B lord
@@ -130,6 +139,16 @@ passes
 .B --skip-git-repo-check .
 Unix mode also gets
 .BR "-s workspace-write" .
+.PP
+Chat mode passes
+.BR --skip-git-repo-check ,
+.BR --ephemeral ,
+and
+.BR "-s read-only" ,
+and runs Codex from a temporary empty directory.  It does not install or wait
+on a shared
+.I AGENTS.md
+profile link.
 .SH FILES
 .TP
 .I $EXEC/etc/lord/AGENTS-repo.md
@@ -140,6 +159,9 @@ The Unix-filter profile.
 .TP
 .I $EXEC/etc/lord/AGENTS-book.md
 The book profile.
+.TP
+.I $EXEC/etc/lord/AGENTS-chat.md
+The chat profile.
 .TP
 .I ./AGENTS.md
 Local instructions.  Real local files are preserved; internal profile links may
@@ -161,6 +183,7 @@ Default profile name.  Command-line profile selectors override it.
 echo INPUT | lord @unix "uppercase it"
 lord @repo "fix the failing test"
 lord @book "explain the semantic layer before editing"
+lord @chat "what is a coroutine?"
 lord @echo @repo "show me the codex command"
 pray unix
 .EE
