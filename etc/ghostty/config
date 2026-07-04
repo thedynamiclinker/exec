@@ -54,7 +54,6 @@ theme = Tomorrow Night Eighties
 #theme = Everforest Dark Hard
 #theme = Everforest Light Med
 font-size = 14
-#font-family = "DejaVu Sans Mono"
 font-family = "Noto Sans Mono"
 working-directory = ~/Desktop
 maximize = true
