@@ -53,8 +53,8 @@ background = #222222
 theme = Tomorrow Night Eighties
 #theme = Everforest Dark Hard
 #theme = Everforest Light Med
-font-size = 14
 font-family = "Noto Sans Mono"
+font-size = 14
 working-directory = ~/Desktop
 maximize = true
 keybind = ctrl+-=new_split:down
