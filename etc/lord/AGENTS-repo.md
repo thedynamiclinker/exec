@@ -362,6 +362,14 @@ Humans should solve problems.
 
 Machines should repeat themselves.
 
+Tests should be executable documentation.
+
+Ideally, a test is a one-liner, or a clear sequence of one-liners, that demonstrates the behavior directly.
+
+Avoid fake data.
+
+Tests should operate on the same kind of data the program is meant to handle at runtime.
+
 ---
 
 # 16. Unix Philosophy
