@@ -14,7 +14,7 @@ lord \- run Codex with a clear AGENTS profile
 is a small wrapper around
 .BR "codex exec" .
 It chooses an AGENTS profile, applies a few Codex flags, runs the prompt
-through Codex, and caches captured stdout.
+through Codex, and caches captured stdout in quiet runs.
 .PP
 There are four profiles:
 .TP
@@ -51,7 +51,18 @@ Print help and exit.
 .TP
 .BR -v ", " --verbose
 Print verbose wrapper behavior to stderr and run Codex without capturing
-stdout.
+stdout.  This is the default in every mode except
+.BR @unix .
+.TP
+.BR -q ", " --quiet
+Capture Codex stdout and print only the final output, even in modes that are
+verbose by default.  If both
+.B --quiet
+and
+.B --verbose
+are present,
+.B --quiet
+wins.
 .TP
 .BR -f ", " --force
 Pass

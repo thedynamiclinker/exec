@@ -7,6 +7,7 @@ set -euo pipefail
 exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
 
 verbose=0
+quiet=0
 echo_only=0
 use_agents=1
 created_agents=0
@@ -33,6 +34,7 @@ If ./AGENTS.md is one of lord's own profile links, lord may replace it.
 Options:
   -h, --help            show this help
   -v, --verbose         show wrapper behavior and stream codex output
+  -q, --quiet           capture codex output, even in verbose-by-default modes
   -f, --force           pass --dangerously-bypass-approvals-and-sandbox
       --effort LEVEL    set reasoning effort: low, medium, high, xhigh
       --fast            same as --effort low
@@ -155,6 +157,9 @@ parse_option() {
         -v|--verbose)
             verbose=1
             ;;
+        -q|--quiet)
+            quiet=1
+            ;;
         -f|--force|--dont-panic)
             flags+=( --dangerously-bypass-approvals-and-sandbox )
             ;;
@@ -253,6 +258,12 @@ elif ((git_repo)); then
     profile=repo
 else
     profile=unix
+fi
+
+if ((quiet)); then
+    verbose=0
+elif [[ "$profile" != unix ]]; then
+    verbose=1
 fi
 
 if [[ "$profile" == chat ]]; then
