@@ -1,0 +1,46 @@
+.TH CODEX_REVIEW 1 "July 2026" "codex-cli 0.142.0" "User Commands"
+.SH NAME
+codex\-review \- Run a code review non\-interactively
+.SH SYNOPSIS
+.EX
+Usage: codex review [OPTIONS] [PROMPT]
+
+.EE
+.SH DESCRIPTION
+Run a code review non\-interactively
+.SH ARGUMENTS
+.TP
+.B [PROMPT]
+Custom review instructions. If `\-` is used, read from stdin
+.SH OPTIONS
+.TP
+.B \-c, \-\-config <key=value>
+Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`. Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+.PP
+Examples: \- `\-c model="o3"` \- `\-c 'sandbox_permissions=["disk\-full\-read\-access"]'` \- `\-c shell_environment_policy.inherit=all`
+.TP
+.B \-\-strict\-config
+Error out when config.toml contains fields that are not recognized by this version of Codex
+.TP
+.B \-\-enable <FEATURE>
+Enable a feature (repeatable). Equivalent to `\-c features.<name>=true`
+.TP
+.B \-\-uncommitted
+Review staged, unstaged, and untracked changes
+.TP
+.B \-\-base <BRANCH>
+Review changes against the given base branch
+.TP
+.B \-\-disable <FEATURE>
+Disable a feature (repeatable). Equivalent to `\-c features.<name>=false`
+.TP
+.B \-\-commit <SHA>
+Review the changes introduced by a commit
+.TP
+.B \-\-title <TITLE>
+Optional commit title to display in the review summary
+.TP
+.B \-h, \-\-help
+Print help (see a summary with '\-h')
+.SH SEE ALSO
+.BR codex (1)

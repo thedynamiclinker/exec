@@ -1,0 +1,38 @@
+.TH CODEX_PLUGIN_MARKETPLACE_REMOVE 1 "July 2026" "codex-cli 0.142.0" "User Commands"
+.SH NAME
+codex\-plugin\-marketplace\-remove \- Remove a configured marketplace source by name
+.SH SYNOPSIS
+.EX
+Usage: codex plugin marketplace remove [OPTIONS] <MARKETPLACE_NAME>
+
+.EE
+.SH DESCRIPTION
+Remove a configured marketplace source by name
+.SH ARGUMENTS
+.TP
+.B <MARKETPLACE_NAME>
+Configured marketplace name to remove
+.SH OPTIONS
+.TP
+.B \-c, \-\-config <key=value>
+Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`. Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+.PP
+Examples: \- `\-c model="o3"` \- `\-c 'sandbox_permissions=["disk\-full\-read\-access"]'` \- `\-c shell_environment_policy.inherit=all`
+.TP
+.B \-\-json
+Output remove result as JSON
+.TP
+.B \-\-enable <FEATURE>
+Enable a feature (repeatable). Equivalent to `\-c features.<name>=true`
+.TP
+.B \-\-disable <FEATURE>
+Disable a feature (repeatable). Equivalent to `\-c features.<name>=false`
+.TP
+.B \-h, \-\-help
+Print help (see a summary with '\-h')
+Example:
+.TP
+.B codex plugin marketplace remove debug
+.SH SEE ALSO
+.BR codex (1),
+.BR codex\-plugin\-marketplace (1)

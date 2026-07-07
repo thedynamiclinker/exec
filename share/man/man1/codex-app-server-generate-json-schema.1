@@ -1,0 +1,34 @@
+.TH CODEX_APP_SERVER_GENERATE_JSON_SCHEMA 1 "July 2026" "codex-cli 0.142.0" "User Commands"
+.SH NAME
+codex\-app\-server\-generate\-json\-schema \- [experimental] Generate JSON Schema for the app server protocol
+.SH SYNOPSIS
+.EX
+Usage: codex app\-server generate\-json\-schema [OPTIONS] \-\-out <DIR>
+
+.EE
+.SH DESCRIPTION
+[experimental] Generate JSON Schema for the app server protocol
+.SH OPTIONS
+.TP
+.B \-c, \-\-config <key=value>
+Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`. Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+.PP
+Examples: \- `\-c model="o3"` \- `\-c 'sandbox_permissions=["disk\-full\-read\-access"]'` \- `\-c shell_environment_policy.inherit=all`
+.TP
+.B \-o, \-\-out <DIR>
+Output directory where the schema bundle will be written
+.TP
+.B \-\-enable <FEATURE>
+Enable a feature (repeatable). Equivalent to `\-c features.<name>=true`
+.TP
+.B \-\-experimental
+Include experimental methods and fields in the generated output
+.TP
+.B \-\-disable <FEATURE>
+Disable a feature (repeatable). Equivalent to `\-c features.<name>=false`
+.TP
+.B \-h, \-\-help
+Print help (see a summary with '\-h')
+.SH SEE ALSO
+.BR codex (1),
+.BR codex\-app\-server (1)

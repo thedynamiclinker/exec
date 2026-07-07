@@ -1,0 +1,42 @@
+.TH CODEX_DOCTOR 1 "July 2026" "codex-cli 0.142.0" "User Commands"
+.SH NAME
+codex\-doctor \- Diagnose local Codex installation, config, auth, and runtime health
+.SH SYNOPSIS
+.EX
+Usage: codex doctor [OPTIONS]
+
+.EE
+.SH DESCRIPTION
+Diagnose local Codex installation, config, auth, and runtime health
+.SH OPTIONS
+.TP
+.B \-c, \-\-config <key=value>
+Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`. Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+.PP
+Examples: \- `\-c model="o3"` \- `\-c 'sandbox_permissions=["disk\-full\-read\-access"]'` \- `\-c shell_environment_policy.inherit=all`
+.TP
+.B \-\-json
+Emit a redacted machine\-readable report
+.TP
+.B \-\-enable <FEATURE>
+Enable a feature (repeatable). Equivalent to `\-c features.<name>=true`
+.TP
+.B \-\-summary
+Only show grouped check rows and the final count summary
+.TP
+.B \-\-all
+Expand long lists in detailed human output
+.TP
+.B \-\-disable <FEATURE>
+Disable a feature (repeatable). Equivalent to `\-c features.<name>=false`
+.TP
+.B \-\-no\-color
+Disable ANSI color in human output
+.TP
+.B \-\-ascii
+Use ASCII status labels and separators in human output
+.TP
+.B \-h, \-\-help
+Print help (see a summary with '\-h')
+.SH SEE ALSO
+.BR codex (1)
