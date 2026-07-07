@@ -127,10 +127,6 @@ profile_uses_agents() {
     [[ "$profile" != chat ]]
 }
 
-profile_resumes_last_session() {
-    [[ "$profile" == repo || "$profile" == book ]]
-}
-
 agents_link_is_ours() {
     local link target abs_target
 
@@ -337,11 +333,7 @@ run() {
         trap cleanup EXIT INT TERM HUP
     fi
 
-    local cmd=( codex exec "${flags[@]}" )
-    if profile_resumes_last_session; then
-        cmd+=( resume --last )
-    fi
-    cmd+=( -- "$prompt" )
+    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
 
     if ((echo_only)); then
         printf '%q' "${cmd[0]}"

@@ -15,25 +15,18 @@ is a small wrapper around
 .BR "codex exec" .
 It chooses an AGENTS profile, applies a few Codex flags, runs the prompt
 through Codex, and caches captured stdout.
-Repo and book profiles run
-.BR "codex exec resume --last" ,
-with Codex exec options placed before the
-.B resume
-subcommand when required by Codex.
 .PP
 There are four profiles:
 .TP
 .B @repo
-Repository and code work.  This is the default inside a Git worktree.  It
-resumes the most recent Codex session.
+Repository and code work.  This is the default inside a Git worktree.
 .TP
 .B @unix
 Unix-filter work: read stdin, transform it, and print only the requested
 output.  This is the default outside a Git worktree.
 .TP
 .B @book
-Long-form explanation, exegesis, and careful reading.  It resumes the most
-recent Codex session.
+Long-form explanation, exegesis, and careful reading.
 .TP
 .B @chat
 Question-answering mode.  It answers the prompt directly and avoids touching
