@@ -152,13 +152,13 @@ augroup org_as_bash
 augroup END
 
 " Look for ctags in these locations
-set tags=./tags,./.git/tags;
+set tags=./tags;,./.git/tags;
 
 " Always show a choices list for the tag under cursor
-" nnoremap <C-]> g]
+nnoremap <C-]> g]
 
 " Show more context in the ctags list
-" set showfulltag
+set showfulltag
 
 " Make '-' and '.' a word character, so ctrl+p completes past it
 set iskeyword+=-,.
