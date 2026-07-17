@@ -82,7 +82,6 @@ source python.sh
 paths=(
     "${EXEC}/bin"
     "${EXEC}/lib/bash"
-    "$HOME/.ipython/profile_default/startup"
 )
 
 man_paths=(
