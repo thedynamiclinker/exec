@@ -130,6 +130,16 @@ try:
 except Exception as e:
     failed['pandas'] = e
 
+try:
+    import es
+except Exception as e:
+    pass
+
+try:
+    import eu
+except Exception as e:
+    pass
+
 # pandas display toggle
 def pd_fmt_show_all():
     import pandas as pd
