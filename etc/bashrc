@@ -399,6 +399,7 @@ alias fns='fixnames -s'
 alias fni='fixnames -i'
 alias pd='prefix-date -i'
 alias pds='prefix-date -i -s'
+alias pdt='prefix-datetime -i'
 alias ffc='ffmpeg-crop'
 alias cl='clean'
 alias ca='clean' # legacy alias, now that `clean` is the default
