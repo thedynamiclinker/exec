@@ -653,7 +653,6 @@ alias cdh="c home-manager"
 alias hms="ensure_in home-manager && home-manager switch"
 alias ms="ensure_in nix; make system"
 alias mh="ensure_in nix && make home"
-alias m="ensure_in nix && make"
 
 # Dear Rara,
 # If and when stuff breaks for ya (because the hell lines are now commented out)
