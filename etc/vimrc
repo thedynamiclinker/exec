@@ -26,6 +26,12 @@ syntax on
 filetype on
 filetype plugin on
 
+" Don't automatically insert line breaks while typing in git commits
+augroup gitcommit_settings
+  autocmd!
+  autocmd FileType gitcommit setlocal textwidth=0 formatoptions-=t
+augroup END
+
 augroup filetype
   autocmd BufNewFile,BufRead *.txt set filetype=human
   autocmd BufNewFile,BufRead *.md  set filetype=human
