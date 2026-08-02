@@ -300,7 +300,7 @@ alias sm='synergy-share'
 alias ud='updatedb'
 alias rn='ranger'
 alias b='popd'
-alias pdf='evince || xdg-open'
+alias pdf='xdg-open'
 
 # download highest quality
 ## bv* = best video (any codec, any container)
