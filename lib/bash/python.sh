@@ -52,8 +52,8 @@ penv() {
     fi
 }
 
-venv11() {
-    PYTHON=python3.11 venv $@
+venv13() {
+    PYTHON=python3.13 venv $@
 }
 
 venv14() {
@@ -76,12 +76,20 @@ venv15t() {
     PYTHON=python3.15t venv $@
 }
 
+penv13() {
+    PYTHON=python3.13 penv $@
+}
+
 penv14() {
     PYTHON=python3.14 penv $@
 }
 
 penv15() {
     PYTHON=python3.15 penv $@
+}
+
+penv13t() {
+    PYTHON=python3.13t penv $@
 }
 
 penv14t() {
