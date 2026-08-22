@@ -1,50 +1,8 @@
 #!/usr/bin/env bash
 
-args=()
-dir=
-dir_set=false
-
-while (($#)); do
-    case "$1" in
-        -d|--dir)
-            if (($# < 2)); then
-                echo "terminal: $1 requires a directory" >&2
-                exit 2
-            fi
-            dir="$2"
-            dir_set=true
-            shift 2
-            ;;
-        *)
-            args+=("$1")
-            shift
-            ;;
-    esac
-done
-
-if "$dir_set"; then
-    source ~/.bashrc
-
-    if [[ -z "$dir" ]]; then
-        echo "terminal: directory cannot be empty" >&2
-        exit 2
-    elif [[ -d "$dir" ]]; then
-        working_directory="$dir"
-    elif [[ -n "${dirs[$dir]}" ]]; then
-        working_directory="${dirs[$dir]}"
-    else
-        echo "terminal: no such directory or dirs key: $dir" >&2
-        exit 1
-    fi
-
-    args+=(--working-directory="$working_directory")
-fi
-
 if command -v ghostty > /dev/null; then
-    ghostty "${args[@]}"
+    ghostty "$@"
 else
-    [[ -n "$TERMINAL" ]] || source ~/.bashrc
-    args+=(--maximize)
-    "$dir_set" || args+=(--working-directory="$HOME/Desktop")
-    "$TERMINAL" "${args[@]}"
+    source ~/.bashrc
+    $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
 fi
