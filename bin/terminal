@@ -6,6 +6,3 @@ else
     source ~/.bashrc
     $TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
 fi
-
-#source ~/.bashrc
-#$TERMINAL --maximize --working-directory="$HOME/Desktop" "$@"
