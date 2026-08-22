@@ -591,7 +591,8 @@ cpdt() {
 }
 
 ff() {
-    find ! -path "*/.git*" | grep -Pi $@
+    #find ! -path "*/.git*" | grep -Pi $@
+    rg --files "$@"
 }
 
 eff() {
