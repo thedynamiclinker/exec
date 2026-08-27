@@ -88,6 +88,21 @@ p() {
     fi
 }
 
+with() {
+    # creates a symlink in the current directory to a directory in dirs
+    local key="$1"
+    local val="${dirs[$key]}"
+    if dir_in_dirs "$key" && dir_exists "$key"; then
+        ln -s -- "$val" .
+    elif dir_in_dirs "$key"; then
+        echo "The key ${key} is in the dirs array but this path doesn't exist: $val" >&2
+        return 1
+    else
+        echo "The key ${key} is not in the list of available dirs." >&2
+        return 2
+    fi
+}
+
 ensure_in() {
     # a version of c that doesn't re-push "$1" onto dir stack if we're already in there
     if [[ "$(realpath "$PWD")" != "$(realpath "${dirs["$1"]}")" ]]; then c "$1"; fi
@@ -160,8 +175,8 @@ is_bash && {
     complete -F _bash_complete_using_dirs_array p
     complete -F _bash_complete_using_dirs_array o
     complete -F _bash_complete_using_dirs_array c
+    complete -F _bash_complete_using_dirs_array with
 
     complete -F _bash_complete_using_dirs_array push
     complete -F _bash_complete_using_dirs_array pop # for fairness (lol)
 }
-
