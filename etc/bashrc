@@ -470,6 +470,7 @@ alias ssrldm='sudo systemctl restart lightdm'
 alias de="c desktop && clear"
 alias cdb="c bin"
 alias cdk="cd /usr/src/linux"
+alias L='with'
 
 # git
 alias gs='git status'
