@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 usage() {
-	cat <<- "EOF"
+	cat <<-"EOF"
 	NAME
 
 		run - run anything
@@ -18,8 +19,36 @@ usage() {
 	EOF
 }
 
+[[ $# -eq 2 ]] || {
+	usage
+	exit 1
+}
+
+export CACHE_DIR="$HOME/.cache/fontconfig"
+mkdir -p "$CACHE_DIR"
+
+export CONFIG_DIR="$HOME/.config/fontconfig"
+#export CONFIG_DIR="/tmp/fontconfig"
+export FONTCONFIG_FILE="$CONFIG_DIR/fontconfig.conf"
+
+mkdir -p "$CONFIG_DIR"
+
+cat > "$FONTCONFIG_FILE" << EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+	<dir>/run/current-system/sw/share/fonts</dir>
+	<dir>~/.local/share/fonts</dir>
+	<dir>~/.fonts</dir>
+	<cachedir>~/.cache/fontconfig</cachedir>
+</fontconfig>
+EOF
+
+# <include ignore_missing="yes">/etc/fonts/conf.d</include>
+
 prog="$1"
 when="$2"
 date="$(date -u -d "$when" +%FT%TZ)"
-hash="$(curl -s "https://api.github.com/repos/NixOS/nixpkgs/commits?sha=nixos-unstable&until=${date}&per_page=1" | jq -r '.[0].sha')"
-nix run "github:NixOS/nixpkgs/${hash}#${prog}"
+link="https://api.github.com/repos/NixOS/nixpkgs/commits?sha=nixos-unstable&until=${date}&per_page=1"
+hash="$(curl -fsSL "$link" | jq -er '.[0].sha')"
+exec nix run "github:NixOS/nixpkgs/${hash}#${prog}"
