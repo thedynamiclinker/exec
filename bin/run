@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+usage() {
+	cat <<- "EOF"
+	NAME
+
+		run - run anything
+
+	EXAMPLES
+
+		Here's the idea: Suppose gimp is freezing and you're on a deadline.
+
+		No problem, just run the version of gimp that was in nixpkgs any amount of time ago.
+
+			~ $ run gimp 6-months-ago
+
+		Similarly for any other program or time period.
+	EOF
+}
+
+prog="$1"
+when="$2"
+date="$(date -u -d "$when" +%FT%TZ)"
+hash="$(curl -s "https://api.github.com/repos/NixOS/nixpkgs/commits?sha=nixos-unstable&until=${date}&per_page=1" | jq -r '.[0].sha')"
+nix run "github:NixOS/nixpkgs/${hash}#${prog}"
