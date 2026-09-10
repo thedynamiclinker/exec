@@ -70,9 +70,7 @@ Pass
 through to
 .BR "codex exec" .
 .TP
-.BR --effort " {low,medium,high,xhigh}, "
-.BR --effort= {low,medium,high,xhigh} ", "
-.BR @effort= {low,medium,high,xhigh}
+.BR --effort " " LEVEL ", " --effort= LEVEL ", " @effort= LEVEL
 Set Codex reasoning effort.
 .I LEVEL
 must be
@@ -91,9 +89,7 @@ Request high Codex reasoning effort.
 .BR --xhigh ", " @xhigh
 Request extra-high Codex reasoning effort.
 .TP
-.BR --profile " {repo,unix,book,chat}, "
-.BR --profile= {repo,unix,book,chat} ", "
-.BR @profile= {repo,unix,book,chat}
+.BR --profile " " NAME ", " --profile= NAME ", " @profile= NAME
 Select a profile by name.
 .I NAME
 must be
@@ -192,13 +188,7 @@ Root of the exec checkout.  If unset,
 derives it from the location of the script.
 .TP
 .B LORD_PROFILE
-Default profile name: one of
-.BR repo ,
-.BR unix ,
-.BR book ,
-or
-.BR chat .
-Command-line profile selectors override it.
+Default profile name.  Command-line profile selectors override it.
 .SH EXAMPLES
 .EX
 echo INPUT | lord @unix "uppercase it"
