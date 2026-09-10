@@ -70,17 +70,18 @@ Pass
 through to
 .BR "codex exec" .
 .TP
-.BR --effort " {low,medium,high,xhigh}, "
-.BR --effort= {low,medium,high,xhigh} ", "
-.BR @effort= {low,medium,high,xhigh}
+.BI --effort " LEVEL, "
+.BI --effort= LEVEL ", "
+.BI @effort= LEVEL
 Set Codex reasoning effort.
-.I LEVEL
-must be
+.RS
+Allowed values:
 .BR low ,
 .BR medium ,
 .BR high ,
 or
 .BR xhigh .
+.RE
 .TP
 .BR --fast ", " @fast
 Request low Codex reasoning effort.
@@ -91,12 +92,12 @@ Request high Codex reasoning effort.
 .BR --xhigh ", " @xhigh
 Request extra-high Codex reasoning effort.
 .TP
-.BR --profile " {repo,unix,book,chat}, "
-.BR --profile= {repo,unix,book,chat} ", "
-.BR @profile= {repo,unix,book,chat}
+.BI --profile " NAME, "
+.BI --profile= NAME ", "
+.BI @profile= NAME
 Select a profile by name.
-.I NAME
-must be
+.RS
+Allowed values:
 .BR repo ,
 .BR unix ,
 .BR book ,
@@ -116,6 +117,7 @@ Legacy aliases
 and
 .B qa
 are accepted.
+.RE
 .TP
 .BR --no-agents ", " @no-agents
 Do not install an AGENTS.md profile.
