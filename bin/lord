@@ -36,21 +36,25 @@ Options:
   -v, --verbose         show wrapper behavior and stream codex output
   -q, --quiet           capture codex output, even in verbose-by-default modes
   -f, --force           pass --dangerously-bypass-approvals-and-sandbox
-      --effort LEVEL    set reasoning effort: low, medium, high, xhigh
+      --effort {low,medium,high,xhigh}
+                        set reasoning effort
       --fast            same as --effort low
       --careful         same as --effort high
       --xhigh           same as --effort xhigh
       --no-agents       do not install an AGENTS.md profile
-      --profile NAME    select profile by name: repo, unix, book, chat
+      --profile {repo,unix,book,chat}
+                        select profile by name
       --                stop option parsing
 
 @options:
   @repo, @unix, @book,
   @chat                select mode
-  @profile=NAME        select profile by name
+  @profile={repo,unix,book,chat}
+                       select profile by name
   @no-agents           do not install an AGENTS.md profile
   @echo                print the codex exec command instead of running it
-  @effort=LEVEL        set reasoning effort
+  @effort={low,medium,high,xhigh}
+                       set reasoning effort
   @fast, @careful,
   @xhigh               effort shorthands
   @FLAG                pass --FLAG to codex exec
