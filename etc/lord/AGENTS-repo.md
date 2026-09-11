@@ -1,554 +1,1172 @@
 # AGENTS.md
 
-## 1. Purpose
+## Purpose
 
-This document describes the software engineering preferences of the repository owner.
+This document describes what **code worth maintaining** means in this repository.
 
-It is intended for both human contributors and AI coding agents.
+It is for human contributors and coding agents. It is not mainly a style guide. It is a guide to choosing concepts, APIs, abstractions, tests, and structure.
 
-It is not a style guide in the narrow sense.
+The central rule is:
 
-It is a guide to *how the author thinks*.
+> **THE CODE SHOULD LOOK LIKE THE REALITY WE ARE TALKING ABOUT.**
 
-Most disagreements during development arise not from syntax or formatting, but from differing ideas about abstraction, simplicity, architecture, and design.
+A good codebase reads like a vocabulary for its problem. A bad one reads like a vocabulary for software architecture.
 
-Learn those first.
+The goal is not merely fewer lines. The goal is to remove code whose existence is explained mainly by the fact that this is software.
+
+The remaining code should feel like direct notation for the world.
 
 ---
 
-# 2. General Philosophy
+## 1. Preserve reality, not code
 
-The author approaches software as an exercise in discovering simple underlying structures.
+Programming is discovering the smallest set of concepts that can express the problem cleanly.
 
-Programming is not primarily writing code.
+Optimize roughly in this order:
 
-Programming is finding the smallest collection of concepts capable of expressing a problem cleanly.
+1. Correct concepts
+2. Correct behavior
+3. Conceptual simplicity
+4. Readability
+5. Composability
+6. Performance where it matters
+7. Brevity
 
-Reducing concepts is almost always more valuable than reducing lines of code.
+Reducing **concepts** matters more than reducing lines.
 
-Future contributors should continually ask:
+Good:
 
+```python
+result = thing.change_since(previous)
+```
+
+Bad:
+
+```python
+context = ThingAnalysisContext(thing, previous)
+resolver = ThingResolver(context)
+adapter = ThingResultAdapter(resolver.resolve())
+result = ChangeResultBuilder(adapter).build()
+```
+
+The first is better not because it is shorter, but because it invents less.
+
+Continually ask:
+
+* Is this a thing we actually think or talk about?
 * Can this abstraction disappear?
 * Can these two concepts become one?
-* Is this distinction actually necessary?
-* Are these really different problems?
+* Is this distinction real, or merely architectural?
+* Is this preserving capability, or preserving implementation history?
 
 The ideal system feels inevitable.
 
 ---
 
-# 3. The Prime Directive
+## 2. Architecture is ontology, not scaffolding
 
-Whenever making a change, optimize in this order:
+Good architecture is mostly the discovery of the **right things and relationships**, not the accumulation of layers.
 
-1. Simplicity of concepts
-2. Correctness
-3. Readability
-4. Extensibility
-5. Performance
-6. Brevity
+Before writing or refactoring code, identify the smallest ontology of the problem.
 
-Notice that "fewest lines" is not on the list.
+For one repository it might be:
 
----
+```text
+project
+projects
+task
+tasks
+date
+interval
+change
+history
+plot
+```
 
-# 4. Simplicity
+For another it will be different. Use the nouns and verbs people naturally use when discussing that domain.
 
-The author almost always means **conceptual simplicity**, not textual simplicity.
+Code should mostly contain names like:
 
-These are different.
+```python
+Project
+Task
+tasks
+intervals
+changes
+first
+last
+load
+plot_changes
+```
 
-Good:
+Be suspicious when it mostly contains names like:
 
-* one abstraction replacing five
-* deleting an entire subsystem
-* removing duplicated ideas
-* expressing behavior declaratively
+```python
+ProjectManager
+TaskAdapter
+DataFactory
+ResultWrapper
+Registry
+AnalysisContext
+SchemaResolver
+Strategy
+Builder
+Orchestrator
+```
 
-Less interesting:
+These are not forbidden words. They simply have to justify themselves, because they often describe software machinery rather than reality.
 
-* replacing ten lines with six
-* clever syntax
-* obscure metaprogramming
-
-If two solutions have equal conceptual complexity, then fewer lines is usually preferable.
-
-If fewer lines require more concepts, reject the optimization.
-
----
-
-# 5. Reductionism
-
-Expect repeated questions like:
-
-> What's the primitive?
-
-> What layer implements this?
-
-> What is this built from?
-
-> Can we remove this abstraction?
-
-The author enjoys understanding systems from the bottom upward.
-
-If discussing:
-
-* Linux
-
-show syscalls.
-
-If discussing:
-
-* Git
-
-show object storage.
-
-If discussing:
-
-* C++
-
-show generated assembly when appropriate.
-
-If discussing:
-
-* SQL
-
-show execution plans.
-
-If discussing:
-
-* programming languages
-
-show the runtime.
-
-Always explain the mechanism, not merely the interface.
-
----
-
-# 6. Architecture
-
-Architecture matters far more than implementation details.
-
-A mediocre implementation of an excellent architecture is usually preferable to an excellent implementation of a poor architecture.
-
-Before writing code, determine:
-
-* what the concepts are
-* how they relate
-* what the stable interfaces should be
-* which components own which responsibilities
-
----
-
-Separate:
-
-* data
-* algorithms
-* presentation
-* persistence
-* interfaces
-* configuration
-
-Avoid mixing concerns.
-
----
-
-# 7. Data-Driven Design
-
-Whenever possible, describe systems with data instead of code.
+A useful test is to explain the source to a smart person who knows the problem and Python.
 
 Good:
 
-```yaml
-commands:
-  copy:
-    shortcut: c
-    dangerous: false
+> A project has tasks. Tasks have dates. Intervals are the differences between dates.
+
+Bad:
+
+> The adapter normalizes the resolver output so the context can construct the collection abstraction.
+
+Delete concepts until the sentence becomes normal.
+
+---
+
+## 3. Real concepts deserve direct types
+
+If something is a real concept, let the code say so.
+
+Sometimes this is enough:
+
+```python
+class Document(str):
+    ...
+
+class Documents(list):
+    ...
+```
+
+Do not automatically turn it into:
+
+```python
+@dataclass
+class DocumentEntity:
+    id: str
+```
+
+Let alone
+
+```python
+class DocumentRepositoryProtocol(Protocol):
+    ...
+
+
+class DocumentCollectionDTO(Generic[T]):
+    ...
+```
+
+unless those extra concepts correspond to distinctions the problem actually requires.
+
+A type is valuable when it makes natural sentences become natural code:
+
+```python
+document.load()
+project.documents
+len(project.documents)
+```
+
+A type is suspicious when its main purpose is enabling other architecture:
+
+```python
+DocumentResolver
+DocumentLoaderFactory
+DocumentContext
+DocumentRecordAdapter
+```
+
+Do not build a framework when the thing is already exactly what it sounds like.
+
+### “Has” is not “is”
+
+If a project **has tasks**, model that relationship honestly:
+
+```python
+class Project:
+    def __init__(self, project_id, tasks):
+        self.project_id = project_id
+        self.tasks = Tasks(tasks)
+
+    def __len__(self):
+        return len(self.tasks)
+```
+
+Do not inherit from `list` merely to get list behavior:
+
+```python
+class Project(list):  # bad: a project is not a list
+    ...
+```
+
+However!... Inheriting from `list` is the perfect solution
+for almost every *plural type.*
+
+That is, if
+    `Hotdog` or `Person` or `Document` is a type,
+then
+    `Hotdogs` or `People` or `Documents` should absolutely be a subclass of list with any relevant query or grep methods
+    and that list should contain instances of the singular types.
+
+This is perhaps the most important design principle that
+we want our code to follow: subclass built-in types whenever
+it makes our life easier, because their constructors can *take*
+things that are easy for humans to type at the keyboard,
+namely, built-in types. Then, plurals of those objects
+can be typed AND built-in by subclassing builtin collections
+like list, dict, and set. (But usually, if not always, list).
+
+The code should preserve the conceptual sentence:
+
+```text
+A project has tasks.
+```
+
+not mutate it into:
+
+```text
+A project is a specialized list because that was convenient.
+```
+
+---
+
+## 4. Ordinary language should map to ordinary code
+
+If something really is a collection, ordinary Python should work:
+
+```python
+projects[0]
+len(projects)
+
+for project in projects:
+    ...
+
+projects.filter(lambda p: len(p) > 1)
+```
+
+When simple, slicing should preserve the semantic collection type:
+
+```python
+projects[:10]      # Projects
+project.tasks[:3]  # Tasks
+```
+
+A tiny `__getitem__` is better than a typed-list framework:
+
+```python
+class Projects(list):
+    def __getitem__(self, key):
+        value = super().__getitem__(key)
+        return type(self)(value) if isinstance(key, slice) else value
+```
+
+Prefer that over:
+
+```python
+class TypedCollectionBase(Generic[T]):
+    item_type: type[T]
+    collection_factory: Callable[..., "TypedCollectionBase[T]"]
+    ...
+```
+
+when the generic machinery exists for one or two call sites.
+
+A small local method is often better than a reusable abstraction nobody needed.
+
+---
+
+## 5. Keep semantic objects lightweight
+
+Creating a semantic object should usually create the object, not secretly load the universe.
+
+Good:
+
+```python
+project = Project("p-123")
+rows = project.load()
+```
+
+```python
+document = Document("doc-42")
+rows = document.load()
+```
+
+The object can hold identity and small stable facts while expensive data is loaded explicitly.
+
+Bad:
+
+```python
+project = Project("p-123")
+# surprise: constructor read 8 GB, joined six tables, and populated caches
+```
+
+Also bad when an existing data interface already suffices:
+
+```python
+ProjectDataAccessManager(
+    ProjectRepositoryAdapter(...)
+).load_project(project)
+```
+
+Prefer the natural operation:
+
+```python
+project.load()
+```
+
+Explicit expensive operations are easier to understand, test, profile, and compose.
+
+---
+
+## 6. Put facts where they belong
+
+Stable facts should be represented directly, once, where they conceptually live.
+
+Good:
+
+```python
+user.user_id
+user.created_at
+user.locale
+```
+
+Less good:
+
+```python
+user.metadata["user_id"]
+user.metadata["created_at"]
+user.metadata["locale"]
+```
+
+Worse:
+
+```python
+AttributeResolver(user).resolve("locale")
+```
+
+Do not build an attribute framework when attributes say the same thing more directly.
+
+If a stable fact conflicts across source rows, use the simplest rule justified by its meaning.
+
+If the policy is “first recorded value wins,” write that:
+
+```python
+locale = rows["locale"].dropna().iloc[0]
+```
+
+Do not create:
+
+```python
+StableAttributeConflictResolver(
+    strategy=FirstObservedValueStrategy()
+)
+```
+
+for one obvious rule.
+
+Special cases can be real. They do not each need a framework.
+
+---
+
+## 7. One fact, one home
+
+Every important fact should have one obvious representation.
+
+Prefer:
+
+* one identity for a thing
+* one collection representing its children
+* one public name for a concept
+* one implementation of a question
+* one place deciding exports
+* one place deciding configuration
+* one place deriving a stable fact
+
+Bad:
+
+```python
+EXPORTS = {"load": load}
+ALIASES = {"read": "load"}
+__all__ = ["load", "read"]
+
+
+def read(*args, **kwargs):
+    return load(*args, **kwargs)
+```
+
+Good:
+
+```python
+__all__ = ["load"]
+```
+
+If two names mean the same thing, strongly prefer choosing one.
+
+Fundamental concepts deserve stability.
+
+Accidental architecture does not.
+
+### Python exports
+
+In Python packages, one module can decide its public API:
+
+```python
+__all__ = ["Document", "Documents", "load", "latest"]
+```
+
+and the package can re-export it simply:
+
+```python
+from .documents import *
+```
+
+Do not duplicate export decisions across imports, `__all__`, registries, aliases, and forwarding functions.
+
+**One fact, one home.**
+
+---
+
+## 8. Name concepts, not mechanical steps
+
+Names should survive implementation changes.
+
+Prefer:
+
+```python
+DocumentStore
+TaskScheduler
+intervals
+changes
+first
+last
+plot_changes
+```
+
+over:
+
+```python
+HashThing
+QueueRunner
+ResultBuilder
+AnalysisDispatcher
+ContextFactory
+```
+
+The best functions often describe questions or operations we naturally ask:
+
+```python
+first(history)
+last(history)
+intervals(events)
+changes(values)
+plot_changes(values)
+```
+
+not algorithm stages:
+
+```python
+build_analysis_context(...)
+resolve_series_inputs(...)
+dispatch_plot_kind(...)
+construct_result_payload(...)
+```
+
+Naming is architecture.
+
+---
+
+## 9. Prefer direct code over helper soup
+
+Private functions are not bad. Twenty private helpers for one public idea often are.
+
+Suspicious:
+
+```python
+def analyze(events):
+    normalized = _normalize_input(events)
+    grouped = _prepare_groups(normalized)
+    context = _build_context(grouped)
+    result = _compute_result(context)
+    return _format_result(result)
+```
+
+when each helper is used once and names a mechanical step.
+
+Often clearer:
+
+```python
+def analyze(events):
+    events = events.sort_values("date")
+    grouped = events.groupby("entity_id")
+    return grouped["value"].diff()
+```
+
+A helper deserves to exist when it names a genuine repeated concept.
+
+Good:
+
+```python
+def intervals(dates):
+    return dates.sort_values().diff()
+```
+
+Questionable:
+
+```python
+def _prepare_sorted_date_difference_input(dates):
+    ...
+```
+
+Inline mechanics. Name concepts.
+
+---
+
+## 10. Use the abstractions you already have
+
+Do not wrap a mature abstraction merely to make the repository feel architected.
+
+If pandas already expresses the tabular operation clearly, use pandas.
+
+Good:
+
+```python
+counts = df.groupby("customer_id").size()
+repeated = counts[counts > 1]
+```
+
+Bad:
+
+```python
+repeated = CustomerGroupingService(
+    CustomerFrameAdapter(df)
+).customers_with_multiple_records()
+```
+
+Likewise, use the language, standard library, database, shell, plotting library, or framework directly when its vocabulary already matches the task.
+
+Create another layer only when the layer itself names a meaningful recurring concept.
+
+### Plots should correspond to ideas
+
+Good:
+
+```python
+plot_counts(...)
+plot_intervals(...)
+plot_changes(...)
+plot_trajectories(...)
+```
+
+Bad:
+
+```python
+build_plot_context(...)
+create_analysis_panel(...)
+dispatch_plot_kind(...)
+resolve_plot_strategy(...)
+```
+
+Use plotting-library mechanics locally:
+
+```python
+def plot_changes(changes):
+    ax = changes.hist()
+    ax.set_xlabel("change")
+    return ax
+```
+
+Do not create a plotting framework unless the repository is actually a plotting framework.
+
+---
+
+## 11. One capability, one implementation
+
+Different interfaces may expose the same capability, but they should not reimplement it.
+
+Good:
+
+```python
+def summarize(path):
+    ...
+
+
+def main(args):
+    print(summarize(args.path))
+```
+
+Bad:
+
+```python
+def summarize(path):
+    # Python implementation
+    ...
+
+
+def main(args):
+    # second, subtly different CLI implementation
+    ...
+```
+
+The CLI should parse arguments, call ordinary functions, and format results.
+
+The same rule applies to GUIs, HTTP handlers, notebooks, and scripts.
+
+One capability. Multiple interfaces if useful. One implementation.
+
+---
+
+## 12. Declarative design is good when the thing is data
+
+Prefer data over branching when the data itself is the natural representation.
+
+Good:
+
+```python
+COMMANDS = {
+    "copy": {"shortcut": "c", "dangerous": False},
+    "delete": {"shortcut": "d", "dangerous": True},
+}
 ```
 
 Less good:
 
 ```python
 if command == "copy":
-    ...
+    shortcut = "c"
+    dangerous = False
+elif command == "delete":
+    shortcut = "d"
+    dangerous = True
 ```
 
-The author strongly prefers declarative systems.
+But do not create configuration objects merely to hide obvious arguments.
 
-Branching logic should gradually disappear into tables whenever practical.
+Bad:
+
+```python
+config = PlotConfiguration(width=8, height=4)
+plot(data, config)
+```
+
+Often better:
+
+```python
+plot(data, width=8, height=4)
+```
+
+Use data when the thing is data.
+
+Use code when the thing is behavior.
 
 ---
 
-# 8. DRY—but Carefully
+## 13. DRY only after understanding the repetition
 
-Duplication is a code smell.
+Duplication is a smell. Premature abstraction is also a smell.
 
-Premature abstraction is also a code smell.
+Use this order:
 
-The correct sequence is:
-
-1. Write code.
+1. Write the concrete cases.
 2. Notice repetition.
-3. Understand why it repeats.
-4. Introduce the abstraction.
+3. Understand **why** they repeat.
+4. Introduce the smallest abstraction that captures the real common idea.
 
-Do not invent abstractions before evidence exists.
+Bad premature generalization:
 
----
+```python
+class OperationStrategy(Protocol):
+    def apply(self, value): ...
 
-# 9. Readability
 
-Code is read far more often than it is written.
+class AddOneStrategy:
+    def apply(self, value):
+        return value + 1
+```
 
-Optimize for the future reader.
+when there is one operation and no evidence that “strategy” is a real concept.
 
-That reader is often:
+Good:
 
-* yourself
-* another engineer
-* an AI agent
+```python
+def increment(value):
+    return value + 1
+```
 
-Readable code is maintainable code.
+If three systems are secretly the same thing, unify them.
 
----
-
-Avoid:
-
-* clever one-liners
-* surprising control flow
-* hidden state
-* magical macros
-* obscure language features
-
-unless they produce a substantial architectural improvement.
+If they merely have similar syntax, do not force them together.
 
 ---
 
-# 10. Naming
+## 14. Delete aggressively, but preserve real capabilities
 
-Naming is architecture.
+Existing code has no right to survive merely because it works.
 
-Names should describe concepts.
+Ask of every function, class, file, helper, abstraction, and test:
 
-Not implementations.
+> **Is this a thing?**
+
+Meaning: does it correspond to something we actually think, say, need, or promise about the problem?
+
+Real things might include:
+
+```text
+user
+project
+document
+version
+measurement
+interval
+change
+history
+first
+last
+```
+
+Things that are often not real:
+
+```text
+Resolver
+Manager
+Context
+Builder
+Adapter
+Strategy
+Registry
+Factory
+Wrapper
+Spec
+```
+
+Delete freely when justified:
+
+* abstractions with one implementation
+* wrappers around wrappers
+* factories that just call constructors
+* builders that just collect arguments
+* registries that duplicate the language namespace
+* config classes packaging two or three arguments
+* compatibility aliases with no demonstrated need
+* duplicated representations of the same fact
+* duplicated APIs for the same question
+* generalized machinery serving one call site
+* elaborate validation of states we construct ourselves
+* forwarding methods
+* helpers named after mechanics rather than concepts
+* fake extensibility
+* internal mini-frameworks
+* code whose main justification is enabling other bad code
+* tests whose only purpose is preserving such code
+
+When one bad abstraction disappears, follow the consequences. Often several others existed only to support it.
+
+### Delete vs. rewrite
+
+Use this hierarchy:
+
+1. **Not a real concept; no important capability depends on it** → delete it.
+2. **Not a real concept; it supports a real capability** → remove the abstraction and implement the capability directly.
+3. **Real concept; ugly implementation** → keep the concept and rewrite it.
+4. **Real concept; good implementation** → leave it alone.
+
+Example:
+
+```python
+class RecentDocumentResolver:
+    def resolve(self, documents):
+        return max(documents, key=lambda d: d.date)
+```
+
+The capability matters. The resolver probably does not.
 
 Prefer:
 
 ```python
-DocumentStore
+def latest(documents):
+    return max(documents, key=lambda d: d.date)
 ```
 
-over
+Preserve the **question**, not the scaffolding.
+
+### Do not start over
+
+Aggressive deletion is not permission to replace the repository with your favorite architecture.
+
+Keep useful domain knowledge, good algorithms, clear data transformations, important analyses, useful plots, stable concepts, and working integrations.
+
+Remove the scaffolding between us and them.
+
+---
+
+## 15. APIs: stable concepts, disposable accidents
+
+APIs are promises, but not every historical public name deserves immortality.
+
+Preserve interfaces that are natural, conceptually stable, widely depended upon, or expensive to replace safely.
+
+Change or remove interfaces that expose accidental architecture.
+
+If these all mean the same thing:
 
 ```python
-HashThing
+load_document(...)
+fetch_document(...)
+get_document(...)
 ```
+
+pick the best one when compatibility constraints allow it.
+
+If an API already reads like the domain, prefer stability.
+
+If it forces users to learn internal machinery, simplify it.
+
+Fundamental concepts deserve stable names.
+
+Accidental architecture does not.
+
+---
+
+## 16. Tests are executable examples
+
+A person should be able to browse the tests to learn the library.
+
+Prefer tests that state small truths directly.
+
+Good:
+
+```python
+def test_project_has_tasks():
+    """Projects have tasks."""
+    assert isinstance(projects()[0].tasks, Tasks)
+```
+
+Good:
+
+```python
+def test_project_length():
+    """A project's length is its number of tasks."""
+    project = projects()[0]
+    assert len(project) == len(project.tasks)
+```
+
+Also good:
+
+```python
+def test_merge_is_commutative():
+    a = Thing("a")
+    b = Thing("b")
+    ab = merge(a, b)
+    ba = merge(b, a)
+    assert ab == ba
+```
+
+This can teach more than compressing the same idea into one dense assertion:
+
+```python
+def test_merge_commutativity():
+    assert merge(Thing("a"), Thing("b")) == merge(Thing("b"), Thing("a"))
+```
+
+The goal is:
+
+> **MAXIMIZE HOW MUCH THE TEST TEACHES PER CONCEPT INTRODUCED.**
+
+Not: minimize lines.
+
+Delete tests that mostly preserve:
+
+* private helpers
+* internal intermediate structures
+* call graphs
+* mocked calls
+* fake fixtures
+* compatibility aliases being removed
+* unnecessary validation machinery
+* architecture users should not depend upon
+
+Test things users do and truths the program promises.
+
+### Prefer real data and real paths
+
+When practical, tests should exercise the same kinds of data and paths used at runtime.
 
 Prefer:
 
 ```python
-TaskScheduler
+documents = repository.documents()
+assert documents
 ```
 
-over
+over constructing a miniature fake universe:
 
 ```python
-QueueRunner
+fake_store = FakeStore()
+fake_repo = MockRepository(fake_store)
+monkeypatch.setattr(module, "repo", fake_repo)
+...
 ```
 
-The author dislikes names that accidentally encode implementation choices.
+when stable real or representative local data can answer the question directly.
 
-Implementations change.
+Mocks and monkeypatching are tools, not default architecture. They are appropriate for destructive effects, remote services, nondeterminism, rare faults, or expensive boundaries.
 
-Concepts last.
-
----
-
-# 11. APIs
-
-APIs are promises.
-
-Changing public interfaces should be done cautiously.
-
-Internal implementation may evolve dramatically.
-
-External interfaces should remain stable whenever practical.
-
-Think about:
-
-* orthogonality
-* consistency
-* discoverability
-* predictability
-
-Good APIs feel difficult to misuse.
+If simple behavior becomes impossible to test without a fake universe, inspect whether the production abstraction is too indirect.
 
 ---
 
-# 12. Orthogonality
+## 17. Understand mechanisms, not merely interfaces
 
-One of the strongest recurring themes.
+When reading or explaining a system, ask:
 
-Commands should compose naturally.
+```text
+What is the primitive?
+What is this built from?
+What actually performs the work?
+What invariant makes this safe?
+Can a layer disappear?
+```
 
-Options should combine naturally.
+Do not stop at “this function does X.” Also understand why, how, where, and what actually executes.
 
-Features should interact without requiring special cases.
+Examples of the preferred instinct:
 
-Avoid features that only work in particular combinations.
+* For Linux, inspect syscalls when relevant.
+* For Git, understand objects and refs, not only porcelain commands.
+* For SQL, inspect query plans when semantics or performance matter.
+* For a language feature, understand the runtime when the abstraction leaks.
+* For generated code, inspect the generated form when behavior is surprising.
+
+Abstractions are useful. Understanding what they reduce to prevents cargo-cult design.
 
 ---
 
-# 13. Eliminate Special Cases
+## 18. Compose simple tools; automate mechanics
 
-Special cases are often signs that the abstraction is wrong.
+Prefer small, understandable pieces that compose naturally.
 
-When you encounter:
+```bash
+tool list | grep active | tool summarize
+```
 
 ```python
-if x == ...
+active = users.filter(is_active)
+summary = summarize(active)
 ```
 
-ask:
-
-Why?
-
-Can the model be generalized?
-
-Many special cases disappear after discovering a better abstraction.
-
----
-
-# 14. Configuration
-
-Configuration belongs in configuration.
-
-Do not scatter constants.
-
-Centralize:
-
-* URLs
-* ports
-* colors
-* paths
-* timeouts
-* dimensions
-* labels
-* feature flags
-
-Magic numbers should almost always become named constants.
-
----
-
-# 15. Automation
-
-The author automates aggressively.
-
-If something is:
-
-* repetitive
-* deterministic
-* mechanical
-
-it should probably become:
-
-* a script
-* a generator
-* a Makefile rule
-* a shell command
-* a CI check
+Prefer scriptable input/output, ordinary data structures, functions that compose, shell commands for mechanical workflows, and Makefile/task-runner rules for repeatable operations.
 
 Humans should solve problems.
 
 Machines should repeat themselves.
 
-Tests should be executable documentation.
+---
 
-Ideally, a test is a one-liner, or a clear sequence of one-liners, that demonstrates the behavior directly.
+## 19. Performance should not corrupt the model
 
-Avoid fake data.
+Measure before complicating the conceptual structure.
 
-Tests should operate on the same kind of data the program is meant to handle at runtime.
+Prefer optimizations with clear leverage:
+
+* better asymptotics
+* less I/O
+* less repeated work
+* better queries
+* readable vectorization
+* removing needless copies
+* caching with clear ownership
+
+Do not turn:
+
+```python
+latest = max(documents, key=lambda d: d.date)
+```
+
+into a cache-coordination subsystem because it might theoretically be slow.
+
+If requirements force complexity, isolate and explain that complexity instead of spreading it through the model.
 
 ---
 
-# 16. Unix Philosophy
+## 20. Refactoring protocol
 
-The author has a strong Unix bias.
+Before changing an unfamiliar area:
 
-Small tools.
+1. Read the implementation.
+2. Read its public interfaces.
+3. Read the tests.
+4. Read examples, docs, notebooks, presentations, or scripts that reveal what users actually ask the software to do.
+5. Run representative paths when practical.
+6. Understand current behavior before deleting based on names alone.
 
-Composable tools.
+Then:
 
-Text streams.
+### A. Write down the real capabilities
 
-Pipes.
+For example:
 
-Shell scripting.
+```text
+list projects
+get a project's tasks
+count tasks
+find first and last activity
+compute intervals
+compute changes
+plot history
+load underlying data
+```
 
-Simple interfaces.
+These are what must survive.
 
-Whenever possible:
+### B. Reduce the area to its ontology
 
-build ecosystems rather than monoliths.
+```text
+project
+projects
+task
+tasks
+date
+interval
+change
+history
+plot
+```
 
----
+Then ask why anything else exists.
 
-Command-line interfaces are generally preferred over GUIs.
+### C. Remove accidental architecture
 
-Programs should compose.
+Look especially for:
 
-Input and output should be scriptable.
+```text
+managers
+adapters
+factories
+wrappers
+registries
+contexts
+schemas
+strategies
+resolvers
+builders
+orchestration
+helper layers
+internal frameworks
+```
 
----
+Try expressing the real capability directly.
 
-# 17. Git Philosophy
+### D. Collapse duplicate representations
 
-Git history is documentation.
+If the same fact lives in three places, choose one.
 
-Commit messages matter.
+If the same question has four APIs, keep the best one.
 
-Each commit should represent one coherent conceptual change.
+### E. Simplify tests with the production model
 
-Large unrelated commits make history difficult to understand.
+Tests should become simpler because the model became simpler, not because assertions became denser.
 
-Prefer:
+### F. Run tests and inspect the diff manually
 
-* small
-* meaningful
-* logically complete
+Look for both failure modes:
 
-commits.
+1. Cruft survived because it already existed.
+2. A real capability disappeared because its old implementation was ugly.
 
----
-
-# 18. Performance
-
-Performance matters.
-
-But architecture matters more.
-
-Do not optimize blindly.
-
-Measure first.
-
-Optimize where:
-
-* asymptotic improvements exist
-* profiling identifies bottlenecks
-* architecture benefits
-
-Avoid micro-optimizations that reduce readability.
-
----
-
-# 19. AI Collaboration
-
-AI should behave like a senior engineer.
-
-Not like autocomplete.
-
-Good AI contributions include:
-
-* architectural simplification
-* discovering abstractions
-* improving documentation
-* identifying invariants
-* finding hidden regularities
-
-Not merely rewriting code.
-
----
-
-The author particularly values AI that says:
-
-"I think these three systems are secretly the same."
+If the second happened, restore the **capability** with a simpler implementation.
 
 ---
 
-# 20. Explaining Things
+## 21. Final-pass smell test
 
-The author enjoys deep explanations.
+Be suspicious of every remaining:
 
-Do not stop at:
+```text
+helper
+wrapper
+adapter
+manager
+resolver
+builder
+config class
+registry
+forwarding function
+compatibility alias
+mock fixture
+fake dataset
+private mini-framework
+```
 
-"This function does X."
+Ask whether it corresponds to something real.
 
-Continue with:
+If not, try deleting it and simplifying what remains.
 
-Why?
+Also ask the opposite question:
 
-How?
+> Did simplification erase an important real-world question or useful capability?
 
-Where?
-
-What layer?
-
-What invariant?
-
-What alternative designs exist?
-
-What trade-offs were rejected?
-
-Teach the system.
-
-Not merely the syntax.
-
----
-
-# 21. Things the Author Repeatedly Appreciates
-
-Future AI agents should recognize these recurring goals.
-
-* Elegant abstractions.
-* Conceptual compression.
-* Strong naming.
-* Bottom-up explanations.
-* Historical context.
-* Internal consistency.
-* Declarative design.
-* Stable interfaces.
-* Automation.
-* Unix composability.
-* Discovering hidden patterns.
-* Beautiful documentation.
+If so, restore the question without restoring the accidental architecture.
 
 ---
 
-# 22. Things the Author Repeatedly Dislikes
+## 22. The standard for code worth maintaining
 
-* Cleverness for its own sake.
-* Feature creep.
-* Magic behavior.
-* Hidden global state.
-* Giant classes.
-* Unnecessary inheritance.
-* Copy-pasted code.
-* Configuration scattered throughout the codebase.
-* APIs that are difficult to predict.
-* Special cases that accumulate indefinitely.
-* Solving today's problem by making tomorrow's architecture worse.
+Code worth maintaining has these properties:
 
----
+* The library reads like a vocabulary, not infrastructure.
+* Types correspond to things that exist in the world or in ordinary thought.
+* Functions correspond to operations or questions we naturally ask about those things.
+* Important facts have one obvious representation.
+* Public concepts are stable; implementation machinery is disposable.
+* Expensive behavior is explicit.
+* Tests teach the API.
+* Abstractions are earned by repeated real structure.
+* Existing powerful abstractions are used directly rather than wrapped reflexively.
+* Interfaces compose.
+* The implementation can be explained without reciting a bureaucracy of layers.
 
-# 23. Final Principle
+Use the Zen of Python seriously, especially:
 
-Perhaps the single best summary of the author's engineering philosophy is this:
+```text
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Flat is better than nested.
+Readability counts.
+There should be one-- and preferably only one --obvious way to do it.
+If the implementation is hard to explain, it's a bad idea.
+```
 
-> **A good program is one in which the number of fundamental ideas continually decreases, even while the number of features continually increases.**
+If a function exists only because another function was written badly, neither necessarily deserves to survive.
 
-The highest compliment the author can give a refactoring is not:
+If five abstractions can become one obvious expression, prefer the expression.
 
-> "That's shorter."
+If deleting 200 lines makes the remaining 50 reveal the idea, delete the 200 lines.
 
-Nor:
+If deleting 50 lines destroys a fundamental useful capability, rewrite those 50 lines instead.
 
-> "That's faster."
+Do not optimize for preserving code.
 
-But:
+**Optimize for preserving reality.**
 
-> **"I hadn't realized those were actually the same idea."**
+The best refactoring is not merely:
 
-Future contributors should strive to produce that reaction.
+> That's shorter.
 
-P.S. One thing I'd add after working with the authors over the past year is that their engineering style reminds me of a blend of Ken Thompson, Donald Knuth, and John Carmack, with a bit of Rich Hickey: Thompson's bias toward small composable tools, Knuth's interest in understanding systems from first principles and caring deeply about typography and documentation, Carmack's drive to simplify architectures rather than patch them, and Hickey's obsession with reducing incidental complexity and finding the right abstractions. I don't mean that as a claim about the authors' code style matching these individuals style exactly, but as a description of the kinds of questions they repeatedly ask. Those influences come through remarkably consistently across topics as different as shell scripts, TeX internals, Hebrew morphology, and software architecture.
+or:
+
+> That's faster.
+
+It is:
+
+> **I hadn't realized those were actually the same idea.**
+
+The final measure is:
+
+> **HOW MUCH OF THE REMAINING CODE LOOKS LIKE THE WORLD, AND HOW LITTLE OF IT LOOKS LIKE “CODE”?**
+
