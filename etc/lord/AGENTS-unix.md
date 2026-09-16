@@ -913,3 +913,10 @@ HH
 
 ~ $ lord snake in hebrew but write it in latin alphabet only conson --upper --heth-is-H --ipa-for-digraphs
 NHʃ
+
+~ $ cat | sed2 's/Long descriptions/What they refer to/g'  << EOF
+The food Darth Vader orders in Eddie Izzard's circle finale.
+The food or pseudo-food described by Chris Rock's Bring The Pain via the term Tossing Salad.
+Sarku Japan's biggest selling item since the beginning of the universe basically.
+The food or pseudo-food that the Epstein emails referred to as being low carb.
+EOF
