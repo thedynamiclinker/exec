@@ -362,6 +362,9 @@ run() {
 
     err="$(mktemp)"
     set +e
+    echo ===========
+    echo "${cmd[@]}"
+    echo ===========
     output="$("${cmd[@]}" 2>"$err")"
     status=$?
     set -e
