@@ -710,3 +710,11 @@ ___git_complete gits __git_main
 bunsay(){
     cowsay -f bunny "$@"
 }
+
+lordy() {
+  lord --effort high "$@"
+}
+
+lordhavemercy() {
+  lord --effort xhigh "$@"
+}
