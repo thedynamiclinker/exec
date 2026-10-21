@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#nix why-depends --derivation --all \
+#  .#nixosConfigurations.kleene.config.system.build.toplevel \
+#  --expr '(builtins.getFlake (toString ./.)).nixosConfigurations.kleene.pkgs.python314Packages.pyopenjtalk-plus'
+
+pkgname="$1"
+echo "hostname is: $(hostname)"
+echo "pkgname is: $pkgname"
+
+nix why-depends --derivation --all \
+  .#nixosConfigurations.$(hostname).config.system.build.toplevel \
+  --expr "(builtins.getFlake (toString ./.)).nixosConfigurations.$(hostname).pkgs.$pkg"
