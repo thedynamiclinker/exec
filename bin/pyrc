@@ -140,6 +140,11 @@ try:
 except Exception as e:
     pass
 
+try:
+    import matplotlib.pyplot as plt
+except Exception as e:
+    failed['matplotlib'] = e
+
 # pandas display toggle
 def pd_fmt_show_all():
     import pandas as pd
