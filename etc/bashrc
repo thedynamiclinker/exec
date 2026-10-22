@@ -720,9 +720,9 @@ lordhavemercy() {
 }
 
 fl() {
-    fold -s -w 72 "$@"
+    fold -s -w 72 <<< "$@"
 }
 
 flx() {
-    fold -s -w 72 "$@" | xc
+    fold -s -w 72 <<< "$@" | xc
 }
