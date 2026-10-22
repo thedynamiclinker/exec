@@ -718,3 +718,11 @@ lordy() {
 lordhavemercy() {
   lord --effort xhigh "$@"
 }
+
+fl() {
+    fold -s -w 72 "$@"
+}
+
+flx() {
+    fold -s -w 72 "$@" | xc
+}
