@@ -36,8 +36,10 @@ cleanup() {
 trap cleanup EXIT HUP INT TERM
 
 head=$(git -C "$root" rev-parse HEAD)
+branch=$(git -C "$root" symbolic-ref --quiet --short HEAD) || branch=archived-head
 git clone --quiet --no-hardlinks --no-checkout -- "$root" "$clone"
-git -C "$clone" checkout --quiet --detach "$head"
+# Keep the source branch, or give a detached source HEAD a branch in the archive.
+git -C "$clone" checkout --quiet -B "$branch" "$head"
 mkdir -p -- "$(dirname -- "$output")"
 tar -C "$tmp" -czf "$output" "$name"
 printf 'Created %s from %s at %s\n' "$output" "$root" "$(git -C "$clone" rev-parse --short HEAD)"
