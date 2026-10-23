@@ -39,7 +39,7 @@ if git -C "$out" fetch --quiet --no-tags "$dstroot" HEAD; then
   if ! git -C "$out" merge-base HEAD FETCH_HEAD >/dev/null 2>&1; then
     echo 'git-sync: repositories do not have a common commit; refusing unrelated histories' >&2
     rm -rf -- "$out"
-    status=1
+    exit 1
   fi
   if git -C "$out" merge --no-edit FETCH_HEAD; then
     printf 'Merged %s into %s at %s\n' "$dstroot" "$srcroot" "$out"
@@ -47,10 +47,10 @@ if git -C "$out" fetch --quiet --no-tags "$dstroot" HEAD; then
   else
     status=$?
     echo "git-sync: merge conflicted; resolve conflicts in $out, then commit the merge" >&2
+    exit $status
   fi
 else
   status=$?
   rm -rf -- "$out"
+  exit $status
 fi
-
-exit "$status"
