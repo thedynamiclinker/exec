@@ -53,6 +53,4 @@ else
   rm -rf -- "$out"
 fi
 
-echo "[*] You can now remove the old '${name}' directory, and rename the directory '${out}' to '${name}'."
-echo "[*] If there are any merge conflicts that you aren't sure how to resolve, send '${out}' to Jason and Ramya in Teams."
 exit "$status"
