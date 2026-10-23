@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Create a tar.gz containing the checked-out files for HEAD, like a fresh clone.
-# Ignored/untracked files and repository metadata are excluded.
+# Create a tar.gz containing a clone at HEAD, including .git and .gitignore files.
+# Ignored/untracked working-tree files are excluded.
 set -euo pipefail
 
 usage() {
@@ -26,19 +26,18 @@ esac
 
 command -v tar >/dev/null || { echo 'git-tar: tar is required' >&2; exit 1; }
 
-# A detached temporary worktree materializes exactly the committed tree, including
-# files marked export-ignore (which `git archive` would omit). It also honors the
-# repository's checkout filters, as a normal clone does.
+# A clone includes self-contained Git metadata and checks out all committed files,
+# including files marked export-ignore (which `git archive` would omit).
 tmp=$(mktemp -d "${TMPDIR:-/tmp}/git-tar.XXXXXXXX")
-worktree="$tmp/$name"
+clone="$tmp/$name"
 cleanup() {
-  git -C "$root" worktree remove --force "$worktree" >/dev/null 2>&1 || true
   rm -rf -- "$tmp"
 }
 trap cleanup EXIT HUP INT TERM
 
-git -C "$root" worktree add --quiet --detach "$worktree" HEAD
+head=$(git -C "$root" rev-parse HEAD)
+git clone --quiet --no-hardlinks --no-checkout -- "$root" "$clone"
+git -C "$clone" checkout --quiet --detach "$head"
 mkdir -p -- "$(dirname -- "$output")"
-# Worktree metadata is a .git file, not part of a clone's checked-out files.
-tar -C "$tmp" --exclude="$name/.git" -czf "$output" "$name"
-printf 'Created %s from %s at %s\n' "$output" "$root" "$(git -C "$root" rev-parse --short HEAD)"
+tar -C "$tmp" -czf "$output" "$name"
+printf 'Created %s from %s at %s\n' "$output" "$root" "$(git -C "$clone" rev-parse --short HEAD)"

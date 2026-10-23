@@ -29,7 +29,7 @@ for repo in "$srcroot" "$dstroot"; do
 done
 
 name=$(basename "$srcroot")
-out=${3:-"$PWD/${name}-merged-successfully-now-you-can-rename-me"}
+out=${3:-"$PWD/${name}-merged"}
 case $out in /*) ;; *) out="$PWD/$out" ;; esac
 [[ ! -e "$out" ]] || { echo "git-sync: output already exists: $out" >&2; exit 1; }
 
@@ -39,7 +39,7 @@ if git -C "$out" fetch --quiet --no-tags "$dstroot" HEAD; then
   if ! git -C "$out" merge-base HEAD FETCH_HEAD >/dev/null 2>&1; then
     echo 'git-sync: repositories do not have a common commit; refusing unrelated histories' >&2
     rm -rf -- "$out"
-    exit 1
+    status=1
   fi
   if git -C "$out" merge --no-edit FETCH_HEAD; then
     printf 'Merged %s into %s at %s\n' "$dstroot" "$srcroot" "$out"
@@ -47,10 +47,12 @@ if git -C "$out" fetch --quiet --no-tags "$dstroot" HEAD; then
   else
     status=$?
     echo "git-sync: merge conflicted; resolve conflicts in $out, then commit the merge" >&2
-    exit "$status"
   fi
 else
   status=$?
   rm -rf -- "$out"
-  exit "$status"
 fi
+
+echo "[*] You can now remove the old '${name}' directory, and rename the directory '${out}' to '${name}'."
+echo "[*] If there are any merge conflicts that you aren't sure how to resolve, send '${out}' to Jason and Ramya in Teams."
+exit "$status"
