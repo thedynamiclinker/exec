@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Merge the committed histories of two local clones into a new clone of SRC.
+set -euo pipefail
+
+usage() {
+  echo 'Usage: git-sync SRC DST [OUTPUT_DIR]' >&2
+  echo 'Merges DST HEAD into a new clone of SRC; SRC and DST are left untouched.' >&2
+  exit 2
+}
+[[ $# -ge 2 && $# -le 3 ]] || usage
+src=$1
+dst=$2
+
+repo_root() {
+  git -C "$1" rev-parse --show-toplevel 2>/dev/null
+}
+if ! srcroot=$(repo_root "$src"); then echo "git-sync: not a Git working tree: $src" >&2; exit 1; fi
+if ! dstroot=$(repo_root "$dst"); then echo "git-sync: not a Git working tree: $dst" >&2; exit 1; fi
+srcroot=$(cd "$srcroot" && pwd -P)
+dstroot=$(cd "$dstroot" && pwd -P)
+[[ "$srcroot" != "$dstroot" ]] || { echo 'git-sync: SRC and DST resolve to the same working tree' >&2; exit 1; }
+
+# Refuse dirty trees so local edits cannot be silently omitted. Commit changes first.
+for repo in "$srcroot" "$dstroot"; do
+  if [[ -n $(git -C "$repo" status --porcelain --untracked-files=all) ]]; then
+    echo "git-sync: working tree is not clean: $repo (commit or stash changes first)" >&2
+    exit 1
+  fi
+done
+
+name=$(basename "$srcroot")
+out=${3:-"$PWD/${name}-merged-successfully-now-you-can-rename-me"}
+case $out in /*) ;; *) out="$PWD/$out" ;; esac
+[[ ! -e "$out" ]] || { echo "git-sync: output already exists: $out" >&2; exit 1; }
+
+# Use a full local clone so the result is an independent, ordinary repository.
+git clone --quiet --no-hardlinks "$srcroot" "$out"
+if git -C "$out" fetch --quiet --no-tags "$dstroot" HEAD; then
+  if ! git -C "$out" merge-base HEAD FETCH_HEAD >/dev/null 2>&1; then
+    echo 'git-sync: repositories do not have a common commit; refusing unrelated histories' >&2
+    rm -rf -- "$out"
+    exit 1
+  fi
+  if git -C "$out" merge --no-edit FETCH_HEAD; then
+    printf 'Merged %s into %s at %s\n' "$dstroot" "$srcroot" "$out"
+    printf 'Result: %s\n' "$(git -C "$out" rev-parse --short HEAD)"
+  else
+    status=$?
+    echo "git-sync: merge conflicted; resolve conflicts in $out, then commit the merge" >&2
+    exit "$status"
+  fi
+else
+  status=$?
+  rm -rf -- "$out"
+  exit "$status"
+fi
