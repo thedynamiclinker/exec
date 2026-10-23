@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Create a tar.gz containing a clone at HEAD, including .git and .gitignore files.
-# Ignored/untracked working-tree files are excluded.
+# Archive the working tree and Git metadata, excluding only .gitignore'd files.
 set -euo pipefail
 
 usage() {
@@ -16,9 +15,10 @@ if ! root=$(git -C "$repo" rev-parse --show-toplevel 2>/dev/null); then
 fi
 root=$(cd "$root" && pwd -P)
 name=$(basename "$root")
+parent=$(dirname -- "$root")
 output=${2:-"$PWD/$name.tar.gz"}
 
-# Resolve output before changing directories; tar must not overwrite the source.
+# Resolve output before changing directories.
 case $output in
   /*) ;;
   *) output="$PWD/$output" ;;
@@ -26,20 +26,51 @@ esac
 
 command -v tar >/dev/null || { echo 'git-tar: tar is required' >&2; exit 1; }
 
-# A clone includes self-contained Git metadata and checks out all committed files,
-# including files marked export-ignore (which `git archive` would omit).
 tmp=$(mktemp -d "${TMPDIR:-/tmp}/git-tar.XXXXXXXX")
-clone="$tmp/$name"
+tmp=$(cd "$tmp" && pwd -P)
 cleanup() {
   rm -rf -- "$tmp"
 }
 trap cleanup EXIT HUP INT TERM
 
-head=$(git -C "$root" rev-parse HEAD)
-branch=$(git -C "$root" symbolic-ref --quiet --short HEAD) || branch=archived-head
-git clone --quiet --no-hardlinks --no-checkout -- "$root" "$clone"
-# Keep the source branch, or give a detached source HEAD a branch in the archive.
-git -C "$clone" checkout --quiet -B "$branch" "$head"
+# Git supplies ignore semantics (including nested rules and negations), while
+# filesystem traversal preserves everything else: empty directories, untracked
+# files, symlinks, and the original .git directory. Never reconstruct Git state.
+declare -A ignored=()
+shopt -s dotglob nullglob
+archive_paths() {
+  local path=$1 metadata=${2:-false} child excluded
+  [[ $path != "$tmp" ]] || return 0
+  [[ ! ${ignored["$path"]+present} ]] || return 0
+
+  if [[ $metadata == false && ( -d "$path/.git" || -f "$path/.git" ) ]]; then
+    # Deliberately omit --exclude-standard: global ignores and info/exclude
+    # must not remove files from this archive. Tracked files are never ignored.
+    git -C "$path" ls-files --others --ignored --directory \
+      --exclude-per-directory=.gitignore -z > "$tmp/ignored"
+    while IFS= read -r -d '' excluded; do
+      ignored["$path/${excluded%/}"]=1
+    done < "$tmp/ignored"
+  fi
+
+  printf '%s\0' "${path#"${parent%/}/"}"
+  if [[ -d $path && ! -L $path ]]; then
+    for child in "$path"/*; do
+      if [[ $metadata == true || ${child##*/} == .git ]]; then
+        archive_paths "$child" true
+      else
+        archive_paths "$child" false
+      fi
+    done
+  fi
+}
+
+archive_paths "$root" > "$tmp/paths"
+# NUL-delimited literal names handle newlines, wildcards, and leading dashes.
+# Stage the archive outside the traversal so an output inside the repo cannot
+# archive itself or change the source while tar is reading it.
+tar -C "$parent" --null --verbatim-files-from --no-recursion \
+  -czf "$tmp/archive.tar.gz" -T "$tmp/paths"
 mkdir -p -- "$(dirname -- "$output")"
-tar -C "$tmp" -czf "$output" "$name"
-printf 'Created %s from %s at %s\n' "$output" "$root" "$(git -C "$clone" rev-parse --short HEAD)"
+mv -T -- "$tmp/archive.tar.gz" "$output"
+printf 'Created %s from %s\n' "$output" "$root"
