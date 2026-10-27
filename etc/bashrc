@@ -711,14 +711,6 @@ bunsay(){
     cowsay -f bunny "$@"
 }
 
-lordy() {
-  lord --effort high "$@"
-}
-
-lordhavemercy() {
-  lord --effort xhigh "$@"
-}
-
 fl() {
     fold -s -w 72 <<< "$@"
 }
