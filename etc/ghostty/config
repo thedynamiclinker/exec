@@ -1633,7 +1633,7 @@ keybind = alt+0=last_tab
 ### # This is a future planned feature.
 ### # 
 ### # This can be changed at runtime but will only affect new terminal surfaces.
-### scrollback-limit = 10000000
+scrollback-limit = 100000000
 ### 
 ### # Control when the scrollbar is shown to scroll the scrollback buffer.
 ### # 
