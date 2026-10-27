@@ -3480,7 +3480,7 @@ scrollback-limit = 100000000
 ### # Example: `audio`, `no-audio`, `system`, `no-system`
 ### # 
 ### # Available since: 1.2.0
-### bell-features = no-system,no-audio,attention,title,no-border
+bell-features = system,audio,attention,title,border
 ### 
 ### # If `audio` is an enabled bell feature, this is a path to an audio file. If
 ### # the path is not absolute, it is considered relative to the directory of the
