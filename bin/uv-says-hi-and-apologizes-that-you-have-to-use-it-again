@@ -7,4 +7,8 @@ fi
 
 # create an abomination ".venv" thing in cwd
 # may god have mercy on our soul
-uv venv --seed --python "$(command -v python${1})" && source .venv/bin/activate
+if [[ ! -d .venv ]]; then
+    uv venv --seed --python "$(command -v python${1})"
+fi
+
+source .venv/bin/activate
