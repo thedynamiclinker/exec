@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ -z $1 ]]; then
+    echo "usage: $(basename $0) <3.9|3.10|3.11|etc>"
+    exit 1
+fi
+
+# create an abomination ".venv" thing in cwd
+# may god have mercy on our soul
+uv venv --seed --python "$(command -v python${1})" && source .venv/bin/activate
