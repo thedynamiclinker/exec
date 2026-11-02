@@ -10,5 +10,3 @@ fi
 if [[ ! -d .venv ]]; then
     uv venv --seed --python "$(command -v python${1})"
 fi
-
-source .venv/bin/activate
