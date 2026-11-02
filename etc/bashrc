@@ -14,8 +14,9 @@ source paths.sh
 source which.sh
 
 if is_bash && is_linux; then
-    shopt -s globstar # allow ** to glob recursively
-    shopt -s extglob  # allows @(patterns), *(patterns), +(patterns), !(patterns)
+    shopt -s globstar   # allow ** to glob recursively
+    shopt -s extglob    # allows @(patterns), *(patterns), +(patterns), !(patterns)
+    shopt -s histappend # don't overwrite the history file when a shell exits.
 fi
 
 #############################
@@ -228,7 +229,9 @@ is_linux && {
     export XAUTHORITY="$HOME/.Xauthority"
 
     # set the terminal's title bar
-    export PROMPT_COMMAND='echo -ne "\e]0;Your command is my wish: ${PWD##*/}\007"'
+    PROMPT_COMMAND='echo -ne "\e]0;Your command is my wish: ${PWD##*/}\007"'
+    PROMPT_COMMAND+=( 'history -a; history -n' )
+    export PROMPT_COMMAND
 
     # GREP_COLORS
     # the only one we changed is fn=35 (purple, non-bold) to fn=01;34 (blue, bold).
