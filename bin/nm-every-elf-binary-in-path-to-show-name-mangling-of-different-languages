@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
 
-# this is written inside out for obscure reasons that aren't important
+remaining_path=$PATH
+while :; do
+    directory=${remaining_path%%:*}
+    # Empty PATH entries refer to the current directory.
+    directory=${directory:-.}
 
-for d in "$(echo "$PATH" | sed 's@:@\n@g')"; do
+    for binary in "$directory"/* "$directory"/.[!.]* "$directory"/..?*; do
+        [[ -f "$binary" && -x "$binary" ]] || continue
 
-    for f in $(ls "$d"); do
-
-        if command -v "$f"; then
-
-            if grep -q 'ELF 64-bit' <(file $(readlink -f $(which "$f"))); then
-
-                nm $(which "$f") && echo "That was: $f" && read
-
-            fi
-
-        fi
-
+        case $(file -Lb -- "$binary") in
+            ELF*)
+                if nm -- "$binary"; then
+                    printf 'That was: %s\n' "$binary"
+                    read -r || exit 0
+                fi
+                ;;
+        esac
     done
 
+    [[ $remaining_path == *:* ]] || break
+    remaining_path=${remaining_path#*:}
 done
