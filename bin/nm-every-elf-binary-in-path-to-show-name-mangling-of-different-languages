@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+for d in "$(echo "$PATH" | sed 's@:@\n@g')"; do
+
+    for f in $(ls "$d"); do
+
+        if command -v "$f"; then
+
+            if grep -q 'ELF 64-bit' <(file $(readlink -f $(which "$f"))); then
+
+                nm $(which "$f") && echo "That was: $f" && read
+
+            fi
+
+        fi
+
+    done
+
+done
