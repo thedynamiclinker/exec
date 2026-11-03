@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# this is written inside out for obscure reasons that aren't important
+
 for d in "$(echo "$PATH" | sed 's@:@\n@g')"; do
 
     for f in $(ls "$d"); do
