@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# look at this fucking abomination lol
+
+:() { cat "$@"; }
+
+echo boop |
+    :| grep o |
+    :| grep p |
+    :
+
+echo boop |:| grep o |:| grep p |:|:|
+           :
+
+# i love the shell
