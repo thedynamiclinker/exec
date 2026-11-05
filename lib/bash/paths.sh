@@ -11,6 +11,19 @@ add_to_path () {
     esac
 }
 
+remove_from_path () {
+    [[ $# -eq 1 ]] || return 1
+    [[ ${PATH+x} ]] || return 0
+    local path=":$PATH:"
+
+    # Keep separators around each match so only complete entries are removed.
+    while [[ $path == *:"$1":* ]]; do
+        path=${path/":$1:"/:}
+    done
+    path=${path#:}
+    PATH=${path%:}
+}
+
 add_to_python_path () {
     case ":$PYTHONPATH:" in
         *:"$1":*) ;;
