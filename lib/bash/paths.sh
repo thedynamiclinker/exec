@@ -11,7 +11,6 @@ add_to_path () {
     esac
 }
 
-
 add_to_python_path () {
     case ":$PYTHONPATH:" in
         *:"$1":*) ;;
