@@ -140,6 +140,14 @@ activate() {
     source "$HOME/env/${1}/bin/activate"
 }
 
+python_warnings_off() {
+    export PYTHONWARNINGS=ignore
+}
+
+python_warnings_on() {
+    unset PYTHONWARNINGS
+}
+
 python_venv_prompt_off() {
     export VIRTUAL_ENV_DISABLE_PROMPT=1
 }
