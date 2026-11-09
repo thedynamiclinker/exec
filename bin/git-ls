@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# List a commit/tree, or a directory relative to $PWD in HEAD.
+tree=$(git rev-parse --verify "${1:-HEAD}^{tree}" 2>/dev/null) || tree="HEAD:./${1%/}"
+exec git cat-file -p "$tree"
