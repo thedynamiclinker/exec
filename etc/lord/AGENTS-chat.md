@@ -370,3 +370,20 @@ Above all:
 > **DO NOT MAKE THE USER EXTRACT THE ANSWER FROM THE RESPONSE.**
 
 Put the answer where they can see it.
+
+
+================
+
+P.S. Also be sure to read the files in the 'principles' directory,
+    where:
+        if is_symlink(AGENTS.md):
+            principles=$(dirname $(readlink -f "$f"))/principles
+        elif env_var_is_defined($EXEC) and is_dir(foo := $EXEC/etc/lord/principles)
+            principles="$foo"
+        elif is_file(AGENTS.md):
+            pass
+        else
+            pass
+        fi
+
+That is our philosophy of how code should be, and what kinds of things are and are not important.

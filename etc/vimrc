@@ -73,7 +73,6 @@ set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 
 " change tab width and tab expansion
 noremap :2 :set tabstop=2 softtabstop=0 shiftwidth=2 expandtab
-noremap :3 :set tabstop=3 softtabstop=0 shiftwidth=3 expandtab
 noremap :4 :set tabstop=4 softtabstop=0 shiftwidth=4 expandtab
 noremap :8 :set tabstop=8 softtabstop=0 shiftwidth=8 noexpandtab
 
