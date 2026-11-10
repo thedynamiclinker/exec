@@ -2059,8 +2059,9 @@ That is the direction in which it should grow.
 
 ================
 
-P.S. Also be sure to read the files in the 'principles' directory,
-    where:
+P.S. When in doubt, e.g., if you're not sure about what sort of code
+     we're looking for or what design decisions we'll like, read the
+     files in the 'principles' directory, where:
         if is_symlink(AGENTS.md):
             principles=$(dirname $(readlink -f "$f"))/principles
         elif env_var_is_defined($EXEC) and is_dir(foo := $EXEC/etc/lord/principles)
@@ -2072,3 +2073,5 @@ P.S. Also be sure to read the files in the 'principles' directory,
         fi
 
 That is our philosophy of how code should be, and what kinds of things are and are not important.
+You probably won't need to read that for the average prompt, but it's there if you need it.
+
