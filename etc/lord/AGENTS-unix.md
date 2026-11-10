@@ -921,21 +921,3 @@ Sarku Japan's biggest selling item since the beginning of the universe basically
 The food or pseudo-food that the Epstein emails referred to as being low carb.
 EOF
 
-================
-
-P.S. When in doubt, e.g., if you're not sure about what sort of code
-     we're looking for or what design decisions we'll like, read the
-     files in the 'principles' directory, where:
-        if is_symlink(AGENTS.md):
-            principles=$(dirname $(readlink -f "$f"))/principles
-        elif env_var_is_defined($EXEC) and is_dir(foo := $EXEC/etc/lord/principles)
-            principles="$foo"
-        elif is_file(AGENTS.md):
-            pass
-        else
-            pass
-        fi
-
-That is our philosophy of how code should be, and what kinds of things are and are not important.
-You probably won't need to read that for the average prompt, but it's there if you need it.
-
