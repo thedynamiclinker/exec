@@ -14,6 +14,7 @@ created_agents=0
 profile="${LORD_PROFILE:-}"
 flags=()
 prompt_args=()
+lock_dir=
 chat_dir=
 
 usage() {
@@ -74,6 +75,9 @@ log() {
 cleanup() {
     if ((created_agents)); then
         rm -f AGENTS.md
+    fi
+    if [[ -n "$lock_dir" ]]; then
+        rmdir -- "$lock_dir" 2>/dev/null || true
     fi
     if [[ -n "$chat_dir" ]]; then
         rm -rf -- "$chat_dir"
@@ -309,6 +313,26 @@ install_agents() {
     log "linked AGENTS.md -> $target"
 }
 
+lock_worktree_agents() {
+    local i
+    if [[ -z "$profile" ]] || ! profile_uses_agents; then
+        return 0
+    fi
+
+    lock_dir=".lord-agents.lock"
+
+    for i in {1..100}; do
+        if mkdir -- "$lock_dir" 2>/dev/null; then
+            trap cleanup EXIT INT TERM HUP
+            return 0
+        fi
+        sleep 0.1
+    done
+
+    printf 'lord: timed out waiting for %s\n' "$lock_dir" >&2
+    exit 1
+}
+
 run() {
     local err output status latest prompt
     prompt="${prompt_args[*]}"
@@ -358,5 +382,6 @@ run() {
     printf '%s\n' "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
+lock_worktree_agents
 install_agents
 run
