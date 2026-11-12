@@ -721,3 +721,8 @@ fl() {
 flx() {
     echo "$@" | fold -s -w 72 | xc
 }
+
+cd() {
+    builtin cd "$@" || return
+    # Put arbitrary cd hooks here
+}
