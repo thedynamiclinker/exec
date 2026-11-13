@@ -193,10 +193,17 @@ done
 unset d
 
 if [[ -n ${BASH_VERSION:-} && $- == *i* ]]; then
-    source completion.sh
-    for completion in "${EXEC}/lib/bash/completions"/*.sh; do
-        source "$completion"
+    IFS=: read -r -a completion_paths <<< "$PATH"
+    declare -A completion_dirs_seen=()
+    for completion_dir in "${completion_paths[@]}"; do
+        [[ -n $completion_dir && -d $completion_dir/completions ]] || continue
+        [[ ${completion_dirs_seen["$completion_dir"]:-} ]] && continue
+        completion_dirs_seen["$completion_dir"]=1
+        for completion in "$completion_dir"/completions/*.sh "$completion_dir"/completions/*.bash; do
+            [[ -f $completion ]] && source "$completion"
+        done
     done
+    unset completion_paths completion_dirs_seen completion_dir completion
 fi
 
 # export the variables for subprocesses
