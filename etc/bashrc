@@ -83,6 +83,7 @@ source python.sh
 paths=(
     "${EXEC}/bin"
     "${EXEC}/lib/bash"
+    "$OBSIDIAN/YHWH/bin"
 )
 
 man_paths=(
