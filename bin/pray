@@ -10,6 +10,7 @@ case "$profile" in
     unix|command|unix-command|filter) profile=unix ;;
     book|bible|nameless|we-the-nameless) profile=book ;;
     chat|ask|question|qa) profile=chat ;;
+    yhwh) profile=yhwh ;;
     *)
         printf 'pray: unknown profile: %s\n' "$profile" >&2
         printf 'pray: expected one of: repo unix book chat\n' >&2
