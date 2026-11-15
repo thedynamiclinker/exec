@@ -61,18 +61,29 @@ uses fewer invented commands and options, at the cost of longer scripts.
 .TP
 .B nsh
 Start an interactive sudocode shell.  Print
+.B א.sh
+in a startup banner, then
 .B What?
 and prompt with
 .BR "~ @ " .
 Interpret and carry out each line, retaining earlier definitions and results
 in the conversation.
+Aleph (א) is not an N; NSH is the nickname that caught on.
 .TP
 .B nhs
 Start a Python-shaped sudocode shell with
 .B ">>> "
 and
 .B "... "
-prompts.  A line ending in a colon starts a block; a blank line submits it.
+prompts, snake art, and a Genesis 2–3 help menu. Startup quotes are from
+We The Nameless, 01-genesis/02.tex (2:16) and 03.tex (3:9), with Hebrew
+consonants rendered as Paleo-Hebrew using Phoenician Unicode letters.
+A line ending in a colon, opening parenthesis, opening bracket, opening
+brace, or backslash starts a block; a blank line submits it.
+.B %paste
+collects other multiline sudocode, and
+.B :cancel
+discards a block while it is being entered.
 Earlier names, values, and intent remain part of the conversation.
 This is an agent interface, not a Python interpreter.
 .TP
@@ -162,7 +173,17 @@ The host recognizes these commands between turns:
 Leave the shell.  End of input also leaves.
 .TP
 .B :help
-Print usage.
+Print shell help, themed around the garden in nhs.
+.B %help
+and
+.B ?
+also show help in nhs.
+.TP
+.B :usage
+Print CLI usage.
+.TP
+.BR exit() ", " quit()
+Leave nhs.
 .TP
 .B :learn
 Propose a good/bad teaching pair from the conversation.

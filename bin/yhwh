@@ -52,8 +52,8 @@ usage() {
 
 	Act like a unix cli command called yhwh.
 
-	  nsh                  interactive sudocode shell: What? then ~ @
-	  nhs                  Python-style sudocode shell: >>> and ...
+	  nsh                  א.sh interactive sudocode shell: What? then ~ @
+	  nhs                  Eden's Python-shaped sudocode shell: >>> and ...
 	  exec [arguments]     codex exec, with yhwh's instructions and examples
 	  gen, ex, names, ask   draft a prompt or clarify its meaning interactively
 	  code, shell, sh       compress English into sudocode
@@ -74,7 +74,9 @@ usage() {
 	In either shell, :learn proposes a good/bad pair; :quit or EOF leaves.
 	The teaching interval at the top controls automatic proposals. Only a
 	terminal yes appends those two commented lines to this file.
-	In nhs, a line ending in : starts a block; a blank line submits it.
+	Use :help (or %help in nhs) for shell help. In nhs, a line ending
+	in :, (, [, { or backslash starts a block; a blank line submits it.
+	Use %paste for any other multiline sudocode; :cancel discards a block.
 	The backend is also editable at the top. No other files are needed.
 	EOF
 }
@@ -142,6 +144,11 @@ agents() {
 	    values, definitions, and intent meaningful throughout the dialogue.
 	    Use actual tools when execution is needed. Report actual results;
 	    never invent a running interpreter, an action, or its output.
+	    Both shells accept arbitrary sudocode, including invented commands.
+	    Execute the intent rather than merely translating or explaining it.
+	    Conversation context persists; a live Python namespace does not.
+	    Recreate earlier values with real tools when needed; never pretend
+	    that conversation history alone preserves a running process.
 
 	yhwh add
 	    The 'cat' command of software 2.0. Merge the given texts into a single
@@ -287,6 +294,77 @@ learn() {
 	esac
 }
 
+shell_banner() {
+	if [[ $mode == nhs ]]; then
+		text <<-'EOF'
+		       __
+		      / _)_    nhs — the garden of sudocode
+		 .-^^^ / /     Python-shaped intent, interpreted by yhwh
+		(__---/ /      >>> plant an idea; ... let it grow
+		     / /       \___/
+		    ( (________/  /
+		     \___________/
+
+		EOF
+		# Hebrew consonants from 01-genesis/{02,03}.tex, rendered as
+		# Phoenician Unicode letters (Paleo-Hebrew); English from the same text.
+		text <<-'EOF'
+		𐤌𐤊𐤋 𐤏𐤑 𐤄𐤂𐤍 𐤀𐤊𐤋 𐤕𐤀𐤊𐤋
+		“You may eat from every tree of the garden.” — Genesis 2:16
+		𐤀𐤉𐤊𐤄
+		“Where are you?” — Genesis 3:9
+
+		:help or %help opens the garden gate. :quit leaves.
+		EOF
+	else
+		text <<-'EOF'
+		  +----------+
+		  |   א.sh   |
+		  +----------+
+		Aleph isn't an N, but people keep calling it NSH. It caught on.
+		:help for a map; :quit to leave.
+		EOF
+		printf '\nWhat?\n'
+	fi
+}
+
+shell_help() {
+	if [[ $mode == nhs ]]; then
+		text <<-'EOF'
+		THE GARDEN — nhs / Genesis 2–3
+		  Till and tend    Enter Python-ish sudocode; yhwh carries out its intent.
+		  Name the beasts Names and definitions remain in conversation context.
+		  Branch and grow End a line with :, (, [, { or backslash for ... input.
+		                  A blank line submits the whole block.
+		  Gather fruit    %paste collects any multiline sudocode until a blank line.
+		  Shed a skin     :cancel discards the current block.
+		  Seek knowledge  :learn proposes a lesson for your approval.
+		  Where are you?  :help, %help or ? shows this map; :usage lists CLI options.
+		  East of Eden    :quit, :q, exit, quit, exit(), quit() or EOF leaves.
+
+		>>> harvest = gather("ideas from this repo")
+		>>> for idea in harvest:
+		...     improve(idea)
+		... <blank line submits>
+
+		This is an agent shell: arbitrary sudocode is welcome. Actions use real
+		tools. Conversation persists, but this is not a live IPython process.
+		EOF
+	else
+		text <<-'EOF'
+		א.sh — the interactive yhwh sudocode shell
+		Aleph (א) isn't an N. “NSH” is the nickname that caught on.
+		Enter any sudocode at ~ @; invented commands and pipes express intent.
+		yhwh does the work and retains earlier definitions in this conversation.
+
+		  :help    this map           :usage   CLI options
+		  :learn   propose a lesson  :quit    leave (also :q, exit, quit, EOF)
+
+		~ @ find rough edges | fix the smallest useful one
+		EOF
+	fi
+}
+
 shell() {
 	local line block prompt='~ @ '
 	interactive=1
@@ -294,15 +372,22 @@ shell() {
 	while IFS= read -e -r -p "$prompt" line || [[ -n $line ]]; do
 		case $line in
 			:quit|:q|exit|quit) break;;
+			'exit()'|'quit()') [[ $mode != nhs ]] || break;;
 			:learn) learn; continue;;
-			:help) usage; continue;;
+			:help) shell_help; continue;;
+			:usage) usage; continue;;
+			'%help'|'?')
+				if [[ $mode == nhs ]]; then shell_help; continue; fi;;
 			'') continue;;
 		esac
-		if [[ $mode == nhs && $line == *: ]]; then
+		if [[ $mode == nhs && ( $line == *[:\(\[\{\\] || $line == %paste ) ]]; then
+			[[ $line != %paste ]] || line=
 			while IFS= read -e -r -p '... ' block && [[ -n $block ]]; do
-				line+=$'\n'"$block"
+				if [[ $block == :cancel ]]; then line=; break; fi
+				line+="${line:+$'\n'}$block"
 			done
 		fi
+		[[ -n $line ]] || continue
 		if turn "$line" && ((learn_every > 0 && turns % learn_every == 0)); then
 			learn
 		fi
@@ -383,7 +468,7 @@ main() {
 		nsh|nhs)
 			# These modes own stdin as a stream of turns, not one large prompt.
 			interactive=1
-			[[ $mode != nsh ]] || printf 'What?\n'
+			shell_banner
 			[[ -z $input ]] || turn "$input" || return
 			shell;;
 		gen|ex|names|nm|ask)
