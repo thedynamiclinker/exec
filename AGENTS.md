@@ -1,1 +1,0 @@
-/home/jason/src/exec/etc/lord/AGENTS-repo.md

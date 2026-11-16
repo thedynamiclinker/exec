@@ -37,80 +37,75 @@ dir_is_available() {
 }
 
 c() {
-    #################################
-    ### This has to be a function ###
-    #################################
-
-    # Some things we'd like to add to ${dirs[@]}, but we don't
-    # want it polluting the bash completion output, and we don't
-    # want to make the code more complicated to compensate
     [[ -z $1 ]] && cd && return 0
 
     case "$1" in
         -|..) cd "$1"; return 0;;
     esac
 
-    # Check to see if the argument is in the list of available dirs
-    key="$1"
-    val="${dirs["$key"]}"
-    if dir_in_dirs "$key" && dir_exists "$key"; then
-        pushd "$val" >/dev/null
-        clip_prompt_if_its_super_long
-        retval=0
-    elif dir_in_dirs "$key"; then
-        echo "The key '$key' is in the dirs array,"
-        echo "but this path doesn't exist: '$val'" >&2
-        retval=1
-    elif dir_exists_raw "$key"; then
-        pushd "$key" >/dev/null
-        retval=0
-    else
-        echo "error: ${FUNCNAME} could not figure out how to cd to: $key." >&2
-        retval=2
-    fi
+    local path
+    path=$(p "$1") || return
+    pushd "$path" >/dev/null || return
+    clip_prompt_if_its_super_long
     cd "$(realpath "$PWD")" # jesus...
-    return $retval
 }
 
 p() {
-    # prints the path corresponding to a key in the dirs array
-    key="$1"
-    val="${dirs[$key]}"
-    if dir_in_dirs $1 && dir_exists $1; then
-        echo "$val"
-        return 0
-    elif dir_in_dirs $1; then
-        echo "The key ${key} is in the dirs array but this path doesn't exist: $val" >&2
-        return 1
+    # The longest matching key wins: an explicit exec/etc key can point
+    # somewhere other than the etc directory beneath exec.
+    local key="${1:-}" suffix= path=
+    while [[ -n $key ]]; do
+        path="${dirs[$key]}"
+        [[ -n $path ]] && break
+        [[ $key == */* ]] || break
+        suffix="/${key##*/}$suffix"
+        key="${key%/*}"
+    done
+
+    if [[ -n $path ]]; then
+        [[ -n $suffix ]] && path="${path%/}$suffix"
+    elif [[ -d ${1:-} ]]; then
+        path="$1"
     else
-        echo "The key ${key} is not in the list of available dirs." >&2
+        echo "The key ${1:-} is not in the list of available dirs." >&2
         return 2
     fi
+
+    if [[ ! -d $path ]]; then
+        echo "The path doesn't exist: $path" >&2
+        return 1
+    fi
+    printf '%s\n' "$path"
+}
+
+o() {
+    local path
+    if [[ -f ${1:-} ]]; then
+        path="$1"
+    else
+        path=$(p "${1:-}") || return
+    fi
+    xdg-open "$path"
 }
 
 with() {
     # creates a symlink in the current directory to a directory in dirs
-    local key="$1"
-    local val="${dirs[$key]}"
-    if dir_in_dirs "$key" && dir_exists "$key"; then
-        ln -s -- "$val" .
-    elif dir_in_dirs "$key"; then
-        echo "The key ${key} is in the dirs array but this path doesn't exist: $val" >&2
-        return 1
-    else
-        echo "The key ${key} is not in the list of available dirs." >&2
-        return 2
-    fi
+    local path
+    path=$(p "${1:-}") || return
+    ln -s -- "$path" .
 }
 
 ensure_in() {
     # a version of c that doesn't re-push "$1" onto dir stack if we're already in there
-    if [[ "$(realpath "$PWD")" != "$(realpath "${dirs["$1"]}")" ]]; then c "$1"; fi
+    local path
+    path=$(p "${1:-}") || return
+    if [[ "$(realpath "$PWD")" != "$(realpath "$path")" ]]; then c "$1"; fi
 }
 
 push() {
-    local d="$1"
-    pushd "${dirs[$d]}" >/dev/null
+    local path dir
+    path=$(p "${1:-}") || return
+    pushd "$path" >/dev/null || return
     dir="$(basename "$PWD")"
     printf "${whi}...${red}(${blu}${dir}${whi}${end}\n" >&2
 }
@@ -124,59 +119,43 @@ pop() {
 # bash completions
 
 _bash_complete_using_dirs_array() {
-    local possible_keys=($(echo ${!dirs[@]}))
-    local curr_word="${COMP_WORDS[COMP_CWORD]}"
-    local prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
-    COMPREPLY=($(compgen -W "${possible_keys[*]}" -- ${curr_word}))
-}
+    local word="${2-${COMP_WORDS[COMP_CWORD]}}" key parent path
+    COMPREPLY=()
 
-_EXPERIMENTAL_bash_complete_using_dirs_array() {
-    local possible_keys=($(echo ${!dirs[@]}))
-    local curr_word="${COMP_WORDS[COMP_CWORD]}"
-    local prev_word="${COMP_WORDS[COMP_CWORD - 1]}"
-    if [[ ! ${curr_word} =~ .*/.* ]]; then
-        # act normal for keys that don't end with a slash
-        COMPREPLY=($(compgen -W "${possible_keys[*]}" -- ${curr_word}))
-        return
-    elif [[ ${curr_word} =~ .*/ ]]; then
-        key="${curr_word%%/*}"     # turns 'a/b/c' into 'a'
-        sub="${curr_word#$key/}"   # turns 'a/b/c' into 'b/c'
-        val="${dirs["$key"]}"
-        loc="$val$sub"
-        rel=($(for path in $(ls $loc/); do echo /${path#$val}; done))
-        #echo "key=$key"
-        #echo "val=$val"
-        #echo "sub=$sub"
-        #echo "loc=$loc"
-        #echo "abs=${abs[*]}"
-        #echo
-        for x in "${rel[*]}"; do echo "$x"; done
-        #COMPREPLY=($(compgen -W "${abs[*]}" -- ${curr_word}))
-        COMPREPLY=($(compgen -W "${rel[*]}" -- ${curr_word}))
-    else
-        key="${curr_word%%/*}"     # turns 'a/b/c' into 'a'
-        sub="${curr_word#$key/}"   # turns 'a/b/c' into 'b/c'
-        val="${dirs["$key"]}"
-        loc="$val$sub"
-        rel=($(for path in $(ls $loc/); do echo ${path#${val}/}; done))
-        #echo "key=$key"
-        #echo "val=$val"
-        #echo "sub=$sub"
-        #echo "loc=$loc"
-        #echo "abs=${abs[*]}"
-        echo
-        for x in "${rel[*]}"; do echo "$x"; done
-        #COMPREPLY=($(compgen -W "${abs[*]}" -- ${curr_word}))
-        COMPREPLY=($(compgen -W "${rel[*]}" -- ${curr_word}))
+    # $2 has its opening quote removed. Decode unquoted backslash escapes
+    # without eval; ordinary filesystem paths use Bash's native completion.
+    if [[ ${COMP_WORDS[COMP_CWORD]} != [\'\"]* ]]; then
+        IFS= read word <<< "$word"
     fi
+
+    for key in "${!dirs[@]}"; do
+        [[ $key == "$word"* ]] || continue
+        if [[ $word == */* ]]; then
+            COMPREPLY+=("${dirs[$key]}")
+        else
+            COMPREPLY+=("$key/")
+        fi
+    done
+
+    [[ $word == */* ]] || return 0
+    parent=$(p "${word%/*}" 2>/dev/null) || return 0
+    [[ $parent != "${word%/*}" ]] || return 0
+    parent="${parent%/}"
+    # A shortcut shadows any directory with the same name in PWD.
+    compopt +o dirnames 2>/dev/null || :
+
+    # Real paths let Readline recognize directories and quote their names.
+    # Once expanded, subsequent Tabs fall through to native directory completion.
+    for path in "$parent"/"${word##*/}"*/; do
+        [[ -d $path ]] || continue
+        path="${path%/}"
+        key="${word%/*}/${path##*/}"
+        [[ -n ${dirs[$key]} ]] && continue
+        COMPREPLY+=("$path")
+    done
 }
 
-is_bash && {
-    complete -F _bash_complete_using_dirs_array p
-    complete -F _bash_complete_using_dirs_array o
-    complete -F _bash_complete_using_dirs_array c
-    complete -F _bash_complete_using_dirs_array with
-
-    complete -F _bash_complete_using_dirs_array push
-    complete -F _bash_complete_using_dirs_array pop # for fairness (lol)
-}
+if [[ -n ${BASH_VERSION:-} ]]; then
+    complete -o dirnames -o filenames -o nospace -F _bash_complete_using_dirs_array \
+        c o p with push ensure_in
+fi
