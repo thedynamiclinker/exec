@@ -724,11 +724,11 @@ bunsay(){
 }
 
 fl() {
-    echo "$@" | fold -s -w 72
+    fold -s -w 72 "$@"
 }
 
 flx() {
-    echo "$@" | fold -s -w 72 | xc
+    fold -s -w 72 "$@" | xc
 }
 
 cd() {
