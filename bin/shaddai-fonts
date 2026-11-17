@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# Try console bitmap fonts; keep one or leave the console as we found it.
+
+usage() {
+	cat <<'EOF'
+Usage: shaddai [FONT-DIR]
+
+Preview Linux virtual-console fonts with setfont (from kbd).
+Run on a console such as /dev/tty2. An optional directory supplies your fonts.
+
+  n / p   next / previous font
+  /       filter filenames (empty resets)
+  d       toggle double size (requires a font at most 16x16)
+  Enter   keep the preview and print its setfont command
+  q       quit and restore the original font
+
+Sizes belong to the bitmap fonts: browse their size variants or use d.
+Keeping a font changes this console for now; no boot configuration is written.
+EOF
+}
+
+die() {
+	printf 'shaddai: %s\n' "$*" >&2
+	exit 1
+}
+
+cleanup() {
+	local status=$?
+	trap - EXIT
+	if (( saved && ! keep )); then
+		if ! setfont -C "$console" -m none "$savedir/original.psf"; then
+			printf '\nshaddai: restoration failed; saved font retained. Recover with:\n  ' >&2
+			printf '%q ' setfont -C "$console" -m none "$savedir/original.psf" >&2
+			printf '\n' >&2
+			exit 1
+		fi
+	fi
+	rm -rf -- "$savedir"
+	exit "$status"
+}
+
+preview() {
+	local size=normal
+	font_options=()
+	(( double )) && { font_options=(-d); size=double; }
+
+	valid=0
+	# Leave the console's byte-to-Unicode translation alone throughout.
+	if setfont -C "$console" -m none "${font_options[@]}" "${fonts[index]}" 2>"$savedir/error"; then
+		valid=1
+	else
+		# A failed load can still have changed the font or its Unicode map.
+		setfont -C "$console" -m none "$savedir/original.psf" || die 'Could not restore the original font.'
+	fi
+
+	printf '\033[H\033[2J'
+	printf 'shaddai  [%d/%d]  %s\n%s\n\n' "$((index + 1))" "${#fonts[@]}" "$size" "${fonts[index]##*/}"
+	printf '%s\n' \
+		'The quick brown fox jumps over the lazy dog.' \
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
+		'abcdefghijklmnopqrstuvwxyz' \
+		'0123456789  Il1|  O0  {} [] () <> /\' \
+		'!@#$%^&*  +-=_  .,;:  "quotes"' \
+		'é à ü ñ  α β Ω  ┌─┬─┐ │ └─┴─┘' \
+		'' \
+		'n/p next/previous   / filter   d double' \
+		'Enter keep   q restore & quit'
+	if (( ! valid )); then
+		printf '\nCould not preview; original restored:\n'
+		cat "$savedir/error"
+	fi
+}
+
+case ${1:-} in
+	-h|--help) usage; exit 0 ;;
+esac
+(( $# <= 1 )) || { usage >&2; exit 1; }
+command -v setfont >/dev/null || die 'Install kbd to get setfont.'
+console=$(tty) || die 'Run on a Linux virtual console (e.g. /dev/tty2).'
+[[ $console =~ ^/dev/tty[1-9][0-9]*$ && -t 1 ]] ||
+	die 'Run on a Linux virtual console (e.g. /dev/tty2).'
+
+fontdir=${1:-}
+if [[ -z $fontdir ]]; then
+	for fontdir in /usr/share/kbd/consolefonts /usr/share/consolefonts \
+		/usr/lib/kbd/consolefonts /etc/kbd/consolefonts \
+		/run/current-system/sw/share/consolefonts; do
+		[[ -d $fontdir ]] && break
+	done
+fi
+[[ -d $fontdir ]] || die 'No console font directory found; pass one as FONT-DIR.'
+fontdir=$(cd -- "$fontdir" && pwd -P) || exit 1
+
+shopt -s nullglob
+fonts=("$fontdir"/*.{psf,psfu,fnt}{,.gz,.bz2,.xz,.zst})
+(( ${#fonts[@]} )) || die "No PSF, PSFU or FNT fonts in $fontdir."
+mapfile -d '' -t fonts < <(printf '%s\0' "${fonts[@]}" | LC_ALL=C sort -zV)
+all_fonts=("${fonts[@]}")
+
+saved=0 keep=0 double=0 index=0
+savedir=$(mktemp -d) || die 'Could not create a temporary directory.'
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+# -O saves the glyphs and their Unicode map without loading another font.
+setfont -C "$console" -O "$savedir/original.psf" ||
+	die 'Could not save the current font; try running with sudo.'
+[[ -s $savedir/original.psf ]] || die 'setfont did not save the current font.'
+saved=1
+
+preview
+while IFS= read -rsn1 key; do
+	case $key in
+		n) (( index = (index + 1) % ${#fonts[@]} )) ;;
+		p) (( index = (index + ${#fonts[@]} - 1) % ${#fonts[@]} )) ;;
+		d) (( double = ! double )) ;;
+		/)
+			IFS= read -rp $'\nFilter: ' query || exit 0
+			matches=()
+			for font in "${all_fonts[@]}"; do
+				name=${font##*/}
+				[[ ${name,,} == *"${query,,}"* ]] && matches+=("$font")
+			done
+			if (( ! ${#matches[@]} )); then
+				printf '\nNo matching fonts. Try / again.\n'
+				continue
+			fi
+			fonts=("${matches[@]}") index=0
+			;;
+		'')
+			(( valid )) || continue
+			keep=1
+			printf '\nKept on %s. Apply again with:\n  ' "$console"
+			printf '%q ' setfont -C "$console" -m none "${font_options[@]}" "${fonts[index]}"
+			printf '\n'
+			exit 0
+			;;
+		q) exit 0 ;;
+		*) continue ;;
+	esac
+	preview
+done
