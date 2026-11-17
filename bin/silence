@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+usage () {
+    echo "Usage: $(basename $0) [start|stop]"
+    exit 1
+}
+
+start () {
+    sudo systemctl stop ntpd
+    killall conky && conky -d -c "$HOME/.conkyrc-silent"
+}
+
+stop () {
+    sudo systemctl start ntpd
+    killall conky && conky-smart-start
+}
+
+if   [[ "$1" == "start" ]]; then 
+    start
+elif [[ "$1" == "stop"  ]]; then
+    stop
+else
+    usage
+fi
