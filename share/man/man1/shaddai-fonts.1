@@ -1,0 +1,172 @@
+.TH SHADDAI-FONTS 1 "November 2026" "exec" "User Commands"
+.SH NAME
+shaddai-fonts, shaddai \- preview and save Linux virtual-console fonts
+.SH SYNOPSIS
+.SY shaddai
+.RI [ font-directory ]
+.YS
+.SY shaddai
+.B \-\-tutorial
+.YS
+.SY shaddai
+.B \-\-default
+.YS
+.SY shaddai
+.B \-\-help
+.YS
+.SH DESCRIPTION
+.B shaddai
+uses
+.BR setfont (8)
+from kbd to preview bitmap fonts on a numbered Linux virtual console
+such as
+.IR /dev/tty2 .
+.B shaddai-fonts
+is another name for the same command.
+An optional directory supplies the fonts.
+When available among the fonts being browsed,
+.B Lat2-Terminus16.psfu.gz
+is the first preview.
+.PP
+Quitting with
+.BR q ,
+end of input, or a handled signal restores the original font and Unicode
+map unless a preview has already been kept.
+Press Enter to keep the preview and choose whether to save it for this TTY,
+all TTYs, or the current session only.
+A font belongs to the console, so the setting affects everyone using that TTY.
+.SH OPTIONS
+.TP
+.B \-\-tutorial
+Show a five-page tour of the files and commands that control console
+fonts. On a terminal it is interactive. With piped input or output,
+it prints all five pages.
+.TP
+.B \-\-default
+Save
+.B Lat2-Terminus16.psfu.gz
+as the shared font and apply the saved choices to allocated virtual consoles.
+This mode works with nonterminal standard input and skips the chooser.
+It can be called from setup scripts.
+.TP
+.BR \-h ", " \-\-help
+Print usage.
+.SH KEYS
+.TP
+.BR n ", " p
+Preview the next or previous font.
+.TP
+.B /
+Filter by filename. An empty filter restores the full list.
+.TP
+.B d
+Toggle double size. Doubling requires a font at most 16 by 16 pixels.
+.TP
+.BR h ", " ?
+Open the tutorial.
+.TP
+.B Enter
+Keep the preview and choose whether to save it.
+.TP
+.B q
+Restore the original font and quit.
+.SH PERSISTENCE
+Temporary previews require kbd. Saving requires systemd and root access.
+The command requests sudo authentication when needed.
+.PP
+A TTY-specific font takes priority over the shared default. Saving a new
+shared default preserves TTY-specific choices. Each saved PSF contains the
+loaded glyphs and Unicode map, including any doubling, and can be loaded
+independently of the original font files.
+.PP
+Saving installs a loader and two systemd drop-ins. The drop-ins append
+loader calls after
+.B systemd-vconsole-setup.service
+and before
+.B getty@.service
+login prompts, including the
+.B autovt@
+alias. Font failures are logged and login proceeds.
+The boot hook uses
+.I /dev/vcsN
+to find allocated consoles. The getty hook covers later allocations.
+Both use the installed loader directly.
+.PP
+Native systemd configuration lives in
+.IR /etc/vconsole.conf .
+On NixOS, the
+.B console.font
+option generates the native font setting.
+Shaddai loads its choices after native setup, leaving the keymap and
+generated files intact. This applies after the initramfs stage.
+.SH FILES
+.TP
+.I /etc/consolefonts/shaddai/ttyN.psf
+Saved font for
+.IR /dev/ttyN .
+.TP
+.I /etc/consolefonts/shaddai/default.psf
+Shared fallback for consoles without a TTY-specific font.
+.TP
+.I /etc/consolefonts/shaddai/*.psf.previous
+Previous saved choice, kept when a saved PSF is replaced.
+.TP
+.I /usr/local/libexec/shaddai-console-font
+Installed copy of
+.I lib/shaddai/console-font
+from the checkout.
+.TP
+.I /etc/systemd/system/systemd-vconsole-setup.service.d/90-shaddai-font.conf
+Apply saved choices to allocated consoles after native setup.
+.TP
+.I /etc/systemd/system/getty@.service.d/90-shaddai-font.conf
+Apply the choice for a console before its getty starts.
+.SH EXAMPLES
+Inspect the units and the installed loader.
+.EX
+systemctl cat systemd-vconsole-setup.service getty@tty2.service
+cat /usr/local/libexec/shaddai-console-font
+.EE
+.PP
+Apply the saved font to a VT allocated without getty.
+.EX
+sudo /usr/local/libexec/shaddai-console-font /dev/tty2
+.EE
+.SH RECOVERY
+Remove a TTY-specific PSF to inherit the shared font, or remove the shared
+PSF to use the native default on consoles without a TTY-specific choice.
+Restart native console setup to apply the change.
+.EX
+sudo rm /etc/consolefonts/shaddai/tty2.psf
+sudo rm /etc/consolefonts/shaddai/default.psf
+sudo systemctl restart systemd-vconsole-setup.service
+.EE
+.PP
+To recover a replaced choice, copy the
+.I .psf.previous
+file over its
+.I .psf
+file and run the loader. To remove the integration completely, remove both
+drop-ins and the installed loader listed above, then run
+.BR "sudo systemctl daemon-reload" .
+All recovery operations work without launching the chooser.
+.SH SEE ALSO
+.BR setfont (8),
+.BR systemd-vconsole-setup.service (8),
+.BR vconsole.conf (5)
+.PP
+.UR https://github.com/legionus/kbd
+Upstream kbd source and manuals
+.UE
+.PP
+.UR https://www.freedesktop.org/software/systemd/man/latest/systemd-vconsole-setup.service.html
+Systemd console setup
+.UE
+.PP
+.UR https://www.freedesktop.org/software/systemd/man/latest/vconsole.conf.html
+Systemd console configuration
+.UE
+.PP
+.UR https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/config/console.nix
+NixOS console module
+.UE
