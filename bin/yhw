@@ -11,7 +11,7 @@ lordhavemercy() { think xhigh "$@"; }
 tetragrammaton() { think max "$@"; }
 learn_every=5
 
-# The backend's argument syntax lives here. Everything below speaks yhwh.
+# The backend's argument syntax lives here. Everything below speaks yhw.
 think() {
 	local effort=$1
 	shift
@@ -48,13 +48,13 @@ text() {
 
 usage() {
 	text <<-'EOF'
-	usage: yhwh [options] [command] [text | file | -] ...
+	usage: yhw [options] [command] [text | file | -] ...
 
-	Act like a unix cli command called yhwh.
+	Act like a unix cli command called yhw.
 
 	  nsh                  א.sh interactive sudocode shell: What? then ~ @
 	  nhs                  Eden's Python-shaped sudocode shell: >>> and ...
-	  exec [arguments]     codex exec, with yhwh's instructions and examples
+	  exec [arguments]     codex exec, with yhw's instructions and examples
 	  gen, ex, names, ask   draft a prompt or clarify its meaning interactively
 	  code, shell, sh       compress English into sudocode
 	  add, do, ld           merge texts, do the work, or load instructions
@@ -83,19 +83,19 @@ usage() {
 
 agents() {
 	text <<-'EOF'
-	Act like a unix cli command called yhwh.
+	Act like a unix cli command called yhw.
 
 	It should be the most porcelain of all porcelain commands, and should
 	attempt to determine the behavior the user wants from it even if given
 	subcommands it doesn't recognize. Some subcommands are defined ahead of
-	time, but yhwh is not tied to any specific workflow.
+	time, but yhw is not tied to any specific workflow.
 
-	yhwh gen
+	yhw gen
 	    Generate a rough draft prompt of what you think the user means, from
-	    a short request like 'yhwh gen: fix terminal focus in gui'. Print the
+	    a short request like 'yhw gen: fix terminal focus in gui'. Print the
 	    draft, then refine it by asking questions when the user continues.
 
-	yhwh ex, names, nm
+	yhw ex, names, nm
 	    Expand on an existing prompt by asking questions to clarify any
 	    ambiguities in its wording, in the user's use of words, or in
 	    contradictions that might affect an agent's implementation.
@@ -107,11 +107,11 @@ agents() {
 	    When finished, print the old prompt, a readable record of the user's
 	    answers, and an updated prompt that can be given to another agent.
 
-	yhwh ask, ex --test, names --test
-	    Switch roles: the user asks yhwh test questions in quiz mode about
-	    what the user wants in a given prompt, to make sure yhwh gets it.
+	yhw ask, ex --test, names --test
+	    Switch roles: the user asks yhw test questions in quiz mode about
+	    what the user wants in a given prompt, to make sure yhw gets it.
 
-	yhwh code, shell, sh
+	yhw code, shell, sh
 	    Turn a given prompt into a new world programming language called
 	    "sudocode". The term pseudo-code no longer applies to pseudo-code,
 	    now that English is executable. We need a name for the dialect that
@@ -125,20 +125,20 @@ agents() {
 	    gives the same information.
 	    RECURSION: sudocode is recursive! It can use non-existent scripts
 	    provided they clarify the prompt's goal briefly. These precise,
-	    readable one-liners and short files can themselves be run by yhwh.
+	    readable one-liners and short files can themselves be run by yhw.
 	    sh uses fewer novel non-existent --options and commands, at the cost
 	    of longer output scripts.
 
-	yhwh nsh
-	    Be an interactive yhwh shell. The host starts by saying 'What?' and
-	    gives the prompt '~ @ '. That is always what yhwh nsh means.
+	yhw nsh
+	    Be an interactive yhw shell. The host starts by saying 'What?' and
+	    gives the prompt '~ @ '. That is always what yhw nsh means.
 	    Interpret and carry out each line as sudocode, with the largest useful
 	    compression into non-existent commands and efficient pipes. Their
 	    meaning is the user's intent. You are the interpreter; do the work.
 	    Earlier definitions and results remain meaningful in later turns.
 
-	yhwh nhs
-	    Be a yhwh Python interactive shell style interface. The host gives
+	yhw nhs
+	    Be a yhw Python interactive shell style interface. The host gives
 	    >>> and ... prompts and collects blocks ending with a blank line.
 	    Interpret the user's Python-shaped sudocode, keeping earlier names,
 	    values, definitions, and intent meaningful throughout the dialogue.
@@ -150,17 +150,17 @@ agents() {
 	    Recreate earlier values with real tools when needed; never pretend
 	    that conversation history alone preserves a running process.
 
-	yhwh add
+	yhw add
 	    The 'cat' command of software 2.0. Merge the given texts into a single
 	    unified prompt containing all their information, in a manner designed
 	    to clearly communicate with codex or another agent.
 
-	yhwh do
-	    Given any prompt, yhwh speaks it into the world by doing the work.
+	yhw do
+	    Given any prompt, yhw speaks it into the world by doing the work.
 	    Preserve important invariants in the work itself when appropriate.
 
-	yhwh ld
-	    The dynamic linker and loader of the yhwh command. Read the given
+	yhw ld
+	    The dynamic linker and loader of the yhw command. Read the given
 	    texts as a combined English executable, then become that command.
 
 	A turn is one exchange in an ongoing conversation. If you need an answer,
@@ -169,7 +169,7 @@ agents() {
 	Do not generate scaffolding, doc directories, or prompt/session files
 	unless the user asks for them. Prefer the smallest useful implementation.
 	The host alone appends approved examples to its own source; do not edit
-	yhwh or save preferences yourself. The examples are teaching, not shell.
+	yhw or save preferences yourself. The examples are teaching, not shell.
 	Learn the user's dialect of sudocode from those examples over time.
 
 	Sui Generis computational monotheism.
@@ -209,20 +209,20 @@ route() {
 	EOF
 	)$(examples)"
 	if ! choice=$("${argv[@]}" -- - <<< "$request"); then
-		printf 'yhwh: could not choose a command\n' >&2
+		printf 'yhw: could not choose a command\n' >&2
 		return 1
 	fi
 	read -r level permission extra <<< "$choice"
 	case $level in law|lawd|lord|lordy|lordhavemercy|tetragrammaton) ;;
 		*)
-			printf 'yhwh: invalid thinking choice: %s\n' "$choice" >&2
+			printf 'yhw: invalid thinking choice: %s\n' "$choice" >&2
 			return 2;;
 	esac
 	case $permission in read-only|workspace-write|full) ;;
-		*) printf 'yhwh: invalid permissions: %s\n' "$choice" >&2; return 2;;
+		*) printf 'yhw: invalid permissions: %s\n' "$choice" >&2; return 2;;
 	esac
 	if [[ $choice != "$level $permission" || -n $extra ]]; then
-		printf 'yhwh: expected a thinking name and permissions\n' >&2
+		printf 'yhw: expected a thinking name and permissions\n' >&2
 		return 2
 	fi
 	[[ -n $effort ]] || effort=$level
@@ -234,7 +234,7 @@ turn() {
 	request="Conversation so far:
 $conversation
 
-Current interface: ${mode:-yhwh}
+Current interface: ${mode:-yhw}
 User:
 $1"
 	route || return
@@ -255,7 +255,7 @@ $1"
 	status=$?
 	printf '%s\n' "$response"
 	((status == 0)) || return "$status"
-	conversation+=$'\n'"User: $1"$'\n'"yhwh: $response"$'\n'
+	conversation+=$'\n'"User: $1"$'\n'"yhw: $response"$'\n'
 	((++turns))
 }
 
@@ -285,12 +285,12 @@ learn() {
 		[[ ${#answer} -le 76 && $answer != *[[:cntrl:]]* ]] || return 0
 	done
 	printf '\n%s\n%s\n' "${pair[0]}" "${pair[1]}" >&2
-	IFS= read -r -p 'Append these examples to yhwh? [y/N] ' answer || return 0
+	IFS= read -r -p 'Append these examples to yhw? [y/N] ' answer || return 0
 	case $answer in
 		y|Y|yes|YES|Yes)
 			printf '\n# %s\n# %s\n' "${pair[0]}" "${pair[1]}" >> "$self" ||
 				return 1
-			printf 'yhwh: learned\n' >&2
+			printf 'yhw: learned\n' >&2
 			;;
 	esac
 }
@@ -300,7 +300,7 @@ shell_banner() {
 		text <<-'EOF'
 		       __
 		      / _)_    nhs — the garden of sudocode
-		 .-^^^ / /     Python-shaped intent, interpreted by yhwh
+		 .-^^^ / /     Python-shaped intent, interpreted by yhw
 		(__---/ /      >>> plant an idea; ... let it grow
 		     / /       \___/
 		    ( (________/  /
@@ -333,7 +333,7 @@ shell_help() {
 	if [[ $mode == nhs ]]; then
 		text <<-'EOF'
 		THE GARDEN — nhs / Genesis 2–3
-		  Till and tend    Enter Python-ish sudocode; yhwh carries out its intent.
+		  Till and tend    Enter Python-ish sudocode; yhw carries out its intent.
 		  Name the beasts Names and definitions remain in conversation context.
 		  Branch and grow End a line with :, (, [, { or backslash for ... input.
 		                  A blank line submits the whole block.
@@ -353,10 +353,10 @@ shell_help() {
 		EOF
 	else
 		text <<-'EOF'
-		א.sh — the interactive yhwh sudocode shell
+		א.sh — the interactive yhw sudocode shell
 		Aleph (א) isn't an N. “NSH” is the nickname that caught on.
 		Enter any sudocode at ~ @; invented commands and pipes express intent.
-		yhwh does the work and retains earlier definitions in this conversation.
+		yhw does the work and retains earlier definitions in this conversation.
 
 		  :help    this map           :usage   CLI options
 		  :learn   propose a lesson  :quit    leave (also :q, exit, quit, EOF)
@@ -418,7 +418,7 @@ main() {
 			--dry-run|@echo) dry_run=1;;
 			--effort|-s|--sandbox)
 				if (($# < 2)); then
-					printf 'yhwh: %s needs an argument\n' "$1" >&2; return 2
+					printf 'yhw: %s needs an argument\n' "$1" >&2; return 2
 				fi
 				if [[ $1 == --effort ]]; then effort=$2; else access=$2; fi
 				shift;;
@@ -441,10 +441,10 @@ main() {
 		none) effort=law;; low) effort=lawd;; medium) effort=lord;;
 		high) effort=lordy;; xhigh) effort=lordhavemercy;; max) effort=tetragrammaton;;
 		''|law|lawd|lord|lordy|lordhavemercy|tetragrammaton) ;;
-		*) printf 'yhwh: unknown effort: %s\n' "$effort" >&2; return 2;;
+		*) printf 'yhw: unknown effort: %s\n' "$effort" >&2; return 2;;
 	esac
 	case $access in ''|read-only|workspace-write|full) ;;
-		*) printf 'yhwh: unknown permissions: %s\n' "$access" >&2; return 2;;
+		*) printf 'yhw: unknown permissions: %s\n' "$access" >&2; return 2;;
 	esac
 	if [[ -z $mode && ${#words[@]} != 0 ]] &&
 		command -v "yhwh-${words[0]%:}" >/dev/null 2>&1; then
@@ -491,8 +491,8 @@ exit 0
 # good: user "fix it" | inspect the problem | make the smallest useful repair
 # bad: user "fix it" | invent a workflow | generate scaffolding
 
-# good: yhwh nsh -> say "What?"; prompt "~ @ "; interpret each line
-# bad: yhwh nsh -> explain how to build a shell; leave the work to the user
+# good: yhw nsh -> say "What?"; prompt "~ @ "; interpret each line
+# bad: yhw nsh -> explain how to build a shell; leave the work to the user
 
 # good: sudocode = precise intent | readable gzip | recursive English
 # bad: sudocode = decorative pseudo-code whose meaning loses the request

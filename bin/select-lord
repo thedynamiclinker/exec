@@ -5,7 +5,7 @@ cmd=lord
 while [[ -n $1 ]]; do
     case "$1" in
         -i|--yhwh)
-            cmd=yhwh
+            cmd=yhw
             shift
             ;;
         *)

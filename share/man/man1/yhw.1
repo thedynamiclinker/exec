@@ -1,18 +1,18 @@
-.TH YHWH 1 "November 2026" "exec" "User Commands"
+.TH YHW 1 "November 2026" "exec" "User Commands"
 .SH NAME
-yhwh \- interpret intent, refine prompts, and execute sudocode
+yhw \- interpret intent, refine prompts, and execute sudocode
 .SH SYNOPSIS
-.SY yhwh
+.SY yhw
 .RI [ options ]
 .RI [ command ]
 .RI [ "text | file | -" ]...
 .YS
-.SY yhwh
+.SY yhw
 .B exec
 .RI [ "codex exec arguments" ]...
 .YS
 .SH DESCRIPTION
-.B yhwh
+.B yhw
 interprets requests in English or sudocode and uses Codex to carry them out.
 Sudocode is precise, compressed, executable English shaped like short Unix
 scripts.  Its commands may be invented when their meaning makes the intent
@@ -24,7 +24,7 @@ Other arguments contribute literal text.
 reads standard input at that position.  Otherwise, piped input is appended
 automatically, except in the two interactive shells.
 With no arguments on a terminal,
-.B yhwh
+.B yhw
 starts
 .BR nsh .
 .PP
@@ -50,7 +50,7 @@ are quicker.  Announce when no questions remain.  When finished, print the
 original prompt, a readable record of the answers, and an updated prompt.
 .TP
 .BR ask ", " "ex --test" ", " "names --test"
-Switch roles: the user quizzes yhwh about the intended meaning of a prompt.
+Switch roles: the user quizzes yhw about the intended meaning of a prompt.
 .TP
 .BR code ", " shell ", " sh
 Rewrite a prompt as sudocode, preserving its information while making it
@@ -102,8 +102,8 @@ command.
 .B exec
 When used as the first argument, invoke
 .B codex exec
-directly with yhwh's instructions and teaching examples.
-Remaining arguments go to Codex without yhwh's normal routing or input
+directly with yhw's instructions and teaching examples.
+Remaining arguments go to Codex without yhw's normal routing or input
 assembly.
 .SH OPTIONS
 .TP
@@ -192,11 +192,11 @@ Propose a good/bad teaching pair from the conversation.
 .PP
 Automatic teaching proposals occur every five successful shell turns by
 default.  Only an affirmative terminal response appends the two commented
-examples to the yhwh script.  Proposals require a writable script and an
+examples to the yhw script.  Proposals require a writable script and an
 existing conversation.
 .SH FILES
 .TP
-.I bin/yhwh
+.I bin/yhw
 The host script contains its backend configuration, thinking vocabulary,
 teaching interval, instructions, and approved examples.  Paths here are
 relative to the exec checkout; no separate profile file is required.
@@ -208,17 +208,17 @@ a failed routing invocation returns 1.  An interactive shell can continue
 after a failed turn.
 .SH EXAMPLES
 .EX
-yhwh gen: 'fix terminal focus in gui'
-yhwh names prompt.txt
-yhwh ex --test prompt.txt
-printf '%s\en' 'Keep every requirement.' | yhwh code
-yhwh add first.txt second.txt
-yhwh do 'fix the failing test'
-yhwh lordy do 'trace and repair the race condition'
-yhwh --effort low --sandbox read-only --dry-run code prompt.txt
-yhwh nsh
-yhwh nhs
-yhwh exec --help
+yhw gen: 'fix terminal focus in gui'
+yhw names prompt.txt
+yhw ex --test prompt.txt
+printf '%s\en' 'Keep every requirement.' | yhw code
+yhw add first.txt second.txt
+yhw do 'fix the failing test'
+yhw lordy do 'trace and repair the race condition'
+yhw --effort low --sandbox read-only --dry-run code prompt.txt
+yhw nsh
+yhw nhs
+yhw exec --help
 .EE
 .SH SEE ALSO
 .BR codex (1),
