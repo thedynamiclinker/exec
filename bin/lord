@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source ~/.bashrc
-
 set -euo pipefail
 
 exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
@@ -12,14 +10,17 @@ echo_only=0
 use_agents=1
 created_agents=0
 profile="${LORD_PROFILE:-}"
+effort=medium
 flags=()
 prompt_args=()
+stages=()
 lock_dir=
 chat_dir=
 
 usage() {
     cat <<'EOF'
 usage: lord [options] [@mode] [prompt ...]
+       lord [options] stage @ stage [@ stage ...]
 
 Run codex exec with one of four profiles:
 
@@ -29,7 +30,10 @@ Run codex exec with one of four profiles:
   @chat    answer a question without touching the current worktree.
 
 If ./AGENTS.md is a real local file, lord leaves it alone and Codex reads it.
-If ./AGENTS.md is one of lord's own profile links, lord may replace it.
+Repo and book modes may replace lord's own profile links.
+
+A bare @ passes the result of one semantic stage to the next. Pipelines
+default to Unix mode, and only the final result goes to stdout.
 
 Options:
   -h, --help            show this help
@@ -86,18 +90,16 @@ cleanup() {
 }
 
 set_effort() {
-    local effort="$1"
-
-    case "$effort" in
+    case "$1" in
         none|low|medium|high|xhigh) ;;
         *)
-            printf 'lord: unknown effort: %s\n' "$effort" >&2
+            printf 'lord: unknown effort: %s\n' "$1" >&2
             printf 'lord: expected one of: none low medium high xhigh\n' >&2
             exit 2
             ;;
     esac
 
-    flags+=( -c "model_reasoning_effort=\"$effort\"" )
+    effort="$1"
 }
 
 canonical_profile() {
@@ -127,7 +129,7 @@ profile_file() {
 }
 
 profile_uses_agents() {
-    [[ "$profile" != chat ]]
+    [[ "$profile" == repo || "$profile" == book ]]
 }
 
 agents_link_is_ours() {
@@ -192,7 +194,7 @@ parse_option() {
         @effort=*|@thinking=*)
             set_effort "${1#*=}"
             ;;
-        @*)
+        @?*)
             flags+=( "--${1#@}" )
             ;;
         *)
@@ -201,10 +203,18 @@ parse_option() {
     esac
 }
 
-set_effort medium
-
 while (($#)); do
     case "$1" in
+        @)
+            if ((${#prompt_args[@]} == 0)); then
+                printf 'lord: expected a stage before @\n' >&2
+                exit 2
+            fi
+            stages+=( "${prompt_args[*]}" )
+            prompt_args=()
+            shift
+            continue
+            ;;
         --)
             shift
             prompt_args+=( "$@" )
@@ -247,6 +257,14 @@ while (($#)); do
         shift
     fi
 done
+
+if ((${#stages[@]})); then
+    if ((${#prompt_args[@]} == 0)); then
+        printf 'lord: expected a stage after @\n' >&2
+        exit 2
+    fi
+    profile="${profile:-unix}"
+fi
 
 git_repo=0
 if in_git_repo; then
@@ -336,10 +354,47 @@ lock_worktree_agents() {
     exit 1
 }
 
-run() {
-    local err output status latest prompt
-    prompt="${prompt_args[*]}"
+run_quietly() (
+    local capture latest status
+    capture="$(mktemp -d)"
+    trap 'rm -f -- "$capture/stdout" "$capture/stderr"; rmdir -- "$capture"' EXIT
 
+    if "$@" >"$capture/stdout" 2>"$capture/stderr"; then
+        if mkdir -p -- "$HOME/.cache/lord" &&
+            latest="$(mktemp "$HOME/.cache/lord/$(date +%Y%m%d-%H%M%S.%3N).XXXXXX")"; then
+            tee -- "$latest" < "$capture/stdout"
+        else
+            cat -- "$capture/stdout"
+        fi
+    else
+        status=$?
+        cat -- "$capture/stderr" >&2
+        return "$status"
+    fi
+)
+
+run() {
+    local prompt="${prompt_args[*]}" stage instructions
+    if ((${#stages[@]})); then
+        prompt=$'Apply these text operations in order. Each @ feeds the preceding result into the next stage. If stdin is provided, it is input to the first stage. Interpret stage names by their meaning and return only the final result as plain text.\n\n'
+        for stage in "${stages[@]}"; do
+            prompt+="$stage"$'\n@\n'
+        done
+        prompt+="${prompt_args[*]}"
+    fi
+
+    if [[ "$profile" == unix ]] && ((use_agents)); then
+        # Pass the profile as a TOML string so filters can run in parallel.
+        instructions="$(cat -- "$(profile_file)")"
+        instructions=${instructions//\\/\\\\}
+        instructions=${instructions//\"/\\\"}
+        instructions=${instructions//$'\n'/\\n}
+        instructions=${instructions//$'\r'/\\r}
+        instructions=${instructions//$'\t'/\\t}
+        instructions=${instructions//$'\b'/\\b}
+        instructions=${instructions//$'\f'/\\f}
+        flags+=( -c "developer_instructions=\"$instructions\"" )
+    fi
     if [[ "$profile" == chat ]]; then
         chat_dir="$(mktemp -d "${TMPDIR:-/tmp}/lord-chat.XXXXXX")"
         flags+=( -C "$chat_dir" )
@@ -347,7 +402,7 @@ run() {
         trap cleanup EXIT INT TERM HUP
     fi
 
-    local cmd=( codex exec "${flags[@]}" -- "$prompt" )
+    local cmd=( codex exec -c "model_reasoning_effort=\"$effort\"" "${flags[@]}" -- "$prompt" )
 
     if ((echo_only)); then
         printf '%q' "${cmd[0]}"
@@ -360,31 +415,13 @@ run() {
 
     if ((verbose)); then
         "${cmd[@]}"
-        return
+    else
+        run_quietly "${cmd[@]}"
     fi
-
-    err="$(mktemp)"
-    set +e
-    echo ===========
-    echo "${cmd[@]}"
-    echo ===========
-    output="$("${cmd[@]}" 2>"$err")"
-    status=$?
-    set -e
-
-    if ((status != 0)); then
-        cat "$err" >&2
-        rm -f "$err"
-        return "$status"
-    fi
-
-    rm -f "$err"
-
-    latest="$(date +%Y%m%d-%H%M%S.%3N)"
-    mkdir -p "$HOME/.cache/lord"
-    printf '%s\n' "$output" | tee "$HOME/.cache/lord/$latest"
 }
 
-lock_worktree_agents
-install_agents
+if ((!echo_only)); then
+    lock_worktree_agents
+    install_agents
+fi
 run

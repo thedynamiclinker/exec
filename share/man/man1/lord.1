@@ -6,6 +6,13 @@ lord \- run Codex with a clear AGENTS profile
 .RI [ option | @mode | @option ]...
 .RI [ prompt ...]
 .YS
+.SY lord
+.RI [ options ]
+.I stage
+.B @
+.I stage
+.RI [ "@ stage ..." ]
+.YS
 .SY pray
 .RI [ repo | unix | book | chat ]
 .YS
@@ -19,7 +26,7 @@ through Codex, and caches captured stdout in quiet runs.
 .B lawd
 runs lord with low reasoning effort.
 .B law
-runs lord with GPT-6 Luna and reasoning effort set to none.
+runs lord with GPT-6 Luna at low reasoning effort.
 .PP
 There are four profiles:
 .TP
@@ -37,6 +44,23 @@ Long-form explanation, exegesis, and careful reading.
 Question-answering mode.  It answers the prompt directly and avoids touching
 the current worktree.
 .PP
+A standalone
+.B @
+passes each stage's result into the next.  Codex interprets all stages as a
+single request and emits the final stage's result to stdout.  Stdin, when
+provided, is input to the first stage.  Pipelines default to Unix mode in
+any directory.  Use
+.B --
+to pass a literal
+.B @
+in the remaining prompt.
+.PP
+The executable named
+.B @
+runs
+.B lord @unix
+and can receive stdin through an ordinary shell pipe.
+.PP
 If
 .I ./AGENTS.md
 is a real local file or an unrelated local symlink,
@@ -45,10 +69,11 @@ leaves it alone.  If
 .I ./AGENTS.md
 is one of
 .BR lord 's
-own profile links,
-.B lord
-may replace it with the selected profile and removes the link when the run
-finishes.
+own profile links, repo and book modes may replace it with the selected
+profile and remove the link when the run finishes.  Unix mode passes its
+instructions directly to Codex and leaves
+.I ./AGENTS.md
+untouched.
 .SH OPTIONS
 .TP
 .BR -h ", " --help
@@ -201,6 +226,8 @@ Default profile name.  Command-line profile selectors override it.
 .SH EXAMPLES
 .EX
 echo INPUT | lord @unix "uppercase it"
+law echo 木 @ pinyin
+echo 木 | @ pinyin
 lord @repo "fix the failing test"
 lord @book "explain the semantic layer before editing"
 lord @chat "what is a coroutine?"

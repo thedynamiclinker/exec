@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-lord @unix $@
+exec lord @unix "$@"

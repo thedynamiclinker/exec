@@ -185,6 +185,9 @@ The natural-language command may specify several operations at once.
 
 Compose them in the natural order.
 
+Use standard notation for the requested format. For Hanyu Pinyin, use
+tone marks by default. Use tone numbers or omit tones when requested.
+
 For example:
 
 ```text
