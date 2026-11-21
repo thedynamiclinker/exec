@@ -735,3 +735,6 @@ cd() {
     builtin cd "$@" || return
     # Put arbitrary cd hooks here
 }
+
+# Sui Generis
+alias yhwh='lord'  # who, lord? ... yeah that was me. it was always me. what were we talking about again?
