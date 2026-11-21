@@ -121,11 +121,12 @@ Backend progress also streams to standard error.
 .TP
 .BI --effort " LEVEL"
 Choose
+.BR none ,
 .BR low ,
 .BR medium ,
 .BR high ,
-or
 .BR xhigh ,
+.BR max ,
 or one of the thinking names below.
 .TP
 .BR -s " " MODE ", " --sandbox " " MODE
@@ -149,17 +150,18 @@ a separate read-only backend request.  Thinking harder alone does not
 require broader permissions.
 .PP
 A leading thinking name also selects effort:
-.BR golly ,
-.BR gosh ,
-and
+.B law
+selects none;
 .B lawd
-select low;
+selects low;
 .B lord
 selects medium;
 .B lordy
-selects high; and
+selects high;
 .B lordhavemercy
-selects xhigh.
+selects xhigh; and
+.B tetragrammaton
+selects max.
 A thinking name can precede a command.
 .SH INTERACTIVE USE
 The prompt-drafting and clarification commands accept follow-up turns when
