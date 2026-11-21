@@ -36,7 +36,8 @@ Options:
   -v, --verbose         show wrapper behavior and stream codex output
   -q, --quiet           capture codex output, even in verbose-by-default modes
   -f, --force           pass --dangerously-bypass-approvals-and-sandbox
-      --effort LEVEL    set reasoning effort: low, medium, high, xhigh
+      --effort LEVEL    set reasoning effort: none, low, medium (default), high, xhigh
+                        none requires a model that supports it
       --fast            same as --effort low
       --careful         same as --effort high
       --xhigh           same as --effort xhigh
@@ -88,10 +89,10 @@ set_effort() {
     local effort="$1"
 
     case "$effort" in
-        low|medium|high|xhigh) ;;
+        none|low|medium|high|xhigh) ;;
         *)
             printf 'lord: unknown effort: %s\n' "$effort" >&2
-            printf 'lord: expected one of: low medium high xhigh\n' >&2
+            printf 'lord: expected one of: none low medium high xhigh\n' >&2
             exit 2
             ;;
     esac
@@ -199,6 +200,8 @@ parse_option() {
             ;;
     esac
 }
+
+set_effort medium
 
 while (($#)); do
     case "$1" in

@@ -16,6 +16,11 @@ is a small wrapper around
 It chooses an AGENTS profile, applies a few Codex flags, runs the prompt
 through Codex, and caches captured stdout in quiet runs.
 .PP
+.B lawd
+runs lord with low reasoning effort.
+.B law
+runs lord with GPT-6 Luna and reasoning effort set to none.
+.PP
 There are four profiles:
 .TP
 .B @repo
@@ -74,11 +79,15 @@ through to
 Set Codex reasoning effort.
 .I LEVEL
 must be
+.BR none ,
 .BR low ,
 .BR medium ,
 .BR high ,
 or
 .BR xhigh .
+The default is
+.BR medium .
+The selected model must support the requested effort.
 .TP
 .BR --fast ", " @fast
 Request low Codex reasoning effort.

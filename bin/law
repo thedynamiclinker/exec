@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec lord --effort none @config=model=gpt-6-luna "$@"
