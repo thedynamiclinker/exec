@@ -33,3 +33,9 @@ it learns. The shell adds `~/.nsh/bin` to PATH and the agent keeps scoped
 definitions in `~/.nsh/etc/nshrc`. Set `NSH_HOME` to use a separate prefix.
 An English file with the shebang `#!/usr/bin/env LD` can be run as its
 own agent program. Existing `nsh-ld` shebangs continue to work.
+
+## Sinai
+
+With this checkout’s `bin` on `PATH`, run `make world` and `make chroot`
+from `exec`, `@`, or YHWH. `sinai` builds Toybox and musl from source into
+`/mnt/sinai`. From the Toybox shell, `lord` uses the host’s Codex login.

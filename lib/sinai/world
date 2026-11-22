@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 022
+unset MAKEFLAGS MFLAGS MAKEOVERRIDES
 
 root=$1
 here=$(dirname -- "${BASH_SOURCE[0]}")
@@ -76,6 +77,7 @@ jobs=$(nproc)
     make DESTDIR="$image" install-libs install-headers
 ) > "$work/musl.log" 2>&1 || { tail -40 "$work/musl.log" >&2; exit 1; }
 loader=("$image"/lib/ld-musl-*.so.1)
+[[ -L "${loader[0]}" ]]
 ln -sfn libc.so "${loader[0]}"
 rm -- "$image/lib/musl-gcc.specs"
 sh "$work/$musl/tools/musl-gcc.specs.sh" "$image/usr/include" "$image/lib" \

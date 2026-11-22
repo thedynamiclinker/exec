@@ -53,7 +53,7 @@ class LordRequest(socketserver.BaseRequestHandler):
 
     def run_lord(self, conn, cwd, args, streams):
         with subprocess.Popen(
-            [self.server.lord, *args], cwd=cwd, env=self.server.env,
+            [*self.server.lord, *(args or ["-"])], cwd=cwd, env=self.server.env,
             stdin=streams[0], stdout=streams[1], stderr=streams[2],
             start_new_session=True,
         ) as process:
@@ -75,30 +75,46 @@ def main(root, command):
     root = Path(root).resolve()
     env = os.environ.copy()
     env["SINAI_ROOT"] = str(root)
-    at = Path.home() / "src" / "@"
     runner = env.get("SINAI_LORD")
-    if not runner and os.access(at / "bin/lord", os.X_OK):
-        runner = str(at / "bin/lord")
-        env.setdefault("NSH_PROGRAM", str(at / "@"))
-    runner = shutil.which(runner or "lord")
-    if not runner:
-        raise SystemExit("sinai: put the host lord on PATH or set SINAI_LORD")
+    if runner:
+        path = shutil.which(runner)
+        if not path:
+            raise SystemExit("sinai: SINAI_LORD must name a host executable")
+        lord = [os.path.abspath(path)]
+    else:
+        exec_root = Path(__file__).resolve().parents[2]
+        env["EXEC"] = str(exec_root)
+        env.pop("NSH_TURN", None)
+        at = Path.home() / "src" / "@" / "@"
+        if at.is_file():
+            env.setdefault("NSH_PROGRAM", str(at))
+        lord = [
+            str(exec_root / "bin/lord"),
+            "@sandbox=workspace-write", f"@add-dir={root}",
+            "@ephemeral", "@ignore-user-config", "@ignore-rules",
+            '@config=approval_policy="never"',
+            "@config=sandbox_workspace_write.network_access=true",
+            "@config=sandbox_workspace_write.exclude_tmpdir_env_var=true",
+            "@config=sandbox_workspace_write.exclude_slash_tmp=true",
+            "@@", "--",
+        ]
 
     if not command:
         command = ["/bin/sh", "-i"] if os.isatty(0) else ["/bin/sh"]
     if os.isatty(0):
         # The terminal also signals the launcher. Leave Ctrl+C to the guest.
-        signal.signal(signal.SIGINT, lambda *_: None)
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
     with tempfile.TemporaryDirectory(prefix="sinai-", dir="/tmp") as directory:
         with LordServer(str(Path(directory) / "lord"), LordRequest) as server:
             server.root = root
-            server.lord = os.path.abspath(runner)
+            server.lord = lord
             server.env = env
             thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.1})
             thread.start()
             try:
                 return subprocess.call([
                     "bwrap", "--unshare-user", "--uid", "0", "--gid", "0",
+                    "--disable-userns", "--cap-drop", "ALL",
                     "--unshare-pid", "--unshare-ipc", "--unshare-uts", "--hostname", "sinai",
                     "--die-with-parent", "--bind", str(root), "/", "--dev", "/dev",
                     "--proc", "/proc", "--ro-bind", directory, "/run/sinai",
