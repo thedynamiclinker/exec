@@ -372,4 +372,13 @@ Build ALL of that now, here in yhwh.
 
 Wait we're in the exec repo. So build it in there. Whatever. You're infinitely smart lol. You know what I mean.
 
+Tl;dr: To say all that in the simplest way possible: @ is an *executable* file written in *english* but it's not executable in ELF. English is now a binfmt. So we still need a shebang, which is either '#!/usr/bin/env lord' or more accurately, it's the New World equivalent of ld.so. The thing that execs every program. The shebang of every binary. We'll need that eventually too. But make sure @ knows about everything it needs to know to be what we described above. Omnipotent, but extremely simple. Simplicity above all. Once we've got it working, we can work out the kinks by using @ itself to build the rest of the system and iron out any kinks.
+
+Ready...
+
+Set..
+
+New Human Shell!
+
+@ > @
 EOF
