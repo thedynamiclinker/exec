@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-exec lord --effort low @model=gpt-6-luna "$@"

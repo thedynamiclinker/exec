@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+NSH_STYLE=nhs exec "$(dirname -- "$(realpath -- "$0")")/nsh.old" "$@"

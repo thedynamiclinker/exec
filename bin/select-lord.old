@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+cmd=lord.old
+
+while [[ -n $1 ]]; do
+    case "$1" in
+        -i|--yhwh)
+            cmd=yhw.old
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+printf '%s\n' "$cmd"

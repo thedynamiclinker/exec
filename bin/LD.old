@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -eu
+
+options=()
+while [[ ${1:-} == -f || ${1:-} == --effort=* || ${1:-} == @model=* ]]; do
+    options+=( "$1" )
+    shift
+done
+if (($# == 0)) || [[ ! -f "$1" || ! -r "$1" ]]; then
+    printf 'usage: LD.old [-f] [--effort=LEVEL] PROGRAM [REQUEST ...]\n' >&2
+    exit 2
+fi
+export NSH_PROGRAM
+NSH_PROGRAM=$(realpath -- "$1")
+shift
+profile=@@
+if [[ ${1:-} == -f && ( ${2:-} == @@ || ${2:-} == @unix ) ]]; then
+    # The @ and @unix front doors may reach a local lordhavemercy stub.
+    options+=( -f )
+    profile=$2
+    shift 2
+elif [[ ${NSH_TURN:-} == 1 && ${1:-} == @@ ]]; then
+    shift
+fi
+exec "$(dirname -- "$(realpath -- "$0")")/lord.old" "${options[@]}" "$profile" "$@"

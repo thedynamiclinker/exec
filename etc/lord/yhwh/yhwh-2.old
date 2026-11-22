@@ -1,0 +1,447 @@
+#!/usr/bin/env python3
+"""English behavior through lord; Unix streams and terminal interaction here."""
+
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+
+PROFILE = Path(__file__).resolve().parents[1] / "AGENTS-yhwh.md.old"
+COMMANDS = {
+    "gen": "gen",
+    "ex": "quick",
+    "nm": "quick",
+    "expand": "expand",
+    "names": "expand",
+    "ask": "test",
+    "code": "code",
+    "shell": "code",
+    "sh": "sh",
+    "nsh": "nsh",
+    "add": "add",
+    "do": "do",
+    "ld": "ld",
+}
+HELP = """usage: yhwh <command> [--test] [-f FILE] [TEXT | FILE | -] ...
+
+  gen            draft a prompt, save it in tmp, then refine in the terminal
+  ex, nm         clarify the most important ambiguities quickly
+  expand, names  clarify a prompt thoroughly, one word or phrase at a time
+  ask            quiz yhwh about your intent (also: ex/names --test)
+  code, shell    compress a prompt into recursive, shell-style sudocode
+  sh             sudocode with fewer invented commands and options
+  nsh            maximum compression into short commands and pipelines
+  add            merge all inputs without losing information
+  do             implement a prompt and preserve invariants in doc/law.md
+  ld             link inputs into a lordhavemercy.old -f heredoc executable
+
+Existing filenames are read; other words form a prompt. -f/--file requires a
+file. Piped stdin is included too; use - to place it among the other inputs.
+-- ends option parsing. A command may end in a colon: yhwh gen: fix focus.
+Questions use /dev/tty; stdout contains only the result. ex/names/ask emit JSON
+with original_prompt, interaction, and updated_prompt. gen emits prompt text
+and saves its JSON transcript beside the draft; without a terminal it only
+drafts. Answer :done to stop. When questions run out, choose to keep going.
+
+Unknown commands first run yhwh-<command> from PATH with arguments and streams
+intact. Otherwise lord interprets the request as English/sudocode. Only do
+and this English execution fallback apply changes; drafting never executes
+the generated prompt. Native model operations read the project's doc/law.md.
+"""
+
+
+class Error(Exception):
+    pass
+
+
+def project_root():
+    if shutil.which("git"):
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
+        )
+        if result.returncode == 0:
+            return Path(result.stdout.strip())
+    return Path.cwd()
+
+
+def context():
+    law = project_root() / "doc/law.md"
+    return {
+        "working_directory": str(Path.cwd()),
+        "law_file": str(law),
+        "law": law.read_text() if law.is_file() else "",
+    }
+
+
+def read_inputs(args, options=True):
+    """Read each stream once, keeping file boundaries and input order."""
+    sources, words = [], []
+    literal, test, used_stdin = not options, False, False
+
+    def flush():
+        if words:
+            sources.append({"source": "argv", "text": " ".join(words)})
+            words.clear()
+
+    def stdin(force=False):
+        nonlocal used_stdin
+        if used_stdin:
+            return
+        used_stdin = True
+        if force or not sys.stdin.isatty():
+            value = sys.stdin.read()
+            if value:
+                sources.append({"source": "stdin", "text": value})
+
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if not literal and arg == "--":
+            literal = True
+        elif not literal and arg == "--test":
+            test = True
+        elif not literal and (arg in ("-f", "--file") or arg.startswith("--file=")):
+            flush()
+            if "=" in arg:
+                filename = arg.split("=", 1)[1]
+            else:
+                i += 1
+                if i == len(args):
+                    raise Error(f"{arg} needs a filename")
+                filename = args[i]
+            if filename == "-":
+                stdin(force=True)
+            else:
+                sources.append({"source": filename, "text": Path(filename).read_text()})
+        elif arg == "-":
+            flush()
+            stdin(force=True)
+        elif not literal and arg.startswith("-"):
+            raise Error(f"unknown option {arg!r}; use -- before literal prompt options")
+        else:
+            try:
+                is_file = Path(arg).is_file()
+            except (OSError, ValueError):
+                # A long English prompt need not be a valid filesystem name.
+                is_file = False
+            if is_file:
+                flush()
+                sources.append({"source": arg, "text": Path(arg).read_text()})
+            else:
+                words.append(arg)
+        i += 1
+    flush()
+    if not used_stdin:
+        # With no explicit -, piped context precedes the arguments.
+        other_sources = sources[:]
+        sources.clear()
+        stdin()
+        sources.extend(other_sources)
+    if not sources or not any(source["text"].strip() for source in sources):
+        raise Error("provide a prompt as text, a filename, or stdin")
+    return sources, test
+
+
+def instructions(task):
+    return PROFILE.read_text() + "\n\nCURRENT OPERATION\n" + task
+
+
+def generate(task, data):
+    """Use lord's read-only chat profile; its final-message file owns stdout."""
+    with tempfile.TemporaryDirectory(prefix="yhwh-lord-") as directory:
+        answer = Path(directory) / "answer"
+        result = subprocess.run(
+            ["lord.old", "@chat", "--verbose", f"@output-last-message={answer}",
+             "--", instructions(task)],
+            input=json.dumps(data, ensure_ascii=False), text=True, capture_output=True,
+        )
+        if result.returncode:
+            if result.stderr:
+                sys.stderr.write(result.stderr)
+            raise subprocess.CalledProcessError(result.returncode, "lord.old")
+        if not answer.is_file() or not answer.read_text().strip():
+            raise Error("lord produced no final message")
+        return answer.read_text().strip()
+
+
+def question(data, quick, more):
+    response = generate(
+        "Ask ONE clarification question about ONE word, phrase, contradiction, or "
+        "implementation ambiguity in the prompt. Consider all prior answers. "
+        + ("Quick mode: prioritize only the few highest-impact ambiguities. " if quick
+           else "Thorough mode: examine names and subtle ambiguities as well. ")
+        + ("The user explicitly wants more questions; look deeper. " if more else "")
+        + 'Return ONLY JSON: {"done": false, "focus": "one phrase", '
+        '"question": "question", "options": ["meaning 1", "meaning 2"]}. '
+        'Supply 2 to 5 distinct meanings. If nothing remains, return '
+        '{"done": true, "message": "No more questions; brief reason"}. '
+        "Do not answer your own question or implement the prompt.", data,
+    )
+    if response.startswith("```json\n") and response.endswith("\n```"):
+        response = response[8:-4]
+    try:
+        item = json.loads(response)
+        valid = isinstance(item, dict) and isinstance(item.get("done"), bool)
+        if valid and item["done"]:
+            valid = isinstance(item.get("message"), str) and bool(item["message"].strip())
+        elif valid:
+            options = item.get("options")
+            valid = (all(isinstance(item.get(key), str) and item[key].strip()
+                         for key in ("focus", "question"))
+                     and isinstance(options, list) and 2 <= len(options) <= 5
+                     and all(isinstance(value, str) and value.strip() for value in options))
+        if valid:
+            return item
+    except json.JSONDecodeError:
+        pass
+    raise Error("lord returned an invalid clarification question; session saved for retry")
+
+
+class Terminal:
+    """A conversation on the controlling terminal, independent of Unix streams."""
+
+    def __enter__(self):
+        self.reader = open("/dev/tty", "r")
+        try:
+            self.writer = open("/dev/tty", "w", buffering=1)
+        except OSError:
+            self.reader.close()
+            raise
+        return self
+
+    def __exit__(self, *exc):
+        self.reader.close()
+        self.writer.close()
+
+    def say(self, text, history):
+        history.append({"role": "assistant", "content": text})
+        self.writer.write(text + "\n")
+
+    def ask(self, text, history):
+        self.say(text, history)
+        self.writer.write("> ")
+        self.writer.flush()
+        reply = self.reader.readline()
+        value = reply.rstrip("\r\n") if reply else ":done"
+        history.append({"role": "user", "content": value})
+        return value
+
+
+def save_session(directory, data):
+    files = {"session.json": json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+             "prompt.md": data["updated_prompt"] + "\n"}
+    for name, text in files.items():
+        pending = directory / (name + ".tmp")
+        pending.write_text(text)
+        pending.replace(directory / name)
+
+
+def expand(prompt, quick=False, test=False, draft=False):
+    tty = Terminal()
+    try:
+        tty.__enter__()
+    except OSError:
+        if not draft:
+            raise Error("interactive clarification needs a controlling terminal (/dev/tty)")
+        tty = None
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-")
+    directory = Path(tempfile.mkdtemp(prefix=f"yhwh-{'gen' if draft else 'ex'}-{stamp}"))
+    data = {"schema": "yhwh.prompt.v1", "mode": "test" if test else "expand",
+            "original_prompt": prompt, "interaction": [], "updated_prompt": prompt}
+    if not draft:
+        try:
+            previous = json.loads(prompt)
+        except json.JSONDecodeError:
+            previous = None
+        if (isinstance(previous, dict) and previous.get("schema") == data["schema"]
+                and all(isinstance(previous.get(key), str)
+                        for key in ("original_prompt", "updated_prompt"))
+                and isinstance(previous.get("interaction"), list)):
+            data.update(original_prompt=previous["original_prompt"],
+                        updated_prompt=previous["updated_prompt"],
+                        interaction=previous["interaction"])
+    if draft:
+        data.update(mode="gen", request=prompt)
+    history = data["interaction"]
+    print(f"yhwh: session saved in {directory}", file=sys.stderr)
+    save_session(directory, data)
+    changed = False
+    try:
+        if draft:
+            prompt = generate(
+                "Generate a rough draft implementation prompt from the short request. "
+                "State the goal, useful context, constraints and observable success. "
+                "Mark uncertainties instead of inventing requirements. Return only the "
+                "draft text. Do not execute it or give it to an implementation agent.",
+                {"request": prompt, **context()},
+            )
+            data.update(original_prompt=prompt, updated_prompt=prompt)
+            (directory / "draft.md").write_text(prompt + "\n")
+            save_session(directory, data)
+        if tty is None:
+            return data
+        tty.say(data["updated_prompt"], history)
+        if test:
+            while True:
+                text = tty.ask("Ask yhwh a test question about your intent (:done to finish).", history)
+                if text.strip() == ":done":
+                    break
+                if not text.strip():
+                    continue
+                answer = generate(
+                    "Quiz mode: the user is testing your understanding. Answer their latest "
+                    "test question using only the prompt and prior interaction. Acknowledge "
+                    "uncertainty; do not invent intent or ask clarification questions.",
+                    {**data, **context()},
+                )
+                tty.say(answer, history)
+                correction = tty.ask("Correction or intended answer (Enter if correct; :done to finish):", history)
+                changed = True
+                save_session(directory, data)
+                if correction.strip() == ":done":
+                    break
+        else:
+            more = False
+            while True:
+                item = question({**data, **context()}, quick, more)
+                more = False
+                if item["done"]:
+                    while True:
+                        reply = tty.ask(item["message"] + "\nKeep asking? [y/N]", history).strip().lower()
+                        if reply in ("y", "yes", "more", "continue"):
+                            more = True
+                            break
+                        if reply in ("", "n", "no", ":done"):
+                            break
+                    if more:
+                        save_session(directory, data)
+                        continue
+                    break
+                options = item["options"]
+                menu = f"\n{item['focus']}: {item['question']}\n"
+                menu += "\n".join(f"  {i}. {value}" for i, value in enumerate(options, 1))
+                menu += f"\n  {len(options) + 1}. A different meaning (type your own)"
+                reply = tty.ask(menu + "\nNumber, your own answer, or :done:", history)
+                if reply.strip() == ":done":
+                    break
+                while not reply.strip() or (reply.strip().isdecimal() and not 1 <= int(reply) <= len(options) + 1):
+                    reply = tty.ask("Choose a listed number, type your meaning, or :done:", history)
+                if reply.strip() == ":done":
+                    break
+                if reply.strip().isdecimal() and int(reply) == len(options) + 1:
+                    reply = tty.ask("Your meaning (:done to finish):", history)
+                    if reply.strip() == ":done":
+                        break
+                    if not reply.strip():
+                        continue
+                elif reply.strip().isdecimal():
+                    reply = options[int(reply) - 1]
+                history[-1]["meaning"] = reply
+                changed = True
+                save_session(directory, data)
+        if changed:
+            data["updated_prompt"] = generate(
+                "Rewrite the original prompt using the full interaction. User answers and "
+                "corrections determine intent; model guesses do not. Preserve all original "
+                "requirements except where the user explicitly changes them. Keep remaining "
+                "uncertainties visible. Return only the updated prompt, never implement it.",
+                {**data, **context()},
+            )
+        return data
+    finally:
+        save_session(directory, data)
+        if tty:
+            tty.__exit__()
+
+
+def link(sources):
+    body = instructions(
+        "Execute the English/sudocode program in the linked sources below. Interpret "
+        "invented commands recursively from their intent; preserve every constraint. "
+        "Additional invocation arguments arrive as the user's prompt. Read the current "
+        "project's doc/law.md before acting and preserve its invariants.\n\n"
+        + json.dumps({"linked_sources": sources}, ensure_ascii=False, indent=2)
+    )
+    delimiter = "YHWH_" + hashlib.sha256(body.encode()).hexdigest()[:16]
+    while delimiter in body.splitlines():
+        delimiter += "_"
+    return ("#!/usr/bin/env bash\n\n"
+            f"exec lordhavemercy.old -f -- \"$@\" <<'{delimiter}'\n{body}\n{delimiter}\n")
+
+
+def main(args):
+    if (not args and sys.stdin.isatty()) or (args and args[0] in ("-h", "--help", "help")):
+        print(HELP, end="")
+        return 0
+    command = args[0].removesuffix(":") if args else ""
+    mode = COMMANDS.get(command)
+    if command and mode is None and "/" not in command:
+        executable = shutil.which("yhwh-" + command)
+        if executable:
+            os.execv(executable, [executable, *args[1:]])
+    if mode and len(args) == 2 and args[1] in ("-h", "--help"):
+        print(HELP, end="")
+        return 0
+    sources, test = read_inputs(args[1:] if mode else args, options=mode is not None)
+    if test and mode not in ("quick", "expand", "test"):
+        raise Error("--test is supported by ex, nm, expand, names, and ask")
+    prompt = "\n\n".join(source["text"] for source in sources)
+    if mode == "ld":
+        print(link(sources), end="")
+    elif mode in ("gen", "quick", "expand", "test"):
+        result = expand(prompt, quick=mode in ("gen", "quick"),
+                        test=test or mode == "test", draft=mode == "gen")
+        if mode == "gen":
+            print(result["updated_prompt"])
+        else:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+    elif mode in ("code", "sh", "nsh", "add"):
+        if mode == "add":
+            task = ("Merge every input into one clear, unified agent prompt. Preserve ALL "
+                    "information, constraints and distinctions. Do not silently resolve "
+                    "contradictions: identify them explicitly. Return only the merged prompt.")
+        else:
+            style = {"code": "Balance clarity and compression; invented commands are allowed.",
+                     "sh": "Minimize invented commands/options, accepting a longer script.",
+                     "nsh": "Maximize compression with invented commands/options and pipelines."}[mode]
+            task = ("Rewrite the prompt losslessly as precise shell-style sudocode. "
+                    "Use pipelines to express data flow and recursive invented commands "
+                    "when useful. Preserve constraints and unresolved ambiguities; add "
+                    "brief definitions when a new name would otherwise hide meaning. "
+                    "Return only the sudocode, without Markdown fences. Do not execute it. " + style)
+        print(generate(task, {"sources": sources, **context()}))
+    else:
+        task = ("Implement the given prompt in the current project. First read doc/law.md "
+                "and local repository instructions. Inspect relevant code, make the "
+                "requested changes and verify them. Maintain one declarative doc/law.md "
+                "at the project root for durable invariants discovered through this "
+                "work; preserve existing laws, avoid duplication, and keep incidental "
+                "implementation details out of it. Summarize the result." if mode == "do" else
+                "Interpret the user's complete unknown command as an English/sudocode "
+                "request. Infer their intended behavior and carry it out. Read doc/law.md "
+                "first; preserve its invariants. If intent is materially ambiguous, "
+                "explain the ambiguity instead of inventing destructive behavior.")
+        result = subprocess.run(["lordhavemercy.old", "-f", "--", instructions(task)],
+                                input=json.dumps({"sources": sources, **context()}, ensure_ascii=False), text=True)
+        return result.returncode if result.returncode >= 0 else 128 - result.returncode
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main(sys.argv[1:]))
+    except subprocess.CalledProcessError as exc:
+        raise SystemExit(exc.returncode if exc.returncode > 0 else 128 - exc.returncode)
+    except (Error, OSError, ValueError) as exc:
+        print(f"yhwh: {exc}", file=sys.stderr)
+        raise SystemExit(2)
+    except KeyboardInterrupt:
+        print("\nyhwh: interrupted; session files retained", file=sys.stderr)
+        raise SystemExit(130)

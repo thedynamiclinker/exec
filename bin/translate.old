@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+language=${0##*/}
+lord.old "$@" -- translate this to "${language%.old}"

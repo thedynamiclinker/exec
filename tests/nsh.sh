@@ -11,7 +11,7 @@ export CALL_LOG="$fixture/agents"
 mkdir -p -- "$fixture/bin" "$fixture/work tree"
 cd -- "$fixture"
 
-cat > "$fixture/bin/law" <<'EOF'
+cat > "$fixture/bin/law.old" <<'EOF'
 #!/usr/bin/env bash
 set -eu
 test "${NSH_TURN:-}" = 1
@@ -51,7 +51,7 @@ case "$3" in
         ;;
 esac
 EOF
-cat > "$fixture/bin/lawd" <<'EOF'
+cat > "$fixture/bin/lawd.old" <<'EOF'
 #!/usr/bin/env bash
 set -eu
 test "$3" = 'mystery @cbh'
@@ -61,7 +61,7 @@ printf '@ask\nWhat should mystery do?\n'
 EOF
 chmod +x -- "$fixture/bin/"*
 
-nsh > "$fixture/output" 2> "$fixture/stderr" <<'EOF'
+nsh.old > "$fixture/output" 2> "$fixture/stderr" <<'EOF'
 cd "work tree"
 light=42
 printf 'native %s\n' "$light"
@@ -80,24 +80,24 @@ cmp "$fixture/expected" "$fixture/stderr"
 printf '%s\n' 'law: mystery @cbh' 'lawd: mystery @cbh' 'law: fg' > "$fixture/expected"
 cmp "$fixture/expected" "$CALL_LOG"
 
-nsh -c 'speak; mystery' > "$fixture/output"
+nsh.old -c 'speak; mystery' > "$fixture/output"
 printf '%s\n' alias lite > "$fixture/expected"
 cmp "$fixture/expected" "$fixture/output"
 test "$(cat "$NSH_HOME/etc/nshrc")" = '@cbh | mystery means say lite'
-nsh -c '@cbh recall mystery' > "$fixture/output"
+nsh.old -c '@cbh recall mystery' > "$fixture/output"
 test "$(cat "$fixture/output")" = 'mystery means say lite'
 
-@ -c 'printf "%s %s\n" "$0" "$1"' script argument > "$fixture/output"
+@.old -c 'printf "%s %s\n" "$0" "$1"' script argument > "$fixture/output"
 test "$(cat "$fixture/output")" = 'script argument'
 
 printf '%s\n' 'write a prompt' > 'this prompt'
-@ -c "cat 'this prompt' @ sed 's/write a prompt/do this prompt/'" > "$fixture/output"
+@.old -c "cat 'this prompt' @ sed 's/write a prompt/do this prompt/'" > "$fixture/output"
 test "$(cat "$fixture/output")" = 'do this prompt'
-@ -c 'echo "quoted @ text"; echo \@ native' > "$fixture/output"
+@.old -c 'echo "quoted @ text"; echo \@ native' > "$fixture/output"
 printf '%s\n' 'quoted @ text' '@ native' > "$fixture/expected"
 cmp "$fixture/expected" "$fixture/output"
-@ -c 'ld.so echo native @ escape' > "$fixture/output"
+@.old -c 'ld.so echo native @ escape' > "$fixture/output"
 test "$(cat "$fixture/output")" = 'native @ escape'
 
-printf '%s\n' 'take note:' '  keep this line' '' | nhs > "$fixture/output"
+printf '%s\n' 'take note:' '  keep this line' '' | nhs.old > "$fixture/output"
 test "$(cat "$fixture/output")" = 'Got both lines.'

@@ -24,16 +24,16 @@ chmod +x -- "$fixture/bin/codex"
 
 cd -- "$fixture/worktree"
 git init -q
-ln -s -- "$repo/etc/lord/AGENTS-repo.md" AGENTS.md
+ln -s -- "$repo/etc/lord/AGENTS-repo.md.old" AGENTS.md
 mkdir -- .lord-agents.lock
 touch -- would-expand
 
 printf 'mù\n' > "$fixture/expected"
-law echo 木 @ pinyin </dev/null > "$fixture/output" 2> "$fixture/stderr"
+law.old echo 木 @ pinyin </dev/null > "$fixture/output" 2> "$fixture/stderr"
 cmp "$fixture/expected" "$fixture/output"
 cmp "$fixture/expected" "$HOME/.cache/lord/"*
 test ! -s "$fixture/stderr"
-test "$(readlink -- AGENTS.md)" = "$repo/etc/lord/AGENTS-repo.md"
+test "$(readlink -- AGENTS.md)" = "$repo/etc/lord/AGENTS-repo.md.old"
 test -d .lord-agents.lock
 mapfile -d '' -t args < "$CALL_ARGS"
 test "${args[0]}" = exec
@@ -45,12 +45,12 @@ test "${args[-2]}" = --
 [[ "${args[-1]}" == *$'\necho 木\n@\npinyin' ]]
 
 printf '木\n' > "$fixture/input"
-lord @unix pinyin @ uppercase @ 'append *' < "$fixture/input" > "$fixture/output"
+lord.old @unix pinyin @ uppercase @ 'append *' < "$fixture/input" > "$fixture/output"
 cmp "$fixture/input" "$CALL_STDIN"
 mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[-1]}" == *$'\npinyin\n@\nuppercase\n@\nappend *' ]]
 
-CODEX_OUTPUT=$'mù\n\n' @ 'pinyin *' < "$fixture/input" > "$fixture/output"
+CODEX_OUTPUT=$'mù\n\n' @.old 'pinyin *' < "$fixture/input" > "$fixture/output"
 printf 'mù\n\n' > "$fixture/expected"
 cmp "$fixture/expected" "$fixture/output"
 cmp "$fixture/input" "$CALL_STDIN"
@@ -58,47 +58,52 @@ mapfile -d '' -t args < "$CALL_ARGS"
 test "${args[-1]}" = 'pinyin *'
 [[ "${args[*]}" == *'developer_instructions='*'You are @, the New Human Shell'* ]]
 
-@ φ @ ləx @cbh < /dev/null > "$fixture/output"
+@.old φ @ ləx @cbh < /dev/null > "$fixture/output"
 mapfile -d '' -t args < "$CALL_ARGS"
 test "${args[-1]}" = 'φ @ ləx @cbh'
-test "$(readlink -- AGENTS.md)" = "$repo/etc/lord/AGENTS-repo.md"
+test "$(readlink -- AGENTS.md)" = "$repo/etc/lord/AGENTS-repo.md.old"
 test -d .lord-agents.lock
-pray @ > "$fixture/profile"
-cmp "$repo/etc/lord/AGENTS-@.md" "$fixture/profile"
+pray.old @ > "$fixture/profile"
+cmp "$repo/etc/lord/AGENTS-@.md.old" "$fixture/profile"
 
-@unix echo 木 @ pinyin < /dev/null > "$fixture/output"
+@unix.old echo 木 @ pinyin < /dev/null > "$fixture/output"
 mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[*]}" == *'developer_instructions='*'Hanyu Pinyin'* ]]
 [[ "${args[-1]}" == *$'\necho 木\n@\npinyin' ]]
 
+chinese.old @unix < "$fixture/input" > "$fixture/output"
+cmp "$fixture/input" "$CALL_STDIN"
+mapfile -d '' -t args < "$CALL_ARGS"
+test "${args[-1]}" = 'translate this to chinese'
+
 service="$fixture/English program"
-printf '%s\n' '#!/usr/bin/env LD' 'This is a named English program.' > "$service"
+printf '%s\n' '#!/usr/bin/env LD.old' 'This is a named English program.' > "$service"
 chmod +x -- "$service"
 "$service" @@ example < /dev/null > "$fixture/output"
 mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[*]}" == *'developer_instructions='*'This is a named English program.'* ]]
 test "${args[-1]}" = '@@ example'
 
-printf '%s\n' '#!/usr/bin/env nsh-ld' 'This is a legacy English program.' > "$service"
+printf '%s\n' '#!/usr/bin/env nsh-ld.old' 'This is a legacy English program.' > "$service"
 "$service" example < /dev/null > "$fixture/output"
 mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[*]}" == *'developer_instructions='*'This is a legacy English program.'* ]]
 test "${args[-1]}" = example
 
-lord @echo @repo @color=never -- echo @ pinyin > "$fixture/output"
+lord.old @echo @repo @color=never -- echo @ pinyin > "$fixture/output"
 [[ "$(cat "$fixture/output")" == *'--color=never'*'echo\ @\ pinyin' ]]
 
 for pipeline in 'echo @' 'echo @ @ pinyin' '@ pinyin'; do
     read -r -a words <<< "$pipeline"
     status=0
-    law "${words[@]}" > "$fixture/output" 2> "$fixture/stderr" || status=$?
+    law.old "${words[@]}" > "$fixture/output" 2> "$fixture/stderr" || status=$?
     test "$status" = 2
     test ! -s "$fixture/output"
     grep -q 'expected a stage' "$fixture/stderr"
 done
 
 status=0
-CODEX_STATUS=42 law echo 木 @ pinyin </dev/null > "$fixture/output" 2> "$fixture/stderr" || status=$?
+CODEX_STATUS=42 law.old echo 木 @ pinyin </dev/null > "$fixture/output" 2> "$fixture/stderr" || status=$?
 test "$status" = 42
 test ! -s "$fixture/output"
 grep -qx 'backend diagnostic' "$fixture/stderr"

@@ -1,0 +1,225 @@
+.TH YHW.OLD 1 "November 2026" "exec" "User Commands"
+.SH NAME
+yhw.old \- interpret intent, refine prompts, and execute sudocode
+.SH SYNOPSIS
+.SY yhw.old
+.RI [ options ]
+.RI [ command ]
+.RI [ "text | file | -" ]...
+.YS
+.SY yhw.old
+.B exec
+.RI [ "codex exec arguments" ]...
+.YS
+.SH DESCRIPTION
+.B yhw.old
+interprets requests in English or sudocode and uses Codex to carry them out.
+Sudocode is precise, compressed, executable English shaped like short Unix
+scripts.  Its commands may be invented when their meaning makes the intent
+clear; pipes express how one result feeds another.
+.PP
+Arguments naming existing regular files contribute their contents.
+Other arguments contribute literal text.
+.B \-
+reads standard input at that position.  Otherwise, piped input is appended
+automatically, except in the two interactive shells.
+With no arguments on a terminal,
+.B yhw.old
+starts
+.BR nsh .
+.PP
+Unknown commands are interpreted as requests.  If no built-in mode was
+selected and an executable named
+.BI yhwh- COMMAND
+exists in PATH, it receives the remaining arguments and inherited streams
+instead.  A command name may end with a colon.
+.SH COMMANDS
+.TP
+.B gen
+Print a rough draft prompt from a short request, then refine it through
+conversation.
+.TP
+.BR ex ", " names ", " nm
+Clarify an existing prompt.  Ask about one word or phrase per question,
+offering roughly two to five choices and a free-form alternative.
+The short forms
+.B ex
+and
+.B nm
+are quicker.  Announce when no questions remain.  When finished, print the
+original prompt, a readable record of the answers, and an updated prompt.
+.TP
+.BR ask ", " "ex --test" ", " "names --test"
+Switch roles: the user quizzes yhw.old about the intended meaning of a prompt.
+.TP
+.BR code ", " shell ", " sh
+Rewrite a prompt as sudocode, preserving its information while making it
+more precise and compact.  Sudocode may recursively invoke other invented
+commands.
+.B sh
+uses fewer invented commands and options, at the cost of longer scripts.
+.TP
+.B nsh
+Start an interactive sudocode shell.  Print
+.B א.sh
+in a startup banner, then
+.B What?
+and prompt with
+.BR "~ @ " .
+Interpret and carry out each line, retaining earlier definitions and results
+in the conversation.
+Aleph (א) is not an N; NSH is the nickname that caught on.
+.TP
+.B nhs
+Start a Python-shaped sudocode shell with
+.B ">>> "
+and
+.B "... "
+prompts, snake art, and a Genesis 2–3 help menu. Startup quotes are from
+We The Nameless, 01-genesis/02.tex (2:16) and 03.tex (3:9), with Hebrew
+consonants rendered as Paleo-Hebrew using Phoenician Unicode letters.
+A line ending in a colon, opening parenthesis, opening bracket, opening
+brace, or backslash starts a block; a blank line submits it.
+.B %paste
+collects other multiline sudocode, and
+.B :cancel
+discards a block while it is being entered.
+Earlier names, values, and intent remain part of the conversation.
+This is an agent interface, not a Python interpreter.
+.TP
+.B add
+Merge the supplied texts into one unified prompt containing all their
+information.
+.TP
+.B do
+Perform the requested work, preserving important invariants in the work
+where appropriate.
+.TP
+.B ld
+Read the supplied texts as a combined English executable, then become that
+command.
+.TP
+.B exec
+When used as the first argument, invoke
+.B codex exec
+directly with yhw.old's instructions and teaching examples.
+Remaining arguments go to Codex without yhw.old's normal routing or input
+assembly.
+.SH OPTIONS
+.TP
+.BR -h ", " --help
+Print usage and exit.
+.TP
+.BR -f ", " --force
+Select full permissions, passing
+.B --dangerously-bypass-approvals-and-sandbox
+to the backend.
+.TP
+.BR -v ", " --verbose
+Print the selected backend command to standard error.
+Backend progress also streams to standard error.
+.TP
+.BI --effort " LEVEL"
+Choose
+.BR none ,
+.BR low ,
+.BR medium ,
+.BR high ,
+.BR xhigh ,
+.BR max ,
+or one of the thinking names below.
+.TP
+.BR -s " " MODE ", " --sandbox " " MODE
+Choose
+.BR read-only ,
+.BR workspace-write ,
+or
+.BR full .
+.TP
+.BR --dry-run ", " @echo
+Route the request and print the shell-escaped backend command without
+executing the work.  Routing still invokes the backend unless both effort
+and sandbox are specified.
+.TP
+.B --
+Stop option parsing.  Remaining arguments are request input, still subject
+to file and standard-input expansion.
+.SH ROUTING
+Unless explicitly selected, reasoning effort and permissions are chosen by
+a separate read-only backend request.  Thinking harder alone does not
+require broader permissions.
+.PP
+A leading thinking name also selects effort:
+.B law
+selects none;
+.B lawd
+selects low;
+.B lord
+selects medium;
+.B lordy
+selects high;
+.B lordhavemercy
+selects xhigh; and
+.B tetragrammaton
+selects max.
+A thinking name can precede a command.
+.SH INTERACTIVE USE
+The prompt-drafting and clarification commands accept follow-up turns when
+standard input is a terminal.  The two shell modes read turns from standard
+input directly.  Conversation history is passed to subsequent backend
+requests within that invocation; it is not a persistent interpreter process.
+.PP
+The host recognizes these commands between turns:
+.TP
+.BR :quit ", " :q ", " exit ", " quit
+Leave the shell.  End of input also leaves.
+.TP
+.B :help
+Print shell help, themed around the garden in nhs.
+.B %help
+and
+.B ?
+also show help in nhs.
+.TP
+.B :usage
+Print CLI usage.
+.TP
+.BR exit() ", " quit()
+Leave nhs.
+.TP
+.B :learn
+Propose a good/bad teaching pair from the conversation.
+.PP
+Automatic teaching proposals occur every five successful shell turns by
+default.  Only an affirmative terminal response appends the two commented
+examples to the yhw.old script.  Proposals require a writable script and an
+existing conversation.
+.SH FILES
+.TP
+.I bin/yhw.old
+The host script contains its backend configuration, thinking vocabulary,
+teaching interval, instructions, and approved examples.  Paths here are
+relative to the exec checkout; no separate profile file is required.
+.SH EXIT STATUS
+Zero indicates success.  Invalid wrapper options, missing option values,
+invalid routing output, or an empty noninteractive request return 2.
+Backend and delegated-command failures propagate their exit status;
+a failed routing invocation returns 1.  An interactive shell can continue
+after a failed turn.
+.SH EXAMPLES
+.EX
+yhw.old gen: 'fix terminal focus in gui'
+yhw.old names prompt.txt
+yhw.old ex --test prompt.txt
+printf '%s\en' 'Keep every requirement.' | yhw.old code
+yhw.old add first.txt second.txt
+yhw.old do 'fix the failing test'
+yhw.old lordy do 'trace and repair the race condition'
+yhw.old --effort low --sandbox read-only --dry-run code prompt.txt
+yhw.old nsh
+yhw.old nhs
+yhw.old exec --help
+.EE
+.SH SEE ALSO
+.BR codex (1),
+.BR lord.old (1)
