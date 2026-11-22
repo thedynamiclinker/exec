@@ -6,6 +6,7 @@ exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
 profile="${*:-repo}"
 
 case "$profile" in
+    @|@@) profile=@ ;;
     repo|git|code) profile=repo ;;
     unix|command|unix-command|filter) profile=unix ;;
     book|bible|nameless|we-the-nameless) profile=book ;;
@@ -13,7 +14,7 @@ case "$profile" in
     yhwh) profile=yhwh ;;
     *)
         printf 'pray: unknown profile: %s\n' "$profile" >&2
-        printf 'pray: expected one of: repo unix book chat\n' >&2
+        printf 'pray: expected one of: repo unix book chat @ yhwh\n' >&2
         exit 2
         ;;
 esac

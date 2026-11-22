@@ -14,7 +14,7 @@ lord \- run Codex with a clear AGENTS profile
 .RI [ "@ stage ..." ]
 .YS
 .SY pray
-.RI [ repo | unix | book | chat ]
+.RI [ repo | unix | book | chat | @ ]
 .YS
 .SH DESCRIPTION
 .B lord
@@ -28,7 +28,7 @@ runs lord with low reasoning effort.
 .B law
 runs lord with GPT-6 Luna at low reasoning effort.
 .PP
-There are four profiles:
+The profiles are listed below.
 .TP
 .B @repo
 Repository and code work.  This is the default inside a Git worktree.
@@ -43,6 +43,10 @@ Long-form explanation, exegesis, and careful reading.
 .B @chat
 Question-answering mode.  It answers the prompt directly and avoids touching
 the current worktree.
+.TP
+.B @@
+The New Human Shell. Arguments after the selector go to the English program
+as the request, including scope names and literal @ signs.
 .PP
 A standalone
 .B @
@@ -58,8 +62,13 @@ in the remaining prompt.
 The executable named
 .B @
 runs
-.B lord @unix
-and can receive stdin through an ordinary shell pipe.
+.B lordhavemercy -f @@
+and can receive stdin through an ordinary shell pipe. With no arguments
+and a terminal on stdin and stdout, it enters
+.BR nsh .
+Use
+.B @unix
+for the original filter profile.
 .PP
 If
 .I ./AGENTS.md
@@ -70,7 +79,7 @@ leaves it alone.  If
 is one of
 .BR lord 's
 own profile links, repo and book modes may replace it with the selected
-profile and remove the link when the run finishes.  Unix mode passes its
+profile and remove the link when the run finishes. Unix and @@ modes pass their
 instructions directly to Codex and leaves
 .I ./AGENTS.md
 untouched.
@@ -81,8 +90,7 @@ Print help and exit.
 .TP
 .BR -v ", " --verbose
 Print verbose wrapper behavior to stderr and run Codex without capturing
-stdout.  This is the default in every mode except
-.BR @unix .
+stdout. This is the default for the repository, book, and chat modes.
 .TP
 .BR -q ", " --quiet
 Capture Codex stdout and print only the final output, even in modes that are
@@ -108,8 +116,9 @@ must be
 .BR low ,
 .BR medium ,
 .BR high ,
+.BR xhigh ,
 or
-.BR xhigh .
+.BR max .
 The default is
 .BR medium .
 The selected model must support the requested effort.
@@ -130,8 +139,9 @@ must be
 .BR repo ,
 .BR unix ,
 .BR book ,
+.BR chat ,
 or
-.BR chat .
+.BR @ .
 Legacy aliases
 .BR git ,
 .BR code ,
@@ -208,6 +218,9 @@ The book profile.
 .I $EXEC/etc/lord/AGENTS-chat.md
 The chat profile.
 .TP
+.I $EXEC/etc/lord/AGENTS-@.md
+The New Human Shell program.
+.TP
 .I ./AGENTS.md
 Local instructions.  Real local files are preserved; internal profile links may
 be replaced for the current run.
@@ -223,11 +236,23 @@ derives it from the location of the script.
 .TP
 .B LORD_PROFILE
 Default profile name.  Command-line profile selectors override it.
+.TP
+.B NSH_HOME
+The directory for learned prose, executables, and libraries. Defaults to
+.IR ~/.nsh .
+.TP
+.B NSH_PROGRAM
+The English program to load for the @@ profile. The
+.B nsh-ld
+interpreter sets this to the file it was asked to run.
 .SH EXAMPLES
 .EX
 echo INPUT | lord @unix "uppercase it"
 law echo 木 @ pinyin
 echo 木 | @ pinyin
+echo @ | @ ot
+lord @@ 'φ @ ləx'
+@
 lord @repo "fix the failing test"
 lord @book "explain the semantic layer before editing"
 lord @chat "what is a coroutine?"

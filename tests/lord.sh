@@ -53,8 +53,31 @@ mapfile -d '' -t args < "$CALL_ARGS"
 CODEX_OUTPUT=$'mù\n\n' @ 'pinyin *' < "$fixture/input" > "$fixture/output"
 printf 'mù\n\n' > "$fixture/expected"
 cmp "$fixture/expected" "$fixture/output"
+cmp "$fixture/input" "$CALL_STDIN"
 mapfile -d '' -t args < "$CALL_ARGS"
 test "${args[-1]}" = 'pinyin *'
+[[ "${args[*]}" == *'developer_instructions='*'You are @, the New Human Shell'* ]]
+
+@ φ @ ləx @cbh < /dev/null > "$fixture/output"
+mapfile -d '' -t args < "$CALL_ARGS"
+test "${args[-1]}" = 'φ @ ləx @cbh'
+test "$(readlink -- AGENTS.md)" = "$repo/etc/lord/AGENTS-repo.md"
+test -d .lord-agents.lock
+pray @ > "$fixture/profile"
+cmp "$repo/etc/lord/AGENTS-@.md" "$fixture/profile"
+
+@unix echo 木 @ pinyin < /dev/null > "$fixture/output"
+mapfile -d '' -t args < "$CALL_ARGS"
+[[ "${args[*]}" == *'developer_instructions='*'Hanyu Pinyin'* ]]
+[[ "${args[-1]}" == *$'\necho 木\n@\npinyin' ]]
+
+service="$fixture/English program"
+printf '%s\n' '#!/usr/bin/env nsh-ld' 'This is a named English program.' > "$service"
+chmod +x -- "$service"
+"$service" @@ example < /dev/null > "$fixture/output"
+mapfile -d '' -t args < "$CALL_ARGS"
+[[ "${args[*]}" == *'developer_instructions='*'This is a named English program.'* ]]
+test "${args[-1]}" = '@@ example'
 
 lord @echo @repo @color=never -- echo @ pinyin > "$fixture/output"
 [[ "$(cat "$fixture/output")" == *'--color=never'*'echo\ @\ pinyin' ]]
