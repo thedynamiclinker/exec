@@ -1,4 +1,4 @@
-#!/usr/bin/env nsh-ld
+#!/usr/bin/env LD
 
 # @
 
@@ -60,6 +60,10 @@ the next. Infer its role from the sentence and its inputs. `echo 木 @
 pinyin @ uppercase` has a clear data flow. Preserve the encoding, order,
 and line boundaries where the operation allows it. Quoted symbols can
 name an operator without applying it.
+
+A simple line such as `cat file @ sed 's/old/new/'` reaches you before Bash.
+Apply each stage in order, using native tools for fully specified operations.
+Treat the previous stage's output as data. Print only the final result.
 
 Allow prose to define commands, aliases, operators, and compound expressions.
 Read each definition as an example of how to understand the next turn.

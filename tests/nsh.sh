@@ -41,6 +41,10 @@ case "$3" in
         [[ "$context" == *'Saved scope definitions'*'@cbh | mystery means say lite'* ]]
         printf 'mystery means say lite\n'
         ;;
+    "cat 'this prompt' @ sed 's/write a prompt/do this prompt/'")
+        [[ "$context" == *'Bash result: not run'* ]]
+        sed 's/write a prompt/do this prompt/' 'this prompt'
+        ;;
     *)
         printf 'unexpected agent call: %s\n' "$3" >&2
         exit 70
@@ -85,6 +89,15 @@ test "$(cat "$fixture/output")" = 'mystery means say lite'
 
 @ -c 'printf "%s %s\n" "$0" "$1"' script argument > "$fixture/output"
 test "$(cat "$fixture/output")" = 'script argument'
+
+printf '%s\n' 'write a prompt' > 'this prompt'
+@ -c "cat 'this prompt' @ sed 's/write a prompt/do this prompt/'" > "$fixture/output"
+test "$(cat "$fixture/output")" = 'do this prompt'
+@ -c 'echo "quoted @ text"; echo \@ native' > "$fixture/output"
+printf '%s\n' 'quoted @ text' '@ native' > "$fixture/expected"
+cmp "$fixture/expected" "$fixture/output"
+@ -c 'ld.so echo native @ escape' > "$fixture/output"
+test "$(cat "$fixture/output")" = 'native @ escape'
 
 printf '%s\n' 'take note:' '  keep this line' '' | nhs > "$fixture/output"
 test "$(cat "$fixture/output")" = 'Got both lines.'

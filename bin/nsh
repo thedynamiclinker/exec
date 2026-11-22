@@ -3,6 +3,7 @@
 if [[ ${1:-} == --help ]]; then
     printf '%s\n' 'usage: nsh [-c LINE]' \
         'Run Bash commands or clarify a failed command with @.' \
+        'Join simple semantic stages with a bare @. Use Readline to edit or recall a line.' \
         'Type :paste for multiple lines, ld.so COMMAND for plain Bash, or exit to leave.'
     exit
 fi
@@ -20,7 +21,7 @@ PATH="$NSH_HOME/bin:$PATH"
 export PATH
 
 nsh_tmp=$(mktemp -d) || exit
-trap 'rm -f -- "$nsh_tmp"/{stderr,context,reply,backend}; rmdir -- "$nsh_tmp"' EXIT
+trap 'rm -f -- "$nsh_tmp"/{stderr,context,reply,backend,input}; rmdir -- "$nsh_tmp"' EXIT
 shopt -s expand_aliases
 nsh_history=()
 nsh_status=0
@@ -28,21 +29,7 @@ nsh_question=
 nsh_bash=
 nsh_block=0
 nsh_interrupted=0
-nsh_reading=0
-
-nsh_cancel() {
-    nsh_question=
-    nsh_status=130
-    if ((nsh_reading)) && [[ -t 0 ]]; then
-        # Bash resumes a trapped read after SIGINT, so redraw its prompt.
-        nsh_block=0
-        nsh_line=
-        printf '\n%s' "$nsh_primary" >&2
-    else
-        nsh_interrupted=1
-    fi
-}
-trap nsh_cancel INT
+trap 'nsh_interrupted=1' INT
 
 nsh_load_bash() {
     local file="$NSH_HOME/etc/nsh.bash" contents=
@@ -120,6 +107,15 @@ nsh_reply() {
 
 nsh_restore_status() { return "$1"; }
 
+nsh_semantic_pipeline() (
+    # Reserve @ between simple words. Leave Bash syntax and quoted @ alone.
+    local literal="[^[:space:]'\"\\\\\`\$#&|;<>()]"
+    local quoted="'[^']*'|\"([^\"\\\\\`\$]|\\\\.)*\""
+    local word="($literal|$quoted|\\\\.)+"
+    local stage="$word([[:blank:]]+$word)*"
+    [[ "$nsh_line" =~ ^[[:blank:]]*$stage[[:blank:]]+@[[:blank:]]+$stage[[:blank:]]*$ ]]
+)
+
 nsh_turn() {
     nsh_result='not run'
     nsh_answer=
@@ -130,7 +126,7 @@ nsh_turn() {
         eval -- "$nsh_line"
         nsh_status=$?
         nsh_result="exit $nsh_status"
-    elif [[ -n "$nsh_question" ]]; then
+    elif [[ -n "$nsh_question" ]] || { [[ "$nsh_line" == *@* ]] && nsh_semantic_pipeline; }; then
         nsh_reply
         nsh_status=$?
     else
@@ -183,6 +179,23 @@ if [[ ${1:-} == -c ]]; then
     exit "$nsh_status"
 fi
 
+nsh_terminal=0
+if [[ -t 0 ]]; then
+    nsh_terminal=1
+    nsh_readline=-e
+    if ((BASH_VERSINFO[0] > 5 || (BASH_VERSINFO[0] == 5 && BASH_VERSINFO[1] >= 3))); then
+        nsh_readline=-E
+    fi
+    nsh_history_file="$NSH_HOME/history"
+    if (umask 077; : >> "$nsh_history_file"); then
+        shopt -s cmdhist lithist
+        HISTTIMEFORMAT=${HISTTIMEFORMAT:-'%F %T '}
+        history -r "$nsh_history_file"
+    else
+        nsh_history_file=
+    fi
+fi
+
 while :; do
     nsh_primary="$PWD @ "
     case "$PWD" in
@@ -196,12 +209,36 @@ while :; do
     nsh_prompt=$nsh_primary
     ((nsh_block == 0)) || nsh_prompt=$nsh_continue
     nsh_input=
-    nsh_reading=1
-    # The terminal drops partial input on SIGINT. Readline retains it here.
-    IFS= read -r -p "$nsh_prompt" nsh_input
-    nsh_read=$?
-    nsh_reading=0
-    ((nsh_read != 130)) || continue
+    if ((nsh_terminal)); then
+        nsh_tty=$(stty -g)
+        # A trapped interrupt resumes Bash's read. Exit only the reader so
+        # Ctrl+C discards its buffer and the parent keeps the shell state.
+        (
+            trap 'exit 130' INT
+            IFS= read "$nsh_readline" -r -p "$nsh_prompt" nsh_input
+            nsh_read=$?
+            printf '%s' "$nsh_input" > "$nsh_tmp/input"
+            exit "$nsh_read"
+        )
+        nsh_read=$?
+        if ((nsh_read != 130 && ! nsh_interrupted)); then
+            IFS= read -r -d '' nsh_input < "$nsh_tmp/input"
+        else
+            [[ -z "$nsh_tty" ]] || stty "$nsh_tty"
+            printf '\n' >&2
+        fi
+    else
+        IFS= read -r nsh_input
+        nsh_read=$?
+    fi
+    if ((nsh_read == 130 || nsh_interrupted)); then
+        nsh_question=
+        nsh_line=
+        nsh_block=0
+        nsh_interrupted=0
+        nsh_status=130
+        continue
+    fi
 
     if ((nsh_block)); then
         if [[ -n "$nsh_input" ]]; then
@@ -218,8 +255,9 @@ while :; do
         fi
     fi
     if [[ -n "$nsh_line" ]]; then
-        if [[ -t 0 ]]; then
+        if ((nsh_terminal)) && [[ "$nsh_line" != ' '* ]]; then
             history -s -- "$nsh_line"
+            [[ -z "$nsh_history_file" ]] || history -a "$nsh_history_file"
         fi
         nsh_turn
     fi

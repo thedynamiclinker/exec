@@ -72,12 +72,18 @@ mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[-1]}" == *$'\necho 木\n@\npinyin' ]]
 
 service="$fixture/English program"
-printf '%s\n' '#!/usr/bin/env nsh-ld' 'This is a named English program.' > "$service"
+printf '%s\n' '#!/usr/bin/env LD' 'This is a named English program.' > "$service"
 chmod +x -- "$service"
 "$service" @@ example < /dev/null > "$fixture/output"
 mapfile -d '' -t args < "$CALL_ARGS"
 [[ "${args[*]}" == *'developer_instructions='*'This is a named English program.'* ]]
 test "${args[-1]}" = '@@ example'
+
+printf '%s\n' '#!/usr/bin/env nsh-ld' 'This is a legacy English program.' > "$service"
+"$service" example < /dev/null > "$fixture/output"
+mapfile -d '' -t args < "$CALL_ARGS"
+[[ "${args[*]}" == *'developer_instructions='*'This is a legacy English program.'* ]]
+test "${args[-1]}" = example
 
 lord @echo @repo @color=never -- echo @ pinyin > "$fixture/output"
 [[ "$(cat "$fixture/output")" == *'--color=never'*'echo\ @\ pinyin' ]]
