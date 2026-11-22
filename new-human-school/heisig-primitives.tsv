@@ -1,0 +1,442 @@
+id	catalog_number	approx_rtk6_order	glyphs	english	heisig_labels	inclusion	learning_status	svg_paths	kangxi_family_numbers
+nhs-east-001	1	1	一	one; ceiling; floor	ceiling; floor	heisig_or_requested_seed	audited_whole_shape_unit		1
+nhs-east-002	2	2	二	two	two	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		7
+nhs-east-003	3	3	三	three	three	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-004	4	4	四	four	four	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-005	5	5	五	five	five	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-006	6	6	六	six	six	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-007	7	7	七	seven; diced	diced	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-008	8	8	八	eight	eight	heisig_or_requested_seed	audited_whole_shape_unit		12
+nhs-east-009	9	9	九	nine; baseball (team)	baseball (team)	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-010	10	10	十	ten; needle	needle	heisig_or_requested_seed	audited_whole_shape_unit		24
+nhs-east-011	11	11	口	mouth	mouth	heisig_or_requested_seed	audited_whole_shape_unit		30
+nhs-east-012	12	12	日	day; sun; tongue wagging in mouth; wagging tongue in a mouth	sun; tongue wagging in mouth; wagging tongue in a mouth	heisig_or_requested_seed	audited_whole_shape_unit		72
+nhs-east-013	13	13	月	month; flesh; moon; part of the body	flesh; moon; part of the body	heisig_or_requested_seed	audited_whole_shape_unit		74
+nhs-east-014	14	14	田	rice field; brains	brains	heisig_or_requested_seed	audited_whole_shape_unit		102
+nhs-east-015	15	15	⺫ / 目	eye; eyeball	eye; eyeball	heisig_or_requested_seed	audited_whole_shape_unit	glyphs/p020-eye.svg	109
+nhs-east-016	16	26	早	early; sunflower	sunflower	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-017	17	33	凹	concave	concave	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-018	18	34	凸	convex	convex	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-019	19	34	丨	walking stick	walking stick	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p027.1-walking_stick.svg	2
+nhs-east-020	20	34	丶	a drop of; drop of; eyedropper	a drop of; drop of; eyedropper	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p027.2-a_drop_of.svg	3
+nhs-east-021	21	36	自	oneself; nose; nostrils	nose; nostrils	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		132
+nhs-east-022	22	37	白	white; white bird; dove	white bird; dove	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		106
+nhs-east-023	23	41	舌	tongue		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		135
+nhs-east-024	24	44	丸	round; fat man	fat man	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-025	25	45	寸	measurement; glue	glue	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		41
+nhs-east-026	26	48	⼘ / 卜	divining rod; magic wand	divining rod; magic wand	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p032-divining_rod.svg	25
+nhs-east-027	27	49	尃	acupuncturist	acupuncturist	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p031-acupuncturist.svg	
+nhs-east-028	28	52	𠦝	mist	mist	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p034-mist.svg	
+nhs-east-029	29	53	儿	human legs	human legs	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p035.2-human_legs.svg	10
+nhs-east-030	30	53	几	wind; weather vane	wind; weather vane	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p036.1-wind.svg	16
+nhs-east-031	31	53	勹 / ⺈	bound up; chain; rope	bound up; chain; rope	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p036.2-bound_up.svg; glyphs/p036.3-bound_up-small.svg	20
+nhs-east-032	32	53	ハ	animal legs	animal legs	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p035.1-animal_legs.svg	
+nhs-east-033	33	53	丷	horns	horns	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p036.4-horns.svg	
+nhs-east-034	34	56	貝	shellfish; clam; oyster; shells	clam; oyster; shells	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		154
+nhs-east-035	35	61	見	see		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		147
+nhs-east-036	36	64	頁	page; head	head	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		181
+nhs-east-037	37	74	首	neck		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		185
+nhs-east-038	38	75	乙	fish guts; fishhook	fish guts; fishhook	heisig_or_requested_seed	audited_whole_shape_unit		5
+nhs-east-039	39	76	⺃	hook; fishhook	hook; fishhook	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p044.1-hook-right.svg; glyphs/p044.2-hook-bottom.svg	
+nhs-east-040	40	77		eye of a needle; eye of needle	eye of a needle; eye of needle	heisig_or_requested_seed	smaller_parts_recorded	glyphs/eye-of-needle.svg	
+nhs-east-041	41	77		tool	tool	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p045-tool.svg	
+nhs-east-042	42	79		by ones side; by one’s side	by ones side; by one’s side	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p046-by_ones_side.svg	
+nhs-east-043	43	80	工	craft; artificial; I beam	artificial; I beam	heisig_or_requested_seed	audited_whole_shape_unit		48
+nhs-east-044	44	87	刀	sword; dagger	dagger	heisig_or_requested_seed	audited_whole_shape_unit		18
+nhs-east-045	45	88	⺉	saber	saber	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p048-saber.svg	
+nhs-east-046	46	92	畐	wealth	wealth	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p050-wealth.svg	
+nhs-east-047	47	95	丁	street; nail; spike	nail; spike	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-048	48	99	子	child	child	heisig_or_requested_seed	audited_whole_shape_unit		39
+nhs-east-049	49	102	女	woman	woman	heisig_or_requested_seed	audited_whole_shape_unit		38
+nhs-east-050	50	105	母	mama; breasts	breasts	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-051	51	106	⽏ / 毋	mama	mama	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p054-mama.svg; glyphs/p055-mama-top.svg	80
+nhs-east-052	52	107	兄	elder brother; teenager	teenager	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-053	53	110	小	little		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		42
+nhs-east-054	54	111	⺌	little	little	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p057-little-top.svg	
+nhs-east-055	55	112	大	large; St. Bernard dog	St. Bernard dog	heisig_or_requested_seed	audited_whole_shape_unit		37
+nhs-east-056	56	112	厂	cliff	cliff	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p059-cliff.svg	27
+nhs-east-057	57	114	夕	evening		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		36
+nhs-east-058	58	118	石	stone		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		112
+nhs-east-059	59	119	肖	resemblance; candle; spark	candle; spark	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-060	60	121	卆	game of cricket	game of cricket	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-061	61	134	川	stream	stream	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-062	62	135	⼮ / 巛	flood	flood	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p064.1-flood-top.svg; glyphs/p064.2-flood-bottom.svg	47
+nhs-east-063	63	137	水	water	water	heisig_or_requested_seed	audited_whole_shape_unit		85
+nhs-east-064	64	138	⺡	water	water	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p065-water.svg	
+nhs-east-065	65	140	泉	spring	spring	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p066-spring.svg	
+nhs-east-066	66	161	土	soil; dirt; ground; land	dirt; ground; land	heisig_or_requested_seed	audited_whole_shape_unit		32
+nhs-east-067	67	167	圭	squared jewel; ivy	ivy	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-068	68	173	火	fire; fireplace; hearth	fireplace; hearth	heisig_or_requested_seed	audited_whole_shape_unit		86
+nhs-east-069	69	174	⺣ / 灬	fire; cauldron; cooking fire; oven fire	fire; cauldron; cooking fire; oven fire	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p076-fire.svg	
+nhs-east-070	70	183	魚	fish		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		195
+nhs-east-071	71	185	里	ri; computer	computer	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		166
+nhs-east-072	72	191	冂	hood; glass canopy; cowl; helmet; monk’s cowl	hood; glass canopy; cowl; helmet; monk’s cowl	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p083-hood.svg	13
+nhs-east-073	73	196	宀	house	house	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p085-house.svg	40
+nhs-east-074	74	207	木	tree; wood	wood	heisig_or_requested_seed	audited_whole_shape_unit		75
+nhs-east-075	75	208	ホ	pole; wooden pole	pole; wooden pole	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p088-pole.svg	
+nhs-east-076	76	236	艹	flower	flower	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p097-flower.svg	
+nhs-east-077	77	243	莫	shalt; graveyard	graveyard	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p099-graveyard.svg	
+nhs-east-078	78	250	兆	portent	portent	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-079	79	251	⺦	turtle	turtle	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p104-turtle.svg	
+nhs-east-080	80	253	犬	dog; chihuahua	chihuahua	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		94
+nhs-east-081	81	254	⺨	pack of wild dogs	pack of wild dogs	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p105-pack_of_wild_dogs.svg	
+nhs-east-082	82	260	牛	cow	cow	heisig_or_requested_seed	audited_whole_shape_unit		93
+nhs-east-083	83	261	⺧ / 牜	cow	cow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p107.1-cow-top.svg; glyphs/p107.2-cow-left.svg	
+nhs-east-084	84	264	𠆢	umbrella	umbrella	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p109-umbrella.svg	
+nhs-east-085	85	267		meeting	meeting	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p110-meeting.svg	
+nhs-east-086	86	268		I Ching	I Ching	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/i-ching.svg	
+nhs-east-087	87	271	王 / 玉	ball; 王: king; 玉: jewel	ball	heisig_or_requested_seed	audited_whole_shape_unit		96
+nhs-east-088	88	284	主	lord; candlestick	candlestick	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-089	89	287	金	gold; metal	metal	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		167
+nhs-east-090	90	294	⻌	road	road	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p122-road.svg	
+nhs-east-091	91	304	車	car; cart; vehicle; wagon	cart; vehicle; wagon	heisig_or_requested_seed	audited_whole_shape_unit		159
+nhs-east-092	92	307	刖	butcher	butcher	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p125.1-butcher.svg	
+nhs-east-093	93	309	夂	walking legs	walking legs	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p125.2-walking_legs.svg	34
+nhs-east-094	94	320	冖	crown	crown	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p128-crown.svg	14
+nhs-east-095	95	323	軍	army; chariot	chariot	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-096	96	327	亠	top hat	top hat	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p130.1-top_hat.svg	8
+nhs-east-097	97	327	亢	whirlwind	whirlwind	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p130.2-whirlwind.svg	
+nhs-east-098	98	329	高	tall		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		189
+nhs-east-099	99	330		tall	tall	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p131-tall.svg	
+nhs-east-100	100	337	𠮷	lidded crock	lidded crock	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p133-lidded_crock.svg	
+nhs-east-101	101	339	周	circumference; lap	lap	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-102	102	341	士	gentleman; samurai	samurai	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		33
+nhs-east-103	103	342	吉	good luck; aerosol can	aerosol can	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-104	104	345		schoolhouse	schoolhouse	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p135-schoolhouse.svg	
+nhs-east-105	105	348	⾀ / ⺻ / 聿	brush	brush	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p136.1-brush.svg; glyphs/p136.2-brush-top.svg	129
+nhs-east-106	106	350	攵	taskmaster	taskmaster	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p137-taskmaster.svg	
+nhs-east-107	107	357	言	say; saying; speech; words	saying; speech; words	heisig_or_requested_seed	audited_whole_shape_unit		149
+nhs-east-108	108	376	弋	arrow	arrow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p143-arrow.svg	56
+nhs-east-109	109	378		quiver	quiver	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p144.1-quiver.svg	
+nhs-east-110	110	379	戈	fiesta	fiesta	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p144.2-fiesta.svg	62
+nhs-east-111	111	381	𢦏	thanksgiving; Thanksgiving	thanksgiving; Thanksgiving	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p145.1-thanksgiving.svg	
+nhs-east-112	112	383	戊	parade	parade	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p145.2-parade.svg	
+nhs-east-113	113	388	戌	march	march	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p147-march.svg	
+nhs-east-114	114	391	㦮	float	float	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p148-float.svg	
+nhs-east-115	115	396	止	stop; footprint	footprint	heisig_or_requested_seed	audited_whole_shape_unit		77
+nhs-east-116	116	407		mending	mending	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p152-mending.svg	
+nhs-east-117	117	410	走	run		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		156
+nhs-east-118	118	416	廴	stretch	stretch	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p154-stretch.svg	54
+nhs-east-119	119	420	疋 / ⺪	critters; zoo	zoo	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p155.1-zoo.svg; glyphs/p155.2-zoo-left.svg	103
+nhs-east-120	120	423	衣	garment		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		145
+nhs-east-121	121	424	⻂	cloak	cloak	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p156.1-cloak.svg	
+nhs-east-122	122	424		scarf	scarf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p156.2-scarf.svg	
+nhs-east-123	123	424		top hat and scarf	top hat and scarf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p156.3-top_hat_and_scarf.svg	
+nhs-east-124	124	424		unhooked scarf	unhooked scarf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p156.4-unhooked_scarf.svg	
+nhs-east-125	125	432	巾	towel	towel	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		50
+nhs-east-126	126	443		apron	apron	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p160-apron.svg	
+nhs-east-127	127	444	丗	buckle	buckle	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p161.1-buckle.svg	
+nhs-east-128	128	445		belt	belt	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p161.2-belt.svg	
+nhs-east-129	129	448	云	quote; rising cloud; rising cloud of	rising cloud; rising cloud of	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p162-rising_cloud.svg	
+nhs-east-130	130	451	雨	rain; weather	weather	heisig_or_requested_seed	audited_whole_shape_unit		173
+nhs-east-131	131	452	⻗	rain	rain	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p163-rain-top.svg	
+nhs-east-132	132	455	冫 / ⺀	ice	ice	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p164.1-ice-left.svg; glyphs/p164.2-ice-bottom.svg	15
+nhs-east-133	133	457	夭	witch; sapling	witch; sapling	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p164.3-witch.svg	
+nhs-east-134	134	457	喬	angel	angel	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p165-angel.svg	
+nhs-east-135	135	462	立	stand up; vase	vase	heisig_or_requested_seed	audited_whole_shape_unit		117
+nhs-east-136	136	471	啇	antique	antique	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p167-antique.svg	
+nhs-east-137	137	476	匕	spoon; sitting on the ground	sitting on the ground	heisig_or_requested_seed	audited_whole_shape_unit		21
+nhs-east-138	138	482	比	compare		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		81
+nhs-east-139	139	487		siesta	siesta	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p171-siesta.svg	
+nhs-east-140	140	496	𠂉	reclining	reclining	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p173-reclining.svg	
+nhs-east-141	141	502	复	double back	double back	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p175-double_back.svg	
+nhs-east-142	142	505	欠	lack; yawn	yawn	heisig_or_requested_seed	audited_whole_shape_unit		76
+nhs-east-143	143	514	咅	muzzle	muzzle	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p178-muzzle.svg	
+nhs-east-144	144	518	音	sound		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		180
+nhs-east-145	145	520	戠	kazoo	kazoo	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p179-kazoo.svg	
+nhs-east-146	146	521	竟	mirror	mirror	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p180-mirror.svg	
+nhs-east-147	147	524	亡	deceased; perish	perish	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-148	148	529	方	direction; compass	compass	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		70
+nhs-east-149	149	536	兑	devil	devil	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p183-devil.svg	
+nhs-east-150	150	540	曽	formerly; increase	increase	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-151	151	545	壬	porter	porter	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p185-porter.svg	
+nhs-east-152	152	553	也	est; scorpion	scorpion	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p191-scorpion.svg	
+nhs-east-153	153	556	虫	insect	insect	heisig_or_requested_seed	audited_whole_shape_unit		142
+nhs-east-154	154	563	䖝	gnats	gnats	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p193-gnats.svg	
+nhs-east-155	155	563	風	wind		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		182
+nhs-east-156	156	564	己	self; snake	snake	heisig_or_requested_seed	audited_whole_shape_unit		49
+nhs-east-157	157	574		bucket of eels	bucket of eels	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p195.2-bucket_of_eels.svg	
+nhs-east-158	158	574		eel	eel	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p195.1-eel.svg	
+nhs-east-159	159	576	豕	sow	sow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p196-sow.svg	152
+nhs-east-160	160	582	昜	piggy bank	piggy bank	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p197.2-piggy_bank.svg	
+nhs-east-161	161	582		piglets	piglets	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p197.1-piglets.svg	
+nhs-east-162	162	586	羊	sheep	sheep	heisig_or_requested_seed	audited_whole_shape_unit		123
+nhs-east-163	163	587	⺷	sheep	sheep	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p198-sheep-above.svg	
+nhs-east-164	164	592	⺶	wool	wool	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p199-wool.svg	
+nhs-east-165	165	594	隹	turkey	turkey	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p200-turkey.svg	172
+nhs-east-166	166	609	隺	turkey coop; turkey house/coop	turkey coop; turkey house/coop	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p202-turkey_coop.svg	
+nhs-east-167	167	610	午	noon; horse	horse	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-168	168	611		pegasus; flying horse; Pegasus	pegasus; flying horse; Pegasus	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p203-pegasus.svg	
+nhs-east-169	169	615	羽	feathers	feathers	heisig_or_requested_seed	audited_whole_shape_unit		124
+nhs-east-170	170	616		wings	wings	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p204-wings.svg	
+nhs-east-171	171	619	囗	pent in	pent in	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p206-pent_in.svg	31
+nhs-east-172	172	620	曰	sayeth	sayeth	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		73
+nhs-east-173	173	631	广	cave	cave	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p208-cave.svg	53
+nhs-east-174	174	637	麻	hemp		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		200
+nhs-east-175	175	639	心	heart	heart	heisig_or_requested_seed	audited_whole_shape_unit		61
+nhs-east-176	176	640	⺖	state of mind	state of mind	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p209.1-state_of_mind.svg	
+nhs-east-177	177	640	⺗	valentine	valentine	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p209.2-valentine.svg	
+nhs-east-178	178	687	手	hand	hand	heisig_or_requested_seed	audited_whole_shape_unit		64
+nhs-east-179	179	694	扌	finger; fingers	finger; fingers	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p216-finger.svg	
+nhs-east-180	180	727	开 / 廾	two hands	two hands	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p219.1-two_hands.svg; glyphs/p219.2-two_hands-bottom.svg	55
+nhs-east-181	181	733	鼻	nose		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		209
+nhs-east-182	182	736	才	genius; genie in the bottle; genie	genie in the bottle; genie	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p221-genie_in_the_bottle.svg	
+nhs-east-183	183	741	乃	from; fist	fist	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-184	184	743	及	reach out; outstretched hands	outstretched hands	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-185	185	745		arm; tucked under the arm	arm; tucked under the arm	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p222-arm.svg	
+nhs-east-186	186	752	又	or again; crotch	crotch	heisig_or_requested_seed	audited_whole_shape_unit		29
+nhs-east-187	187	761	殳	missile	missile	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p225-missile.svg	79
+nhs-east-188	188	768	支	branch		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		65
+nhs-east-189	189	771	圣	spool	spool	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p226-spool.svg	
+nhs-east-190	190	784	爪	claw	claw	heisig_or_requested_seed	audited_whole_shape_unit		87
+nhs-east-191	191	785	⺤	vulture	vulture	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p227-vulture.svg	
+nhs-east-192	192	786	孚	fledgeling; fledgling	fledgeling; fledgling	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p228-fledgeling.svg	
+nhs-east-193	193	793		birdhouse	birdhouse	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p229.1-birdhouse.svg	
+nhs-east-194	194	796	厶	elbow	elbow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p229.2-elbow.svg	28
+nhs-east-195	195	813		wall	wall	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p231-wall.svg	
+nhs-east-196	196	815	至	climax		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		133
+nhs-east-197	197	819		infant	infant	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p232-infant.svg	
+nhs-east-198	198	830	山	mountain	mountain	heisig_or_requested_seed	audited_whole_shape_unit		46
+nhs-east-199	199	842	入	enter; come in; go in; put in	come in; go in; put in	heisig_or_requested_seed	audited_whole_shape_unit		11
+nhs-east-200	200	851	谷	valley		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		150
+nhs-east-201	201	856	㕣	gully	gully	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p237-gully.svg	
+nhs-east-202	202	858		outhouse	outhouse	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p238-outhouse.svg	
+nhs-east-203	203	865	皮	pelt		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		107
+nhs-east-204	204	870	歹	bone	bone	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p240-bone.svg	78
+nhs-east-205	205	879	舛	sunglasses	sunglasses	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p241-sunglasses.svg	136
+nhs-east-206	206	881	耳	ear	ear	heisig_or_requested_seed	audited_whole_shape_unit		128
+nhs-east-207	207	891	曼	mandala	mandala	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p242-mandala.svg	
+nhs-east-208	208	908	失	lose; to drop	to drop	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-209	209	911	臣	retainer; slave	slave	heisig_or_requested_seed	audited_whole_shape_unit		131
+nhs-east-210	210	920	巨	gigantic	gigantic	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-211	211	922	力	power; muscle	muscle	heisig_or_requested_seed	audited_whole_shape_unit		19
+nhs-east-212	212	935	劦	triceps	triceps	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-213	213	938	行	going; boulevard	boulevard	heisig_or_requested_seed	audited_whole_shape_unit		144
+nhs-east-214	214	939	彳	going; column; line	going; column; line	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p248-going.svg	60
+nhs-east-215	215	957	禾	wheat; cereal	wheat; cereal	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p251-wheat.svg	115
+nhs-east-216	216	977	香	incense		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		186
+nhs-east-217	217	983	尤	understandably; chihuahua with one human leg	chihuahua with one human leg	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-218	218	987	米	rice; United States	United States	heisig_or_requested_seed	audited_whole_shape_unit		119
+nhs-east-219	219	988	⺢	grains of rice	grains of rice	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p255-grains_of_rice.svg	
+nhs-east-220	220	1004		arrowhead	arrowhead	heisig_or_requested_seed	smaller_parts_recorded	glyphs/arrowhead.svg	
+nhs-east-221	221	1007	竹	bamboo	bamboo	heisig_or_requested_seed	audited_whole_shape_unit		118
+nhs-east-222	222	1023	人	person	person	heisig_or_requested_seed	audited_whole_shape_unit		9
+nhs-east-223	223	1024	⺅	person	person	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p259-person.svg	
+nhs-east-224	224	1091	奄	encompassing; dachshund	dachshund	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-225	225	1098	肉	meat		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		130
+nhs-east-226	226	1099	从	assembly line	assembly line	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p268-assembly_line.svg	
+nhs-east-227	227	1104		plow	plow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p269.1-plow.svg	
+nhs-east-228	228	1106	并	puzzle	puzzle	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p269.2-puzzle.svg	
+nhs-east-229	229	1108	瓦	tile		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		98
+nhs-east-230	230	1114	ヰ	sunglasses half monocle; sunglasses with one lens out	sunglasses half monocle; sunglasses with one lens out	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p271.1-sunglasses_half_monocle.svg	
+nhs-east-231	231	1117	敝	shredder	shredder	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p271.2-shredder.svg	
+nhs-east-232	232	1123		banner	banner	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p272-banner.svg	
+nhs-east-233	233	1127		rag	rag	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p273-rag.svg	
+nhs-east-234	234	1128	勿	not; knot	knot	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-235	235	1131	尸	flag	flag	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p274-flag.svg	44
+nhs-east-236	236	1151	尺	shaku; shakuhachi	shakuhachi	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-237	237	1167	示	show		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		113
+nhs-east-238	238	1168	⺭	altar	altar	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p278-altar.svg	
+nhs-east-239	239	1186	由	wherefore; shoot; sprout	shoot; sprout	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-240	240	1194	甲	armor; roots	roots	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-241	241	1198	申	speaketh; monkey	monkey	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-242	242	1206	斤	ax	ax	heisig_or_requested_seed	audited_whole_shape_unit		69
+nhs-east-243	243	1221	乍	saw	saw	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p286-saw.svg	
+nhs-east-244	244	1224	彐 / ⺔	broom	broom	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p287.1-broom.svg; glyphs/p287.2-broom-top.svg; glyphs/p288.1-broom-old.svg	58
+nhs-east-245	245	1236	⺺	rake	rake	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p288.2-rake.svg	
+nhs-east-246	246	1242	隶	sieve	sieve	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p289.1-sieve.svg	171
+nhs-east-247	247	1244	尹	mop	mop	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p289.2-mop.svg	
+nhs-east-248	248	1247	而	and then; comb	comb	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p290-comb.svg	126
+nhs-east-249	249	1251	凵	shovel	shovel	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p291-shovel.svg	17
+nhs-east-250	250	1261	斗	Big Dipper; measuring cup	measuring cup	heisig_or_requested_seed	audited_whole_shape_unit		68
+nhs-east-251	251	1265	用	utilize; screwdriver	screwdriver	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		101
+nhs-east-252	252	1267		salad	salad	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p294-salad.svg	
+nhs-east-253	253	1274		caverns	caverns	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p295.1-caverns.svg	
+nhs-east-254	254	1279	卉	haystack	haystack	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p295.2-haystack.svg	
+nhs-east-255	255	1283	尭	straw man	straw man	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p296-straw_man.svg	
+nhs-east-256	256	1289		quarter	quarter	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p297-quarter.svg	
+nhs-east-257	257	1297	片	one-sided		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		91
+nhs-east-258	258	1299	之	of; building blocks	building blocks	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-259	259	1305	矢	dart		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		111
+nhs-east-260	260	1311	矛	halberd	halberd	heisig_or_requested_seed	audited_whole_shape_unit		110
+nhs-east-261	261	1314		spear	spear	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p301-spear.svg	
+nhs-east-262	262	1317	弓	bow	bow	heisig_or_requested_seed	audited_whole_shape_unit		57
+nhs-east-263	263	1323	弗	dollar sign; dollar	dollar sign; dollar	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p302.1-dollar_sign.svg; glyphs/p302.2-dollar_sign-below.svg	
+nhs-east-264	264	1328	丂	snare	snare	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p303-snare.svg	
+nhs-east-265	265	1334		slingshot	slingshot	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p304-slingshot.svg	
+nhs-east-266	266	1337	身	somebody		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		158
+nhs-east-267	267	1340	老	old man		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		125
+nhs-east-268	268	1341	耂	old man	old man	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p305-old_man.svg	
+nhs-east-269	269	1345	者	someone; puppet	puppet	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-270	270	1354	夹	scissors	scissors	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p307-scissors.svg	
+nhs-east-271	271	1357	𠂤	maestro	maestro	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p308-maestro.svg	
+nhs-east-272	272	1360	阜	large hill		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		170
+nhs-east-273	273	1366	父	father		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		88
+nhs-east-274	274	1372	足	leg		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		157
+nhs-east-275	275	1372	𧾷	wooden leg	wooden leg	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-276	276	1383	骨	skeleton		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		188
+nhs-east-277	277	1385	咼	jawbone	jawbone	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p311-jawbone.svg	
+nhs-east-278	278	1389	⻖	pinnacle	pinnacle	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p312-pinnacle-left.svg	
+nhs-east-279	279	1413	穴	hole		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		116
+nhs-east-280	280	1424	㓁	paper punch	paper punch	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p316-paper_punch.svg	
+nhs-east-281	281	1431	糸	thread		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		120
+nhs-east-282	282	1477	幺	cocoon	cocoon	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p322-cocoon.svg	52
+nhs-east-283	283	1481	幾	how many; abacus	abacus	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-284	284	1484	玄	mysterious		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		95
+nhs-east-285	285	1492	系	lineage; yarn	yarn	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-286	286	1495	卩	stamp	stamp	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p325-stamp.svg	26
+nhs-east-287	287	1502	ㄗ / マ	chop seal; chop-seal	chop seal; chop-seal	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p326.1-chop_seal.svg; glyphs/p326.2-chop_seal-small.svg	
+nhs-east-288	288	1515	㔾	fingerprint	fingerprint	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p328.1-fingerprint.svg	
+nhs-east-289	289	1520	夗	mailbox	mailbox	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p328.2-mailbox.svg	
+nhs-east-290	290	1524		receipt	receipt	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p329.1-receipt.svg; glyphs/p329.2-receipt-left.svg	
+nhs-east-291	291	1529		staples	staples	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p329.3-staples.svg	
+nhs-east-292	292	1531	臼	mortar	mortar	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		134
+nhs-east-293	293	1534	酉	sign of the bird; whiskey bottle	whiskey bottle	heisig_or_requested_seed	audited_whole_shape_unit		164
+nhs-east-294	294	1548	豆	beans; table	table	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		151
+nhs-east-295	295	1551	壴	drum	drum	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p333-drum.svg	
+nhs-east-296	296	1552	鼓	drum		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		207
+nhs-east-297	297	1555	皿	dish	dish	heisig_or_requested_seed	audited_whole_shape_unit		108
+nhs-east-298	298	1556	血	blood		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		143
+nhs-east-299	299	1568	艮	silver	silver	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p334.1-silver.svg; glyphs/p334.2-silver-left.svg	138
+nhs-east-300	300	1578	良	good; halo	halo	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p336-halo.svg	
+nhs-east-301	301	1582	食	eat; food	food	heisig_or_requested_seed	smaller_parts_recorded		184
+nhs-east-302	302	1592	⺛	waitress	waitress	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p337-waitress.svg	
+nhs-east-303	303	1596	平	even; water lily	water lily	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-304	304	1599	㐅	sheaf	sheaf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p339-sheaf.svg	
+nhs-east-305	305	1606	离	sheik	sheik	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-306	306	1607	屯	barracks; earthworm	earthworm	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p340-earthworm.svg	
+nhs-east-307	307	1612	辛	spicy		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		160
+nhs-east-308	308	1613	亲	red pepper	red pepper	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p341.1-red_pepper.svg	
+nhs-east-309	309	1615	辟	ketchup	ketchup	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p341.2-ketchup.svg	
+nhs-east-310	310	1625	丩	cornucopia	cornucopia	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p342-cornucopia.svg	
+nhs-east-311	311	1630	圥	rice seedling	rice seedling	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p343-rice_seedling.svg	
+nhs-east-312	312	1637	亥	sign of the hog; acorn	acorn	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-313	313	1642	朮	resin	resin	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p345.1-resin.svg	
+nhs-east-314	314	1644		celery	celery	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p345.2-celery.svg	
+nhs-east-315	315	1645	㐮	grass skirt	grass skirt	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p346-grass_skirt.svg	
+nhs-east-316	316	1650		grow up	grow up	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p347-grow_up.svg	
+nhs-east-317	317	1675	生	life; cell	cell	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		100
+nhs-east-318	318	1682	丰	bushes	bushes	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p350.1-bushes.svg; glyphs/p350.2-bushes-side.svg	
+nhs-east-319	319	1688	耒	christmas tree; Christmas tree	christmas tree; Christmas tree	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p351-christmas_tree.svg	127
+nhs-east-320	320	1689	𡗗	bonsai	bonsai	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p352.1-bonsai.svg	
+nhs-east-321	321	1694		cornstalk	cornstalk	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p352.2-cornstalk.svg	
+nhs-east-322	322	1697		cabbage	cabbage	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p353.1-cabbage.svg	
+nhs-east-323	323	1700	𦰩	scarecrow	scarecrow	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p353.2-scarecrow.svg	
+nhs-east-324	324	1703		silage	silage	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p354-silage.svg	
+nhs-east-325	325	1711	今	now; clock	clock	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-326	326	1728	⻃ / 西	west; Old West	west; Old West	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p358-west.svg	
+nhs-east-327	327	1743	門	gates	gates	heisig_or_requested_seed	audited_whole_shape_unit		169
+nhs-east-328	328	1760	非	un-; jail cell	jail cell	heisig_or_requested_seed	audited_whole_shape_unit		175
+nhs-east-329	329	1766	ユ	key	key	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p363.1-key.svg	
+nhs-east-330	330	1769	夬	guillotine	guillotine	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p363.2-guillotine.svg	
+nhs-east-331	331	1771	韋	locket	locket	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p364-locket.svg	178
+nhs-east-332	332	1777	干	dry; clothesline	clothesline	heisig_or_requested_seed	audited_whole_shape_unit		51
+nhs-east-333	333	1783	于	potato	potato	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p366-potato.svg	
+nhs-east-334	334	1786	余	too much; scale	scale	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-335	335	1800	㑒	awl	awl	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p368-awl.svg	
+nhs-east-336	336	1812	疒	sickness	sickness	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p370-sickness.svg	104
+nhs-east-337	337	1826	匚	box	box	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p371.1-box.svg; glyphs/p371.2-box-small.svg	22
+nhs-east-338	338	1837	癶	teepee	teepee	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p373.1-teepee.svg	105
+nhs-east-339	339	1841	尞	pup tent	pup tent	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p373.2-pup_tent.svg	
+nhs-east-340	340	1845	彡	shape	shape	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p374-shape.svg	59
+nhs-east-341	341	1861	文	sentence; plaid	plaid	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		67
+nhs-east-342	342	1864		fenceposts	fenceposts	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p377-fenceposts.svg	
+nhs-east-343	343	1870		sparkler	sparkler	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p378-sparkler.svg	
+nhs-east-344	344	1880	赤	red		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		155
+nhs-east-345	345	1881	亦	apple	apple	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p379-apple.svg	
+nhs-east-346	346	1888	巴	comma-design; mosaic	mosaic	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p380-mosaic.svg	
+nhs-east-347	347	1890	色	color		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		139
+nhs-east-348	348	1894	甘	sweet; wicker basket	wicker basket	heisig_or_requested_seed	audited_whole_shape_unit		99
+nhs-east-349	349	1898	其	bushel basket	bushel basket	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p382-bushel_basket.svg	
+nhs-east-350	350	1907		purse	purse	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p383.1-purse.svg	
+nhs-east-351	351	1913		oaken tub	oaken tub	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p383.2-oaken_tub.svg	
+nhs-east-352	352	1913	且	moreover; shelf	shelf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p384-shelf.svg	
+nhs-east-353	353	1924	业 / 並	row	row	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p385.1-row-bottom.svg	
+nhs-east-354	354	1925		in a row upside down; upside down in a row	in a row upside down; upside down in a row	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p385.2-in_a_row_upside_down.svg	
+nhs-east-355	355	1934	共	together; strung together	strung together	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-356	356	1946	井	well	well	heisig_or_requested_seed	audited_whole_shape_unit		
+nhs-east-357	357	1953	角	angle		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		148
+nhs-east-358	358	1956	冓	funnel	funnel	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p390-funnel.svg	
+nhs-east-359	359	1960		scrapbook	scrapbook	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p391-scrapbook.svg	
+nhs-east-360	360	1970	氏	family name		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		83
+nhs-east-361	361	1972	氐	calling card	calling card	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p393.1-calling_card.svg	
+nhs-east-362	362	1977	甫	dog tag	dog tag	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p393.2-dog_tag.svg	
+nhs-east-363	363	1983	⻏	city walls	city walls	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p394-city_walls-right.svg	
+nhs-east-364	364	1996	⺁	drag	drag	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p396.1-drag.svg; glyphs/p396.2-drag-bottom.svg	
+nhs-east-365	365	2003		staple gun	staple gun	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p397.1-staple_gun.svg	
+nhs-east-366	366	2005		clothes hanger	clothes hanger	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p397.2-clothes_hanger.svg	
+nhs-east-367	367	2012	舟	boat		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		137
+nhs-east-368	368	2022	瓜	melon		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		97
+nhs-east-369	369	2032	飛	fly		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		183
+nhs-east-370	370	2039	面	mask		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		176
+nhs-east-371	371	2041	革	leather		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		177
+nhs-east-372	372	2053	牙	tusk		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		92
+nhs-east-373	373	2056	釆	animal tracks	animal tracks	heisig_or_requested_seed	smaller_parts_recorded	glyphs/p406-animal_tracks.svg	165
+nhs-east-374	374	2058	番	turn; dice	dice	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-375	375	2062	毛	fur		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		82
+nhs-east-376	376	2064	乇	lock of hair	lock of hair	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p407.1-lock_of_hair.svg	
+nhs-east-377	377	2066		tail feathers	tail feathers	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p407.2-tail_feathers.svg	
+nhs-east-378	378	2068		hairpin	hairpin	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p408.1-hairpin.svg	
+nhs-east-379	379	2070	長	long		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		168
+nhs-east-380	380	2071	镸	hair	hair	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p408.2-hair.svg	
+nhs-east-381	381	2071		mane	mane	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p408.3-mane.svg	
+nhs-east-382	382	2076	⺍	owl	owl	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p409-owl.svg	
+nhs-east-383	383	2091	鳥	bird		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		196
+nhs-east-384	384	2098	爰	migrating ducks	migrating ducks	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p412-migrating_ducks.svg	
+nhs-east-385	385	2105	禺	talking cricket; Talking Cricket	talking cricket; Talking Cricket	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p413.1-talking_cricket.svg	
+nhs-east-386	386	2108	屰	mountain goat	mountain goat	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p413.2-mountain_goat.svg	
+nhs-east-387	387	2116	缶	tin can		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		121
+nhs-east-388	388	2117		condor	condor	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p414-condor.svg	
+nhs-east-389	389	2121	⾘ / 豸	skunk	skunk	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p416-skunk.svg	153
+nhs-east-390	390	2126	免	excuse; rabbit	rabbit	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-391	391	2132	馬	horse; team of horses	team of horses	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		187
+nhs-east-392	392	2145	⾌ / 虎 / 虍	tiger	tiger	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p419-tiger.svg	141
+nhs-east-393	393	2154	鹿	deer; painting of deer; painting of a deer	painting of deer; painting of a deer	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		198
+nhs-east-394	394	2155		deer	deer	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p421-deer.svg	
+nhs-east-395	395	2164	辰	sign of the dragon		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		161
+nhs-east-396	396	2171	关	golden calf	golden calf	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic	glyphs/p423-golden_calf.svg	
+nhs-east-397	397	2175	鬼	ghost		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		194
+nhs-east-398	398	2194	叕	stitching	stitching	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-399	399	2201	此	this here	this here	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-400	400	2208	粦	shoeshine	shoeshine	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-401	401	2215	夋	streetwalker	streetwalker	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-402	402	2223	豈	hill of beans	hill of beans	heisig_or_requested_seed	smaller_parts_recorded		
+nhs-east-403	403	2226	韭	green onion	green onion	heisig_or_requested_seed	smaller_parts_recorded		179
+nhs-east-404	404	2229	芻	hay	hay	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		
+nhs-east-405	405	2296	邑	city walls		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		163
+nhs-east-406	406	2651	黍	millet		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		202
+nhs-east-407	407	2856	鼠	mouse		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		208
+nhs-east-408	408	2878	鼎	tripod		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		206
+nhs-east-409	409	2879	鹵	rocksalt		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		197
+nhs-east-410	410	2985	龍	dragon (old)		heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		212
+nhs-east-411	411	3000	黽	eels [old]	eels [old]	heisig_or_requested_seed	component_or_variant_not_classified_as_atomic		205
+nhs-east-412	412		丿	slash		traditional_supplement	traditional_family_only		4
+nhs-east-413	413		亅	hook		traditional_supplement	traditional_family_only		6
+nhs-east-414	414		匸	hiding enclosure		traditional_supplement	traditional_family_only		23
+nhs-east-415	415		夊	go slowly		traditional_supplement	traditional_family_only		35
+nhs-east-416	416		尢	lame		traditional_supplement	traditional_family_only		43
+nhs-east-417	417		屮	sprout		traditional_supplement	traditional_family_only		45
+nhs-east-418	418		戶	door		traditional_supplement	traditional_family_only		63
+nhs-east-419	419		攴	rap		traditional_supplement	traditional_family_only		66
+nhs-east-420	420		无	not		traditional_supplement	traditional_family_only		71
+nhs-east-421	421		气	steam		traditional_supplement	traditional_family_only		84
+nhs-east-422	422		爻	double x		traditional_supplement	traditional_family_only		89
+nhs-east-423	423		爿	half tree trunk		traditional_supplement	traditional_family_only		90
+nhs-east-424	424		禸	track		traditional_supplement	traditional_family_only		114
+nhs-east-425	425		网	net		traditional_supplement	traditional_family_only		122
+nhs-east-426	426		艸	grass		traditional_supplement	traditional_family_only		140
+nhs-east-427	427		襾	cover		traditional_supplement	traditional_family_only		146
+nhs-east-428	428		辵	walk		traditional_supplement	traditional_family_only		162
+nhs-east-429	429		靑	blue		traditional_supplement	traditional_family_only		174
+nhs-east-430	430		髟	hair		traditional_supplement	traditional_family_only		190
+nhs-east-431	431		鬥	fight		traditional_supplement	traditional_family_only		191
+nhs-east-432	432		鬯	sacrificial wine		traditional_supplement	traditional_family_only		192
+nhs-east-433	433		鬲	cauldron		traditional_supplement	traditional_family_only		193
+nhs-east-434	434		麥	wheat		traditional_supplement	traditional_family_only		199
+nhs-east-435	435		黃	yellow		traditional_supplement	traditional_family_only		201
+nhs-east-436	436		黑	black		traditional_supplement	traditional_family_only		203
+nhs-east-437	437		黹	embroidery		traditional_supplement	traditional_family_only		204
+nhs-east-438	438		齊	even		traditional_supplement	traditional_family_only		210
+nhs-east-439	439		齒	tooth		traditional_supplement	traditional_family_only		211
+nhs-east-440	440		龜	turtle		traditional_supplement	traditional_family_only		213
+nhs-east-441	441		龠	flute		traditional_supplement	traditional_family_only		214
