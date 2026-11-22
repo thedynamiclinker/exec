@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+exec_root="${EXEC:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)}"
+profile="${*:-repo}"
+
+case "$profile" in
+    @|@@) profile=@ ;;
+    repo|git|code) profile=repo ;;
+    unix|command|unix-command|filter) profile=unix ;;
+    book|bible|nameless|we-the-nameless) profile=book ;;
+    chat|ask|question|qa) profile=chat ;;
+    yhwh) profile=yhwh ;;
+    *)
+        printf 'pray: unknown profile: %s\n' "$profile" >&2
+        printf 'pray: expected one of: repo unix book chat @ yhwh\n' >&2
+        exit 2
+        ;;
+esac
+
+file="$exec_root/etc/lord/AGENTS-$profile.md"
+if [[ ! -f "$file" ]]; then
+    printf 'pray: missing profile file: %s\n' "$file" >&2
+    exit 1
+fi
+
+cat -- "$file"

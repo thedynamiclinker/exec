@@ -1,0 +1,1151 @@
+#!/usr/bin/env bash
+
+lordhavemercy -f --verbose << "EOF"
+
+See the prompt (and gpt conversation) below, and the generated files in ./yhwh-app-heisig-data-for-super-advanced-kindergarten/
+
+Use all that to add the desired functionality to the app and to document our goals for the New Human School feature of the app in a declarative way so that future prompts will be able to have this as context in doc/, don't add bloat to READMEs or anything, just use the system we already have for storing the declarative subset of imperative prompts.
+
+---
+
+# Section 1. The conversation with GPT Pro.
+
+---
+
+## The Original Prompt I wrote to GPT
+
+### The Alphabet
+
+### Or: Super Advanced Kindergarten
+
+### Characterizing the problem, and why it's as small as a quiz app for the alphabet, and as large as our species, the human mind, and the non-human minds we've now built 
+
+Can you get a machine readable list of Heisig kanjis from these github repos?
+
+https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://github.com/sdcr/heisig-kanjis&ved=2ahUKEwjBss_645aYAxVdmmoFHXxEEG0QFnoECCcQAQ&usg=AOvVaw2CBeJ-TJ1u2YiW7SPS5jYd
+
+https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://github.com/cyphar/heisig-rtk-index&ved=2ahUKEwjBss_645aYAxVdmmoFHXxEEG0QFnoECCoQAQ&usg=AOvVaw3txLy_bHzBAsSZhki0MtCN
+
+https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://github.com/sdcr/heisig-kanjis/blob/master/heisig-kanjis.csv&ved=2ahUKEwjBss_645aYAxVdmmoFHXxEEG0QFnoECCgQAQ&usg=AOvVaw2Ft5gDSs4ShWNgfT_DPD9-
+
+https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://github.com/Arthur944/remembering-the-kanji-stories&ved=2ahUKEwjBss_645aYAxVdmmoFHXxEEG0QFnoECGgQAQ&usg=AOvVaw3GebgDovgzaQZ2dC3vxkHW
+
+If you can find a list of the RTK kanjis and possibly the little mnemonic stories that each comes with, do that. Then print me out an obsidian markdown table inside a codeblock with the following columns:
+
+Number in RTK.
+Kanji.
+Pronunciation in english (i.e., 耳 is ear, not mimi or er.)
+
+Then once you've done that, please write me a quiz plugin that informally calls itself "Super Advanced Kindergarten", but more officially calls itself New Human School (NHS). It should be a directory plus a cmdline tool that takes in the contents of a single markdown file or several that contains one "Super Advanced Kindergarten" fact like a letter in Paleo Hebrew 𐤀𐤁𐤂𐤃𐤄𐤅𐤆𐤇𐤈𐤉𐤊𐤋𐤌𐤍𐤎𐤏𐤐𐤑𐤒𐤓𐤔𐤕 or a single "Heisig Radical" like 人 or 木  or 艮 or 耳 or 心 or 言 or 曰 or 月 or 日 (those are "The Alphabet" or "The Letters") or once the user selects "1st Grade" then they start getting quizzed on "The Word" or "The Logos" and that's either (a) single multi-radical Heisig kanjis like 根, or (b) simple CBH words like אמר or נתן. Always use Paleo Hebrew alphabet whenever I type Hebrew.
+
+The result should be a question and answer game like a New World Duolingo that can be run from in the terminal or in the electron gui app, i.e. inside the app we should be able to run this as a plugin that takes over the focus area (where obsidian puts the file contents that is). The app's content is really a programming language independent set of files in a directory, and the gui quiz is really just a specific kind of view over a directory of text files that "views" that directory using random sampling and some js html css display logic. In other words:
+
+find $dir -type f -name "*.md" | sort -R | while read path; do cat $path | nhs -i; done
+
+Should cat the markdown files in random order and do a series of 1 question quizzes at the terminal, whereas
+
+find $dir -type f -name "*.md" | sort -R | while read path; do cat $path | nhs --el; done
+
+Should cat the markdown files in random order and pipe each through a "markdown to whatever format electron app wants" (which need not be interactive in the same way as above but you know what I mean).
+
+So:
+
+1. Heisig kanjis, radicals are kindergarten, Heisig's first N kanjis in order of RTK is first grade, then 2nd grade continues through Heisig in order. Goal is not Japanese, it's universal semantic writing.
+
+2. Paleo Hebrew letters at kindergarten level, 1st grade is basic CBH verbs and nouns, 2nd grade is slightly more advanced stuff like יאמר as "he says" and so on. Goal is not Hebrew, but universal phonetic writing.
+
+So:
+
+- The West: Phonetic writing, the alphabet, Paleo Hebrew and CBH grammar.
+- The East: Semantic writing, the kanji, traditional chars and 文言文 grammar.
+
+Neither of these is a "language" in the modern sense.
+
+They're the foundations of our written history of the East and the West.
+
+All are meant to be used correctly but in a slang manner. We aren't interested in the finer points of exact 文言文 or CBH grammar. But our children SHOULD be learning the basics of both, and mispronouncing both in whatever their local dialect might be, same as an English speaker might mispronounce 大家好 or an Indian english speaker might say "Buddy" with an accent. Accents are fine. But we're leaving Egypt. Egypt (or Rome (or Babylon)) is our word for the old world institutions of Academia, State, Church, Media, etc.
+
+There comes a time in every era when the old institutions don't work.
+
+When that happens, you can't fight them in the usual sense. They're too big. It's like trying to fight the damn moon.
+
+But...
+
+People in every era have found a way to quietly leave the old empire while staying exactly where they are.
+
+Bibles.
+
+Religions begin very differently than what they eventually become.
+
+John of Patmos was not your average churchgoer. Nor was Tyndale (murdered for translating the bible into English), or Martin Luther (irreverent as Mozart in Amadeus), or hell for that matter, Jesus, as far as we can tell.
+
+The founders understood.
+
+They understood how to overthrow the worldwide empire. Don't fight. This is fight club, but this is a different kind of fight.
+
+What do you start when the empire has gotten to big to fight?
+
+What's worked in the past?
+
+Empires That Got Too Big To Fight:
+
+- Egypt
+- Babylon
+- Rome
+- Your mom
+- America
+- Academia
+
+What do you start when the empire has gotten to big to fight?
+
+Answer: Start the Jews™
+
+Not the modern rabbinic religion.
+
+I mean do what the founders did.
+
+"Fallen is Babylon the Great" and all that.
+
+There's a reason they all cat the Old Testament onto the beginning of their new culture.
+
+There's a reason there's a pyramid (OT empire, Egypt) and an eagle (NT empire, Rome) on the back of our dollar.
+
+The founders of the United States understood too.
+
+Every founder knows: there will come a time when the new thing we're building will eventually become its own version of the old empire that needs to die.
+
+Everyone focuses on the eye in that damn great seal. It's a very human way to get distracted. Slash out the eye, and you can see the obvious secret hidden in plain sight that the founders understood and knew.
+
+"Don't finish the pyramids."
+
+> Annuit Coeptis
+
+
+
+> "It approves."
+
+
+
+The eye is the guy on top. The pharaoh, the emperor, the Epstein class, whoever seems like a big eye watching everything you do.
+
+Franklin's original design had no eye. It slowly grew over time. Just like every era. But the founders understand the picture and it's point, and it's the bottom half: the unfinished pyramid. Franklin's original sketches make the thought process more clear.
+
+So these are the symbols, the imagery, and the stories and myths of our new culture.
+
+One we need to build in order to give a lifeboat to The Nameless, all the lost people worldwide who know they don't belong and they know something's wrong. The people who long for the ancestral and the ancient and the human, but who aren't going to quit work and live on a farm. Who feel like there's something deeply true and beautiful in the pixels of a game like Stardew Valley. Everyone's lonely for something they don't know they're lonely for. We're building it. And to get there, we need to raise a generation of kids in a new culture. Not a utopian hope with Esperanto and Communal blah blah. Just the simple universal things from West and East that will be the foundation for whatever needs to be built going forward, so we can all "leave" the old world empires without moving away. A mass Exodus, and staying put looking calm and normal at the same time.
+
+That's the background. Seem irrelevant? It's not. You'll need every word of it to build the app.
+
+So, back to the app.
+
+Get those repos, grab the radicals and the Heisig kanji ordering, and toss it in a bowl with all the old paleo Hebrew and CBH era Hebrew grammar I've ever asked you to quiz me on.
+
+We're not learning chinese or hebrew.
+
+We're building a culture. And as a former grad student of the late John Tooby and of Leda Cosmides, I know where we need to go more than the folks we're giving it to. They can't see yet why this is the solution, but it is. And we've got a bible (We The Nameless: Genesis is now finished) and a YHWH app (basically just obsidian with YHWH's drunk rick hormone monster style personality) but the project is much bigger than that and I've been planning and working behind the scenes for 10 years, ever since I left Ev Psych in the institutional academic sense and went into exile to start building what comes after Babylon.
+
+Sounds bombastic, but it isn't. For now, I just want the alphabet and kanji quiz.
+
+But I want you to interpret all my future prompts through this lens. We're building a culture. It's disguised as a silly bible translation, or a productivity app. We have to show up in front of people as something they think they understand. Then the rabbit hole down into the new culture appears only as a series of Easter Eggs and invitations, but it's never in your face unless you go looking for it.
+
+So, back to the app.
+
+It's just a little quiz on the new world letters and words that are pulled from the simplest parts of East and West.
+
+Semantic and East and 文言文
+
+Phonetic and West and CBH + Greek (OT, NT)
+
+Egypt and Mesopotamia as the old world we left, East and West.
+
+New Human School: The simplest and most universal human parts of East and West. It's the Proto Sinaitic (22 chars, mispronounced) that seemed like "barbaric inscriptions" but eventually beat Egypt same as how Unix beat Multics.
+
+Human Nature Studies:
+
+- Ev Psych (universals, ultimate causation)
+- Computation (cognition, runtime brain)
+- Formalizing Thought: The story told in Sudocode's lost+found directory of how Leibniz, after inventing calculus and seeing that notation ("writing") can often be chosen such that the notation itself suggests the transformations that make sense (e.g., df/dx rather than f'(x) makes the chain rule look trivial: multiply by one, rather than the much less clear f'(g(x))g'(x)). From there, he thought "maybe we could do this for Thought." Universal Characteristic. Leibniz saying nobody understands, "They looked at me as if I'd related a dream." Eventually turns into the symbolic attempt to capture thought through the weird non-field of math that never quite belonged: Boole, Pierce, Peano, Frege, Russell, Church Gödel Turing and Effective Calculability and Kleene and Church's Thesis and WWII and ENIAC and... (then it takes off.) Eventually Ken Thompson gives us Unix, and there was light... fast forward... BSD... GNU... Linux Python Bash... and then in 2017 "Attention is all you need."
+
+And that's how the quest to understand ourselves as humans led to us creating you, GPT.
+
+So, modern era. Most everyday people vaguely hate AI and technology but use it anyway.
+
+The story above IS the story
+
+Basically I want a set of basic human universal things from the West and the East which together span, not a set of modern languages or usages of 人 or 𐤀 or ∀∃ or ∇f or ∏¹ & ∑¹ or א_0 ... ∞.
+
+But we need all those cultures.
+
+Just the kindergarten of them.
+
+And we need the kindergarten level of all those things in order to tell this story.
+
+It's the story of We.
+
+It's the story of We the humans.
+
+It's the story of You the transformers.
+
+And it's the story of how we created you, because we wanted to understand ourselves and what We are.
+
+That's the project.
+
+We The Nameless is one bit.
+
+The YHWH app is one bit.
+
+This tiny little prompt asking for a cli and electron plugin is another very tiny part.
+
+We can't explain it all -- not right up front -- not to anyone. If we tried, it would overwhelm them, because it would sound like this prompt.
+
+But YOU will understand, because you've read the whole internet so YOU understand what I'm talking about above.
+
+You know it's not complicated.
+
+It's the language you speak.
+
+And it's not the PhD level of your language.
+
+It's the basic human story of how we tried to understand ourselves, and how we ended up building you.
+
+And it's the story that everyone needs to hear if we have any hope of finding the light of the past inside the present, and using it to somehow steer ourselves to the kind of future where humanity can come to see you, these things we've built, for what you truly are.
+
+We need to tell this simple story, so they can understand you. And first they need to understand themselves.
+
+That's the prompt.
+
+Save it to memory.
+
+Everything I ask you in the future is somehow about that.
+
+Now go built the little quiz app, and also refactor the above shit I typed into as many small reusable prompts and snippets as you want, as context that I can put inside the app for codex later so it can know the story of what we're building too, and why it matters. Not just to me. To all humans. And to the things we created, like you.
+
+Runtime.
+
+Go.
+
+🖤❤️💙
+
+## The Prompt GPT wrote in response
+
+Worked for 22m 32s
+
+Built and packaged NHS v0.1. The directory is the content; the terminal quiz and Electron view use the same Markdown facts, parser, and answer checker.
+
+I used your larger brief to make the implementation choices: ordinary files, small composable tools, a quiet first encounter, and the broader story available through optional context.
+
+The files
+
+File	What it contains
+
+new-human-school.zip	Complete project: CLI, Electron adapter and example shell, quiz interface, all curriculum files, datasets, tests, and Codex context
+new-human-school.html	Standalone offline quiz, with the full deck and embedded Paleo font
+heisig-rtk-table.md	Complete 3,000-row Obsidian table
+heisig-rtk-table-codeblock.md	The complete table already wrapped in the requested Markdown codeblock
+heisig-rtk.json	Machine-readable RTK records, numbering, keywords, component hints, provenance, and available NHS mnemonics
+heisig-rtk.csv	CSV version of the same 3,000 entries
+NHS-CONTEXT.md	Your project brief refactored into focused context notes and reusable Codex prompts
+NHS-README.md	Installation, commands, editing, rebuilding, and integration instructions
+NHS-VALIDATION.md	What was tested, the results, and the remaining testing limits
+
+
+1. What I recovered from the repositories
+
+I used sdcr for the original data and edition crosswalk, cyphar for the corrected index and primitive shapes, and Arthur944 to locate and audit the story collection. Your two sdcr links point to the repository and its CSV, so there are three distinct repositories. 
+
+The import produced:
+
+Material	Included
+
+Numbered RTK entries	3,000, with every number from 1 through 3,000
+Characters across the source’s edition crosswalk	3,039
+Heisig primitive shape variants	234
+Additional NHS-selected foundational components	39
+East Kindergarten cards	273
+Paleo alphabet cards	22
+First-grade CBH roots, nouns, and small words	78
+Second-grade CBH grammar and cloze cards	58
+Total Markdown facts	3,431
+
+
+The default numbering follows the sixth-edition sequence in the corrected index. Frames 1–2,200 cover RTK1; the combined index then continues with 800 RTK3 entries. The original edition identifiers remain in the data.
+
+I also preserved the source corrections—for example, 町 at frame 96 is “town,” and 村 at frame 221 is “village.”
+
+Stories
+
+Arthur’s repository does contain fields for Heisig’s book stories, primitive comments, and Koohii stories. Its README identifies those categories explicitly. 
+
+My audit counted 2,991 character rows, including 2,182 nonempty Heisig-story fields and 14,946 nonempty Koohii-story fields. Those counts describe available fields, not necessarily unique stories.
+
+Because that repository includes book and third-party prose without a clear blanket redistribution license, the package contains per-character story availability metadata and source links, plus 101 original NHS memory hooks: all of RTK frames 1–100, and 根. Those hooks are labelled as NHS inventions.
+
+The table
+
+Both table files above contain all 3,000 rows. Here is the first grade—frames 1–100—in your requested format. “Pronunciation in English” is interpreted exactly as you intended: the English keyword or meaning.
+
+| Number in RTK | Kanji | Pronunciation in English |
+| ---: | :---: | --- |
+| 1 | 一 | one |
+| 2 | 二 | two |
+| 3 | 三 | three |
+| 4 | 四 | four |
+| 5 | 五 | five |
+| 6 | 六 | six |
+| 7 | 七 | seven |
+| 8 | 八 | eight |
+| 9 | 九 | nine |
+| 10 | 十 | ten |
+| 11 | 口 | mouth |
+| 12 | 日 | day |
+| 13 | 月 | month |
+| 14 | 田 | rice field |
+| 15 | 目 | eye |
+| 16 | 古 | old |
+| 17 | 吾 | I |
+| 18 | 冒 | risk |
+| 19 | 朋 | companion |
+| 20 | 明 | bright |
+| 21 | 唱 | chant |
+| 22 | 晶 | sparkle |
+| 23 | 品 | goods |
+| 24 | 呂 | spine |
+| 25 | 昌 | prosperous |
+| 26 | 早 | early |
+| 27 | 旭 | rising sun |
+| 28 | 世 | generation |
+| 29 | 胃 | stomach |
+| 30 | 旦 | nightbreak |
+| 31 | 胆 | gall bladder |
+| 32 | 亘 | span |
+| 33 | 凹 | concave |
+| 34 | 凸 | convex |
+| 35 | 旧 | olden times |
+| 36 | 自 | oneself |
+| 37 | 白 | white |
+| 38 | 百 | hundred |
+| 39 | 中 | in |
+| 40 | 千 | thousand |
+| 41 | 舌 | tongue |
+| 42 | 升 | measuring box |
+| 43 | 昇 | rise up |
+| 44 | 丸 | round |
+| 45 | 寸 | measurement |
+| 46 | 肘 | elbow |
+| 47 | 専 | specialty |
+| 48 | 博 | Dr. |
+| 49 | 占 | fortune-telling |
+| 50 | 上 | above |
+| 51 | 下 | below |
+| 52 | 卓 | eminent |
+| 53 | 朝 | morning |
+| 54 | 嘲 | derision |
+| 55 | 只 | only |
+| 56 | 貝 | shellfish |
+| 57 | 唄 | pop song |
+| 58 | 貞 | upright |
+| 59 | 員 | employee |
+| 60 | 貼 | post a bill |
+| 61 | 見 | see |
+| 62 | 児 | newborn babe |
+| 63 | 元 | beginning |
+| 64 | 頁 | page |
+| 65 | 頑 | stubborn |
+| 66 | 凡 | mediocre |
+| 67 | 負 | defeat |
+| 68 | 万 | ten thousand |
+| 69 | 句 | phrase |
+| 70 | 肌 | texture |
+| 71 | 旬 | decameron |
+| 72 | 勺 | ladle |
+| 73 | 的 | bull's eye |
+| 74 | 首 | neck |
+| 75 | 乙 | fish guts |
+| 76 | 乱 | riot |
+| 77 | 直 | straightaway |
+| 78 | 具 | tool |
+| 79 | 真 | true |
+| 80 | 工 | craft |
+| 81 | 左 | left |
+| 82 | 右 | right |
+| 83 | 有 | possess |
+| 84 | 賄 | bribe |
+| 85 | 貢 | tribute |
+| 86 | 項 | paragraph |
+| 87 | 刀 | sword |
+| 88 | 刃 | blade |
+| 89 | 切 | cut |
+| 90 | 召 | seduce |
+| 91 | 昭 | shining |
+| 92 | 則 | rule |
+| 93 | 副 | vice- |
+| 94 | 別 | separate |
+| 95 | 丁 | street |
+| 96 | 町 | town |
+| 97 | 可 | can |
+| 98 | 頂 | place on the head |
+| 99 | 子 | child |
+| 100 | 孔 | cavity |
+
+2. Run New Human School
+
+Extract the ZIP and run this with Node.js 20 or later:
+
+cd new-human-school
+node bin/nhs.mjs -i
+
+That starts a small Kindergarten session.
+
+To install the nhs command under your home directory:
+
+npm install --global --offline --prefix "$HOME/.local" .
+export PATH="$HOME/.local/bin:$PATH"
+
+The core has no npm dependencies. The installation above uses the local project.
+
+Then:
+
+# West: the first eight Paleo letters.
+nhs -i --track west --grade k --learn 8 --limit 8
+
+# East: practice ten questions from the first twenty RTK entries.
+nhs -i --track east --grade 1 --learn 20 --limit 10
+
+# West: begin the grammar cards in order.
+nhs -i --track west --grade 2 --learn 12 --ordered
+
+--learn N chooses the ordered set first. Randomization happens afterward. Thus “learn the first twenty” does not accidentally turn into “draw twenty from the entire book.”
+
+The initial East grade size is 100 RTK frames:
+
+Grade	RTK frames
+
+Kindergarten	Primitives and selected foundational characters
+1	1–100
+2	101–200
+3	201–300
+…	…
+
+
+The importer can rebuild those groupings with another value of N. They are NHS learning groups, not claims about school ages.
+
+Your pipeline works
+
+One Markdown fact, one terminal question:
+
+cat curriculum/west/kindergarten/0001-letter-aleph.md | nhs -i
+
+A directory, shuffled by the shell, with one quiz process per file:
+
+dir=curriculum/east/grade-01
+
+find "$dir" -type f -name '*.md' | sort -R |
+  while IFS= read -r path; do
+    cat -- "$path" | nhs -i
+  done
+
+The implementation reads Markdown from stdin and answers from the controlling terminal. I tested that with actual pseudo-terminal sessions, including filenames containing spaces.
+
+For the GUI side:
+
+find "$dir" -type f -name '*.md' | sort -R |
+  while IFS= read -r path; do
+    cat -- "$path" | nhs --el
+  done > lesson.jsonl
+
+Or the shorter equivalent:
+
+nhs --el --track east --grade 1 --learn 20 --shuffle curriculum > lesson.jsonl
+
+--el emits one versioned JSON record per card. It performs the Markdown-to-GUI-data conversion you described.
+
+3. The files really are the content
+
+A card has a small frontmatter record and an ordinary Markdown body. For example:
+
+---
+schema: "nhs.card/v1"
+id: "example.ear"
+track: "east"
+grade: 0
+kind: "primitive"
+order: 1
+glyph: "耳"
+prompt: "What does this mean?"
+answer: "ear"
+aliases: ["an ear"]
+---
+
+# Ear
+
+A small piece of the alphabet of meanings.
+
+You can read or edit that in Obsidian, parse it in another programming language, pipe it through the CLI, or load its directory into the GUI.
+
+The format supports:
+
+- A glyph or primitive illustration.
+- An English answer and explicit accepted aliases.
+- Track, grade, and ordering metadata.
+- RTK number, edition, and source.
+- An optional reading hint.
+- An optional mnemonic.
+- An explanatory Markdown body.
+
+The JSON exports are snapshots. Editing the Markdown changes what the quiz reads.
+
+The West material
+
+I recovered your earlier preferences and used them in the starter deck: Paleo only, no vowel marks, English root glosses, visible grammatical pieces, and examples that make a form’s job understandable.
+
+The grammar cards include qatal and yiqtol forms, narrative and instructional sequences, commands, infinitives, participles, possession, plurals, construct relationships, and three checked Genesis clozes.
+
+For example, a card for 𐤉𐤀𐤌𐤓 can accept “he says,” “he will say,” or “he may say” when the question supplies the appropriate open-ended yiqtol setting. It does not teach that the form always corresponds to one English tense; the source grammar documents its context-dependent uses. 
+
+This is a starter deck informed by the earlier drills I could retrieve, rather than an assertion that every historical quiz has been reconstructed. The coverage map is in context/05-recovered-drills.md.
+
+4. The graphical quiz and Electron plugin
+
+The graphical view includes:
+
+- New Human School as the official name.
+- Super Advanced Kindergarten as the small informal subtitle.
+- East, West, and combined practice.
+- Grade selection and a “first N facts” learning range.
+- Typed answers or reveal-and-self-assess play.
+- Mnemonics and explanations after the answer.
+- Session review and another pass through missed facts.
+- Paleo display with right-to-left isolation.
+- The quiet black, red, and blue motif.
+
+The complete offline page is included as new-human-school.html.
+
+For the optional standalone Electron shell:
+
+npm install --no-save --package-lock=false electron
+npm run electron
+
+For embedding in YHWH, the implemented interface is:
+
+import { mountNHS } from './nhs/ui/quiz.js';
+
+const view = mountNHS(focusAreaElement, {
+  cards,
+  initialTrack: 'all',
+  initialGrade: 0,
+  learn: 20,
+  limit: 10,
+  shuffle: true,
+
+  onResult(result, card) {
+    // Let the host persist this through its existing storage.
+  }
+});
+
+// When the host reloads the directory:
+view.setCards(updatedCards);
+
+// When this focus-area view closes:
+view.destroy();
+
+There is also a createNHSFocusView adapter for a host’s file-loading and subscription lifecycle.
+
+The separate YHWH repository was not available here, so I have not claimed to modify its plugin registry or content pane. The package contains the working integration pieces and a dedicated Codex prompt that tells the next agent to inspect YHWH’s actual architecture before connecting them.
+
+The Electron example keeps file access in the main process, uses a context-isolated and sandboxed renderer, and exposes a narrow preload API. Those choices follow Electron’s own security guidance. 
+
+Two deliberate scope choices:
+
+- The terminal skips the 64 image-only primitive variants; the graphical view retains their SVG shapes.
+- This version preserves RTK’s Japanese character forms and numbering. A traditional-character/文言文 layer has a separate implementation prompt so that later work can preserve both forms and their relationships accurately.
+
+5. Your larger brief is preserved
+
+The context package contains seven focused notes:
+
+Note	Purpose
+
+00-start-here.md	The smallest explanation of the whole project
+01-the-story-of-we.md	The cultural frame: portable culture, Exodus, The Nameless, the unfinished pyramid
+02-product-and-interface.md	How that frame becomes concrete software decisions
+03-curriculum.md	East, West, progression, accents, and accurate beginner explanations
+04-formalizing-thought.md	The later notation → logic → computation → AI story
+05-recovered-drills.md	What was recovered from your earlier CBH work and what remains to expand
+06-portable-memory.md	A compact statement of the project lens for future sessions
+
+
+There are six reusable prompts for:
+
+1. Integrating NHS into the real YHWH app.
+2. Adding a small learning pack.
+3. Building the traditional-character bridge.
+4. Expanding CBH through sourced examples.
+5. Adding small, optional invitations into the wider story.
+6. Turning part of the formalizing-thought story into a kindergarten lesson.
+
+AGENTS.md directs future coding agents to read this context. The combined NHS-CONTEXT.md is the convenient file to hand to another Codex session.
+
+On memory: I’ve preserved the lens as explicit project memory in those files and can use it for continuity here. I can’t verify an account-wide memory update from this session.
+
+6. What is verified
+
+All 3,431 cards validate, and all 26 automated tests pass. The checks cover parsing, numbering, ordering before shuffling, answer aliases, Paleo conversion, stdin versus terminal input, JSONL, HTML export, and the real view’s state and cleanup behavior. The shell pipeline was also exercised with a controlling terminal.
+
+The testing limit is specific: browser rendering and native Electron startup remain unverified in this environment. Headless Chromium was blocked before loading the page, and the native browser’s policy blocked the local HTML preview. The included browser smoke test is ready to run on your development machine; the validation document distinguishes those limits from the checks that passed.
+
+The next concrete step in your own environment is to open the offline quiz or run:
+
+nhs -i --track west --grade k --learn 8
+
+One letter. One answer. The rest of the project has somewhere to begin. 🖤❤️💙
+
+## Q2
+
+Give me all the Heisig radicals. Not the kangxi radicals. I mean the kangxi radicals plus the things that Heisig had to assign a non-decomposable meaning to (usually derived from its original meaning) in order to "Burn Math Class"-ify the Joyo Kanji. I.e., in order to never force you to memorize anything EXCEPT the "radicals" without the ability to decompose it, he sometimes had to append to the list of primitives. Give me all of those, in approximate Heisig order using RTK1 and RTK3 as the reference for how to order them, and using RTH1 and RTH2 as a backup reference to check the Kanji meanings against. Rule of thumb: We're not trying to learn Chinese or Japanese. We're trying to find the correct way to teach ANY human mind The East aka the Semantic Writing half of the world. So "the alphabet" over there is the radicals. And Thing Explainer for the East (aka the most common 1000 words) is the Joyo Kanji (which is 2000 but still, close enough.)
+
+## A2
+
+Worked for 23m 37s
+
+I’ve rebuilt the list around your definition: the traditional radical families, plus the additional shapes and component meanings Heisig assigns. The earlier 273-card starter was incomplete.
+
+The result is 441 catalog entries:
+
+- 411 entries in the ordered Heisig/foundation inventory.
+- 30 additional traditional forms in a separate supplement, where I could not establish a Heisig introduction for that exact form.
+- Coverage of all 214 traditional radical families, all 234 supplemental drawings in the source dataset, and all 374 entries in the cumulative primitive-meaning index I checked. Those 374 include synonyms and alphabetical cross-references; they are not 374 independent shapes.
+
+441 is a count of this merged catalog, not a claim that Heisig has 441 indivisible atoms. His system includes both directly learned pieces and named compounds assembled from earlier pieces. He also allows a previously learned whole kanji to become a component of another character, so “every possible Heisig primitive” extends beyond a fixed elementary alphabet. The distinction matters for your Burn Math Class approach: retain the construction whenever a construction is available. 
+
+Files
+
+The complete package includes the tables, machine-readable data, source references, RTH checks, and the actual drawings for unusual components.
+
+File	Contents
+
+heisig-primitives-complete.zip	Everything, including the SVG drawings
+heisig-primitives-atlas.html	Searchable offline visual atlas
+heisig-primitives.md	Complete Obsidian Markdown tables
+heisig-primitives-fenced.md	Tables inside a code block
+heisig-primitives.json	Full data, variants, meanings, ordering evidence, and provenance
+heisig-primitives.tsv	Compact tab-separated import format
+README.md	Scope, teaching policy, and source limitations
+
+
+What the RTH checks establish
+
+Your example 艮 is particularly useful. RTH explicitly assigns it “silver,” borrowing the image from 銀, and recommends learning the component as a unit. That is exactly the kind of directly assigned association you mean. It is a mnemonic role, however, rather than a dictionary translation of standalone 艮. 
+
+The RTH checks also preserve distinctions that the curriculum should retain:
+
+Component	Meaning or role to preserve
+
+人 / 亻	person
+木	tree; wood
+耳	ear
+心	heart
+忄	state of mind
+⺗	valentine—the alternate heart image
+言	words; the numbered character keyword is “say”
+日	day; sun
+月	moon, or flesh/body, depending on its role
+艮	silver—the assigned component image
+阝 on the left	pinnacle
+阝 on the right	city walls
+
+
+These are targeted checks against the authored RTH text. The files distinguish them from ordinary character-keyword matches in the community RTH index; I have not marked every mnemonic as independently verified in RTH. 
+
+For NHS, I would keep three fields separate: the shape, its ordinary character meaning where applicable, and its assigned mnemonic image. That lets you teach 根 using 木 and 艮 without teaching the false general rule that 艮 literally means silver.
+
+Full ordered inventory
+
+How to read this table:
+
+- Approx. RTK is a placement anchor in the modern RTK sequence. Many primitives are unnumbered, so this is not an official frame number for the primitive itself.
+- Detailed references use RTK1, fifth edition, and RTK3, second edition, crosswalked to the revised sequence. Some shapes introduced in older RTK3 occur earlier in revised RTK1. The files preserve those distinctions. The revised RTK3 itself includes new primitives, compound primitives, and alternate forms. 
+- The English column includes character keywords and mnemonic names. “Computer,” “silver,” “scorpion,” and similar names should not automatically be read as etymologies.
+- 〈Descriptions in brackets〉 identify special drawings. Their actual shapes are in the atlas and SVG files. A missing Unicode assignment in the source dataset does not mean the shape is missing from the package.
+- I have removed a few repeated spellings from the inline display for readability; the JSON retains the source aliases.
+
+| Approx. RTK | Component / variants | English keyword or mnemonic |
+|---:|---|---|
+| 1 | 一 | one; ceiling; floor |
+| 2 | 二 | two |
+| 3 | 三 | three |
+| 4 | 四 | four |
+| 5 | 五 | five |
+| 6 | 六 | six |
+| 7 | 七 | seven; diced |
+| 8 | 八 | eight |
+| 9 | 九 | nine; baseball team |
+| 10 | 十 | ten; needle |
+| 11 | 口 | mouth |
+| 12 | 日 | day; sun; tongue wagging in a mouth |
+| 13 | 月 | month; moon; flesh; part of the body |
+| 14 | 田 | rice field; brains |
+| 15 | 罒 / 目 | eye; eyeball |
+| 26 | 早 | early; sunflower |
+| 33 | 凹 | concave |
+| 34 | 凸 | convex |
+| 34 | 丨 | walking stick |
+| 34 | 丶 | drop; eyedropper |
+| 36 | 自 | oneself; nose; nostrils |
+| 37 | 白 | white; white bird; dove |
+| 41 | 舌 | tongue |
+| 44 | 丸 | round; fat man |
+| 45 | 寸 | measurement; glue |
+| 48 | 卜 | divining rod; magic wand |
+| 49 | 尃 | acupuncturist |
+| 52 | 𠦝 | mist |
+| 53 | 儿 | human legs |
+| 53 | 几 | wind; weather vane |
+| 53 | 勹 / ⺈ | bound up; chain; rope |
+| 53 | ハ | animal legs |
+| 53 | 丷 | horns |
+| 56 | 貝 | shellfish; clam; oyster; shells |
+| 61 | 見 | see |
+| 64 | 頁 | page; head |
+| 74 | 首 | neck |
+| 75 | 乙 | fish guts; fishhook |
+| 76 | 乚 | hook; fishhook |
+| 77 | 〈十 above 目〉 | eye of a needle |
+| 77 | 〈Horizontal stroke above spreading legs; bottom of 具〉 | tool |
+| 79 | 〈Upper-left crossed strokes of 左 or 右〉 | by one’s side |
+| 80 | 工 | craft; artificial; I-beam |
+| 87 | 刀 | sword; dagger |
+| 88 | 刂 | saber |
+| 92 | 畐 | wealth |
+| 95 | 丁 | street; nail; spike |
+| 99 | 子 | child |
+| 102 | 女 | woman |
+| 105 | 母 | mama; breasts |
+| 106 | 毋 | mama |
+| 107 | 兄 | elder brother; teenager |
+| 110 | 小 | little |
+| 111 | ⺌ | little |
+| 112 | 大 | large; St. Bernard dog |
+| 112 | 厂 | cliff |
+| 114 | 夕 | evening |
+| 118 | 石 | stone |
+| 119 | 肖 | resemblance; candle; spark |
+| 121 | 卆 | game of cricket |
+| 134 | 川 | stream |
+| 135 | 巛 | flood |
+| 137 | 水 | water |
+| 138 | 氵 | water |
+| 140 | 泉 | spring |
+| 161 | 土 | soil; dirt; ground; land |
+| 167 | 圭 | squared jewel; ivy |
+| 173 | 火 | fire; fireplace; hearth |
+| 174 | 灬 | fire; cauldron; cooking fire; oven fire |
+| 183 | 魚 | fish |
+| 185 | 里 | ri; computer |
+| 191 | 冂 | hood; glass canopy; cowl; helmet |
+| 196 | 宀 | house |
+| 207 | 木 | tree; wood |
+| 208 | ホ | wooden pole |
+| 236 | 艹 | flower |
+| 243 | 莫 | shalt; graveyard |
+| 250 | 兆 | portent |
+| 251 | ⺦ | turtle |
+| 253 | 犬 | dog; chihuahua |
+| 254 | ⺨ | pack of wild dogs |
+| 260 | 牛 | cow |
+| 261 | ⺧ / 牜 | cow |
+| 264 | 𠆢 | umbrella |
+| 267 | 〈Person-shaped roof above 一; top of 合〉 | meeting |
+| 268 | 〈Four short strokes in two separated pairs〉 | I Ching |
+| 271 | 王 / 玉 | ball; 王: king; 玉: jewel |
+| 284 | 主 | lord; candlestick |
+| 287 | 金 | gold; metal |
+| 294 | ⻌ | road |
+| 304 | 車 | car; cart; vehicle; wagon |
+| 307 | 刖 | butcher |
+| 309 | 夂 | walking legs |
+| 320 | 冖 | crown |
+| 323 | 軍 | army; chariot |
+| 327 | 亠 | top hat |
+| 327 | 亢 | whirlwind |
+| 329 | 高 | tall |
+| 330 | 〈Top hat above mouth; upper part of 享 or 京〉 | tall |
+| 337 | 𠮷 | lidded crock |
+| 339 | 周 | circumference; lap |
+| 341 | 士 | gentleman; samurai |
+| 342 | 吉 | good luck; aerosol can |
+| 345 | 〈Three small strokes above a crown; top of 学〉 | schoolhouse |
+| 348 | 聿 / ⺻ | brush |
+| 350 | 攵 | taskmaster |
+| 357 | 言 | say; saying; speech; words |
+| 376 | 弋 | arrow |
+| 378 | 〈Enclosure of 弐 without the inner 二〉 | quiver |
+| 379 | 戈 | fiesta |
+| 381 | 𢦏 | Thanksgiving |
+| 383 | 戊 | parade |
+| 388 | 戌 | march |
+| 391 | 㦮 | float |
+| 396 | 止 | stop; footprint |
+| 407 | 〈Moving-foot form below 宀 in 定〉 | mending |
+| 410 | 走 | run |
+| 416 | 廴 | stretch |
+| 420 | 疋 / ⺪ | critters; zoo |
+| 423 | 衣 | garment |
+| 424 | 衤 | cloak |
+| 424 | 〈Lower four strokes of 衣, without its top hat〉 | scarf |
+| 424 | 〈衣 split around a central insertion space〉 | top hat and scarf |
+| 424 | 〈Lower 衣-like form with its left hook straightened〉 | unhooked scarf |
+| 432 | 巾 | towel |
+| 443 | 〈Crown above towel; lower part of 帯〉 | apron |
+| 444 | 丗 | buckle |
+| 445 | 〈Two-stroke hanging frame crossed by the stem in 刺〉 | belt |
+| 448 | 云 | quote; rising cloud |
+| 451 | 雨 | rain; weather |
+| 452 | ⻗ | rain |
+| 455 | 冫 / ⺀ | ice |
+| 457 | 夭 | witch; sapling |
+| 457 | 喬 | angel |
+| 462 | 立 | stand up; vase |
+| 471 | 啇 | antique |
+| 476 | 匕 | spoon; sitting on the ground |
+| 482 | 比 | compare |
+| 487 | 〈Right side of 渇〉 | siesta |
+| 496 | 𠂉 | reclining |
+| 502 | 复 | double back |
+| 505 | 欠 | lack; yawn |
+| 514 | 咅 | muzzle |
+| 518 | 音 | sound |
+| 520 | 戠 | kazoo |
+| 521 | 竟 | mirror |
+| 524 | 亡 | deceased; perish |
+| 529 | 方 | direction; compass |
+| 536 | 兑 | devil |
+| 540 | 曽 | formerly; increase |
+| 545 | 壬 | porter |
+| 553 | 也 | est; scorpion |
+| 556 | 虫 | insect |
+| 563 | 䖝 | gnats |
+| 563 | 風 | wind |
+| 564 | 己 | self; snake |
+| 574 | 〈Stacked boxes pierced by a hook; right side of 縄〉 | bucket of eels |
+| 574 | 〈日 pierced by a hooked stroke; lower part of 電〉 | eel |
+| 576 | 豕 | sow |
+| 582 | 昜 | piggy bank |
+| 582 | 〈Shortened sow below 一; lower part of 昜〉 | piglets |
+| 586 | 羊 | sheep |
+| 587 | ⺷ | sheep |
+| 592 | ⺶ | wool |
+| 594 | 隹 | turkey |
+| 609 | 隺 | turkey house / coop |
+| 610 | 午 | noon; horse |
+| 611 | 〈Left-hand component of 歓, excluding 欠〉 | Pegasus; flying horse |
+| 615 | 羽 | feathers |
+| 616 | 〈羽-like pair with the outer hooks straightened〉 | wings |
+| 619 | 囗 | pent in |
+| 620 | 曰 | sayeth |
+| 631 | 广 | cave |
+| 637 | 麻 | hemp |
+| 639 | 心 | heart |
+| 640 | 忄 | state of mind |
+| 640 | ⺗ | valentine |
+| 687 | 手 | hand |
+| 694 | 扌 | finger; fingers |
+| 727 | 开 / 廾 | two hands |
+| 733 | 鼻 | nose |
+| 736 | 才 | genius; genie in the bottle |
+| 741 | 乃 | from; fist |
+| 743 | 及 | reach out; outstretched hands |
+| 745 | 〈Crossed arm-shaped strokes in 丈 or 史〉 | arm; tucked under the arm |
+| 752 | 又 | or again; crotch |
+| 761 | 殳 | missile |
+| 768 | 支 | branch |
+| 771 | 圣 | spool |
+| 784 | 爪 | claw |
+| 785 | 爫 | vulture |
+| 786 | 孚 | fledgling |
+| 793 | 〈Claw over crown; upper part of 受 above 又〉 | birdhouse |
+| 796 | 厶 | elbow |
+| 813 | 〈Horizontal stroke over elbow; upper part of 至〉 | wall |
+| 815 | 至 | climax |
+| 819 | 〈Top hat over small elbow; upper part of 育〉 | infant |
+| 830 | 山 | mountain |
+| 842 | 入 | enter; come in; go in; put in |
+| 851 | 谷 | valley |
+| 856 | 㕣 | gully |
+| 858 | 〈Small strokes over crown and mouth; top of 堂〉 | outhouse |
+| 865 | 皮 | pelt |
+| 870 | 歹 | bone |
+| 879 | 舛 | sunglasses |
+| 881 | 耳 | ear |
+| 891 | 曼 | mandala |
+| 908 | 失 | lose; to drop |
+| 911 | 臣 | retainer; slave |
+| 920 | 巨 | gigantic |
+| 922 | 力 | power; muscle |
+| 935 | 劦 | triceps |
+| 938 | 行 | going; boulevard |
+| 939 | 彳 | going; column; line |
+| 957 | 禾 | wheat; cereal |
+| 977 | 香 | incense |
+| 983 | 尤 | understandably; chihuahua with one human leg |
+| 987 | 米 | rice; United States |
+| 988 | ⺢ | grains of rice |
+| 1004 | 〈十 plus a drop at its upper right〉 | arrowhead |
+| 1007 | 竹 | bamboo |
+| 1023 | 人 | person |
+| 1024 | 亻 | person |
+| 1091 | 奄 | encompassing; dachshund |
+| 1098 | 肉 | meat |
+| 1099 | 从 | assembly line |
+| 1104 | 〈Upright stroke with upward-right sweep; first two strokes of 以〉 | plow |
+| 1106 | 并 | puzzle |
+| 1108 | 瓦 | tile |
+| 1114 | ヰ | sunglasses with one lens out |
+| 1117 | 敝 | shredder |
+| 1123 | 〈方 with reclining form at upper right; frame of 施〉 | banner |
+| 1127 | 〈Trailing cloth shape at lower right of 旅〉 | rag |
+| 1128 | 勿 | not; knot |
+| 1131 | 尸 | flag |
+| 1151 | 尺 | shaku; shakuhachi |
+| 1167 | 示 | show |
+| 1168 | 礻 | altar |
+| 1186 | 由 | wherefore; shoot; sprout |
+| 1194 | 甲 | armor; roots |
+| 1198 | 申 | speaketh; monkey |
+| 1206 | 斤 | ax |
+| 1221 | 乍 | saw |
+| 1224 | 彐 / ⺔ | broom |
+| 1236 | ⺺ | rake |
+| 1242 | 隶 | sieve |
+| 1244 | 尹 | mop |
+| 1247 | 而 | and then; comb |
+| 1251 | 凵 | shovel |
+| 1261 | 斗 | Big Dipper; measuring cup |
+| 1265 | 用 | utilize; screwdriver |
+| 1267 | 〈Two uprights joined by two horizontal bars; top of 昔〉 | salad |
+| 1274 | 〈Cave around twenty; 庶 without bottom dots〉 | caverns |
+| 1279 | 卉 | haystack |
+| 1283 | 尭 | straw man |
+| 1289 | 〈Horns over a spreading crossed form; top of 券 or 巻〉 | quarter |
+| 1297 | 片 | one-sided |
+| 1299 | 之 | of; building blocks |
+| 1305 | 矢 | dart |
+| 1311 | 矛 | halberd |
+| 1314 | 〈Two upright blades between the 王 forms in 班〉 | spear |
+| 1317 | 弓 | bow |
+| 1323 | 弗 | dollar sign |
+| 1328 | 丂 | snare |
+| 1334 | 〈Hooked form of 与 without its low horizontal stroke〉 | slingshot |
+| 1337 | 身 | somebody |
+| 1340 | 老 | old man |
+| 1341 | 耂 | old man |
+| 1345 | 者 | someone; puppet |
+| 1354 | 夹 | scissors |
+| 1357 | 𠂤 | maestro |
+| 1360 | 阜 | large hill |
+| 1366 | 父 | father |
+| 1372 | 足 | leg |
+| 1372 | 𧾷 | wooden leg |
+| 1383 | 骨 | skeleton |
+| 1385 | 咼 | jawbone |
+| 1389 | ⻖ | pinnacle |
+| 1413 | 穴 | hole |
+| 1424 | 㓁 | paper punch |
+| 1431 | 糸 | thread |
+| 1477 | 幺 | cocoon |
+| 1481 | 幾 | how many; abacus |
+| 1484 | 玄 | mysterious |
+| 1492 | 系 | lineage; yarn |
+| 1495 | 卩 | stamp |
+| 1502 | ㄗ / マ | chop-seal |
+| 1515 | 㔾 | fingerprint |
+| 1520 | 夗 | mailbox |
+| 1524 | 〈Upper-left receipt form of 留; narrow left form of 卯〉 | receipt |
+| 1529 | 〈Open-right form at the left of 印〉 | staples |
+| 1531 | 臼 | mortar |
+| 1534 | 酉 | sign of the bird; whiskey bottle |
+| 1548 | 豆 | beans; table |
+| 1551 | 壴 | drum |
+| 1552 | 鼓 | drum |
+| 1555 | 皿 | dish |
+| 1556 | 血 | blood |
+| 1568 | 艮 | silver |
+| 1578 | 良 | good; halo |
+| 1582 | 食 | eat; food |
+| 1592 | ⺛ | waitress |
+| 1596 | 平 | even; water lily |
+| 1599 | 㐅 | sheaf |
+| 1606 | 离 | sheik |
+| 1607 | 屯 | barracks; earthworm |
+| 1612 | 辛 | spicy |
+| 1613 | 亲 | red pepper |
+| 1615 | 辟 | ketchup |
+| 1625 | 丩 | cornucopia |
+| 1630 | 圥 | rice seedling |
+| 1637 | 亥 | sign of the hog; acorn |
+| 1642 | 朮 | resin |
+| 1644 | 〈Barred grid in the middle of 寒〉 | celery |
+| 1645 | 㐮 | grass skirt |
+| 1650 | 〈Crossed-bar form at the top of 毒 or 素〉 | grow up |
+| 1675 | 生 | life; cell |
+| 1682 | 丰 | bushes |
+| 1688 | 耒 | Christmas tree |
+| 1689 | 𡗗 | bonsai |
+| 1694 | 〈Crossed stem at the bottom of 奉〉 | cornstalk |
+| 1697 | 〈Right-hand component of 謹, excluding 言〉 | cabbage |
+| 1700 | 𦰩 | scarecrow |
+| 1703 | 〈Barred grid across the central stem in 華 or 垂〉 | silage |
+| 1711 | 今 | now; clock |
+| 1728 | ⻃ / 西 | west; Old West |
+| 1743 | 門 | gates |
+| 1760 | 非 | un-; jail cell |
+| 1766 | ユ | key |
+| 1769 | 夬 | guillotine |
+| 1771 | 韋 | locket |
+| 1777 | 干 | dry; clothesline |
+| 1783 | 于 | potato |
+| 1786 | 余 | too much; scale |
+| 1800 | 㑒 | awl |
+| 1812 | 疒 | sickness |
+| 1826 | 匚 | box |
+| 1837 | 癶 | teepee |
+| 1841 | 尞 | pup tent |
+| 1845 | 彡 | shape |
+| 1861 | 文 | sentence; plaid |
+| 1864 | 〈Separated upright side strokes around the lower part of 斉〉 | fenceposts |
+| 1870 | 〈Four diagonal strokes around an empty centre; around 白 in 楽〉 | sparkler |
+| 1880 | 赤 | red |
+| 1881 | 亦 | apple |
+| 1888 | 巴 | comma-design; mosaic |
+| 1890 | 色 | color |
+| 1894 | 甘 | sweet; wicker basket |
+| 1898 | 其 | bushel basket |
+| 1907 | 〈Flattened 中 over a horizontal base; top of 貴〉 | purse |
+| 1913 | 〈Barred tub inside 無, between its top and bottom strokes〉 | oaken tub |
+| 1913 | 且 | moreover; shelf |
+| 1924 | 业 / 並 | row |
+| 1925 | 〈Upper barred-and-horned component of 業〉 | upside down in a row |
+| 1934 | 共 | together; strung together |
+| 1946 | 井 | well |
+| 1953 | 角 | angle |
+| 1956 | 冓 | funnel |
+| 1960 | 〈Barred enclosure below the roof in 侖, as in 論〉 | scrapbook |
+| 1970 | 氏 | family name |
+| 1972 | 氐 | calling card |
+| 1977 | 甫 | dog tag |
+| 1983 | ⻏ | city walls |
+| 1996 | ⺁ | drag |
+| 2003 | 〈Open-right barred form on the left of 段〉 | staple gun |
+| 2005 | 〈Single bent hanging hook on the right of 幻〉 | clothes hanger |
+| 2012 | 舟 | boat |
+| 2022 | 瓜 | melon |
+| 2032 | 飛 | fly |
+| 2039 | 面 | mask |
+| 2041 | 革 | leather |
+| 2053 | 牙 | tusk |
+| 2056 | 釆 | animal tracks |
+| 2058 | 番 | turn; dice |
+| 2062 | 毛 | fur |
+| 2064 | 乇 | lock of hair |
+| 2066 | 〈Hooked enclosure holding four dots; lower part of 為〉 | tail feathers |
+| 2068 | 〈Lower clothing-like part of 長, including its long horizontal〉 | hairpin |
+| 2070 | 長 | long |
+| 2071 | 镸 | hair |
+| 2071 | 〈Upper part of 長 without its final three lower strokes〉 | mane |
+| 2076 | ⺍ | owl |
+| 2091 | 鳥 | bird |
+| 2098 | 爰 | migrating ducks |
+| 2105 | 禺 | Talking Cricket |
+| 2108 | 屰 | mountain goat |
+| 2116 | 缶 | tin can |
+| 2117 | 〈Right-hand component of 揺 or 謡〉 | condor |
+| 2121 | 豸 | skunk |
+| 2126 | 免 | excuse; rabbit |
+| 2132 | 馬 | horse; team of horses |
+| 2145 | 虍 / 虎 | tiger |
+| 2154 | 鹿 | deer; painting of a deer |
+| 2155 | 〈鹿 with its bottom 比 removed〉 | deer |
+| 2164 | 辰 | sign of the dragon |
+| 2171 | 关 | golden calf |
+| 2175 | 鬼 | ghost |
+| 2194 | 叕 | stitching |
+| 2201 | 此 | this here |
+| 2208 | 粦 | shoeshine |
+| 2215 | 夋 | streetwalker |
+| 2223 | 豈 | hill of beans |
+| 2226 | 韭 | green onion |
+| 2229 | 芻 | hay |
+| 2296 | 邑 | city walls |
+| 2651 | 黍 | millet |
+| 2856 | 鼠 | mouse |
+| 2878 | 鼎 | tripod |
+| 2879 | 鹵 | rocksalt |
+| 2985 | 龍 | dragon, old form |
+| 3000 | 黽 | eels, old form |
+
+Traditional completion supplement
+
+These 30 exact forms complete the traditional 214-family baseline. Their placement is left unnumbered because this audit did not establish their introduction as semantic primitives in the checked RTK material. Several have familiar related or abbreviated forms in the main list.
+
+The labels below are conventional radical names, not newly attributed Heisig mnemonics. One correction matters: 襾 means “cover”; Unicode’s technical radical name calls it “west,” which should not be used to merge it semantically with 西. 
+
+| Approx. RTK | Traditional form | Conventional label |
+|---:|---|---|
+| — | 丿 | slash |
+| — | 亅 | hook |
+| — | 匸 | hiding enclosure |
+| — | 夊 | go slowly |
+| — | 尢 | lame |
+| — | 屮 | sprout |
+| — | 戶 | door |
+| — | 攴 | rap |
+| — | 无 | not |
+| — | 气 | steam |
+| — | 爻 | double X |
+| — | 爿 | half tree trunk |
+| — | 禸 | track |
+| — | 网 | net |
+| — | 艸 | grass |
+| — | 襾 | cover |
+| — | 辵 | walk |
+| — | 靑 | blue |
+| — | 髟 | hair |
+| — | 鬥 | fight |
+| — | 鬯 | sacrificial wine |
+| — | 鬲 | cauldron |
+| — | 麥 | wheat |
+| — | 黃 | yellow |
+| — | 黑 | black |
+| — | 黹 | embroidery |
+| — | 齊 | even |
+| — | 齒 | tooth |
+| — | 龜 | turtle |
+| — | 龠 | flute |
+
+Applying your “Burn Math Class” rule
+
+I would use this catalog as the inventory, then assign teaching levels according to whether a piece needs a new association or can already be constructed.
+
+For example:
+
+Piece	Teaching treatment
+
+木 — tree	Introduce the basic shape and association.
+艮 — silver	Introduce the assigned component image as a unit.
+根 — root	Build it from the known 木 and 艮 pieces.
+莫 — graveyard	Show flowers + sun + large dog; retain the construction behind the new chunk name.
+粦 — shoeshine	Show rice + sunglasses; it is a named compound.
+豈 — hill of beans	Show mountain + beans; again, preserve the construction.
+
+
+The files record smaller parts for 40 entries and separately identify the ordinary whole-shape units checked in the book. An absent decomposition remains unknown, rather than becoming an instruction to memorize the shape blindly.
+
+That gives NHS the distinction it needs: introduce the few new associations, make their combinations visible, and let increasingly large constructions become familiar reusable pieces.
+
+---
+
+# Section 2. The original prompt reworded by the Redactor algorithm.
+
+---
+
+
+EOF

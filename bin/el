@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+lord --recursive --dry-run "$@"
