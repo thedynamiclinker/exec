@@ -12,11 +12,14 @@ resolve() {
 }
 
 # bash which
-ew() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "edit which"
-cw() { cat "$(which "$(resolve "$1")")"; }          # stands for "cat which"
-xw() { cat "$(which "$(resolve "$1")")" | xc; }     # stands for "xc which"
+jw() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "j??? which", nobody knows why.
+ew() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "e??? which", possibly "edit which"
+pw() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "p??? which", possibly "priestly which"
+rw() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "r??? which", possibly "redact which"
+ww() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "w??? which", possibly "write which"
+xw() { "$EDITOR" "$(which "$(resolve "$1")")"; }    # stands for "x??? which", possibly "exec which"
 
-rw() { realpath $(which "$1"); }
+cw() { cat "$(which "$(resolve "$1")")"; }          # stands for "cat which"
 crw() { cat $(realpath $(which "$1")); }
 erw() { $EDITOR $(realpath $(which "$1")); }
 
@@ -29,7 +32,7 @@ cddn() {
 }
 
 # python which
-pw() { which.py "$1"; }
+#pw() { which.py "$1"; }
 pew() { "$EDITOR" "$(which.py "$1")"; }
 pcw() { cat "$(which.py "$1")"; }
 pcddn() {
