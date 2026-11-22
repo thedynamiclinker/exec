@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root=/mnt/sinai
+self=$(realpath -- "${BASH_SOURCE[0]}")
+lib=${self%/bin/sinai}/lib/sinai
+
+case "${1:-}" in
+    world)
+        if [[ ! -d "$root" ]]; then
+            if (( EUID == 0 )); then
+                mkdir -- "$root"
+            else
+                sudo mkdir -- "$root" || [[ -d "$root" ]]
+            fi
+        fi
+        ;;
+    chroot) ;;
+    *)
+        printf 'usage: sinai world | sinai chroot [command [arg ...]]\n' >&2
+        exit 2
+        ;;
+esac
+
+if [[ ! -d "$root" || -L "$root" ]]; then
+    printf 'sinai: expected a directory at %s (run make world first)\n' "$root" >&2
+    exit 1
+fi
+
+# An existing world belongs to the same host account on every entry.
+owner=$(stat -c %u -- "$root")
+if (( EUID == 0 && owner != 0 )); then
+    IFS=: read -r user _ _ group _ home shell < <(getent passwd "$owner")
+    exec env -u CODEX_HOME -u XDG_CACHE_HOME -u XDG_RUNTIME_DIR -u EXEC \
+        HOME="$home" USER="$user" LOGNAME="$user" SHELL="$shell" \
+        setpriv --reuid "$owner" --regid "$group" --init-groups -- "$self" "$@"
+fi
+
+case "$1" in
+    world)
+        if (( EUID != owner )) && [[ "$owner" == 0 && -z $(ls -A -- "$root") ]]; then
+            sudo chown -- "$EUID:$(id -g)" "$root"
+        fi
+        exec bash "$lib/world" "$root"
+        ;;
+    chroot)
+        shift
+        if [[ ! -f "$root/etc/sinai" || ! -x "$root/bin/sh" ]]; then
+            printf 'sinai: run make world first\n' >&2
+            exit 1
+        fi
+        exec python3 "$lib/bridge.py" "$root" "$@"
+        ;;
+esac

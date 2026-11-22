@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root=/mnt/sinai
+exec_dir=$(dirname -- "$(readlink -f -- "$0")")/..
+musl=musl-1.2.5
+toybox=toybox-0.8.15
+
+die() {
+    printf 'world: %s\n' "$*" >&2
+    exit 1
+}
+
+as_root() {
+    if ((EUID == 0)); then
+        "$@"
+    else
+        sudo -n -- "$@"
+    fi
+}
+
+fetch() {
+    local url=$1 hash=$2 file=$3 sum
+    if [[ ! -f $file ]]; then
+        curl --fail --silent --show-error --location --retry 2 -o "$file.part" "$url"
+        mv -- "$file.part" "$file"
+    fi
+    sum=$(sha256sum "$file")
+    [[ ${sum%% *} == "$hash" ]] || die "checksum mismatch in $file; remove that archive and retry"
+}
+
+enter() {
+    local directory=$1
+    shift
+    bwrap --unshare-all --disable-userns --cap-drop ALL --die-with-parent \
+        --hostname sinai --bind "$directory" / --dev /dev --proc /proc --tmpfs /run \
+        --clearenv --setenv PATH /bin --setenv HOME /root --setenv USER root \
+        --setenv TERM "${TERM:-dumb}" --setenv PS1 'sinai # ' --chdir / "$@"
+}
+
+build() {
+    local cache scratch seed staging= compiler work_jobs loader mutex
+    cache=${XDG_CACHE_HOME:-$HOME/.cache}/sinai
+    mkdir -p -- "$cache"
+    cache=$(realpath -- "$cache")
+    exec {mutex}>"$cache/build.lock"
+    flock "$mutex"
+
+    [[ ! -L $root ]] || die "$root is a symlink"
+    if [[ -f $root/etc/sinai-release ]]; then
+        printf '%s\n' "$root already exists"
+        return
+    fi
+    if [[ -e $root ]] && { [[ ! -d $root ]] || [[ -n $(ls -A -- "$root") ]]; }; then
+        die "$root already contains files"
+    fi
+
+    scratch=$(mktemp -d /tmp/sinai-build.XXXXXXXX)
+    trap 'rm -rf -- "$scratch"; if [[ -n $staging ]]; then rm -rf -- "$staging"/* && as_root rmdir -- "$staging"; fi' EXIT
+    # Keep build variables from the calling Makefile out of the upstream builds.
+    unset MAKEFLAGS MFLAGS MAKEOVERRIDES
+    work_jobs=$(nproc)
+    compiler=$(command -v "${CC:-gcc}")
+    seed=$scratch/root
+    mkdir -p "$seed"/{bin,dev,etc,proc,root,run,tmp}
+    chmod 1777 "$seed/tmp"
+
+    fetch "https://musl.libc.org/releases/$musl.tar.gz" \
+        a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4 "$cache/$musl.tar.gz"
+    fetch "https://landley.net/toybox/downloads/$toybox.tar.gz" \
+        44e2bab43dfe2c171743297631ce558c6d9ed38b87a66fd751cef617574b375e "$cache/$toybox.tar.gz"
+    tar -xzf "$cache/$musl.tar.gz" -C "$scratch"
+    tar -xzf "$cache/$toybox.tar.gz" -C "$scratch"
+
+    printf 'Building %s\n' "$musl"
+    (
+        cd "$scratch/$musl"
+        CC="$compiler" ./configure --prefix=/ --includedir=/include --libdir=/lib --disable-wrapper
+        make -j "$work_jobs"
+        make DESTDIR="$seed" install-libs install-headers
+    ) >"$cache/musl.log" 2>&1 || { tail -n 35 "$cache/musl.log" >&2; die "see $cache/musl.log"; }
+
+    loader=("$seed"/lib/ld-musl-*.so.1)
+    [[ -L ${loader[0]} ]] || die 'musl did not install its loader'
+    sh "$scratch/$musl/tools/musl-gcc.specs.sh" "$seed/include" "$seed/lib" "/lib/${loader[0]##*/}" >"$scratch/musl.specs"
+    printf '#!/bin/sh\nexec "%s" -specs "%s" "$@"\n' "$compiler" "$scratch/musl.specs" >"$scratch/musl-cc"
+    chmod +x "$scratch/musl-cc"
+
+    printf 'Building %s\n' "$toybox"
+    (
+        cd "$scratch/$toybox"
+        printf 'CONFIG_SH=y\n' > sinai.config
+        make HOSTCC="$compiler" KCONFIG_ALLCONFIG=sinai.config defconfig
+        make -j "$work_jobs" HOSTCC="$compiler" CC="$scratch/musl-cc" PREFIX="$seed/bin" install_flat
+    ) >"$cache/toybox.log" 2>&1 || { tail -n 35 "$cache/toybox.log" >&2; die "see $cache/toybox.log"; }
+
+    printf 'root:x:0:0:root:/root:/bin/sh\n' >"$seed/etc/passwd"
+    printf 'root:x:0:\n' >"$seed/etc/group"
+    printf 'sinai\n' >"$seed/etc/hostname"
+    printf '127.0.0.1 localhost sinai\n' >"$seed/etc/hosts"
+    printf '%s\n' "$musl" "$toybox" >"$seed/etc/sinai-release"
+    install -m 755 "$exec_dir/lib/sinai/lord" "$seed/bin/lord"
+
+    enter "$seed" -- /bin/sh -c 'test -x /bin/lord && toybox --version' || die 'the new root failed to start'
+    # Rename a complete tree from the same filesystem. mv refuses a nonempty destination.
+    staging=$(as_root mktemp -d /mnt/.sinai.XXXXXXXX)
+    as_root chown "$(id -u):$(id -g)" "$staging"
+    chmod 755 "$staging"
+    cp -a -- "$seed/." "$staging/"
+    as_root mv -T -- "$staging" "$root"
+    staging=
+    printf 'Built %s\n' "$root"
+    rm -rf -- "$scratch"
+    trap - EXIT
+}
+
+case ${1:-build} in
+    build) [[ $# -le 1 ]] || die 'usage: world build'; build ;;
+    chroot)
+        shift
+        [[ -x $root/bin/sh ]] || die 'run make world first'
+        exec python3 "$exec_dir/lib/sinai/bridge.py" "$root" "${@:-/bin/sh}"
+        ;;
+    *) die 'usage: world [build | chroot [COMMAND [ARG ...]]]' ;;
+esac
