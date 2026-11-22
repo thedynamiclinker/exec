@@ -737,4 +737,4 @@ cd() {
 }
 
 # Sui Generis
-alias yhwh='lord'  # who, lord? ... yeah that was me. it was always me. what were we talking about again?
+add_to_path "$HOME/src/@/bin:$PATH"
