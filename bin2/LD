@@ -7,4 +7,7 @@ case ${1:-} in
 esac
 export NSH_PROGRAM=$1
 shift
-exec lord -- "$@"
+case ${NSH_PROGRAM##*/} in
+    @) exec lord @@ "$@" ;;
+    *) exec lord @@ -- "$@" ;;
+esac

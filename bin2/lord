@@ -50,8 +50,6 @@ Options:
       --careful         same as --effort high
       --xhigh           same as --effort xhigh
       --no-agents       do not install an AGENTS.md profile
-
-Read recorded command streams with lord-log. LORD_RECORD=0 runs directly.
       --profile NAME    select profile by name: repo, unix, book, chat, @
       --                stop option parsing
 
@@ -70,6 +68,8 @@ Sandbox:
   In a Git worktree, lord adds -s workspace-write, except for @chat.
   Unix mode also gets workspace-write, even outside Git.
   Chat mode uses read-only, ephemeral Codex execution in a temporary directory.
+
+Read recorded command streams with lord-log. LORD_RECORD=0 runs directly.
 EOF
 }
 
@@ -471,10 +471,10 @@ if [[ "$profile" == @ && "${NSH_TURN:-}" != 1 ]] && ((!echo_only)); then
             printf '@: -c needs a command line\n' >&2
             exit 2
         fi
-        NSH_PROGRAM="$(profile_file)" exec "$exec_root/bin/nsh" -c "${prompt_args[@]:1}"
+        NSH_PROGRAM="$(profile_file)" exec "$exec_root/bin2/nsh" -c "${prompt_args[@]:1}"
     fi
     if [[ -t 0 && -t 1 ]] && ((${#prompt_args[@]} == 0)); then
-        NSH_PROGRAM="$(profile_file)" exec "$exec_root/bin/nsh"
+        NSH_PROGRAM="$(profile_file)" exec "$exec_root/bin2/nsh"
     elif ((${#prompt_args[@]} == 0)); then
         prompt_args+=( @ )
     fi
