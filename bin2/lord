@@ -44,7 +44,7 @@ Options:
   -v, --verbose         show wrapper behavior and stream codex output
   -q, --quiet           capture codex output, even in verbose-by-default modes
   -f, --force           pass --dangerously-bypass-approvals-and-sandbox
-      --effort LEVEL    set reasoning effort: none, low, medium (default), high, xhigh, max
+      --effort LEVEL    set reasoning effort 0..5 or none through max
                         none requires a model that supports it
       --fast            same as --effort low
       --careful         same as --effort high
@@ -97,15 +97,18 @@ cleanup() {
 
 set_effort() {
     case "$1" in
-        none|low|medium|high|xhigh|max) ;;
+        0|none) effort=none ;;
+        1|low) effort=low ;;
+        2|medium) effort=medium ;;
+        3|high) effort=high ;;
+        4|xhigh) effort=xhigh ;;
+        5|max) effort=max ;;
         *)
             printf 'lord: unknown effort: %s\n' "$1" >&2
             printf 'lord: expected one of: none low medium high xhigh max\n' >&2
             exit 2
             ;;
     esac
-
-    effort="$1"
 }
 
 canonical_profile() {
@@ -384,16 +387,26 @@ lock_worktree_agents() {
 }
 
 run_backend() {
-    local recorder="${LORD_RECORDER:-}" permission=write
+    local recorder="${LORD_RECORDER:-}" permission=default flag previous= program=
     if [[ -z "$recorder" ]]; then
         recorder=$(command -v lord-run) ||
             recorder="$exec_root/../AT/dst/root/src/thedynamiclinker/lord/lord-run"
     fi
-    if [[ "$profile" == chat ]]; then permission=read; fi
     if [[ "${LORD_RECORD:-1}" == 0 || ! -x "$recorder" ]]; then
         "$@"
     else
-        LORD_RUNNER=lord LORD_EFFORT="$effort" LORD_PERMISSION="$permission" "$recorder" "$@"
+        for flag in "$@"; do
+            case $flag in --) break ;; esac
+            case $previous:$flag in
+                -s:read-only|--sandbox:read-only|*:--sandbox=read-only) permission=read ;;
+                -s:workspace-write|--sandbox:workspace-write|*:--sandbox=workspace-write) permission=write ;;
+                -s:danger-full-access|--sandbox:danger-full-access|*:--sandbox=danger-full-access|*:--dangerously-bypass-approvals-and-sandbox) permission=unrestricted ;;
+            esac
+            previous=$flag
+        done
+        if ((use_agents)) && [[ -n "$profile" ]]; then program=$(profile_file); fi
+        LORD_RUNNER="${LORD_LEGACY_RUNNER:-lord}" LORD_EFFORT="$effort" \
+            LORD_PERMISSION="$permission" LORD_PROGRAM="$program" "$recorder" "$@"
     fi
 }
 

@@ -6,7 +6,7 @@ fixture=$(mktemp -d)
 trap 'rm -rf -- "$fixture"' EXIT
 trap 'printf "nsh test failed at line %s\n" "$LINENO" >&2' ERR
 
-export NSH_HOME="$fixture/.nsh" PATH="$fixture/bin:$repo/bin:$PATH"
+export NSH_HOME="$fixture/.nsh" PATH="$fixture/bin:$repo/bin2:$repo/bin:$PATH"
 export CALL_LOG="$fixture/agents"
 mkdir -p -- "$fixture/bin" "$fixture/work tree"
 cd -- "$fixture"

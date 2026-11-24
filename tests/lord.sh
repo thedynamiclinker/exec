@@ -6,7 +6,7 @@ fixture="$(mktemp -d)"
 trap 'rm -rf -- "$fixture"' EXIT
 trap 'printf "lord test failed at line %s\n" "$LINENO" >&2' ERR
 
-export EXEC="$repo" HOME="$fixture/home" PATH="$fixture/bin:$repo/bin:$PATH"
+export EXEC="$repo" HOME="$fixture/home" PATH="$fixture/bin:$repo/bin2:$repo/bin:$PATH"
 export CALL_ARGS="$fixture/args" CALL_STDIN="$fixture/stdin"
 unset LORD_PROFILE
 mkdir -p -- "$HOME" "$fixture/bin" "$fixture/worktree"
@@ -102,3 +102,15 @@ CODEX_STATUS=42 law echo 木 @ pinyin </dev/null > "$fixture/output" 2> "$fixtur
 test "$status" = 42
 test ! -s "$fixture/output"
 grep -qx 'backend diagnostic' "$fixture/stderr"
+
+if [[ -n "${LORD_RECORDER:-}" ]]; then
+    log="$(dirname -- "$LORD_RECORDER")/lord-log"
+    test "$("$log" status)" = 42
+    test "$("$log" runner)" = law
+    test "$("$log" effort)" = low
+    test "$("$log" permission)" = write
+    cmp "$fixture/stderr" <("$log" stderr)
+    lord --effort 5 @chat 'read the context' </dev/null >/dev/null 2>&1
+    test "$("$log" effort)" = max
+    test "$("$log" permission)" = read
+fi
