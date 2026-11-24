@@ -82,7 +82,7 @@ source python.sh
 
 paths=(
     "${EXEC}/bin"
-    "${EXEC}/bin/2"
+    "${EXEC}/bin2"
     "${EXEC}/lib/bash"
     "$HOME/world/bin"
     "$OBSIDIAN/YHWH/bin"
