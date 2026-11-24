@@ -747,5 +747,5 @@ R() { cat "$(which "$(resolve "$1")")"; }
 W() { "$EDITOR" "$(which "$(resolve "$1")")"; }
 X() { LD "$(which "$(resolve "$1")")"; }
 
-unalias v
-alias v=xdg-open
+#unalias v
+#alias v=xdg-open
