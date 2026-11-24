@@ -742,3 +742,4 @@ cd() {
 ### Sui Generis ###
 ###################
 
+add_to_path "$HOME/src/lord/bin"
