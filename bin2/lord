@@ -50,6 +50,8 @@ Options:
       --careful         same as --effort high
       --xhigh           same as --effort xhigh
       --no-agents       do not install an AGENTS.md profile
+
+Read recorded command streams with lord-log. LORD_RECORD=0 runs directly.
       --profile NAME    select profile by name: repo, unix, book, chat, @
       --                stop option parsing
 
@@ -381,12 +383,26 @@ lock_worktree_agents() {
     exit 1
 }
 
+run_backend() {
+    local recorder="${LORD_RECORDER:-}" permission=write
+    if [[ -z "$recorder" ]]; then
+        recorder=$(command -v lord-run) ||
+            recorder="$exec_root/../AT/dst/root/src/thedynamiclinker/lord/lord-run"
+    fi
+    if [[ "$profile" == chat ]]; then permission=read; fi
+    if [[ "${LORD_RECORD:-1}" == 0 || ! -x "$recorder" ]]; then
+        "$@"
+    else
+        LORD_RUNNER=lord LORD_EFFORT="$effort" LORD_PERMISSION="$permission" "$recorder" "$@"
+    fi
+}
+
 run_quietly() (
     local capture latest status
     capture="$(mktemp -d)"
     trap 'rm -f -- "$capture/stdout" "$capture/stderr"; rmdir -- "$capture"' EXIT
 
-    if "$@" >"$capture/stdout" 2>"$capture/stderr"; then
+    if run_backend "$@" >"$capture/stdout" 2>"$capture/stderr"; then
         if mkdir -p -- "$HOME/.cache/lord" &&
             latest="$(mktemp "$HOME/.cache/lord/$(date +%Y%m%d-%H%M%S.%3N).XXXXXX")"; then
             tee -- "$latest" < "$capture/stdout"
@@ -441,7 +457,7 @@ run() {
     log "running: ${cmd[*]}"
 
     if ((verbose)) || [[ "$profile" == @ && "${NSH_TURN:-}" == 1 ]]; then
-        "${cmd[@]}"
+        run_backend "${cmd[@]}"
     elif [[ "$profile" == @ && -t 0 && ! -t 1 ]]; then
         run_quietly "${cmd[@]}" </dev/null
     else
