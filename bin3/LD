@@ -1,0 +1,117 @@
+#!/bin/sh
+set -eu
+
+usage() {
+    printf '%s\n' 'LD [--effort LEVEL] [--permission LEVEL] [--] PROGRAM [ARG ...]' \
+        'LD --compile PROGRAM [REQUEST ...]   emit validated sh or Bash source' \
+        'LD --link NAME INTERPRETER SOURCE    install a source file as an executable' \
+        'LD --native COMMAND [ARG ...]        run an existing native executable' \
+        'Use #!/bin/LD or #!/usr/bin/env LD to make a prose program executable.'
+}
+die() { printf 'LD: %s\n' "$*" >&2; exit 2; }
+runner=${LD_RUNNER:-${LORD_RUNNER:-lord}}
+effort=${LORD_EFFORT:-}
+permission=${LORD_PERMISSION:-text}
+action=run
+while [ "$#" -gt 0 ]; do
+    case $1 in
+        --effort|--permission)
+            [ "$#" -ge 2 ] || die "$1 needs a value"
+            case $1 in --effort) effort=$2 ;; --permission) permission=$2 ;; esac
+            shift 2 ;;
+        --effort=*) effort=${1#*=}; shift ;;
+        --permission=*) permission=${1#*=}; shift ;;
+        *) break ;;
+    esac
+done
+case "${1:-}" in
+    -h|--help|'') usage; exit ;;
+    --compile|--link|--native) action=${1#--}; shift ;;
+    --) shift ;;
+esac
+
+if [ "$action" = native ]; then exec lord-run -- "$@"; fi
+
+if [ "$action" = link ]; then
+    [ "$#" -eq 3 ] || die 'expected NAME INTERPRETER SOURCE'
+    name=$1 interpreter=$2 source=$3
+    case $name in ''|.*|*[!a-zA-Z0-9_.-]*) die "invalid command name: $name" ;; esac
+    interpreter=$(command -v "$interpreter") || die "interpreter unavailable: $2"
+    case $interpreter in /*) ;; *) interpreter=$PWD/$interpreter ;; esac
+    case $interpreter in *[[:space:]]*) die "invalid shebang path: $interpreter" ;; esac
+    [ -f "$source" ] && [ -r "$source" ] || die "cannot read $source"
+    case $source in /*) ;; *) source=$PWD/$source ;; esac
+    bindir=${LD_BINDIR:-$HOME/.local/bin}
+    case $bindir in /*) ;; *) bindir=$PWD/$bindir ;; esac
+    target=$bindir/$name
+    [ ! -e "$target" ] && [ ! -L "$target" ] || die "already exists: $target"
+    mkdir -p "$bindir"
+    stage=$(mktemp -d "$bindir/.LD.XXXXXXXX")
+    trap 'rm -rf -- "$stage"' 0
+    {
+        printf '#!%s\n' "$interpreter"
+        IFS= read -r first || :
+        case $first in '#!'*) cat ;; *) cat "$source" ;; esac
+    } < "$source" > "$stage/file"
+    chmod 755 "$stage/file"
+    # Publish a new name atomically, leaving an existing command in place.
+    ln "$stage/file" "$target" || die "cannot install $target"
+    printf '%s\n' "$target"
+    exit
+fi
+
+[ "$#" -gt 0 ] || die 'expected PROGRAM'
+program=$1
+shift
+requested=$program
+if [ ! -f "$program" ] && [ "${program#*/}" = "$program" ]; then
+    program=$(command -v "$program") || die "cannot find $requested"
+fi
+[ -f "$program" ] && [ -r "$program" ] || die "cannot read $program"
+case $program in /*) ;; *) program=$PWD/$program ;; esac
+
+agent() {
+    set -- --permission "$permission" --program "$program" -- "$@"
+    if [ -n "$effort" ]; then set -- --effort "$effort" "$@"; fi
+    "$runner" "$@"
+}
+
+if [ "$action" = compile ]; then
+    output=$(mktemp)
+    trap 'rm -f -- "$output"' 0
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    runner=${LD_RUNNER:-lordhavemercy}
+    permission=text
+    agent \
+        'Compile the source into one complete shell script with #!/bin/sh or #!/bin/bash. Return only source.' \
+        "$@" > "$output"
+    IFS= read -r first < "$output" || first=
+    case "$first" in
+        '#!/bin/sh') sh -n "$output" ;;
+        '#!/bin/bash') bash -n "$output" ;;
+        *) die 'the runner did not return a shell script' ;;
+    esac
+    exec_status=0
+    cat "$output" || exec_status=$?
+    exit "$exec_status"
+fi
+
+# A shebang names a program and, at most, a single argument. Handle env's
+# portable single-name form explicitly. Arguments remain separate throughout.
+IFS= read -r first < "$program" || :
+case $first in
+    '#!'*)
+        IFS=' 	' read -r interpreter option <<EOF_SHEBANG
+${first#\#!}
+EOF_SHEBANG
+        case ${interpreter##*/}:$option in
+            LD:*|nsh-ld:*|'#!':*|env:LD|env:nsh-ld|env:'#!') ;;
+            :*) die "empty interpreter in $program" ;;
+            *)
+                if [ -n "$option" ]; then set -- "$option" "$program" "$@"
+                else set -- "$program" "$@"; fi
+                exec lord-run -- "$interpreter" "$@" ;;
+        esac ;;
+esac
+agent "$@"

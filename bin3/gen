@@ -1,0 +1,39 @@
+#!/bin/sh
+set -eu
+
+case "${1:-}" in
+    ask)
+        shift
+        GEN_EFFORT=${1:-medium}
+        export GEN_EFFORT
+        agent=${GEN_AGENT:-}
+        if [ -z "$agent" ]; then
+            if [ -n "${GEN_URL:-}" ]; then agent=gen-http
+            elif command -v codex >/dev/null 2>&1; then agent=gen-codex
+            else
+                printf '%s\n' 'gen: set GEN_AGENT, configure GEN_URL and GEN_MODEL, or put codex on PATH' >&2
+                exit 127
+            fi
+        fi
+        exec "$agent"
+        ;;
+    list|fetch|install)
+        action=$1
+        shift
+        ports=${GEN_PORTS:-$HOME/lib/ix/ports.mk}
+        if [ ! -r "$ports" ]; then ports=/lib/ix/ports.mk; fi
+        case "$action:$#" in
+            list:0) exec make --no-print-directory -f "$ports" list ;;
+            fetch:0) exec make --no-print-directory -f "$ports" enterprise ;;
+            fetch:1|install:1)
+                case "$1" in -*|*/*/*|*[!a-zA-Z0-9_./-]*) exit 2 ;; */*) ;; *) exit 2 ;; esac
+                if [ "$action" = fetch ]; then
+                    exec make --no-print-directory -f "$ports" -- "$1"
+                fi
+                exec make --no-print-directory -f "$ports" install "PORT=$1"
+                ;;
+        esac
+        ;;
+esac
+printf '%s\n' 'usage: gen list | fetch [ORG/REPO] | install ORG/REPO | ask [EFFORT]' >&2
+exit 2

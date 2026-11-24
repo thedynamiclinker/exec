@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+bin=$(dirname "$0")
+program=$bin/share/new-world/ATA.md
+if [ ! -r "$program" ]; then program=$bin/../share/new-world/ATA.md; fi
+exec "${LORD_RUNNER:-lord}" --program "$program" "$@"

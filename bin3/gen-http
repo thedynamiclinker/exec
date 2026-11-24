@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+: "${GEN_URL:?set GEN_URL to a chat completions endpoint}"
+: "${GEN_MODEL:?set GEN_MODEL to the endpoint model name}"
+request=$(jq -Rs --arg model "$GEN_MODEL" \
+    '{model:$model,messages:[{role:"user",content:.}]}')
+if [[ -n ${GEN_KEY:-} ]]; then
+    exec 3<<<"Authorization: Bearer $GEN_KEY"
+    set -- --header @/dev/fd/3
+else
+    set --
+fi
+printf '%s' "$request" |
+    curl --fail-with-body --silent --show-error --max-time 300 "$@" \
+        --header 'Content-Type: application/json' --data-binary @- "$GEN_URL" |
+    jq -er '.choices[0].message.content | select(type == "string" and length > 0)'

@@ -1,0 +1,140 @@
+#!/bin/sh
+set -eu
+
+runner=${0##*/}
+case "$runner" in
+    law|lawd) effort=low ;;
+    lord) effort=medium ;;
+    lorde|lordy) effort=high ;;
+    lordhavemercy) effort=xhigh ;;
+    lordylordydaddysforty|LORDHAVEMERCY) effort=max ;;
+    *) printf '%s: unknown runner\n' "$runner" >&2; exit 2 ;;
+esac
+
+codex=${LORD_CODEX:-${GEN_CODEX:-codex}}
+claude=${LORD_CLAUDE:-claude}
+config=${XDG_CONFIG_HOME:-$HOME/.config}/lord
+provider=
+if [ -r "$config/provider" ]; then IFS= read -r provider < "$config/provider" || :; fi
+auth_usage() {
+    printf '%s\n' 'usage: lord auth login [codex|claude] [PROVIDER OPTIONS ...]' \
+        '       lord auth status [codex|claude]'
+}
+
+if [ "${1:-}" = auth ]; then
+    shift
+    action=${1:-}
+    case $action in
+        login|status) shift ;;
+        -h|--help) auth_usage; exit ;;
+        *) auth_usage >&2; exit 2 ;;
+    esac
+    case ${1:-} in
+        codex|claude) provider=$1; shift ;;
+        ''|-*) ;;
+        *) auth_usage >&2; exit 2 ;;
+    esac
+    case $provider in
+        codex|claude) ;;
+        *) if command -v "$claude" >/dev/null 2>&1; then provider=claude; else provider=codex; fi ;;
+    esac
+    case $provider in
+        codex) cli=$codex; cli_setting=LORD_CODEX ;;
+        claude) cli=$claude; cli_setting=LORD_CLAUDE ;;
+    esac
+    if ! command -v "$cli" >/dev/null 2>&1; then
+        printf 'lord: install the %s CLI or set %s to its path\n' "$provider" "$cli_setting" >&2
+        exit 69
+    fi
+    case $action:$provider in
+        status:*)
+            [ "$#" -eq 0 ] || { auth_usage >&2; exit 2; }
+            case $provider in codex) exec "$cli" login status ;; claude) exec "$cli" auth status ;; esac ;;
+        login:codex) set -- "$cli" login "$@" ;;
+        login:claude) set -- "$cli" auth login "$@" ;;
+    esac
+    for option do
+        case $option in -h|--help) exec "$@" ;; esac
+    done
+    # Keep the provider's terminal streams, exit status, and credential store.
+    # Publish the preference only when the provider's login succeeds.
+    "$@"
+    umask 077
+    mkdir -p -- "$config"
+    selection=$(mktemp "$config/.provider.XXXXXXXX")
+    trap 'rm -f -- "$selection"' 0
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    printf '%s\n' "$provider" > "$selection"
+    mv -f -- "$selection" "$config/provider"
+    exit
+fi
+
+permission=${LORD_PERMISSION:-text}
+program=${LORD_PROGRAM:-${NSH_PROGRAM:-}}
+while [ "$#" -gt 0 ]; do
+    case $1 in
+        -h|--help)
+            printf '%s\n' 'usage: lord [--effort 0..5|LEVEL] [--permission text|read|write] [--program FILE] [--] REQUEST ...' \
+                'LORD_BACKEND selects an executable that accepts request argv and input on stdin.' \
+                'See lord-log for recorded streams. LORD_RECORD=0 disables recording.'
+            auth_usage
+            exit ;;
+        --effort|--permission|--program)
+            [ "$#" -ge 2 ] || { printf '%s needs a value\n' "$1" >&2; exit 2; }
+            case $1 in
+                --effort) effort=$2 ;;
+                --permission) permission=$2 ;;
+                --program) program=$2 ;;
+            esac
+            shift 2 ;;
+        --effort=*) effort=${1#*=}; shift ;;
+        --permission=*) permission=${1#*=}; shift ;;
+        --program=*) program=${1#*=}; shift ;;
+        -n) permission=text; shift ;;
+        -i) permission=read; shift ;;
+        -f) permission=write; shift ;;
+        @@) shift ;;
+        --) shift; break ;;
+        *) break ;;
+    esac
+done
+case $effort in
+    0|none) effort=none ;;
+    1|low) effort=low ;;
+    2|medium) effort=medium ;;
+    3|high) effort=high ;;
+    4|xhigh) effort=xhigh ;;
+    5|max) effort=max ;;
+    *) printf 'lord: invalid effort %s\n' "$effort" >&2; exit 2 ;;
+esac
+case $permission in text|read|write) ;; *) printf 'lord: invalid permission %s\n' "$permission" >&2; exit 2 ;; esac
+if [ -n "$program" ] && { [ ! -f "$program" ] || [ ! -r "$program" ]; }; then
+    printf 'lord: cannot read %s\n' "$program" >&2
+    exit 2
+fi
+if [ -n "$program" ]; then
+    case $program in /*) ;; *) program=$PWD/$program ;; esac
+fi
+LORD_EFFORT=$effort LORD_PERMISSION=$permission LORD_PROGRAM=$program LORD_RUNNER=$runner
+export LORD_EFFORT LORD_PERMISSION LORD_PROGRAM LORD_RUNNER
+
+bindir=$(dirname "$0")
+if [ -n "${LORD_BACKEND:-}" ]; then
+    backend=$LORD_BACKEND
+elif [ "$permission" = text ] && { [ -n "${GEN_AGENT:-}" ] || [ -n "${GEN_URL:-}" ]; }; then
+    backend=$bindir/lord-gen
+elif [ "$provider" = codex ] && command -v "$codex" >/dev/null 2>&1; then
+    backend=$bindir/lord-codex
+elif [ "$permission" = text ] && command -v "$claude" >/dev/null 2>&1; then
+    backend=$bindir/lord-claude
+elif command -v "$codex" >/dev/null 2>&1; then
+    backend=$bindir/lord-codex
+elif [ "$permission" = text ] && command -v gen >/dev/null 2>&1; then
+    backend=$bindir/lord-gen
+else
+    printf '%s\n' 'lord: configure LORD_BACKEND for this permission (see lord --help)' >&2
+    exit 69
+fi
+
+exec "$bindir/lord-run" "$backend" "$@"

@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+effort=${GEN_EFFORT:-medium}
+case "$effort" in
+    low|medium|high|xhigh) ;;
+    max) effort=xhigh ;;
+    *) effort=medium ;;
+esac
+set -- exec --sandbox read-only --ephemeral --skip-git-repo-check \
+    --color never -c 'approval_policy="never"' -c "model_reasoning_effort=\"$effort\""
+if [ "$effort" = low ] && [ -n "${NSH_FAST_MODEL:-}" ]; then
+    set -- "$@" --model "$NSH_FAST_MODEL"
+fi
+exec "${GEN_CODEX:-codex}" "$@" -

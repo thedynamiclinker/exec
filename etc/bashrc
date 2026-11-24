@@ -13,6 +13,12 @@ source log.sh
 source paths.sh
 source which.sh
 
+remove_from_path "${EXEC}/bin2"
+if [[ -d ${EXEC}/bin3 ]]; then
+    remove_from_path "${EXEC}/bin3"
+    export PATH="${EXEC}/bin3${PATH:+:$PATH}"
+fi
+
 if is_bash && is_linux; then
     shopt -s globstar   # allow ** to glob recursively
     shopt -s extglob    # allows @(patterns), *(patterns), +(patterns), !(patterns)
@@ -82,7 +88,6 @@ source python.sh
 
 paths=(
     "${EXEC}/bin"
-    "${EXEC}/bin2"
     "${EXEC}/lib/bash"
     "$HOME/world/bin"
     "$OBSIDIAN/YHWH/bin"
