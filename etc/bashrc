@@ -82,6 +82,7 @@ source python.sh
 
 paths=(
     "${EXEC}/bin"
+    "${EXEC}/bin/2"
     "${EXEC}/lib/bash"
     "$HOME/world/bin"
     "$OBSIDIAN/YHWH/bin"
@@ -745,3 +746,6 @@ add_to_path "$HOME/src/@/bin:$PATH"
 R() { cat "$(which "$(resolve "$1")")"; }
 W() { "$EDITOR" "$(which "$(resolve "$1")")"; }
 X() { LD "$(which "$(resolve "$1")")"; }
+
+unalias v
+alias v=xdg-open
