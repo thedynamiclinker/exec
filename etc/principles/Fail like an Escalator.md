@@ -1,2 +1,0 @@
-- Build large systems such that failures of parts don't break the whole.
-- When parts fail, aim for a working system with fewer features.

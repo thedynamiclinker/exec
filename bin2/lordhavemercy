@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-LORD_LEGACY_RUNNER=lordhavemercy exec lord --effort xhigh "$@"

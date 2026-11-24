@@ -1,5 +1,0 @@
-- If nobody on your team can evangelize about a given tool in your team's workflow, that tool is (probably) worth eliminating from your workflow.
-- If you're using kubernetes but there is nobody on your team who can passionately preach about kubernetes, who uses it constantly at home outside work, and who won't shut up about how great it is whenever asked, then you probably don't need kubernetes.
-- If you're sure you do need it, then you need to find a developer who loves it and can evangelize about it.
-- The term "kubernetes" is a variable. This applies to all tools.
-- Optimize the tools you use in your day to day life for maximum "someone-can-evangelize-about-it"-ism, and you'll avoid a large part of the demoralization that happens to teams when times are hard.

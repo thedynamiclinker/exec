@@ -1,10 +1,6 @@
 # exec/etc/bashrc
 # LD's custom ~/.bashrc. Woot!
 
-#export PS4='+$EPOCHREALTIME '
-#set -x
-#exec > >(tee profile) 2>&1
-
 export EXEC="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 export PATH="${EXEC}/bin:${EXEC}/lib/bash:${PATH}"
 
@@ -745,12 +741,4 @@ cd() {
 ###################
 ### Sui Generis ###
 ###################
-add_to_path "$HOME/src/@/bin:$PATH"
 
-# NSH (New Human Shell) mode aliases
-R() { cat "$(which "$(resolve "$1")")"; }
-W() { "$EDITOR" "$(which "$(resolve "$1")")"; }
-X() { LD "$(which "$(resolve "$1")")"; }
-
-#unalias v
-#alias v=xdg-open

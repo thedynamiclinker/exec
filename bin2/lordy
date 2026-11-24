@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-LORD_LEGACY_RUNNER=${0##*/} exec lord --effort high "$@"
