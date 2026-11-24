@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+lordhavemercy -f --verbose << "EOF"
+The implementation of `@`, `LD`, `COMET` (& `comet`), `NSH` (& `nsh`), and `NHS` (& `nhs`):
+
+A new approach to the shell.
+
+In bin we have _ and __ that are a sort of lazy half implemented 'cat most recent stdout of a lord command' and 'save [ibid]'.
+
+We need a more serious way of interacting with the most recent stdin, stdout, and stderr of all lord commands so that we can
+have the language in which to properly implement the new world version of the loader, the shell, and so on.
+
+Here's what we have currently. I'll allow myself to digress by going back and forth between the current implementations
+and what I want you to create now. I'll explain what I want half by explaining where we are now, and half by explaining
+how it's insufficient and what it needs to be by the time you finish creating the programs described below, from scratch
+or from the existing ones or whatever.
+
+        1. LD (the ld.so of "Executable English" era)
+
+            Since /lib/ld.so is sort of the "shebang" of every binary,
+            our file LD is the "shebang" of all executable text.
+            That text could be:
+
+                1. english
+                2. bash
+                3. python
+                4. bash with an occasional english line in it!
+                5. python with an occasional english line in it!
+
+            However, we obviously don't want to use Software 2.0 ("tokens")
+            to execute *valid* lines of whatever Software 1.0 program or
+            programming language VM we're running.
+
+            So, we propose a functor of sorts, from all programming languages, to two new categories.
+            Here's the idea, and here's what you need to implement:
+
+            For every old world language (let's start with three: bash, python, & english)
+            I want you to implement a repl:
+
+            The repl 
+            NSH: New Human Shell
+
+                
+                1. nsh: new sh.
+
+                2. NSH: New Human Shell.
+                
+            It's basically identical to NSH, *except* for the difference
+            in behavior that results from the fact that NSH is meant to be
+            run interactively, and LD is *the same language* and same conventions as NSH
+            (and even optionally the same ~/.nshrc and other runtime config)
+            but for the crucial difference that #!/bin/LD meant to be run
+            non-interactively.
+        2. NSH (New Human Shell)
+        3. @ (the highest level of intelligence and reasoning that the shell provides)
+
+EOF
