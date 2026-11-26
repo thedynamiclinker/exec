@@ -13,7 +13,7 @@ venv() {
         deactivate
     fi
     if [[ $name == main ]]; then
-        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+        export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
@@ -39,7 +39,7 @@ penv() {
         deactivate
     fi
     if [[ $name == main ]]; then
-        export PS1="${_gre}user${_red}@${_blu}world${_pur} \w ${_blu}\$${_end} "
+        export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
     fi
     env="$HOME/env/$name"
     if [[ ! -e "$env" ]]; then
