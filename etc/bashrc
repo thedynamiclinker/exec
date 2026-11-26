@@ -110,9 +110,9 @@ source colors.sh
 is_bash && {
 
     if [[ ${EUID} == 0 ]]; then
-        export PS1="${_red}\u${_gre}@${_blu}\h${_pur} \W ${_blu}\$${_end} "
+        export PS1="${_red}\u${_gre}@${_blu}\h${_whi} \W ${_red}\$${_end} "
     else
-        export PS1="${_gre}\u${_red}@${_blu}\h${_pur} \w ${_blu}\$${_end} "
+        export PS1="${_gre}\u${_red}@${_blu}\h${_red} \w ${_whi}\$${_end} "
     fi
 
     if type -P emerge &>/dev/null; then
@@ -147,7 +147,7 @@ is_bash && {
                 "${_whi}o"
             )
         fi
-        export PS1="$(echo ${PS1[@]} | tr -d ' ') ${_pur}\w ${_blu}\$ ${_end}"
+        #export PS1="$(echo ${PS1[@]} | tr -d ' ') ${_pur}\w ${_blu}\$ ${_end}"
     fi
 
     export PS2="${_blu}>>${_end} "
