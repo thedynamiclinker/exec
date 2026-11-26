@@ -5,7 +5,7 @@ blu='\033[01;34m'
 whi='\033[01;39m'
 end='\033[00m'
 
-die   () { printf "${red}ERROR${whi}: ${1}${end}\n"; exit 1;  }
+die   () { printf "${red}ERROR${whi}: %s${end}\n" "$1" >&2; exit 1; }
 log   () { printf "${blu}[${whi}*${blu}]${whi} ${1}${end}\n"; }
 
 usage () {
@@ -53,93 +53,127 @@ IM=(
 ### HELPER FUNCTIONS ###
 
 __ibus_is_running () {
-    pgrep ibus-daemon &>/dev/null;
+    ibus list-engine --name-only &>/dev/null
 }
 
-__init_if_not_running () {
-    if __ibus_is_running; then 
-        return
-    else
-        ibus_start
-        sleep 0.5
-    fi
+in_cinnamon () {
+    case ":${XDG_CURRENT_DESKTOP,,}:" in
+        *:x-cinnamon:*|*:cinnamon:*) return 0;;
+        *) return 1;;
+    esac
 }
 
 ### INPUT METHOD SWITCHER FUNCTIONS ###
 
-switch_to_english () {
-    __init_if_not_running
-    log "Switching input method to English: ${IM[ENG]}"
-    ibus engine "${IM[ENG]}"
+cinnamon_call () {
+    local method=$1
+    shift
+    gdbus call --session --timeout 5 --dest org.Cinnamon \
+        --object-path /org/Cinnamon --method "org.Cinnamon.$method" "$@"
 }
 
-switch_to_chinese () {
-    __init_if_not_running
-    log "Switching input method to Chinese: ${IM[CHI]}"
-    ibus engine "${IM[CHI]}"
+ibus_has_engine () {
+    ibus list-engine --name-only 2>/dev/null | grep -Fx -- "$1" >/dev/null
 }
 
-switch_to_japanese () {
-    __init_if_not_running
-    log "Switching input method to Japanese: ${IM[JAP]}"
-    ibus engine "${IM[JAP]}"
-}
+cinnamon_switch () (
+    local engine=$1 type=ibus id=$1 layout variant sources configured source attempt
+    local schema=org.cinnamon.desktop.input-sources
 
-switch_to_korean () {
-    __init_if_not_running
-    log "Switching input method to Korean: ${IM[KOR]}"
-    ibus engine "${IM[KOR]}"
-}
+    # Cinnamon changes the XKB keymap itself for these sources.
+    if [[ $engine == xkb:* ]]; then
+        IFS=: read -r type layout variant _ <<< "$engine"
+        id=$layout${variant:+"+$variant"}
+    fi
 
-switch_to_arabic () {
-    __init_if_not_running
-    log "Switching input method to Arabic: ${IM[ARA]}"
-    ibus engine "${IM[ARA]}"
-}
+    exec 9>"${XDG_RUNTIME_DIR:?}/im.lock" || return
+    flock 9 || return
 
-switch_to_hebrew () {
-    __init_if_not_running
-    log "Switching input method to Hebrew: ${IM[HEB]}"
-    ibus engine "${IM[HEB]}"
-}
+    sources=$(cinnamon_call GetInputSources) || return
+    if [[ $sources =~ "('$type', '$id', "([0-9]+), ]]; then
+        cinnamon_call ActivateInputSourceIndex "${BASH_REMATCH[1]}" >/dev/null
+        return
+    fi
 
-switch_to_devangari () {
-    __init_if_not_running
-    log "Switching input method to Devangari: ${IM[DEV]}"
-    ibus engine "${IM[DEV]}"
-}
+    if [[ $type == ibus ]] && ! ibus_has_engine "$engine"; then
+        # An IBus daemon started without the NixOS components can miss CJK engines.
+        ibus_launch --replace --cache=refresh || return
+        for ((attempt = 0; attempt < 40; attempt++)); do
+            ibus_has_engine "$engine" && break
+            sleep 0.1
+        done
+        ((attempt < 40)) || die "IBus engine unavailable: $engine"
+    fi
 
-switch_to_telugu () {
-    __init_if_not_running
-    log "Switching input method to Telugu: ${IM[TEL]}"
-    ibus engine "${IM[TEL]}"
-}
+    configured=$(gsettings get "$schema" sources) || return
+    source="('$type', '$id')"
+    if [[ $configured != *"$source"* ]]; then
+        configured=${configured#'@a(ss) '}
+        configured=${configured%]}
+        [[ $configured == '[' ]] || configured+=', '
+        gsettings set "$schema" sources "$configured$source]" || return
+    fi
 
-switch_to_russian () {
-    __init_if_not_running
-    log "Switching input method to Russian: ${IM[RUS]}"
-    ibus engine "${IM[RUS]}"
-}
+    # Wait for Cinnamon to rebuild its list before choosing the source index.
+    for ((attempt = 0; attempt < 40; attempt++)); do
+        sources=$(cinnamon_call GetInputSources) || return
+        if [[ $sources =~ "('$type', '$id', "([0-9]+), ]]; then
+            cinnamon_call ActivateInputSourceIndex "${BASH_REMATCH[1]}" >/dev/null
+            return
+        fi
+        sleep 0.1
+    done
+    die "Cinnamon input source unavailable: $id"
+)
 
-switch_to_greek () {
-    __init_if_not_running
-    log "Switching input method to Greek: ${IM[GRE]}"
-    ibus engine "${IM[GRE]}"
+switch_to () {
+    local language=$1 engine=${IM[$2]}
+    log "Switching input method to $language: $engine"
+    if in_cinnamon; then
+        cinnamon_switch "$engine"
+    else
+        ibus_start && ibus engine "$engine"
+    fi
 }
 
 
 ### IBUS CONTROL FUNCTIONS ###
 
-ibus_start () {
+ibus_launch () {
+    local -a options=(--daemonize)
+    local components=/run/current-system/sw/share/ibus/component
+
+    if in_cinnamon; then
+        options+=(--desktop=cinnamon --panel=disable)
+    fi
+    if [[ -n $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
+        options+=(--xim)
+    fi
+    if [[ -z $IBUS_COMPONENT_PATH && -d $components ]]; then
+        export IBUS_COMPONENT_PATH=$components
+    fi
+
     log "Starting ibus"
-    ibus-daemon --desktop=cinnamon &
+    ibus-daemon "${options[@]}" "$@" 9>&-
+}
+
+ibus_start () {
+    local attempt
+
+    __ibus_is_running && return
+    ibus_launch || return
+    for ((attempt = 0; attempt < 40; attempt++)); do
+        __ibus_is_running && return
+        sleep 0.1
+    done
+    die "Timed out waiting for IBus"
 }
 
 ibus_stop () {
     if __ibus_is_running; then
         log "Killing ibus-daemon"
-        switch_to_english
-        killall -r ibus-daemon
+        switch_to English ENG
+        ibus exit
     else
         log "IBus is not running."
     fi
@@ -151,14 +185,20 @@ ibus_kill_gtk_ui () {
 
 ibus_start_minimal () {
     log "Starting ibus and killing the GTK UI"
-    ibus_start
-    ibus_kill_gtk_ui
+    ibus_start || return
+    if pgrep -u "$UID" -x ibus-ui-gtk3 >/dev/null; then
+        ibus_kill_gtk_ui
+    fi
 }
 
 ibus_restart () {
-    if __ibus_is_running; then 
-    log "Restarting ibus-daemon"
-        ibus restart
+    if __ibus_is_running; then
+        log "Restarting ibus-daemon"
+        if in_cinnamon; then
+            ibus_launch --replace --cache=refresh
+        else
+            ibus restart
+        fi
     else
     log "Restart requested, but ibus not running. Starting cold."
         ibus_start
@@ -176,16 +216,16 @@ ibus_setup () {
 while [[ -n "$1" ]]; do
     case "$1" in
 
-        --english|-E|E)         switch_to_english;;
-        --japanese|-J|J)        switch_to_japanese;;
-        --chinese|-C|C)         switch_to_chinese;;
-        --korean|-K|K)          switch_to_korean;;
-        --hebrew|-H|H)          switch_to_hebrew;;
-        --arabic|-A|A)          switch_to_arabic;;
-        --devangari|-D|D)       switch_to_devangari;;
-        --telugu|-T|T)          switch_to_telugu;;
-        --russian|-R|R)         switch_to_russian;;
-        --greek|-G|G)           switch_to_greek;;
+        --english|-E|E)         switch_to English ENG;;
+        --japanese|-J|J)        switch_to Japanese JAP;;
+        --chinese|-C|C)         switch_to Chinese CHI;;
+        --korean|-K|K)          switch_to Korean KOR;;
+        --hebrew|-H|H)          switch_to Hebrew HEB;;
+        --arabic|-A|A)          switch_to Arabic ARA;;
+        --devangari|-D|D)       switch_to Devanagari DEV;;
+        --telugu|-T|T)          switch_to Telugu TEL;;
+        --russian|-R|R)         switch_to Russian RUS;;
+        --greek|-G|G)           switch_to Greek GRE;;
 
         --start|-i|i|on|+)      ibus_start;;
         --stop|-o|o|off|-)      ibus_stop;;
@@ -198,7 +238,7 @@ while [[ -n "$1" ]]; do
 
         -*)                     usage "Unrecognized option: ${1}";;
         *)                      usage;;
-    esac
+    esac || exit $?
     shift
 done
 
