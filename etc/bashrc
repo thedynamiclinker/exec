@@ -438,6 +438,11 @@ alias lower='tr A-Z a-z'
 alias feh="feh -. -B black"
 alias entropy='binwalk -EJ'
 alias H='heisig'
+alias B='bidi -c'
+alias D='bidi -l'
+alias S='sn'
+alias M='mn'
+alias BD='bidi'
 alias P='pinyin'
 alias ct='column -t'
 

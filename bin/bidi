@@ -1,0 +1,24 @@
+#!/bin/sh
+
+order=lines
+case ${1-} in
+    -c|--chars) order=chars; shift ;;
+    -l|--lines) shift ;;
+    -h|--help)
+        printf '%s\n' 'usage: bidi [-l | --lines | -c | --chars] [--] [FILE ...]' \
+            'Reverse line order with tac or characters within each line with rev.' \
+            'Read stdin with no files or with -.'
+        exit 0 ;;
+esac
+[ "${1-}" != -- ] || shift
+
+if [ "$order" = lines ]; then
+    exec tac -- "$@"
+fi
+
+for file do
+    shift
+    [ "$file" != - ] || file=/dev/stdin
+    set -- "$@" "$file"
+done
+exec rev -- "$@"

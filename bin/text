@@ -1,0 +1,16 @@
+#!/bin/sh
+
+script=$(readlink -f -- "$0") || exit 2
+bin=${script%/*}
+command=${1-}
+[ "$#" -eq 0 ] || shift
+
+case $command in
+    sn|S) exec "$bin/sn" "$@" ;;
+    mn|M) exec "$bin/mn" "$@" ;;
+    bidi|BD) exec "$bin/bidi" "$@" ;;
+    B) exec "$bin/bidi" -c "$@" ;;
+    D) exec "$bin/bidi" -l "$@" ;;
+    -h|--help) printf '%s\n' 'usage: text {sn|S|mn|M|bidi|BD|B|D} [ARG ...]' ;;
+    *) printf '%s\n' 'usage: text {sn|S|mn|M|bidi|BD|B|D} [ARG ...]' >&2; exit 2 ;;
+esac

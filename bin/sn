@@ -1,0 +1,52 @@
+#!/bin/sh
+
+name=${0##*/}
+script=$(readlink -f -- "$0") || exit 2
+table=${script%/*}/../etc/$name
+
+columns=
+while [ "$#" -gt 0 ]; do
+    case $1 in
+        --zh) columns=${columns}z ;;
+        --an) columns=${columns}a ;;
+        --ni) columns=${columns}n ;;
+        -h|--help)
+            printf 'usage: %s [-zan | --zh --an --ni] [--] [PATTERN ...]\n' "$name"
+            printf '%s\n' 'Search the table with case-insensitive grep patterns from arguments or stdin.' \
+                'Empty input lists all entries. Output is tab-separated in kanji, z, a, n order.'
+            case $name in
+                sn) printf '%s\n' 'z is Mandarin Pinyin, a is ASCII Pinyin, and n is Japanese kana with IPA.' ;;
+                mn) printf '%s\n' 'z is the Chinese form, and a and n give the English RTK keyword.' ;;
+            esac
+            exit 0 ;;
+        --) shift; break ;;
+        -?*)
+            case ${1#-} in
+                *[!zan]*) printf '%s: unknown option %s\n' "$name" "$1" >&2; exit 2 ;;
+            esac
+            columns=$columns${1#-} ;;
+        *) break ;;
+    esac
+    shift
+done
+
+IFS='
+'
+patterns=$*
+if [ "$#" -eq 0 ] && [ ! -t 0 ]; then
+    patterns=$(cat) || exit 2
+fi
+
+rows=$(grep -i -e "$patterns" "$table") || exit $?
+printf '%s\n' "$rows" | awk -F '\t' -v columns="${columns:-zan}" '
+    /^#/ { next }
+    {
+        found = 1
+        printf "%s", $1
+        if (index(columns, "z")) printf "\t%s", $2
+        if (index(columns, "a")) printf "\t%s", $3
+        if (index(columns, "n")) printf "\t%s", $4
+        printf "\n"
+    }
+    END { if (!found) exit 1 }
+'
