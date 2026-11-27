@@ -1480,7 +1480,7 @@ keybind = alt+0=last_tab
 ### # can be negated by prefixing them with `no-`. For example `no-bell,notify`.
 ### # 
 ### # Available since 1.3.0.
-### notify-on-command-finish-action = bell,no-notify
+### notify-on-command-finish-action = no-notify
 ### 
 ### # If command finished notifications are enabled, this controls how long a
 ### # command must have been running before a notification will be sent. The
