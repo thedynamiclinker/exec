@@ -1,3 +1,93 @@
 #!/usr/bin/env bash
 
-git ls-tree -r $*
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/bash/git-objects.sh"
+set -o pipefail
+
+usage() {
+    echo 'usage: git find [-t] [REF/PATH | TREE | PATH ...] [-type f|d] [-name GLOB]'
+    echo '                [-iname GLOB] [-path GLOB] [-ipath GLOB] [-mindepth N] [-maxdepth N]'
+}
+
+roots=() tests=() tags= min=0 max=-1 status=0
+while (($#)); do
+    case $1 in
+        -t|--tags) tags=1; shift ;;
+        -r|-print) shift ;;
+        -h|--help) usage; exit ;;
+        --) shift; roots+=("$@"); break ;;
+        -type|-name|-iname|-path|-ipath|-mindepth|-maxdepth)
+            if (($# < 2)); then
+                printf 'git find: %s needs an argument\n' "$1" >&2
+                exit 2
+            fi
+            case $1 in
+                -type)
+                    case $2 in
+                        f) tests+=(-type blob) ;;
+                        d) tests+=(-type tree) ;;
+                        *) printf 'git find: unknown type %s\n' "$2" >&2; exit 2 ;;
+                    esac ;;
+                -mindepth|-maxdepth)
+                    if [[ $2 != +([0-9]) || ${#2} -gt 9 ]]; then
+                        printf 'git find: invalid depth %s\n' "$2" >&2
+                        exit 2
+                    fi
+                    if [[ $1 == -mindepth ]]; then min=$((10#$2)); else max=$((10#$2)); fi ;;
+                *) tests+=("$1" "$2") ;;
+            esac
+            shift 2 ;;
+        -*) printf 'git find: unknown option %s\n' "$1" >&2; exit 2 ;;
+        *)
+            git_operand "$@"
+            roots+=("$operand")
+            shift "$consumed" ;;
+    esac
+done
+
+matches() {
+    local name=${2##*/} path=$2 depth=$3 i pattern
+    ((depth >= min && (max < 0 || depth <= max))) || return 1
+    for ((i=0; i<${#tests[@]}; i+=2)); do
+        pattern=${tests[i+1]}
+        case ${tests[i]} in
+            -type) [[ $1 == "$pattern" ]] || return 1 ;;
+            -name) [[ $name == $pattern ]] || return 1 ;;
+            -iname) [[ ${name,,} == ${pattern,,} ]] || return 1 ;;
+            -path) [[ $path == $pattern ]] || return 1 ;;
+            -ipath) [[ ${path,,} == ${pattern,,} ]] || return 1 ;;
+        esac
+    done
+}
+
+for root in "${roots[@]:-.}"; do
+    if ! git_object "$root"; then
+        git_object_error "$root" 'a tree or blob'
+        status=1
+        continue
+    fi
+    root=${root%/}
+    mode=040000
+    if [[ $kind == blob ]]; then
+        mode=100644
+        if [[ $object_path ]]; then
+            read -r mode _ < <(git ls-tree --full-tree "$object_parent" -- ":(literal)$object_path") ||
+                mode=100644
+        fi
+    fi
+    if matches "$kind" "${root:-/}" 0; then
+        git_record "$mode $kind $object" "${root:-/}"
+    fi
+    if [[ $kind == tree ]] && ((max != 0)); then
+        git ls-tree --full-tree -r -t -z "$object" |
+            while IFS= read -r -d '' entry; do
+                fields=${entry%%$'\t'*}
+                path=${entry#*$'\t'}
+                slashes=${path//[^\/]/}
+                read -r mode kind hash <<< "$fields"
+                if matches "$kind" "$root/$path" "$((1+${#slashes}))"; then
+                    git_record "$fields" "$root/$path"
+                fi
+            done || status=1
+    fi
+done
+exit "$status"

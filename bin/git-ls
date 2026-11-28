@@ -1,4 +1,38 @@
 #!/usr/bin/env bash
-# List a commit/tree, or a directory relative to $PWD in HEAD.
-tree=$(git rev-parse --verify "${1:-HEAD}^{tree}" 2>/dev/null) || tree="HEAD:./${1%/}"
-exec git cat-file -p "$tree"
+
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/bash/git-objects.sh"
+set -o pipefail
+
+tags= flags=() status=0
+while (($#)); do
+    case $1 in
+        -t|--tags) tags=1 ;;
+        -R|--recursive) flags=(-r -t) ;;
+        --) shift; break ;;
+        -h|--help)
+            echo 'usage: git ls [-t] [-R] [REF/PATH | TREE | PATH ...]'
+            exit ;;
+        -*) printf 'git ls: unknown option %s\n' "$1" >&2; exit 2 ;;
+        *) break ;;
+    esac
+    shift
+done
+
+(($#)) || set -- .
+if (($# == 2)) && rev=$(git_revision "$1") && git_object_at "$rev" "$2" && [[ $kind == tree ]]; then
+    set -- "$object"
+fi
+while (($#)); do
+    git_operand "$@"
+    shift "$consumed"
+    if git_object "$operand" && [[ $kind == tree ]]; then
+        git ls-tree --full-tree -z "${flags[@]}" "$object" |
+            while IFS= read -r -d '' entry; do
+                git_record "${entry%%$'\t'*}" "${entry#*$'\t'}"
+            done || status=1
+    else
+        git_object_error "$operand" 'a tree'
+        status=1
+    fi
+done
+exit "$status"

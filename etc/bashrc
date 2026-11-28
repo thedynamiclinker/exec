@@ -717,15 +717,25 @@ export PYTHONDONTWRITEBYTECODE=1
 # git tab completion for the juicy sexy plumbing commands!
 export GIT_COMPLETION_SHOW_ALL_COMMANDS=1
 
+# Let aliases like gls='git ls' inherit git's completion.
+shopt -s progcomp_alias 2>/dev/null || :
+
 # but don't interfere with tab completion on git commit,
 # so exclude completion for the plumbing commands
 # git commit-graph and git commit-tree
-git_completions_file="$(dirname "$(dirname "$(realpath "$(type -P git)")")")"/share/git/contrib/completion/git-completion.bash
-source <(cat "$git_completions_file" | sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | grep -v commit-)@g')
+git_prefix="$(dirname "$(dirname "$(realpath "$(type -P git)")")")"
+git_completions_file="$git_prefix/share/git/contrib/completion/git-completion.bash"
+[[ -r $git_completions_file ]] || git_completions_file="$git_prefix/share/bash-completion/completions/git"
+if [[ -r $git_completions_file ]]; then
+    source <(sed -E 's@(.*__gitcomp.*--list-cmds[^)]*)[)]@\1 | grep -v commit-)@g' "$git_completions_file")
+fi
+unset git_prefix git_completions_file
 
 # complete our `gits` command the same as `git` itself,
 # since it supports all the same commands as plurals.
-___git_complete gits __git_main
+if declare -F ___git_complete >/dev/null; then
+    ___git_complete gits __git_main
+fi
 
 bunsay(){
     cowsay -f bunny "$@"

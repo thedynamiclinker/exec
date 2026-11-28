@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/bash/git-objects.sh"
+set -o pipefail
+
+# Keep grep's argv intact, apart from our tag switch and historical filenames.
+args=() operands=() files=() prefixes=() tags= pattern= options=1 stage= staged_search=
+while (($#)); do
+    case $1 in
+        -t|--tags)
+            if [[ $options ]]; then tags=1; shift; continue; fi ;;
+        --)
+            if [[ $options ]]; then options=; args+=("$1"); shift; continue; fi ;;
+    esac
+    if [[ $options && $1 == -?* ]]; then
+        git_grip_option "$1"
+        args+=("$1")
+        shift
+        case $grep_arg in
+            pattern|file) pattern=1 ;;
+        esac
+        if [[ $grep_arg ]]; then
+            if [[ ! $grep_prefix ]]; then
+                (($#)) || continue
+                args+=("$1")
+                shift
+            fi
+            if [[ $grep_arg == @(file|path) ]]; then
+                files+=("$(("${#args[@]}" - 1))")
+                prefixes+=("$grep_prefix")
+            fi
+        fi
+        continue
+    fi
+    operands+=("${#args[@]}")
+    args+=("$1")
+    [[ ${POSIXLY_CORRECT+x} ]] && options=
+    shift
+done
+option_files=${#files[@]}
+for slot in "${operands[@]}"; do
+    if [[ ! $pattern ]]; then pattern=1; continue; fi
+    files+=("$slot")
+    prefixes+=('')
+done
+
+# Give grep real files so recursion, filenames, context, colors and exit
+# status all come from grep. Only materialize objects the caller named.
+snapshot() {
+    local object=$1 kind=$2 dest=$3 entry path mode type hash
+    if [[ $kind == blob ]]; then
+        mkdir -p -- "${dest%/*}" && git cat-file blob "$object" > "$dest"
+        return
+    fi
+    mkdir -p -- "$dest" || return
+    git ls-tree --full-tree -r -t -z "$object" |
+        while IFS= read -r -d '' entry; do
+            path=${entry#*$'\t'}
+            case /$path/ in
+                *'/../'*|*'/./'*|*'//'*) return 1 ;;
+            esac
+            read -r mode type hash <<< "${entry%%$'\t'*}"
+            case $type in
+                tree) mkdir -p -- "$dest/$path" || return ;;
+                blob) git cat-file blob "$hash" > "$dest/$path" || return ;;
+            esac
+        done
+}
+
+local_files=()
+for i in "${!files[@]}"; do
+    slot=${files[i]} prefix=${prefixes[i]}
+    arg=${args[slot]#"$prefix"}
+    if [[ ! $arg || $arg == - || $arg == /* && ( -e $arg || -L $arg ) ]]; then
+        continue
+    fi
+    if [[ -e $arg || -L $arg ]] || ! git_object "$arg"; then
+        [[ $arg != /* ]] && local_files+=("$i")
+        continue
+    fi
+    if [[ ! $stage ]]; then
+        stage=$(mktemp -d "${TMPDIR:-/tmp}/git-grip.XXXXXXXX") || exit 2
+        [[ $stage == /* ]] || stage=$PWD/$stage
+        trap 'rm -rf -- "$stage"' EXIT
+        trap 'exit 129' HUP
+        trap 'exit 130' INT
+        trap 'exit 143' TERM
+    fi
+    label=${arg%/}
+    label=${label#./}
+    case /$label/ in
+        *'/../'*|*'/./'*|*'//'*)
+            label=$(git_path "$arg") || label=${arg##*/}
+            label=./$label ;;
+    esac
+    [[ $label && $label != -* ]] || label=./$label
+    snapshot "$object" "$kind" "$stage/$label" || exit 2
+    if ((i < option_files)); then
+        args[slot]=$prefix$stage/$label
+    else
+        args[slot]=$label
+        staged_search=1
+    fi
+done
+
+if [[ ! $stage ]]; then
+    exec grep "${args[@]}"
+fi
+if [[ ! $staged_search ]]; then
+    grep "${args[@]}"
+    exit
+fi
+for i in "${local_files[@]}"; do
+    slot=${files[i]} prefix=${prefixes[i]}
+    arg=${args[slot]#"$prefix"}
+    path=${arg#./}
+    top=${path%%/*}
+    # Keep relative names in grep's output when they fit beside the snapshot.
+    if [[ ( -e $arg || -L $arg ) && $top && $top != . && $top != .. ]]; then
+        [[ -L $stage/$top ]] && continue
+        if [[ ! -e $stage/$top ]] && ln -s -- "$PWD/$top" "$stage/$top"; then
+            continue
+        fi
+    fi
+    args[slot]=$prefix$PWD/$arg
+done
+cd -- "$stage" || exit 2
+grep "${args[@]}"
